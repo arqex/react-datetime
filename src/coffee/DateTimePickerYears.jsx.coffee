@@ -53,4 +53,4 @@ DateTimePickerYears = React.createClass(
 
 )
 
-`export default = DateTimePickerYears;`
+`export default = DateTimePickerYears`

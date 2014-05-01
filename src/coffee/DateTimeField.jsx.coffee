@@ -1,6 +1,6 @@
 ###* @jsx React.DOM ###
 
-import DateTimePicker from './DateTimePicker'
+`import DateTimePicker from './DateTimePicker'`
 
 DateTimeField = React.createClass(
 
@@ -222,4 +222,4 @@ DateTimeField = React.createClass(
     )`
 )
 
-`export default = DateTimePicker;`
+`export default = DateTimePicker`

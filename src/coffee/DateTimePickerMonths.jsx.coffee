@@ -51,4 +51,4 @@ DateTimePickerMonths = React.createClass(
 
 )
 
-`export default = DateTimePickerMonths;`
+`export default = DateTimePickerMonths`

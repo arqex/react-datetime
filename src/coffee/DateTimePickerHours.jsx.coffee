@@ -43,4 +43,4 @@ DateTimePickerHours = React.createClass(
 
 )
 
-`export default = DateTimePickerHours;`
+`export default = DateTimePickerHours`

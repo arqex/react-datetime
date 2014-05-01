@@ -1,7 +1,7 @@
 ###* @jsx React.DOM ###
 
-import DateTimePickerMinutes from './DateTimePickerMinutes'
-import DateTimePickerHours from './DateTimePickerHours'
+`import DateTimePickerMinutes from './DateTimePickerMinutes'`
+`import DateTimePickerHours from './DateTimePickerHours'`
 
 
 DateTimePickerTime = React.createClass(
@@ -96,4 +96,4 @@ DateTimePickerTime = React.createClass(
 
 )
 
-`export default = DateTimePickerTime;`
+`export default = DateTimePickerTime`

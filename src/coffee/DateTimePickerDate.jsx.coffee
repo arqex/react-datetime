@@ -1,8 +1,8 @@
 ###* @jsx React.DOM ###
 
-import DateTimePickerDays from './DateTimePickerDays'
-import DateTimePickerMonths from './DateTimePickerMonths'
-import DateTimePickerYears from './DateTimePickerYears'
+`import DateTimePickerDays from './DateTimePickerDays'`
+`import DateTimePickerMonths from './DateTimePickerMonths'`
+`import DateTimePickerYears from './DateTimePickerYears'`
 
 DateTimePickerDate = React.createClass(
   propTypes:
@@ -106,4 +106,4 @@ DateTimePickerDate = React.createClass(
 
 )
 
-`export default = DateTimePickerDate;`
+`export default = DateTimePickerDate`

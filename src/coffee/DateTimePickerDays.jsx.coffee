@@ -104,4 +104,4 @@ DateTimePickerDays = React.createClass(
 
 )
 
-`export default = DateTimePickerDays;`
+`export default = DateTimePickerDays`
