@@ -1,4 +1,4 @@
-react-bootstrap-datetime-picker
+react-bootstrap-datetimepicker
 ===============================
 
 This project is a port of https://github.com/Eonasdan/bootstrap-datetimepicker for React.js

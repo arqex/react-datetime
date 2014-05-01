@@ -1,5 +1,6 @@
 
 /** @jsx React.DOM */
+import React from './react-es6';
 import DateTimePickerDate from './DateTimePickerDate';
 import DateTimePickerTime from './DateTimePickerTime';
 var DateTimePicker;

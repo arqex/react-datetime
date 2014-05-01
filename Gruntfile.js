@@ -84,7 +84,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             cwd: 'src',
-            src: ['**/*.jsx'],
+            src: ['**/*.*', '!coffee/*'],
             dest: 'transpiled',
             ext: '.js'
           }
@@ -95,7 +95,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             cwd: 'test',
-            src: ['**/*.jsx'],
+            src: ['**/*.*', '!coffee/*'],
             dest: 'test-built',
             ext: '.js'
           }
@@ -231,6 +231,8 @@ module.exports = function (grunt) {
     'clean:amd',
     'clean:cjs',
     'clean:test',
+    'coffee:src',
+    'coffee:test',
     'react:src',
     'react:test',
     'transpile',

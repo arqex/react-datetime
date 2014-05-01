@@ -1,5 +1,7 @@
 ###* @jsx React.DOM ###
 
+`import React from './react-es6'`
+
 DateTimePickerMinutes = React.createClass(
 
   render: ->

@@ -1,5 +1,6 @@
 
 /** @jsx React.DOM */
+import React from './react-es6';
 var DateTimePickerYears;
 
 DateTimePickerYears = React.createClass({

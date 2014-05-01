@@ -1,5 +1,7 @@
 ###* @jsx React.DOM ###
 
+`import React from './react-es6'`
+
 DateTimePickerDays = React.createClass(
 
   propTypes:

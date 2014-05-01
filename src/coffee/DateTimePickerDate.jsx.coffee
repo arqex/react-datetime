@@ -1,5 +1,6 @@
 ###* @jsx React.DOM ###
 
+`import React from './react-es6'`
 `import DateTimePickerDays from './DateTimePickerDays'`
 `import DateTimePickerMonths from './DateTimePickerMonths'`
 `import DateTimePickerYears from './DateTimePickerYears'`
