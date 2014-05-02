@@ -4,7 +4,7 @@
         define(['react'], factory);
     } else {
         // Browser globals
-        root.ReactBootstrap = factory(root.React);
+        root.ReactBootstrapDateTimePicker = factory(root.React);
     }
 }(this, function (React) {
 

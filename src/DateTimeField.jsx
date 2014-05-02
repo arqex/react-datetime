@@ -257,4 +257,4 @@ DateTimeField = React.createClass({
   }
 });
 
-export default = DateTimePicker;
+export default = DateTimeField;
