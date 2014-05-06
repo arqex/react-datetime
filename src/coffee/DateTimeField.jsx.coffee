@@ -32,9 +32,9 @@ DateTimeField = React.createClass(
 
   componentWillReceiveProps: (nextProps) ->
     @setState
-      viewDate: moment(nextProps.dateTime).startOf("month")
-      selectedDate: moment(nextProps.dateTime)
-      inputValue: moment(nextProps.dateTime).format(nextProps.inputFormat)
+      viewDate: moment(nextProps.dateTime, nextProps.format).startOf("month")
+      selectedDate: moment(nextProps.dateTime, nextProps.format)
+      inputValue: moment(nextProps.dateTime, nextProps.format).format(nextProps.inputFormat)
 
   # to improve with detection only onBlur
   onChange: (event) ->
@@ -49,7 +49,7 @@ DateTimeField = React.createClass(
     @props.onChange(@state.selectedDate.format(@props.format))
 
   setSelectedDate: (e) ->
-    @setState selectedDate: @state.viewDate.clone().date(parseInt(e.target.innerHTML)), ->
+    @setState selectedDate: @state.viewDate.clone().date(parseInt(e.target.innerHTML)).hour(@state.selectedDate.hours()).minute(@state.selectedDate.minutes()), ->
       @closePicker()
       @props.onChange(@state.selectedDate.format(@props.format))
       @setState inputValue: @state.selectedDate.format("MM/DD/YY H:mm A")
