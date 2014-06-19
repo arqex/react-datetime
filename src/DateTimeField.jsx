@@ -67,6 +67,28 @@ DateTimeField = React.createClass({
       });
     });
   },
+  setSelectedHour: function(e) {
+    return this.setState({
+      selectedDate: this.state.selectedDate.clone().hour(parseInt(e.target.innerHTML)).minute(this.state.selectedDate.minutes())
+    }, function() {
+      this.closePicker();
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format("MM/DD/YY H:mm A")
+      });
+    });
+  },
+  setSelectedMinute: function(e) {
+    return this.setState({
+      selectedDate: this.state.selectedDate.clone().hour(this.state.selectedDate.hours()).minute(parseInt(e.target.innerHTML))
+    }, function() {
+      this.closePicker();
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format("MM/DD/YY H:mm A")
+      });
+    });
+  },
   setViewMonth: function(month) {
     return this.setState({
       viewDate: this.state.viewDate.clone().month(month)
@@ -245,6 +267,8 @@ DateTimeField = React.createClass({
                   setViewYear={this.setViewYear}
                   setViewMonth={this.setViewMonth}
                   setSelectedDate={this.setSelectedDate}
+                  setSelectedHour={this.setSelectedHour}
+                  setSelectedMinute={this.setSelectedMinute}
                   togglePicker={this.togglePicker}
                   togglePeriod={this.togglePeriod}
             />

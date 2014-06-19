@@ -54,6 +54,18 @@ DateTimeField = React.createClass(
       @props.onChange(@state.selectedDate.format(@props.format))
       @setState inputValue: @state.selectedDate.format("MM/DD/YY H:mm A")
 
+  setSelectedHour: (e) ->
+    @setState selectedDate: @state.selectedDate.clone().hour(parseInt(e.target.innerHTML)).minute(@state.selectedDate.minutes()), ->
+      @closePicker()
+      @props.onChange(@state.selectedDate.format(@props.format))
+      @setState inputValue: @state.selectedDate.format("MM/DD/YY H:mm A")
+
+  setSelectedMinute: (e) ->
+    @setState selectedDate: @state.selectedDate.clone().hour(@state.selectedDate.hours()).minute(parseInt(e.target.innerHTML)), ->
+      @closePicker()
+      @props.onChange(@state.selectedDate.format(@props.format))
+      @setState inputValue: @state.selectedDate.format("MM/DD/YY H:mm A")
+
   setViewMonth: (month) ->
     @setState viewDate: @state.viewDate.clone().month(month)
 
@@ -218,6 +230,8 @@ DateTimeField = React.createClass(
                   setViewYear={this.setViewYear}
                   setViewMonth={this.setViewMonth}
                   setSelectedDate={this.setSelectedDate}
+                  setSelectedHour={this.setSelectedHour}
+                  setSelectedMinute={this.setSelectedMinute}
                   togglePicker={this.togglePicker}
                   togglePeriod={this.togglePeriod}
             />

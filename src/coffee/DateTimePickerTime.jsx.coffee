@@ -8,6 +8,8 @@
 DateTimePickerTime = React.createClass(
 
   propTypes:
+    setSelectedHour: React.PropTypes.func.isRequired
+    setSelectedMinute: React.PropTypes.func.isRequired
     subtractHour: React.PropTypes.func.isRequired
     addHour: React.PropTypes.func.isRequired
     subtractMinute: React.PropTypes.func.isRequired
@@ -30,13 +32,19 @@ DateTimePickerTime = React.createClass(
 
   renderMinutes: ->
     if @state.minutesDisplayed
-      `(<DateTimePickerMinutes />)`
+      `(<DateTimePickerMinutes
+            setSelectedMinute={this.props.setSelectedMinute}
+       />
+       )`
     else
       ''
 
   renderHours: ->
     if @state.hoursDisplayed
-      `(<DateTimePickerHours />)`
+      `(<DateTimePickerHours
+            setSelectedHour={this.props.setSelectedHour}
+      />
+      )`
     else
       ''
 
