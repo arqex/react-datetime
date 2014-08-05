@@ -145,31 +145,36 @@ DateTimeField = React.createClass(
             'bottom'
 
       if placePosition == 'top'
-        offset.top -= @refs.widget.getDOMNode().offsetHeight + @refs.datetimepicker.getDOMNode().offsetHeight + 15
+        # offset.top -= @refs.widget.getDOMNode().offsetHeight + @refs.datetimepicker.getDOMNode().offsetHeight + 15
+        offset.top = - @refs.widget.getDOMNode().offsetHeight-this.getDOMNode().clientHeight-2
         classes["top"] = true
         classes["bottom"] = false
+        classes['pull-right'] = true
       else
-        offset.top += 1
+        # offset.top += 1
+        offset.top = 40
         classes["top"] = false
         classes["bottom"] = true
+        classes['pull-right'] = true
+
 
       # if @props.orientation == 'left'
       #   classes["left-oriented"] = true
       #   offset.left = offset.left - @refs.widget.getDOMNode.
 
-      if document.body.clientWidth < offset.left + @refs.widget.getDOMNode().offsetWidth
-        offset.right = document.body.clientWidth - offset.left - @refs.dtpbutton.getDOMNode().offsetWidth
-        offset.left = "auto"
-        classes['pull-right'] = true
-      else
-        offset.right = "auto"
-        classes["pull-right"] = false
+      # if document.body.clientWidth < offset.left + @refs.widget.getDOMNode().offsetWidth
+      #   offset.right = document.body.clientWidth - offset.left - @refs.dtpbutton.getDOMNode().offsetWidth
+      #   offset.left = "auto"
+      #   classes['pull-right'] = true
+      # else
+      #   offset.right = "auto"
+      #   classes["pull-right"] = false
 
       styles =
         display: 'block'
         position: 'absolute'
-        # top: offset.top
-        top: 40
+        top: offset.top
+        # top: 40
         # left: offset.left
         # right: offset.right
         left: 'auto'

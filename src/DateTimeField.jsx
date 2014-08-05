@@ -187,26 +187,20 @@ DateTimeField = React.createClass({
       scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
       placePosition = this.props.direction === 'up' ? 'top' : this.props.direction === 'bottom' ? 'bottom' : this.props.direction === 'auto' ? offset.top + this.refs.widget.getDOMNode().offsetHeight > window.offsetHeight + scrollTop && this.refs.widget.offsetHeight + this.refs.datetimepicker.getDOMNode().offsetHeight > offset.top ? 'top' : 'bottom' : void 0;
       if (placePosition === 'top') {
-        offset.top -= this.refs.widget.getDOMNode().offsetHeight + this.refs.datetimepicker.getDOMNode().offsetHeight + 15;
+        offset.top = -this.refs.widget.getDOMNode().offsetHeight - this.getDOMNode().clientHeight - 2;
         classes["top"] = true;
         classes["bottom"] = false;
-      } else {
-        offset.top += 1;
-        classes["top"] = false;
-        classes["bottom"] = true;
-      }
-      if (document.body.clientWidth < offset.left + this.refs.widget.getDOMNode().offsetWidth) {
-        offset.right = document.body.clientWidth - offset.left - this.refs.dtpbutton.getDOMNode().offsetWidth;
-        offset.left = "auto";
         classes['pull-right'] = true;
       } else {
-        offset.right = "auto";
-        classes["pull-right"] = false;
+        offset.top = 40;
+        classes["top"] = false;
+        classes["bottom"] = true;
+        classes['pull-right'] = true;
       }
       styles = {
         display: 'block',
         position: 'absolute',
-        top: 40,
+        top: offset.top,
         left: 'auto',
         right: 40
       };
