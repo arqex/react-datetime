@@ -3,7 +3,7 @@
 `import React from './react-es6'`
 `import DateTimePickerMinutes from './DateTimePickerMinutes'`
 `import DateTimePickerHours from './DateTimePickerHours'`
-
+Glyphicon = require('react-bootstrap/Glyphicon')
 
 DateTimePickerTime = React.createClass(
 
@@ -55,11 +55,11 @@ DateTimePickerTime = React.createClass(
         <table className="table-condensed">
           <tbody>
             <tr>
-              <td><a className="btn" onClick={this.props.addHour}><Icon name="chevron-up" type="glyphicon" /></a></td>
+              <td><a className="btn" onClick={this.props.addHour}><Glyphicon glyph="chevron-up" /></a></td>
 
               <td className="separator"></td>
 
-              <td><a className="btn" onClick={this.props.addMinute}><Icon name="chevron-up" type="glyphicon" /></a></td>
+              <td><a className="btn" onClick={this.props.addMinute}><Glyphicon glyph="chevron-up" /></a></td>
 
               <td className="separator"></td>
             </tr>
@@ -77,11 +77,11 @@ DateTimePickerTime = React.createClass(
             </tr>
 
             <tr>
-              <td><a className="btn" onClick={this.props.subtractHour}><Icon name="chevron-down" type="glyphicon" /></a></td>
+              <td><a className="btn" onClick={this.props.subtractHour}><Glyphicon glyph="chevron-down" /></a></td>
 
               <td className="separator"></td>
 
-              <td><a className="btn" onClick={this.props.subtractMinute}><Icon name="chevron-down" type="glyphicon" /></a></td>
+              <td><a className="btn" onClick={this.props.subtractMinute}><Glyphicon glyph="chevron-down" /></a></td>
 
               <td className="separator"></td>
             </tr>

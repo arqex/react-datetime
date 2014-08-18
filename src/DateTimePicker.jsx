@@ -3,7 +3,9 @@
 import React from './react-es6';
 import DateTimePickerDate from './DateTimePickerDate';
 import DateTimePickerTime from './DateTimePickerTime';
-var DateTimePicker;
+var DateTimePicker, Glyphicon;
+
+Glyphicon = require('react-bootstrap/Glyphicon');
 
 DateTimePicker = React.createClass({
   propTypes: {
@@ -72,7 +74,7 @@ DateTimePicker = React.createClass({
 
         {this.renderDatePicker()}
 
-        <a className="btn btn-default picker-switch" style={{width:'100%'}} onClick={this.props.togglePicker}><Icon name={this.props.showTimePicker ? 'calendar' : 'time'} type="glyphicon" /></a>
+        <a className="btn btn-default picker-switch" style={{width:'100%'}} onClick={this.props.togglePicker}><Glyphicon name={this.props.showTimePicker ? 'calendar' : 'time'} /></a>
 
         {this.renderTimePicker()}
 

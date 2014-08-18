@@ -20,5 +20,8 @@
   },
   "peerDependencies": {
     "react": ">=0.9"
+  },
+  "dependencies": {
+    "react-bootstrap": "^0.11.1"
   }
 }
