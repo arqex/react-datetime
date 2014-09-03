@@ -1,7 +1,8 @@
 
 /** @jsx React.DOM */
-import React from './react-es6';
-var DateTimePickerHours;
+var DateTimePickerHours, React;
+
+React = require('react');
 
 DateTimePickerHours = React.createClass({
   propTypes: {
@@ -78,4 +79,4 @@ DateTimePickerHours = React.createClass({
   }
 });
 
-export default = DateTimePickerHours;
+module.exports = DateTimePickerHours;

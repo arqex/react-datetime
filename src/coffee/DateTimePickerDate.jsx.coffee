@@ -1,9 +1,9 @@
 ###* @jsx React.DOM ###
 
-`import React from './react-es6'`
-`import DateTimePickerDays from './DateTimePickerDays'`
-`import DateTimePickerMonths from './DateTimePickerMonths'`
-`import DateTimePickerYears from './DateTimePickerYears'`
+React = require 'react'
+DateTimePickerDays = require './DateTimePickerDays'
+DateTimePickerMonths = require './DateTimePickerMonths'
+DateTimePickerYears = require './DateTimePickerYears'
 
 DateTimePickerDate = React.createClass(
   propTypes:
@@ -107,4 +107,4 @@ DateTimePickerDate = React.createClass(
 
 )
 
-`export default = DateTimePickerDate`
+module.exports = DateTimePickerDate

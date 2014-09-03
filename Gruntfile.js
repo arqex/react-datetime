@@ -3,50 +3,59 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    transpile: {
-      cjs: {
-        type: 'cjs',
-        files: [{
-          expand: true,
-          cwd: '.',
-          src: ['transpiled/**/*.js'],
-          dest: 'cjs/'
-        }]
-      },
-      amd: {
-        type: 'amd',
-        anonymous: true,
-        files: [{
-          expand: true,
-          cwd: '.',
-          src: ['transpiled/**/*.js'],
-          dest: 'amd/'
-        }]
-      }
-    },
+    // transpile: {
+    //   cjs: {
+    //     type: 'cjs',
+    //     files: [{
+    //       expand: true,
+    //       cwd: '.',
+    //       src: ['transpiled/**/*.js'],
+    //       dest: 'cjs/'
+    //     }]
+    //   },
+    //   amd: {
+    //     type: 'amd',
+    //     anonymous: true,
+    //     files: [{
+    //       expand: true,
+    //       cwd: '.',
+    //       src: ['transpiled/**/*.js'],
+    //       dest: 'amd/'
+    //     }]
+    //   }
+    // },
 
-    es6_module_wrap_default: {
-      cjs: {
-        options: {
-          type: 'cjs'
-        },
-        files: [{
-          expand: true,
-          cwd: 'cjs/transpiled',
-          src: ['*.js'],
-          dest: 'cjs'
-        }]
-      },
-      amd: {
-        options: {
-          type: 'amd'
-        },
-        files: [{
-          expand: true,
-          cwd: 'amd/transpiled',
-          src: ['*.js'],
-          dest: 'amd'
-        }]
+    // es6_module_wrap_default: {
+    //   cjs: {
+    //     options: {
+    //       type: 'cjs'
+    //     },
+    //     files: [{
+    //       expand: true,
+    //       cwd: 'cjs/transpiled',
+    //       src: ['*.js'],
+    //       dest: 'cjs'
+    //     }]
+    //   },
+    //   amd: {
+    //     options: {
+    //       type: 'amd'
+    //     },
+    //     files: [{
+    //       expand: true,
+    //       cwd: 'amd/transpiled',
+    //       src: ['*.js'],
+    //       dest: 'amd'
+    //     }]
+    //   }
+    // },
+
+    amdwrap: {
+      src: {
+        expand: true,
+        cwd: 'transpiled/',
+        src: ['**/*.js'],
+        dest: 'amd/'
       }
     },
 
@@ -63,6 +72,12 @@ module.exports = function (grunt) {
       },
       cjs: {
         files: [
+          {
+            expand: true,
+            cwd: 'transpiled/',
+            src: ['**/*.js'],
+            dest: 'cjs/'
+          },
           {
             src: ['**/*'],
             dest: 'cjs/',
@@ -145,15 +160,20 @@ module.exports = function (grunt) {
           baseUrl: "amd",
           paths: {
             "react-bootstrap-datetimepicker": "./index",
-            almond: "../tools/vendor/almond",
-            react: "../tools/vendor/react-0.9.0"
           },
+          packages: [
+            {  name: 'react', location: '../node_modules/react', main: './react' }
+          ],
           include: ["almond", "react-bootstrap-datetimepicker"],
           exclude: ["react"],
           out: "amd/react-bootstrap-datetimepicker.js",
+          cjsTranslate: true,
           wrap: {
             startFile: "tools/wrap.start",
             endFile: "tools/wrap.end"
+          },
+          rawText: {
+            'react': 'define({});'
           },
           optimize: "none"
         }
@@ -217,9 +237,8 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-es6-module-transpiler');
-  grunt.loadNpmTasks('grunt-es6-module-wrap-default');
   grunt.loadNpmTasks('grunt-react');
+  grunt.loadNpmTasks("grunt-amd-wrap");
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -235,12 +254,11 @@ module.exports = function (grunt) {
     'coffee:test',
     'react:src',
     'react:test',
-    'transpile',
-    'es6_module_wrap_default',
+    'amdwrap',
     'copy',
     'browserify:test',
-    'requirejs:dev',
-    'uglify:build',
+    // 'requirejs:dev',
+    // 'uglify:build',
     'clean:transpiled'
   ]);
 

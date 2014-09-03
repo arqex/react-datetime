@@ -1,7 +1,10 @@
 
 /** @jsx React.DOM */
-import React from './react-es6';
-var DateTimePickerMonths;
+var DateTimePickerMonths, React, moment;
+
+React = require('react');
+
+moment = require('moment');
 
 DateTimePickerMonths = React.createClass({
   propTypes: {
@@ -53,4 +56,4 @@ DateTimePickerMonths = React.createClass({
   }
 });
 
-export default = DateTimePickerMonths;
+module.exports = DateTimePickerMonths;

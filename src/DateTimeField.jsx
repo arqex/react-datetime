@@ -1,8 +1,12 @@
 
 /** @jsx React.DOM */
-import React from './react-es6';
-import DateTimePicker from './DateTimePicker';
-var DateTimeField, Glyphicon;
+var DateTimeField, DateTimePicker, Glyphicon, React, moment;
+
+React = require('react');
+
+DateTimePicker = require('./DateTimePicker');
+
+moment = require('moment');
 
 Glyphicon = require('react-bootstrap/Glyphicon');
 
@@ -277,4 +281,4 @@ DateTimeField = React.createClass({
   }
 });
 
-export default = DateTimeField;
+module.exports = DateTimeField;

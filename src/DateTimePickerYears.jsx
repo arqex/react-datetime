@@ -1,7 +1,8 @@
 
 /** @jsx React.DOM */
-import React from './react-es6';
-var DateTimePickerYears;
+var DateTimePickerYears, React;
+
+React = require('react');
 
 DateTimePickerYears = React.createClass({
   propTypes: {
@@ -56,4 +57,4 @@ DateTimePickerYears = React.createClass({
   }
 });
 
-export default = DateTimePickerYears;
+module.exports = DateTimePickerYears;

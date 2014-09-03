@@ -8,3 +8,4 @@
     }
 }(this, function (React) {
 
+var process = {env:{NODE_ENV:'production'}};

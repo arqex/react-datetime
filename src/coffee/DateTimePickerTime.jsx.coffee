@@ -1,8 +1,8 @@
 ###* @jsx React.DOM ###
 
-`import React from './react-es6'`
-`import DateTimePickerMinutes from './DateTimePickerMinutes'`
-`import DateTimePickerHours from './DateTimePickerHours'`
+React = require 'react'
+DateTimePickerMinutes = require './DateTimePickerMinutes'
+DateTimePickerHours = require './DateTimePickerHours'
 Glyphicon = require('react-bootstrap/Glyphicon')
 
 DateTimePickerTime = React.createClass(
@@ -16,8 +16,6 @@ DateTimePickerTime = React.createClass(
     addMinute: React.PropTypes.func.isRequired
     viewDate: React.PropTypes.object.isRequired
     selectedDate: React.PropTypes.object.isRequired
-    showHours: React.PropTypes.func.isRequired
-    showMinutes: React.PropTypes.func.isRequired
     togglePeriod: React.PropTypes.func.isRequired
 
   getInitialState: ->
@@ -105,4 +103,4 @@ DateTimePickerTime = React.createClass(
 
 )
 
-`export default = DateTimePickerTime`
+module.exports = DateTimePickerTime

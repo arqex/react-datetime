@@ -1,7 +1,10 @@
 
 /** @jsx React.DOM */
-import React from './react-es6';
-var DateTimePickerDays;
+var DateTimePickerDays, React, moment;
+
+React = require('react');
+
+moment = require('moment');
 
 DateTimePickerDays = React.createClass({
   propTypes: {
@@ -109,4 +112,4 @@ DateTimePickerDays = React.createClass({
   }
 });
 
-export default = DateTimePickerDays;
+module.exports = DateTimePickerDays;

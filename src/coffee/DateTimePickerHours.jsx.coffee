@@ -1,6 +1,6 @@
 ###* @jsx React.DOM ###
 
-`import React from './react-es6'`
+React = require 'react'
 
 DateTimePickerHours = React.createClass(
 
@@ -78,4 +78,4 @@ DateTimePickerHours = React.createClass(
 
 )
 
-`export default = DateTimePickerHours`
+module.exports = DateTimePickerHours

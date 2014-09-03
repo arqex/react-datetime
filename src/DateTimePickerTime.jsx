@@ -1,9 +1,12 @@
 
 /** @jsx React.DOM */
-import React from './react-es6';
-import DateTimePickerMinutes from './DateTimePickerMinutes';
-import DateTimePickerHours from './DateTimePickerHours';
-var DateTimePickerTime, Glyphicon;
+var DateTimePickerHours, DateTimePickerMinutes, DateTimePickerTime, Glyphicon, React;
+
+React = require('react');
+
+DateTimePickerMinutes = require('./DateTimePickerMinutes');
+
+DateTimePickerHours = require('./DateTimePickerHours');
 
 Glyphicon = require('react-bootstrap/Glyphicon');
 
@@ -115,4 +118,4 @@ DateTimePickerTime = React.createClass({
   }
 });
 
-export default = DateTimePickerTime;
+module.exports = DateTimePickerTime;
