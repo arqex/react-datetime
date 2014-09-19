@@ -20,8 +20,6 @@ DateTimePickerTime = React.createClass({
     addMinute: React.PropTypes.func.isRequired,
     viewDate: React.PropTypes.object.isRequired,
     selectedDate: React.PropTypes.object.isRequired,
-    showHours: React.PropTypes.func.isRequired,
-    showMinutes: React.PropTypes.func.isRequired,
     togglePeriod: React.PropTypes.func.isRequired
   },
   getInitialState: function() {

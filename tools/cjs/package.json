@@ -23,6 +23,6 @@
   },
   "dependencies": {
     "moment": "^2.8.2",
-    "react-bootstrap": "^0.11.1"
+    "react-bootstrap": "^0.12.0"
   }
 }
