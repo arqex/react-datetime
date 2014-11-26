@@ -57,10 +57,10 @@ DateTimePickerDays = React.createClass(
                 classes['disabled'] = true
                 break;
 
-      cells.push `<td className={React.addons.classSet(classes)} onClick={this.props.setSelectedDate}>{prevMonth.date()}</td>`
+      cells.push `<td key={prevMonth.month() + '-' + prevMonth.date()} className={React.addons.classSet(classes)} onClick={this.props.setSelectedDate}>{prevMonth.date()}</td>`
 
       if prevMonth.weekday() == moment().endOf('week').weekday()
-        row = `<tr>{cells}</tr>`
+        row = `<tr key={prevMonth.month() + '-' + prevMonth.date()}>{cells}</tr>`
         html.push(row)
         cells = []
 
