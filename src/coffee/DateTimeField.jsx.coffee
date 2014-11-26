@@ -75,40 +75,40 @@ DateTimeField = React.createClass(
     @setState viewDate: @state.viewDate.clone().year(year)
 
   addMinute: ->
-    @setState selectedDate: @state.selectedDate.clone().add("minutes", 1)
+    @setState selectedDate: @state.selectedDate.clone().add(1, "minutes")
 
   addHour: ->
-    @setState selectedDate: @state.selectedDate.clone().add("hours", 1)
+    @setState selectedDate: @state.selectedDate.clone().add(1, "hours")
 
   addMonth: ->
-    @setState viewDate: @state.viewDate.add("months", 1)
+    @setState viewDate: @state.viewDate.add(1, "months")
 
   addYear: ->
-    @setState viewDate: @state.viewDate.add("years", 1)
+    @setState viewDate: @state.viewDate.add(1, "years")
 
   addDecade: ->
-    @setState viewDate: @state.viewDate.add("years", 10)
+    @setState viewDate: @state.viewDate.add(10, "years")
 
   subtractMinute: ->
-    @setState selectedDate: @state.selectedDate.clone().subtract("minutes", 1)
+    @setState selectedDate: @state.selectedDate.clone().subtract(1, "minutes")
 
   subtractHour: ->
-    @setState selectedDate: @state.selectedDate.clone().subtract("hours", 1)
+    @setState selectedDate: @state.selectedDate.clone().subtract(1, "hours")
 
   subtractMonth: ->
-    @setState viewDate: @state.viewDate.subtract("months", 1)
+    @setState viewDate: @state.viewDate.subtract(1, "months")
 
   subtractYear: ->
-    @setState viewDate: @state.viewDate.subtract("years", 1)
+    @setState viewDate: @state.viewDate.subtract(1, "years")
 
   subtractDecade: ->
-    @setState viewDate: @state.viewDate.subtract("years", 10)
+    @setState viewDate: @state.viewDate.subtract(10, "years")
 
   togglePeriod: ->
     if @state.selectedDate.hour() > 12
-      @setState selectedDate: @state.selectedDate.clone().subtract('hours', 12)
+      @setState selectedDate: @state.selectedDate.clone().subtract(12, 'hours')
     else
-      @setState selectedDate: @state.selectedDate.clone().add('hours', 12)
+      @setState selectedDate: @state.selectedDate.clone().add(12, 'hours')
 
   togglePicker: ->
     @setState

@@ -107,62 +107,62 @@ DateTimeField = React.createClass({
   },
   addMinute: function() {
     return this.setState({
-      selectedDate: this.state.selectedDate.clone().add("minutes", 1)
+      selectedDate: this.state.selectedDate.clone().add(1, "minutes")
     });
   },
   addHour: function() {
     return this.setState({
-      selectedDate: this.state.selectedDate.clone().add("hours", 1)
+      selectedDate: this.state.selectedDate.clone().add(1, "hours")
     });
   },
   addMonth: function() {
     return this.setState({
-      viewDate: this.state.viewDate.add("months", 1)
+      viewDate: this.state.viewDate.add(1, "months")
     });
   },
   addYear: function() {
     return this.setState({
-      viewDate: this.state.viewDate.add("years", 1)
+      viewDate: this.state.viewDate.add(1, "years")
     });
   },
   addDecade: function() {
     return this.setState({
-      viewDate: this.state.viewDate.add("years", 10)
+      viewDate: this.state.viewDate.add(10, "years")
     });
   },
   subtractMinute: function() {
     return this.setState({
-      selectedDate: this.state.selectedDate.clone().subtract("minutes", 1)
+      selectedDate: this.state.selectedDate.clone().subtract(1, "minutes")
     });
   },
   subtractHour: function() {
     return this.setState({
-      selectedDate: this.state.selectedDate.clone().subtract("hours", 1)
+      selectedDate: this.state.selectedDate.clone().subtract(1, "hours")
     });
   },
   subtractMonth: function() {
     return this.setState({
-      viewDate: this.state.viewDate.subtract("months", 1)
+      viewDate: this.state.viewDate.subtract(1, "months")
     });
   },
   subtractYear: function() {
     return this.setState({
-      viewDate: this.state.viewDate.subtract("years", 1)
+      viewDate: this.state.viewDate.subtract(1, "years")
     });
   },
   subtractDecade: function() {
     return this.setState({
-      viewDate: this.state.viewDate.subtract("years", 10)
+      viewDate: this.state.viewDate.subtract(10, "years")
     });
   },
   togglePeriod: function() {
     if (this.state.selectedDate.hour() > 12) {
       return this.setState({
-        selectedDate: this.state.selectedDate.clone().subtract('hours', 12)
+        selectedDate: this.state.selectedDate.clone().subtract(12, 'hours')
       });
     } else {
       return this.setState({
-        selectedDate: this.state.selectedDate.clone().add('hours', 12)
+        selectedDate: this.state.selectedDate.clone().add(12, 'hours')
       });
     }
   },

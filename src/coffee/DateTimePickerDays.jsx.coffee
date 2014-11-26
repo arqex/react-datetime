@@ -22,7 +22,7 @@ DateTimePickerDays = React.createClass(
     year = @props.viewDate.year()
     month = @props.viewDate.month()
 
-    prevMonth = @props.viewDate.clone().subtract("months", 1)
+    prevMonth = @props.viewDate.clone().subtract(1, "months")
     days = prevMonth.daysInMonth()
     prevMonth.date(days).startOf('week')
 

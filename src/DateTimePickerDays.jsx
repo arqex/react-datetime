@@ -26,7 +26,7 @@ DateTimePickerDays = React.createClass({
     var cells, classes, days, html, i, month, nextMonth, prevMonth, row, year, _i, _len, _ref;
     year = this.props.viewDate.year();
     month = this.props.viewDate.month();
-    prevMonth = this.props.viewDate.clone().subtract("months", 1);
+    prevMonth = this.props.viewDate.clone().subtract(1, "months");
     days = prevMonth.daysInMonth();
     prevMonth.date(days).startOf('week');
     nextMonth = moment(prevMonth).clone().add(42, "d");
