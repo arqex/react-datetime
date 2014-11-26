@@ -40,10 +40,10 @@ DateTimeField = React.createClass(
 
   # to improve with detection only onBlur
   onChange: (event) ->
-    if moment(event.target.value, "MM/DD/YY H:mm A").isValid()
+    if moment(event.target.value, @props.format).isValid()
       @setState
-        selectedDate: moment(event.target.value, "MM/DD/YY H:mm A")
-        inputValue: moment(event.target.value, "MM/DD/YY H:mm A").format("MM/DD/YY H:mm A")
+        selectedDate: moment(event.target.value, @props.format)
+        inputValue: moment(event.target.value, @props.format).format(@props.inputFormat)
     else
       @setState inputValue: event.target.value
       console.log "This is not a valid date"
@@ -54,19 +54,19 @@ DateTimeField = React.createClass(
     @setState selectedDate: @state.viewDate.clone().date(parseInt(e.target.innerHTML)).hour(@state.selectedDate.hours()).minute(@state.selectedDate.minutes()), ->
       @closePicker()
       @props.onChange(@state.selectedDate.format(@props.format))
-      @setState inputValue: @state.selectedDate.format("MM/DD/YY H:mm A")
+      @setState inputValue: @state.selectedDate.format(@props.inputFormat)
 
   setSelectedHour: (e) ->
     @setState selectedDate: @state.selectedDate.clone().hour(parseInt(e.target.innerHTML)).minute(@state.selectedDate.minutes()), ->
       @closePicker()
       @props.onChange(@state.selectedDate.format(@props.format))
-      @setState inputValue: @state.selectedDate.format("MM/DD/YY H:mm A")
+      @setState inputValue: @state.selectedDate.format(@props.inputFormat)
 
   setSelectedMinute: (e) ->
     @setState selectedDate: @state.selectedDate.clone().hour(@state.selectedDate.hours()).minute(parseInt(e.target.innerHTML)), ->
       @closePicker()
       @props.onChange(@state.selectedDate.format(@props.format))
-      @setState inputValue: @state.selectedDate.format("MM/DD/YY H:mm A")
+      @setState inputValue: @state.selectedDate.format(@props.inputFormat)
 
   setViewMonth: (month) ->
     @setState viewDate: @state.viewDate.clone().month(month)
@@ -243,7 +243,7 @@ DateTimeField = React.createClass(
                   togglePeriod={this.togglePeriod}
             />
             <div className="input-group date" ref="datetimepicker">
-              <input type="text" className="form-control" onChange={this.onChange} value={this.state.selectedDate.format("MM/DD/YY h:mm A")} />
+              <input type="text" className="form-control" onChange={this.onChange} value={this.state.selectedDate.format(this.props.inputFormat)} />
               <span className="input-group-addon" onClick={this.onClick} onBlur={this.onBlur} ref="dtpbutton"><Glyphicon glyph="calendar" /></span>
             </div>
           </div>

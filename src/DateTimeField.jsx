@@ -49,10 +49,10 @@ DateTimeField = React.createClass({
     });
   },
   onChange: function(event) {
-    if (moment(event.target.value, "MM/DD/YY H:mm A").isValid()) {
+    if (moment(event.target.value, this.props.format).isValid()) {
       this.setState({
-        selectedDate: moment(event.target.value, "MM/DD/YY H:mm A"),
-        inputValue: moment(event.target.value, "MM/DD/YY H:mm A").format("MM/DD/YY H:mm A")
+        selectedDate: moment(event.target.value, this.props.format),
+        inputValue: moment(event.target.value, this.props.format).format(this.props.inputFormat)
       });
     } else {
       this.setState({
@@ -69,7 +69,7 @@ DateTimeField = React.createClass({
       this.closePicker();
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
-        inputValue: this.state.selectedDate.format("MM/DD/YY H:mm A")
+        inputValue: this.state.selectedDate.format(this.props.inputFormat)
       });
     });
   },
@@ -80,7 +80,7 @@ DateTimeField = React.createClass({
       this.closePicker();
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
-        inputValue: this.state.selectedDate.format("MM/DD/YY H:mm A")
+        inputValue: this.state.selectedDate.format(this.props.inputFormat)
       });
     });
   },
@@ -91,7 +91,7 @@ DateTimeField = React.createClass({
       this.closePicker();
       this.props.onChange(this.state.selectedDate.format(this.props.format));
       return this.setState({
-        inputValue: this.state.selectedDate.format("MM/DD/YY H:mm A")
+        inputValue: this.state.selectedDate.format(this.props.inputFormat)
       });
     });
   },
@@ -273,7 +273,7 @@ DateTimeField = React.createClass({
                   togglePeriod={this.togglePeriod}
             />
             <div className="input-group date" ref="datetimepicker">
-              <input type="text" className="form-control" onChange={this.onChange} value={this.state.selectedDate.format("MM/DD/YY h:mm A")} />
+              <input type="text" className="form-control" onChange={this.onChange} value={this.state.selectedDate.format(this.props.inputFormat)} />
               <span className="input-group-addon" onClick={this.onClick} onBlur={this.onBlur} ref="dtpbutton"><Glyphicon glyph="calendar" /></span>
             </div>
           </div>
