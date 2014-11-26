@@ -74,7 +74,7 @@ DateTimePickerDate = React.createClass({
       />
       );
     } else {
-      return '';
+      return null;
     }
   },
   renderMonths: function() {
@@ -90,7 +90,7 @@ DateTimePickerDate = React.createClass({
       />
       );
     } else {
-      return '';
+      return null;
     }
   },
   renderYears: function() {
@@ -105,7 +105,7 @@ DateTimePickerDate = React.createClass({
       />
       );
     } else {
-      return '';
+      return null;
     }
   },
   render: function() {

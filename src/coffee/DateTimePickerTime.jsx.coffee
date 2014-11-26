@@ -35,7 +35,7 @@ DateTimePickerTime = React.createClass(
        />
        )`
     else
-      ''
+      null
 
   renderHours: ->
     if @state.hoursDisplayed
@@ -44,7 +44,7 @@ DateTimePickerTime = React.createClass(
       />
       )`
     else
-      ''
+      null
 
   renderPicker: ->
     if !@state.minutesDisplayed && !@state.hoursDisplayed

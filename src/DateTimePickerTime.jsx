@@ -45,7 +45,7 @@ DateTimePickerTime = React.createClass({
        />
        );
     } else {
-      return '';
+      return null;
     }
   },
   renderHours: function() {
@@ -55,7 +55,7 @@ DateTimePickerTime = React.createClass({
       />
       );
     } else {
-      return '';
+      return null;
     }
   },
   renderPicker: function() {

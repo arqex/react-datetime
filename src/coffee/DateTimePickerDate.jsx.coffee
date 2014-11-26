@@ -63,7 +63,7 @@ DateTimePickerDate = React.createClass(
       />
       )`
     else
-      ''
+      null
 
   renderMonths: ->
     if @state.monthsDisplayed
@@ -78,7 +78,7 @@ DateTimePickerDate = React.createClass(
       />
       )`
     else
-      ''
+      null
 
   renderYears: ->
     if @state.yearsDisplayed
@@ -92,7 +92,7 @@ DateTimePickerDate = React.createClass(
       />
       )`
     else
-      ''
+      null
 
   render: ->
     `(

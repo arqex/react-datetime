@@ -27,7 +27,7 @@ DateTimeField = React.createClass(
       display: 'block'
       position: 'absolute'
       left: -9999
-      'z-index': '9999 !important'
+      zIndex: '9999 !important'
     viewDate: moment(@props.dateTime, @props.format).startOf("month")
     selectedDate: moment(@props.dateTime, @props.format)
     inputValue: moment(@props.dateTime, @props.format).format(@props.inputFormat)
@@ -203,12 +203,12 @@ DateTimeField = React.createClass(
       bottom: 0
       left: 0
       right: 0
-      'z-index': '999'
+      zIndex: '999'
 
     if @state.showPicker
       `(<div style={styles} onClick={this.closePicker} />)`
     else
-      ''
+      `<span />`
 
   render: ->
 

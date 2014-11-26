@@ -34,7 +34,7 @@ DateTimeField = React.createClass({
         display: 'block',
         position: 'absolute',
         left: -9999,
-        'z-index': '9999 !important'
+        zIndex: '9999 !important'
       },
       viewDate: moment(this.props.dateTime, this.props.format).startOf("month"),
       selectedDate: moment(this.props.dateTime, this.props.format),
@@ -233,12 +233,12 @@ DateTimeField = React.createClass({
       bottom: 0,
       left: 0,
       right: 0,
-      'z-index': '999'
+      zIndex: '999'
     };
     if (this.state.showPicker) {
       return (<div style={styles} onClick={this.closePicker} />);
     } else {
-      return '';
+      return <span />;
     }
   },
   render: function() {
