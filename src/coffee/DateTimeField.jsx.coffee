@@ -75,10 +75,12 @@ DateTimeField = React.createClass(
     @setState viewDate: @state.viewDate.clone().year(year)
 
   addMinute: ->
-    @setState selectedDate: @state.selectedDate.clone().add(1, "minutes")
+    @setState selectedDate: @state.selectedDate.clone().add(1, "minutes"), ->
+      @props.onChange(@state.selectedDate.format(@props.format))
 
   addHour: ->
-    @setState selectedDate: @state.selectedDate.clone().add(1, "hours")
+    @setState selectedDate: @state.selectedDate.clone().add(1, "hours"), ->
+      @props.onChange(@state.selectedDate.format(@props.format))
 
   addMonth: ->
     @setState viewDate: @state.viewDate.add(1, "months")
@@ -90,10 +92,12 @@ DateTimeField = React.createClass(
     @setState viewDate: @state.viewDate.add(10, "years")
 
   subtractMinute: ->
-    @setState selectedDate: @state.selectedDate.clone().subtract(1, "minutes")
+    @setState selectedDate: @state.selectedDate.clone().subtract(1, "minutes"), ->
+      @props.onChange(@state.selectedDate.format(@props.format))
 
   subtractHour: ->
-    @setState selectedDate: @state.selectedDate.clone().subtract(1, "hours")
+    @setState selectedDate: @state.selectedDate.clone().subtract(1, "hours"), ->
+      @props.onChange(@state.selectedDate.format(@props.format))
 
   subtractMonth: ->
     @setState viewDate: @state.viewDate.subtract(1, "months")
