@@ -137,11 +137,15 @@ DateTimeField = React.createClass({
   subtractMinute: function() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().subtract(1, "minutes")
+    }, function() {
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
     });
   },
   subtractHour: function() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().subtract(1, "hours")
+    }, function() {
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
     });
   },
   subtractMonth: function() {
