@@ -19,11 +19,14 @@ DateTimeField = React.createClass({
   },
   getDefaultProps: function() {
     return {
-      dateTime: moment(),
+      dateTime: "1234567",
       format: 'X',
       inputFormat: "MM/DD/YY H:mm A",
       showToday: true,
-      daysOfWeekDisabled: []
+      daysOfWeekDisabled: [],
+      onChange: function (x) {
+        console.log(x);
+      }
     };
   },
   getInitialState: function() {
