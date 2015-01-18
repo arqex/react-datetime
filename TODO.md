@@ -1,4 +1,3 @@
-- Create two different sets of Grunt tasks so that JS people build the project without knowing about CS
 - Add moment.js to the project dependencies
 - Improve positioning
 - Let edit the input field by typing

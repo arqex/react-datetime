@@ -99,7 +99,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             cwd: 'src',
-            src: ['**/*.*', '!coffee/*'],
+            src: ['**/*.*'],
             dest: 'transpiled',
             ext: '.js'
           }
@@ -110,7 +110,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             cwd: 'test',
-            src: ['**/*.*', '!coffee/*'],
+            src: ['**/*.*'],
             dest: 'test-built',
             ext: '.js'
           }
@@ -129,10 +129,10 @@ module.exports = function (grunt) {
     watch: {
       all: {
         files: [
-          'src/**/*.coffee',
-          'src/**/*.jsx.coffee',
-          'test/**/*.jsx.coffee',
-          'test/**/*.coffee'
+          'src/**/*.js',
+          'src/**/*.jsx',
+          'test/**/*.jsx',
+          'test/**/*.js'
         ],
         tasks: ['build'],
         options: {
@@ -190,49 +190,6 @@ module.exports = function (grunt) {
       }
     },
 
-    coffee: {
-      options: {
-        bare: true
-      },
-
-      src: {
-        files: [
-          {
-            expand: true,
-            cwd: 'src/coffee',
-            src: ['**/*.jsx.coffee'],
-            dest: 'src',
-            ext: '.jsx'
-          },
-          {
-            expand: true,
-            cwd: 'src/coffee',
-            src: ['**/*.coffee', '!**/*.jsx.coffee'],
-            dest: 'src',
-            ext: '.js'
-          }
-        ]
-      },
-      test: {
-        files: [
-          {
-            expand: true,
-            cwd: 'test/coffee',
-            src: ['**/*.jsx.coffee'],
-            dest: 'test',
-            ext: '.jsx'
-          },
-          {
-            expand: true,
-            cwd: 'test/coffee',
-            src: ['**/*.coffee', '!**/*.jsx.coffee'],
-            dest: 'test',
-            ext: '.js'
-          }
-        ]
-      }
-
-    }
 
   });
 
@@ -242,7 +199,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
 
@@ -250,8 +206,6 @@ module.exports = function (grunt) {
     'clean:amd',
     'clean:cjs',
     'clean:test',
-    'coffee:src',
-    'coffee:test',
     'react:src',
     'react:test',
     'amdwrap',
