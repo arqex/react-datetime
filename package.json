@@ -4,6 +4,7 @@
   "description": "A bootstrap datetime picker component for React.js",
   "scripts": {
     "build": "./node_modules/.bin/grunt build",
+    "examples": "webpack-dev-server --config ./examples/webpack.config.js",
     "test-watch": "./node_modules/.bin/grunt watch 2>&1 >/dev/null & karma start karma.dev.js",
     "test": "./node_modules/.bin/grunt build && karma start karma.ci.js"
   },
@@ -31,6 +32,7 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-react": "~0.10.0",
     "grunt-shell": "~0.6.4",
+    "jsx-loader": "^0.12.2",
     "react": "^0.12.1",
     "requirejs": "~2.1.9",
     "webpack": "^1.5.1"
