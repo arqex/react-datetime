@@ -1,13 +1,14 @@
 {
   "name": "react-bootstrap-datetimepicker",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A bootstrap datetime picker component for React.js",
   "repository": {
     "type": "git",
     "url": "http://github.com/quri/react-bootstrap-datetimepicker"
   },
-  "main": "./src/DateTimeField.jsx",
+  "main": "./lib/DateTimeField.js",
   "scripts": {
+    "build-npm": "jsx -x jsx ./src/ ./lib/",
     "build": "NODE_ENV=production webpack --output-file react-bootstrap-datetimepicker.js",
     "build-min": "NODE_ENV=production COMPRESS=1 webpack --output-file react-bootstrap-datetimepicker.min.js",
     "examples": "webpack-dev-server --config ./examples/webpack.config.js",
@@ -40,6 +41,7 @@
     "grunt-shell": "~0.6.4",
     "jsx-loader": "^0.12.2",
     "react": "^0.12.1",
+    "react-tools": "^0.12.2",
     "requirejs": "~2.1.9",
     "webpack": "^1.5.1"
   },
