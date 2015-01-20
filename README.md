@@ -38,6 +38,17 @@ DateTimeField
 | **showToday** | boolean | true | Highlights today's date |
 | **daysOfWeekDisabled** | array of integer | [] | Disables clicking on some days. Goes from 0 (Sunday) to 6 (Saturday). |
 
+Update Warning
+===============================
+Starting from 0.0.6, the 3 github repositories `react-bootstrap-datetimepicker`, `react-bootstrap-datetimepicker-npm` and `react-bootstrap-datetimepicker-bower` are merged in a single one. The build process changed but the API is the same.
+However now the package exports DateTimeField directly, no need to do :
+```javascript
+var DateTimeField = require('react-bootstrap-datetimepicker').DateTimeField;
+```
+instead use :
+```javascript
+var DateTimeField = require('react-bootstrap-datetimepicker');
+```
 
 Contributions
 ===============================
