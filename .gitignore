@@ -5,8 +5,6 @@ npm-debug.log
 test_bundle.js
 test-built/*
 .idea
-transpiled/*
 docs/*.html
 docs/assets/bundle.js
-cjs/*
-amd/*
+lib/*
