@@ -2,6 +2,10 @@
   "name": "react-bootstrap-datetimepicker",
   "version": "0.0.5",
   "description": "A bootstrap datetime picker component for React.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/quri/react-bootstrap-datetimepicker"
+  }
   "scripts": {
     "build": "./node_modules/.bin/grunt build",
     "examples": "webpack-dev-server --config ./examples/webpack.config.js",
