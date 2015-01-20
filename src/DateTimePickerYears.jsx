@@ -1,6 +1,6 @@
 var DateTimePickerYears, React;
 
-React = require('react');
+React = require('react/addons');
 
 DateTimePickerYears = React.createClass({
   propTypes: {

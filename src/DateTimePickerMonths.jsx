@@ -1,6 +1,6 @@
 var DateTimePickerMonths, React, moment;
 
-React = require('react');
+React = require('react/addons');
 
 moment = require('moment');
 

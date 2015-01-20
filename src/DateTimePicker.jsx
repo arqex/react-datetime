@@ -1,6 +1,6 @@
 var DateTimePicker, DateTimePickerDate, DateTimePickerTime, Glyphicon, React;
 
-React = require('react');
+React = require('react/addons');
 
 DateTimePickerDate = require('./DateTimePickerDate');
 
