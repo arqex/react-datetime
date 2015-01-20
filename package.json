@@ -5,9 +5,11 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/quri/react-bootstrap-datetimepicker"
-  }
+  },
+  "main": "./src/DateTimeField.jsx",
   "scripts": {
-    "build": "./node_modules/.bin/grunt build",
+    "build": "NODE_ENV=production webpack --output-file react-bootstrap-datetimepicker.js",
+    "build-min": "NODE_ENV=production COMPRESS=1 webpack --output-file react-bootstrap-datetimepicker.min.js",
     "examples": "webpack-dev-server --config ./examples/webpack.config.js",
     "test-watch": "./node_modules/.bin/grunt watch 2>&1 >/dev/null & karma start karma.dev.js",
     "test": "./node_modules/.bin/grunt build && karma start karma.ci.js"
