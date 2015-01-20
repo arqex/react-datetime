@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-datetimepicker",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A bootstrap datetime picker component for React.js",
   "repository": {
     "type": "git",
