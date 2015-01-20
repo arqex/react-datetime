@@ -1,5 +1,3 @@
-
-/** @jsx React.DOM */
 var DateTimeField, DateTimePicker, Glyphicon, React, moment;
 
 React = require('react');

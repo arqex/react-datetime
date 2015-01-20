@@ -1,5 +1,3 @@
-
-/** @jsx React.DOM */
 var DateTimePickerYears, React;
 
 React = require('react');

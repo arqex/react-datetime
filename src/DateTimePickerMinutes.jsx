@@ -1,5 +1,3 @@
-
-/** @jsx React.DOM */
 var DateTimePickerMinutes, React;
 
 React = require('react');
