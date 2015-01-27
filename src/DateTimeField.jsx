@@ -6,7 +6,7 @@ DateTimePicker = require('./DateTimePicker');
 
 moment = require('moment');
 
-Glyphicon = require('react-bootstrap/Glyphicon');
+Glyphicon = require('react-bootstrap').Glyphicon;
 
 DateTimeField = React.createClass({
   propTypes: {

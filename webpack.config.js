@@ -22,12 +22,19 @@ module.exports = {
 
   output: {
     path: __dirname + "/dist/",
-    library: 'react-bootstrap-datetimepicker',
+    library: 'ReactBootstrapDatetimepicker',
     libraryTarget: 'umd',
   },
 
   resolve: {
     extensions: ['', '.js', '.jsx']
+  },
+
+  externals: {
+    'react': 'React',
+    'react/addons': 'React',
+    'react-bootstrap': 'ReactBootstrap',
+    'moment': 'moment'
   },
 
   module: {
