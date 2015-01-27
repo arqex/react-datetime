@@ -30,6 +30,13 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
 
+  externals: {
+    'react': 'React',
+    'react/addons': 'React',
+    'react-bootstrap': 'ReactBootstrap',
+    'moment': 'moment'
+  },
+
   module: {
     loaders: [
       { test: /\.jsx$/, loader: 'jsx-loader' }
