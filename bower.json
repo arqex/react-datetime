@@ -2,7 +2,7 @@
   "name": "react-bootstrap-datetimepicker",
   "version": "0.0.666666",
   "main": [
-    "./dist/react-bootstrap-datetimepicker.min.js",
+    "./dist/react-bootstrap-datetimepicker.min.js"
   ],
   "ignore": []
 }
