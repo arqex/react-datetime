@@ -21,6 +21,7 @@ DateTimeField = React.createClass({
       format: 'X',
       inputFormat: "MM/DD/YY H:mm A",
       showToday: true,
+      startView: 'month',
       daysOfWeekDisabled: [],
       onChange: function (x) {
         console.log(x);
@@ -262,6 +263,7 @@ DateTimeField = React.createClass({
                   viewDate={this.state.viewDate}
                   selectedDate={this.state.selectedDate}
                   showToday={this.props.showToday}
+                  startView={this.props.startView}
                   daysOfWeekDisabled={this.props.daysOfWeekDisabled}
                   addDecade={this.addDecade}
                   addYear={this.addYear}

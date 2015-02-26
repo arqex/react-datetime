@@ -25,11 +25,24 @@ DateTimePickerDate = React.createClass({
     subtractDecade: React.PropTypes.func.isRequired
   },
   getInitialState: function() {
-    return {
-      daysDisplayed: true,
-      monthsDisplayed: false,
-      yearsDisplayed: false
+    var startViewModes = {
+      'month': {
+        daysDisplayed: true,
+        monthsDisplayed: false,
+        yearsDisplayed: false
+      }, 
+      'year': {
+        daysDisplayed: false,
+        monthsDisplayed: true,
+        yearsDisplayed: false
+      }, 
+      'decade': {
+        daysDisplayed: false,
+        monthsDisplayed: false,
+        yearsDisplayed: true
+      }
     };
+    return startViewModes[this.props.startView] || startViewModes[Object.keys(startViewModes)[this.props.startView]] || startViewModes['month'];
   },
   showMonths: function() {
     return this.setState({
