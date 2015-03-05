@@ -15,6 +15,10 @@ DateTimePickerDate = React.createClass({
     viewDate: React.PropTypes.object.isRequired,
     selectedDate: React.PropTypes.object.isRequired,
     showToday: React.PropTypes.bool,
+    viewMode: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number
+    ]),
     daysOfWeekDisabled: React.PropTypes.array,
     setSelectedDate: React.PropTypes.func.isRequired,
     subtractYear: React.PropTypes.func.isRequired,
@@ -25,11 +29,24 @@ DateTimePickerDate = React.createClass({
     subtractDecade: React.PropTypes.func.isRequired
   },
   getInitialState: function() {
-    return {
-      daysDisplayed: true,
-      monthsDisplayed: false,
-      yearsDisplayed: false
+    var viewModes = {
+      'days': {
+        daysDisplayed: true,
+        monthsDisplayed: false,
+        yearsDisplayed: false
+      }, 
+      'months': {
+        daysDisplayed: false,
+        monthsDisplayed: true,
+        yearsDisplayed: false
+      }, 
+      'years': {
+        daysDisplayed: false,
+        monthsDisplayed: false,
+        yearsDisplayed: true
+      }
     };
+    return viewModes[this.props.viewMode] || viewModes[Object.keys(viewModes)[this.props.viewMode]] || viewModes['days'];
   },
   showMonths: function() {
     return this.setState({
