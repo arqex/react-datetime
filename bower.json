@@ -1,12 +1,12 @@
 {
   "name": "react-bootstrap-datetimepicker",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": [
     "./dist/react-bootstrap-datetimepicker.min.js"
   ],
   "dependencies": {
-      "react": ">=0.12",
+      "react": ">=0.12 || 0.13.0-rc2",
       "moment": "^2.8.2",
-      "react-bootstrap": "^0.13.0"
+      "react-bootstrap": "^0.16.1"
   }
 }
