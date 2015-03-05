@@ -17,7 +17,7 @@ DateTimePicker = React.createClass({
     viewDate: React.PropTypes.object.isRequired,
     selectedDate: React.PropTypes.object.isRequired,
     showToday: React.PropTypes.bool,
-    startView: React.PropTypes.oneOfType([
+    viewMode: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.number
     ]),
@@ -46,7 +46,7 @@ DateTimePicker = React.createClass({
               viewDate={this.props.viewDate}
               selectedDate={this.props.selectedDate}
               showToday={this.props.showToday}
-              startView={this.props.startView}
+              viewMode={this.props.viewMode}
               daysOfWeekDisabled={this.props.daysOfWeekDisabled}
               subtractYear={this.props.subtractYear}
               addYear={this.props.addYear}
