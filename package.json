@@ -44,7 +44,8 @@
     "react": "^0.12.1",
     "react-tools": "^0.12.2",
     "requirejs": "~2.1.9",
-    "webpack": "^1.5.1"
+    "webpack": "^1.5.1",
+    "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
     "moment": "^2.8.2",
