@@ -230,6 +230,7 @@ DateTimeField = React.createClass({
     var style;
     style = this.state.widgetStyle;
     style['left'] = -9999;
+    style['display'] = 'none';
     return this.setState({
       showPicker: false,
       widgetStyle: style
