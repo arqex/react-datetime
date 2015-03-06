@@ -19,7 +19,7 @@ DateTimeField = React.createClass({
     return {
       dateTime: moment().format('x'),
       format: 'x',
-      inputFormat: "MM/DD/YY H:mm A",
+      inputFormat: "MM/DD/YY h:mm A",
       showToday: true,
       viewMode: 'days',
       daysOfWeekDisabled: [],
