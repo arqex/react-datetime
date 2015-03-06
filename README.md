@@ -31,9 +31,9 @@ DateTimeField
 
 | Name         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
-| **dateTime** | string  | "1234567" | Represents the inital dateTime, this string is then parsed by moment.js |
-| **format**   | string  | "X"     | Defines the format moment.js should use to parse and output the date to onChange |
-| **inputFormat** | string | "MM/DD/YY H:mm A" | Defines the way the date is represented in the HTML input |
+| **dateTime** | string  | moment().format('x') | Represents the inital dateTime, this string is then parsed by moment.js |
+| **format**   | string  | "x"     | Defines the format moment.js should use to parse and output the date to onChange |
+| **inputFormat** | string | "MM/DD/YY h:mm A" | Defines the way the date is represented in the HTML input |
 | **onChange** | function | x => console.log(x) | Callback trigger when the date changes |
 | **showToday** | boolean | true | Highlights today's date |
 | **daysOfWeekDisabled** | array of integer | [] | Disables clicking on some days. Goes from 0 (Sunday) to 6 (Saturday). |
