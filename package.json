@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-datetimepicker",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A bootstrap datetime picker component for React.js",
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
   "author": "Loïc CHOLLIER <loic@chollier.com>",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=0.12 || 0.13.0-rc2"
+    "react": ">=0.12"
   },
   "devDependencies": {
     "envify": "~3.2.0",
@@ -41,7 +41,7 @@
     "grunt-react": "~0.10.0",
     "grunt-shell": "~0.6.4",
     "jsx-loader": "^0.12.2",
-    "react": ">=0.12 || 0.13.0-rc2",
+    "react": ">=0.12",
     "react-tools": "^0.12.2",
     "requirejs": "~2.1.9",
     "webpack": "^1.5.1",
