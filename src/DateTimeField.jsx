@@ -53,15 +53,16 @@ DateTimeField = React.createClass({
     }
   },
   onChange: function(event) {
-    if (moment(event.target.value, this.props.inputFormat, true).isValid()) {
+    var value = event.target == null ? event : event.target.value;
+    if (moment(value, this.props.inputFormat, true).isValid()) {
       this.setState({
-        selectedDate: moment(event.target.value, this.props.inputFormat, true),
-        viewDate: moment(event.target.value, this.props.inputFormat, true).startOf("month")
+        selectedDate: moment(value, this.props.inputFormat, true),
+        viewDate: moment(value, this.props.inputFormat, true).startOf("month")
       });
     }
 
     return this.setState({
-      inputValue: event.target.value
+      inputValue: value
     }, function() {
       return this.props.onChange(moment(this.state.inputValue, this.props.inputFormat, true).format(this.props.format));
     });
@@ -170,13 +171,9 @@ DateTimeField = React.createClass({
   },
   togglePeriod: function() {
     if (this.state.selectedDate.hour() > 12) {
-      return this.setState({
-        selectedDate: this.state.selectedDate.clone().subtract(12, 'hours')
-      });
+      return this.onChange(this.state.selectedDate.clone().subtract(12, 'hours').format(this.props.inputFormat));
     } else {
-      return this.setState({
-        selectedDate: this.state.selectedDate.clone().add(12, 'hours')
-      });
+      return this.onChange(this.state.selectedDate.clone().add(12, 'hours').format(this.props.inputFormat));
     }
   },
   togglePicker: function() {
