@@ -38,31 +38,31 @@ DateTimeField = React.createClass({
         left: -9999,
         zIndex: '9999 !important'
       },
-      viewDate: moment(this.props.dateTime, this.props.format).startOf("month"),
-      selectedDate: moment(this.props.dateTime, this.props.format),
-      inputValue: moment(this.props.dateTime, this.props.format).format(this.props.inputFormat)
+      viewDate: moment(this.props.dateTime, this.props.format, true).startOf("month"),
+      selectedDate: moment(this.props.dateTime, this.props.format, true),
+      inputValue: moment(this.props.dateTime, this.props.format, true).format(this.props.inputFormat)
     };
   },
   componentWillReceiveProps: function(nextProps) {
-    return this.setState({
-      viewDate: moment(nextProps.dateTime, nextProps.format).startOf("month"),
-      selectedDate: moment(nextProps.dateTime, nextProps.format),
-      inputValue: moment(nextProps.dateTime, nextProps.format).format(nextProps.inputFormat)
-    });
+    if(moment(nextProps.dateTime, nextProps.format, true).isValid()) {
+      return this.setState({
+        viewDate: moment(nextProps.dateTime, nextProps.format, true).startOf("month"),
+        selectedDate: moment(nextProps.dateTime, nextProps.format, true),
+        inputValue: moment(nextProps.dateTime, nextProps.format, true).format(nextProps.inputFormat)
+      });
+    }
   },
   onChange: function(event) {
-    if (moment(event.target.value, this.props.inputFormat).isValid()) {
+    if (moment(event.target.value, this.props.inputFormat, true).isValid()) {
       this.setState({
-        selectedDate: moment(event.target.value, this.props.inputFormat),
-        viewDate: moment(event.target.value, this.props.inputFormat).startOf("month")
+        selectedDate: moment(event.target.value, this.props.inputFormat, true),
+        viewDate: moment(event.target.value, this.props.inputFormat, true).startOf("month")
       });
     }
 
     return this.setState({
       inputValue: event.target.value
     }, function() {
-      console.log(this.state.inputValue);
-      console.log(moment(this.state.inputValue, this.props.inputFormat, true).calendar());
       return this.props.onChange(moment(this.state.inputValue, this.props.inputFormat, true).format(this.props.format));
     });
 
