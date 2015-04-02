@@ -51,18 +51,21 @@ DateTimeField = React.createClass({
     });
   },
   onChange: function(event) {
-    if (moment(event.target.value, this.props.format).isValid()) {
+    if (moment(event.target.value, this.props.inputFormat).isValid()) {
       this.setState({
-        selectedDate: moment(event.target.value, this.props.format),
-        inputValue: moment(event.target.value, this.props.format).format(this.props.inputFormat)
+        selectedDate: moment(event.target.value, this.props.inputFormat),
+        viewDate: moment(event.target.value, this.props.inputFormat).startOf("month")
       });
-    } else {
-      this.setState({
-        inputValue: event.target.value
-      });
-      console.log("This is not a valid date");
     }
-    return this.props.onChange(this.state.selectedDate.format(this.props.format));
+
+    return this.setState({
+      inputValue: event.target.value
+    }, function() {
+      console.log(this.state.inputValue);
+      console.log(moment(this.state.inputValue, this.props.inputFormat, true).calendar());
+      return this.props.onChange(moment(this.state.inputValue, this.props.inputFormat, true).format(this.props.format));
+    });
+
   },
   setSelectedDate: function(e) {
     return this.setState({
@@ -285,7 +288,7 @@ DateTimeField = React.createClass({
                   togglePeriod={this.togglePeriod}
             />
             <div className="input-group date" ref="datetimepicker">
-              <input type="text" className="form-control" onChange={this.onChange} value={this.state.selectedDate.format(this.props.inputFormat)} />
+              <input type="text" className="form-control" onChange={this.onChange} value={this.state.inputValue} />
               <span className="input-group-addon" onClick={this.onClick} onBlur={this.onBlur} ref="dtpbutton"><Glyphicon glyph="calendar" /></span>
             </div>
           </div>
