@@ -17,9 +17,9 @@ DateTimeField = React.createClass({
   },
   getDefaultProps: function() {
     return {
-      dateTime: "1234567",
-      format: 'X',
-      inputFormat: "MM/DD/YY H:mm A",
+      dateTime: moment().format('x'),
+      format: 'x',
+      inputFormat: "MM/DD/YY h:mm A",
       showToday: true,
       viewMode: 'days',
       daysOfWeekDisabled: [],
@@ -38,31 +38,35 @@ DateTimeField = React.createClass({
         left: -9999,
         zIndex: '9999 !important'
       },
-      viewDate: moment(this.props.dateTime, this.props.format).startOf("month"),
-      selectedDate: moment(this.props.dateTime, this.props.format),
-      inputValue: moment(this.props.dateTime, this.props.format).format(this.props.inputFormat)
+      viewDate: moment(this.props.dateTime, this.props.format, true).startOf("month"),
+      selectedDate: moment(this.props.dateTime, this.props.format, true),
+      inputValue: moment(this.props.dateTime, this.props.format, true).format(this.props.inputFormat)
     };
   },
   componentWillReceiveProps: function(nextProps) {
-    return this.setState({
-      viewDate: moment(nextProps.dateTime, nextProps.format).startOf("month"),
-      selectedDate: moment(nextProps.dateTime, nextProps.format),
-      inputValue: moment(nextProps.dateTime, nextProps.format).format(nextProps.inputFormat)
-    });
+    if(moment(nextProps.dateTime, nextProps.format, true).isValid()) {
+      return this.setState({
+        viewDate: moment(nextProps.dateTime, nextProps.format, true).startOf("month"),
+        selectedDate: moment(nextProps.dateTime, nextProps.format, true),
+        inputValue: moment(nextProps.dateTime, nextProps.format, true).format(nextProps.inputFormat)
+      });
+    }
   },
   onChange: function(event) {
-    if (moment(event.target.value, this.props.format).isValid()) {
+    var value = event.target == null ? event : event.target.value;
+    if (moment(value, this.props.inputFormat, true).isValid()) {
       this.setState({
-        selectedDate: moment(event.target.value, this.props.format),
-        inputValue: moment(event.target.value, this.props.format).format(this.props.inputFormat)
+        selectedDate: moment(value, this.props.inputFormat, true),
+        viewDate: moment(value, this.props.inputFormat, true).startOf("month")
       });
-    } else {
-      this.setState({
-        inputValue: event.target.value
-      });
-      console.log("This is not a valid date");
     }
-    return this.props.onChange(this.state.selectedDate.format(this.props.format));
+
+    return this.setState({
+      inputValue: value
+    }, function() {
+      return this.props.onChange(moment(this.state.inputValue, this.props.inputFormat, true).format(this.props.format));
+    });
+
   },
   setSelectedDate: function(e) {
     return this.setState({
@@ -167,13 +171,9 @@ DateTimeField = React.createClass({
   },
   togglePeriod: function() {
     if (this.state.selectedDate.hour() > 12) {
-      return this.setState({
-        selectedDate: this.state.selectedDate.clone().subtract(12, 'hours')
-      });
+      return this.onChange(this.state.selectedDate.clone().subtract(12, 'hours').format(this.props.inputFormat));
     } else {
-      return this.setState({
-        selectedDate: this.state.selectedDate.clone().add(12, 'hours')
-      });
+      return this.onChange(this.state.selectedDate.clone().add(12, 'hours').format(this.props.inputFormat));
     }
   },
   togglePicker: function() {
@@ -285,7 +285,7 @@ DateTimeField = React.createClass({
                   togglePeriod={this.togglePeriod}
             />
             <div className="input-group date" ref="datetimepicker">
-              <input type="text" className="form-control" onChange={this.onChange} value={this.state.selectedDate.format(this.props.inputFormat)} />
+              <input type="text" className="form-control" onChange={this.onChange} value={this.state.inputValue} />
               <span className="input-group-addon" onClick={this.onClick} onBlur={this.onBlur} ref="dtpbutton"><Glyphicon glyph="calendar" /></span>
             </div>
           </div>
