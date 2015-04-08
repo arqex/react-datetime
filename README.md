@@ -37,7 +37,8 @@ DateTimeField
 | **onChange** | function | x => console.log(x) | Callback trigger when the date changes |
 | **showToday** | boolean | true | Highlights today's date |
 | **daysOfWeekDisabled** | array of integer | [] | Disables clicking on some days. Goes from 0 (Sunday) to 6 (Saturday). |
-| ** viewMode ** | string or number | 'days' | The default view to display when the picker is shown. ('years', 'months', 'days') |
+| **viewMode** | string or number | 'days' | The default view to display when the picker is shown. ('years', 'months', 'days') |
+| **inputProps** | object | undefined | Defines additional attributes for the input element of the component. |
 
 Update Warning
 ===============================
