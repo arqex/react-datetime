@@ -87,7 +87,7 @@ DateTimePicker = React.createClass({
           {this.renderDatePicker()}
 
           <li>
-            <a className="btn picker-switch" style={{width:'100%'}} onClick={this.props.togglePicker}><Glyphicon glyph={this.props.showTimePicker ? 'calendar' : 'time'} /></a>
+            <span className="btn picker-switch" style={{width:'100%'}} onClick={this.props.togglePicker}><Glyphicon glyph={this.props.showTimePicker ? 'calendar' : 'time'} /></span>
           </li>
 
           {this.renderTimePicker()}
