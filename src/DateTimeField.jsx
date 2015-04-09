@@ -13,7 +13,8 @@ DateTimeField = React.createClass({
     dateTime: React.PropTypes.string,
     onChange: React.PropTypes.func,
     format: React.PropTypes.string,
-    inputFormat: React.PropTypes.string
+    inputFormat: React.PropTypes.string,
+    inputProps: React.PropTypes.object
   },
   getDefaultProps: function() {
     return {
@@ -285,7 +286,7 @@ DateTimeField = React.createClass({
                   togglePeriod={this.togglePeriod}
             />
             <div className="input-group date" ref="datetimepicker">
-              <input type="text" className="form-control" onChange={this.onChange} value={this.state.inputValue} />
+              <input type="text" className="form-control" onChange={this.onChange} value={this.state.inputValue} {...this.props.inputProps}/>
               <span className="input-group-addon" onClick={this.onClick} onBlur={this.onBlur} ref="dtpbutton"><Glyphicon glyph="calendar" /></span>
             </div>
           </div>
