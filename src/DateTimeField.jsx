@@ -14,7 +14,8 @@ DateTimeField = React.createClass({
     onChange: React.PropTypes.func,
     format: React.PropTypes.string,
     inputFormat: React.PropTypes.string,
-    inputProps: React.PropTypes.object
+    inputProps: React.PropTypes.object,
+    defaultText: React.PropTypes.string
   },
   getDefaultProps: function() {
     return {
@@ -41,7 +42,7 @@ DateTimeField = React.createClass({
       },
       viewDate: moment(this.props.dateTime, this.props.format, true).startOf("month"),
       selectedDate: moment(this.props.dateTime, this.props.format, true),
-      inputValue: moment(this.props.dateTime, this.props.format, true).format(this.props.inputFormat)
+      inputValue: typeof this.props.defaultText != 'undefined' ?  this.props.defaultText : moment(this.props.dateTime, this.props.format, true).format(this.props.inputFormat)
     };
   },
   componentWillReceiveProps: function(nextProps) {
