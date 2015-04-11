@@ -1,12 +1,10 @@
-var DateTimeField, DateTimePicker, Glyphicon, React, moment, _;
+var DateTimeField, DateTimePicker, Glyphicon, React, moment;
 
 React = require('react');
 
 DateTimePicker = require('./DateTimePicker');
 
 moment = require('moment');
-
-_ = require('lodash');
 
 Glyphicon = require('react-bootstrap').Glyphicon;
 
