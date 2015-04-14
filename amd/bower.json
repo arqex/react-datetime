@@ -1,0 +1,9 @@
+{
+  "name": "react-bootstrap-datetimepicker",
+  "version": "0.0.14",
+  "main": [
+    "react-bootstrap-datetimepicker.min.js",
+    "index.js"
+  ],
+  "ignore": []
+}

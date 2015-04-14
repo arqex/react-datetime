@@ -15,7 +15,9 @@ DateTimeField = React.createClass({
     format: React.PropTypes.string,
     inputFormat: React.PropTypes.string,
     inputProps: React.PropTypes.object,
-    defaultText: React.PropTypes.string
+    defaultText: React.PropTypes.string,
+    minDate: React.PropTypes.object,
+    maxDate: React.PropTypes.object
   },
   getDefaultProps: function() {
     return {
@@ -268,6 +270,8 @@ DateTimeField = React.createClass({
                   showToday={this.props.showToday}
                   viewMode={this.props.viewMode}
                   daysOfWeekDisabled={this.props.daysOfWeekDisabled}
+                  minDate={this.props.minDate}
+                  maxDate={this.props.maxDate}
                   addDecade={this.addDecade}
                   addYear={this.addYear}
                   addMonth={this.addMonth}
