@@ -8,3 +8,6 @@ test-built/*
 docs/*.html
 docs/assets/bundle.js
 lib/*
+cjs
+amd
+bower_components
