@@ -13,7 +13,9 @@ DateTimePickerDays = React.createClass({displayName: "DateTimePickerDays",
     showToday: React.PropTypes.bool,
     daysOfWeekDisabled: React.PropTypes.array,
     setSelectedDate: React.PropTypes.func.isRequired,
-    showMonths: React.PropTypes.func.isRequired
+    showMonths: React.PropTypes.func.isRequired,
+    minDate: React.PropTypes.object,
+    maxDate: React.PropTypes.object
   },
   getDefaultProps: function() {
     return {
@@ -21,13 +23,15 @@ DateTimePickerDays = React.createClass({displayName: "DateTimePickerDays",
     };
   },
   renderDays: function() {
-    var cells, classes, days, html, i, month, nextMonth, prevMonth, row, year, _i, _len, _ref;
+    var cells, classes, days, html, i, month, nextMonth, prevMonth, minDate, maxDate, row, year, _i, _len, _ref;
     year = this.props.viewDate.year();
     month = this.props.viewDate.month();
     prevMonth = this.props.viewDate.clone().subtract(1, "months");
     days = prevMonth.daysInMonth();
     prevMonth.date(days).startOf('week');
     nextMonth = moment(prevMonth).clone().add(42, "d");
+    minDate = this.props.minDate ? this.props.minDate.clone().subtract(1, 'days') : this.props.minDate;
+    maxDate = this.props.maxDate ? this.props.maxDate.clone().add(1, 'days') : this.props.maxDate;
     html = [];
     cells = [];
     while (prevMonth.isBefore(nextMonth)) {
@@ -50,6 +54,9 @@ DateTimePickerDays = React.createClass({displayName: "DateTimePickerDays",
         if (prevMonth.isSame(moment(), 'day')) {
           classes['today'] = true;
         }
+      }
+      if ((minDate && prevMonth.isBefore(minDate)) || (maxDate && prevMonth.isAfter(maxDate))) {
+        classes['disabled'] = true;
       }
       if (this.props.daysOfWeekDisabled) {
         _ref = this.props.daysOfWeekDisabled;

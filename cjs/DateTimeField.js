@@ -73,15 +73,17 @@ DateTimeField = React.createClass({displayName: "DateTimeField",
 
   },
   setSelectedDate: function(e) {
-    return this.setState({
-      selectedDate: this.state.viewDate.clone().date(parseInt(e.target.innerHTML)).hour(this.state.selectedDate.hours()).minute(this.state.selectedDate.minutes())
-    }, function() {
-      this.closePicker();
-      this.props.onChange(this.state.selectedDate.format(this.props.format));
+    if (e.target.className && !e.target.className.match(/disabled/g)) {
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+        selectedDate: this.state.viewDate.clone().date(parseInt(e.target.innerHTML)).hour(this.state.selectedDate.hours()).minute(this.state.selectedDate.minutes())
+      }, function () {
+        this.closePicker();
+        this.props.onChange(this.state.selectedDate.format(this.props.format));
+        return this.setState({
+          inputValue: this.state.selectedDate.format(this.props.inputFormat)
+        });
       });
-    });
+    }
   },
   setSelectedHour: function(e) {
     return this.setState({
