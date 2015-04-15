@@ -33,7 +33,9 @@ DateTimePicker = React.createClass({displayName: "DateTimePicker",
     addMinute: React.PropTypes.func.isRequired,
     addDecade: React.PropTypes.func.isRequired,
     subtractDecade: React.PropTypes.func.isRequired,
-    togglePeriod: React.PropTypes.func.isRequired
+    togglePeriod: React.PropTypes.func.isRequired,
+    minDate: React.PropTypes.object,
+    maxDate: React.PropTypes.object
   },
   renderDatePicker: function() {
     if (this.props.showDatePicker) {
@@ -53,7 +55,9 @@ DateTimePicker = React.createClass({displayName: "DateTimePicker",
               setViewMonth: this.props.setViewMonth, 
               setViewYear: this.props.setViewYear, 
               addDecade: this.props.addDecade, 
-              subtractDecade: this.props.subtractDecade}
+              subtractDecade: this.props.subtractDecade, 
+              minDate: this.props.minDate, 
+              maxDate: this.props.maxDate}
         )
       )
       );
