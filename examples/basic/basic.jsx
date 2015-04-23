@@ -49,7 +49,7 @@ var Basic = React.createClass({
                 </div>
 				<div className="row">
                     <div className="col-xs-12">
-                        daysOfWeekDisabled
+                        just time picker
                         <DateTimeField
                             mode="time"
                             />
@@ -58,7 +58,7 @@ var Basic = React.createClass({
 				</div>
                 <div className="row">
                     <div className="col-xs-12">
-                        daysOfWeekDisabled
+                        just date picker
                         <DateTimeField
                             mode="date"
                             />
