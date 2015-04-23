@@ -4,52 +4,70 @@ var DateTimeField = require('react-bootstrap-datetimepicker');
 var Basic = React.createClass({
 
 	render: function() {
-		return <div className="container">
-						<div className="row">
-							<div className="col-xs-12">
-								<h1>React Bootstrap DateTimePicker</h1>
-								This project is a port of <a href="https://github.com/Eonasdan/bootstrap-datetimepicker">https://github.com/Eonasdan/bootstrap-datetimepicker</a> for React.js
-							</div>
-						</div>
-						<div className="row">
-							<div className="col-xs-12">
-								Default Basic Example
-								<DateTimeField />
-								<pre> {'<DateTimeField />'} </pre>
-							</div>
-						</div>
-						<div className="row">
-							<div className="col-xs-12">
-								Example with default Text
-								<DateTimeField
-									defaultText="Please select a date"
-								/>
-								<pre> {'<DateTimeField defaultText="Please select a date" />'} </pre>
-							</div>
-						</div>
-						<div className="row">
-							<div className="col-xs-12">
-							ViewMode set to years view with custom inputFormat
-							<DateTimeField
-								inputFormat='DD-MM-YYYY'
-								viewMode='years'
+		return (
+			<div className="container">
+				<div className="row">
+					<div className="col-xs-12">
+						<h1>React Bootstrap DateTimePicker</h1>
+						This project is a port of <a href="https://github.com/Eonasdan/bootstrap-datetimepicker">https://github.com/Eonasdan/bootstrap-datetimepicker</a> for React.js
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-xs-12">
+						Default Basic Example
+						<DateTimeField />
+						<pre> {'<DateTimeField />'} </pre>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-xs-12">
+						Example with default Text
+						<DateTimeField
+							defaultText="Please select a date"
 							/>
-							<pre> {'<DateTimeField viewMode="years" inputFormat="DD-MM-YYYY" />'} </pre>
-							</div>
-						</div>
-						<div className="row">
-							<div className="col-xs-12">
-							daysOfWeekDisabled
-							<DateTimeField
-								daysOfWeekDisabled={[0,1,2]}
+						<pre> {'<DateTimeField defaultText="Please select a date" />'} </pre>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-xs-12">
+						ViewMode set to years view with custom inputFormat
+						<DateTimeField
+							inputFormat='DD-MM-YYYY'
+							viewMode='years'
 							/>
-							<pre> {'<DateTimeField daysOfWeekDisabled={[0,1,2]} />'} </pre>
-							
-						</div>
-						</div>
-					</div>;
+						<pre> {'<DateTimeField viewMode="years" inputFormat="DD-MM-YYYY" />'} </pre>
+					</div>
+				</div>
+				<div className="row">
+                    <div className="col-xs-12">
+                        daysOfWeekDisabled
+                        <DateTimeField
+                            daysOfWeekDisabled={[0,1,2]}
+                            />
+                        <pre> {'<DateTimeField daysOfWeekDisabled={[0,1,2]} />'} </pre>
+                    </div>
+                </div>
+				<div className="row">
+                    <div className="col-xs-12">
+                        daysOfWeekDisabled
+                        <DateTimeField
+                            mode="time"
+                            />
+                        <pre> {'<DateTimeField mode="time" />'} </pre>
+                    </div>
+				</div>
+                <div className="row">
+                    <div className="col-xs-12">
+                        daysOfWeekDisabled
+                        <DateTimeField
+                            mode="date"
+                            />
+                        <pre> {'<DateTimeField mode="date" />'} </pre>
+                    </div>
+                </div>
+			</div>
+		);
 	}
-
 });
 
 

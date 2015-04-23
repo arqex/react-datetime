@@ -8,6 +8,8 @@ DateTimePickerTime = require('./DateTimePickerTime');
 
 Glyphicon = require('react-bootstrap').Glyphicon;
 
+Constants = require('./Constants');
+
 DateTimePicker = React.createClass({
   propTypes: {
     showDatePicker: React.PropTypes.bool,
@@ -21,6 +23,7 @@ DateTimePicker = React.createClass({
       React.PropTypes.string,
       React.PropTypes.number
     ]),
+    mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
     daysOfWeekDisabled: React.PropTypes.array,
     setSelectedDate: React.PropTypes.func.isRequired,
     subtractYear: React.PropTypes.func.isRequired,
@@ -73,10 +76,20 @@ DateTimePicker = React.createClass({
               addMinute={this.props.addMinute}
               subtractMinute={this.props.subtractMinute}
               togglePeriod={this.props.togglePeriod}
+              mode={this.props.mode}
         />
       </li>
       );
     }
+  },
+  renderSwitchButton: function() {
+      return this.props.mode === Constants.MODE_DATETIME ?
+          (
+              <li>
+                <span className="btn picker-switch" style={{width:'100%'}} onClick={this.props.togglePicker}><Glyphicon glyph={this.props.showTimePicker ? 'calendar' : 'time'} /></span>
+              </li>
+          ) :
+          null;
   },
   render: function() {
     return (
@@ -86,9 +99,7 @@ DateTimePicker = React.createClass({
 
           {this.renderDatePicker()}
 
-          <li>
-            <span className="btn picker-switch" style={{width:'100%'}} onClick={this.props.togglePicker}><Glyphicon glyph={this.props.showTimePicker ? 'calendar' : 'time'} /></span>
-          </li>
+          {this.renderSwitchButton()}
 
           {this.renderTimePicker()}
 
