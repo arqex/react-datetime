@@ -117,14 +117,20 @@ DateTimeField = React.createClass({
     return this.setState({
       selectedDate: this.state.selectedDate.clone().add(1, "minutes")
     }, function() {
-      return this.props.onChange(this.state.selectedDate.format(this.props.format));
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+      });
     });
   },
   addHour: function() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().add(1, "hours")
     }, function() {
-      return this.props.onChange(this.state.selectedDate.format(this.props.format));
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+      });
     });
   },
   addMonth: function() {
@@ -146,14 +152,20 @@ DateTimeField = React.createClass({
     return this.setState({
       selectedDate: this.state.selectedDate.clone().subtract(1, "minutes")
     }, function() {
-      return this.props.onChange(this.state.selectedDate.format(this.props.format));
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+      });
     });
   },
   subtractHour: function() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().subtract(1, "hours")
     }, function() {
-      return this.props.onChange(this.state.selectedDate.format(this.props.format));
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+      });
     });
   },
   subtractMonth: function() {
