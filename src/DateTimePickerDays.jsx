@@ -31,7 +31,7 @@ DateTimePickerDays = React.createClass({
     prevMonth.date(days).startOf('week');
     nextMonth = moment(prevMonth).clone().add(42, "d");
     minDate = this.props.minDate ? this.props.minDate.clone().subtract(1, 'days') : this.props.minDate;
-    maxDate = this.props.maxDate ? this.props.maxDate.clone().add(1, 'days') : this.props.maxDate;
+    maxDate = this.props.maxDate ? this.props.maxDate.clone() : this.props.maxDate;
     html = [];
     cells = [];
     while (prevMonth.isBefore(nextMonth)) {
