@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var DateTimeField = require('react-bootstrap-datetimepicker');
+var moment = require('moment');
 
 var Basic = React.createClass({
 
@@ -29,23 +30,34 @@ var Basic = React.createClass({
 						</div>
 						<div className="row">
 							<div className="col-xs-12">
-							ViewMode set to years view with custom inputFormat
-							<DateTimeField
-								inputFormat='DD-MM-YYYY'
-								viewMode='years'
-							/>
-							<pre> {'<DateTimeField viewMode="years" inputFormat="DD-MM-YYYY" />'} </pre>
+                ViewMode set to years view with custom inputFormat
+                <DateTimeField
+                  inputFormat='DD-MM-YYYY'
+                  viewMode='years'
+                />
+                <pre> {'<DateTimeField viewMode="years" inputFormat="DD-MM-YYYY" />'} </pre>
 							</div>
 						</div>
 						<div className="row">
 							<div className="col-xs-12">
-							daysOfWeekDisabled
-							<DateTimeField
-								daysOfWeekDisabled={[0,1,2]}
-							/>
-							<pre> {'<DateTimeField daysOfWeekDisabled={[0,1,2]} />'} </pre>
-							
+                daysOfWeekDisabled
+                <DateTimeField
+                  daysOfWeekDisabled={[0,1,2]}
+                />
+                <pre> {'<DateTimeField daysOfWeekDisabled={[0,1,2]} />'} </pre>
+
+              </div>
 						</div>
+						<div className="row">
+							<div className="col-xs-12">
+                minDate and maxDate
+                <DateTimeField
+                  minDate={moment().subtract(1, 'days')}
+                  maxDate={moment().add(1, 'days')}
+                />
+                <pre> {'<DateTimeField daysOfWeekDisabled={[0,1,2]} />'} </pre>
+
+              </div>
 						</div>
 					</div>;
 	}

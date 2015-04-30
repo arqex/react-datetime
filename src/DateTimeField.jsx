@@ -15,7 +15,9 @@ DateTimeField = React.createClass({
     format: React.PropTypes.string,
     inputFormat: React.PropTypes.string,
     inputProps: React.PropTypes.object,
-    defaultText: React.PropTypes.string
+    defaultText: React.PropTypes.string,
+    minDate: React.PropTypes.object,
+    maxDate: React.PropTypes.object
   },
   getDefaultProps: function() {
     return {
@@ -71,15 +73,17 @@ DateTimeField = React.createClass({
 
   },
   setSelectedDate: function(e) {
-    return this.setState({
-      selectedDate: this.state.viewDate.clone().date(parseInt(e.target.innerHTML)).hour(this.state.selectedDate.hours()).minute(this.state.selectedDate.minutes())
-    }, function() {
-      this.closePicker();
-      this.props.onChange(this.state.selectedDate.format(this.props.format));
+    if (e.target.className && !e.target.className.match(/disabled/g)) {
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+        selectedDate: this.state.viewDate.clone().date(parseInt(e.target.innerHTML)).hour(this.state.selectedDate.hours()).minute(this.state.selectedDate.minutes())
+      }, function () {
+        this.closePicker();
+        this.props.onChange(this.state.selectedDate.format(this.props.format));
+        return this.setState({
+          inputValue: this.state.selectedDate.format(this.props.inputFormat)
+        });
       });
-    });
+    }
   },
   setSelectedHour: function(e) {
     return this.setState({
@@ -280,6 +284,8 @@ DateTimeField = React.createClass({
                   showToday={this.props.showToday}
                   viewMode={this.props.viewMode}
                   daysOfWeekDisabled={this.props.daysOfWeekDisabled}
+                  minDate={this.props.minDate}
+                  maxDate={this.props.maxDate}
                   addDecade={this.addDecade}
                   addYear={this.addYear}
                   addMonth={this.addMonth}

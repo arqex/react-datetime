@@ -26,7 +26,9 @@ DateTimePickerDate = React.createClass({
     setViewMonth: React.PropTypes.func.isRequired,
     setViewYear: React.PropTypes.func.isRequired,
     addDecade: React.PropTypes.func.isRequired,
-    subtractDecade: React.PropTypes.func.isRequired
+    subtractDecade: React.PropTypes.func.isRequired,
+    minDate: React.PropTypes.object,
+    maxDate: React.PropTypes.object
   },
   getInitialState: function() {
     var viewModes = {
@@ -86,6 +88,8 @@ DateTimePickerDate = React.createClass({
             showToday={this.props.showToday}
             daysOfWeekDisabled={this.props.daysOfWeekDisabled}
             showMonths={this.showMonths}
+            minDate={this.props.minDate}
+            maxDate={this.props.maxDate}
       />
       );
     } else {
