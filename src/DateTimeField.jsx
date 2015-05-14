@@ -18,7 +18,9 @@ DateTimeField = React.createClass({
     inputProps: React.PropTypes.object,
     inputFormat: React.PropTypes.string,
     defaultText: React.PropTypes.string,
-    mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME])
+    mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
+    minDate: React.PropTypes.object,
+    maxDate: React.PropTypes.object
   },
   getDefaultProps: function() {
     return {
@@ -28,7 +30,9 @@ DateTimeField = React.createClass({
       viewMode: 'days',
       daysOfWeekDisabled: [],
       mode: Constants.MODE_DATETIME,
-      onChange: function (x) {}
+      onChange: function (x) {
+        console.log(x);
+      }
     };
   },
   resolvePropsInputFormat: function() {
@@ -86,19 +90,21 @@ DateTimeField = React.createClass({
   },
   setSelectedDate: function(e) {
     var target = e.target;
-    var month;
-    if(target.className.includes("new")) month = this.state.viewDate.month() + 1;
-    else if(target.className.includes("old")) month = this.state.viewDate.month() - 1;
-    else month = this.state.viewDate.month();
-    return this.setState({
-      selectedDate: this.state.viewDate.clone().month(month).date(parseInt(e.target.innerHTML)).hour(this.state.selectedDate.hours()).minute(this.state.selectedDate.minutes())
-    }, function() {
-      this.closePicker();
-      this.props.onChange(this.state.selectedDate.format(this.props.format));
+    if (target.className && !target.className.match(/disabled/g)) {
+      var month;
+      if(target.className.includes("new")) month = this.state.viewDate.month() + 1;
+      else if(target.className.includes("old")) month = this.state.viewDate.month() - 1;
+      else month = this.state.viewDate.month();
       return this.setState({
-        inputValue: this.state.selectedDate.format(this.state.inputFormat)
+        selectedDate: this.state.viewDate.clone().month(month).date(parseInt(e.target.innerHTML)).hour(this.state.selectedDate.hours()).minute(this.state.selectedDate.minutes())
+      }, function() {
+        this.closePicker();
+        this.props.onChange(this.state.selectedDate.format(this.props.format));
+        return this.setState({
+          inputValue: this.state.selectedDate.format(this.state.inputFormat)
+        });
       });
-    });
+    }
   },
   setSelectedHour: function(e) {
     return this.setState({
@@ -136,14 +142,20 @@ DateTimeField = React.createClass({
     return this.setState({
       selectedDate: this.state.selectedDate.clone().add(1, "minutes")
     }, function() {
-      return this.props.onChange(this.state.selectedDate.format(this.props.format));
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
+      });
     });
   },
   addHour: function() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().add(1, "hours")
     }, function() {
-      return this.props.onChange(this.state.selectedDate.format(this.props.format));
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
+      });
     });
   },
   addMonth: function() {
@@ -165,14 +177,20 @@ DateTimeField = React.createClass({
     return this.setState({
       selectedDate: this.state.selectedDate.clone().subtract(1, "minutes")
     }, function() {
-      return this.props.onChange(this.state.selectedDate.format(this.props.format));
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
+      });
     });
   },
   subtractHour: function() {
     return this.setState({
       selectedDate: this.state.selectedDate.clone().subtract(1, "hours")
     }, function() {
-      return this.props.onChange(this.state.selectedDate.format(this.props.format));
+      this.props.onChange(this.state.selectedDate.format(this.props.format));
+      return this.setState({
+        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
+      });
     });
   },
   subtractMonth: function() {
@@ -288,6 +306,8 @@ DateTimeField = React.createClass({
                   viewMode={this.props.viewMode}
                   daysOfWeekDisabled={this.props.daysOfWeekDisabled}
                   mode={this.props.mode}
+                  minDate={this.props.minDate}
+                  maxDate={this.props.maxDate}
                   addDecade={this.addDecade}
                   addYear={this.addYear}
                   addMonth={this.addMonth}
