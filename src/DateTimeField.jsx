@@ -35,17 +35,6 @@ DateTimeField = React.createClass({
       }
     };
   },
-  resolvePropsInputFormat: function() {
-    if(this.props.inputFormat) return this.props.inputFormat;
-    switch(this.props.mode) {
-      case Constants.MODE_TIME:
-        return "h:mm A";
-      case Constants.MODE_DATE:
-        return "MM/DD/YY";
-      default:
-        return "MM/DD/YY h:mm A";
-    }
-  },
   getInitialState: function() {
     return {
       showDatePicker: this.props.mode !== Constants.MODE_TIME,
@@ -70,6 +59,22 @@ DateTimeField = React.createClass({
         selectedDate: moment(nextProps.dateTime, nextProps.format, true),
         inputValue: moment(nextProps.dateTime, nextProps.format, true).format(nextProps.inputFormat)
       });
+    }
+    if (nextProps.inputFormat !== this.props.inputFormat) {
+      return this.setState({
+        inputFormat: nextProps.inputFormat
+      });
+    }
+  },
+  resolvePropsInputFormat: function() {
+    if(this.props.inputFormat) return this.props.inputFormat;
+    switch(this.props.mode) {
+      case Constants.MODE_TIME:
+        return "h:mm A";
+      case Constants.MODE_DATE:
+        return "MM/DD/YY";
+      default:
+        return "MM/DD/YY h:mm A";
     }
   },
   onChange: function(event) {
