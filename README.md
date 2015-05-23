@@ -41,6 +41,7 @@ DateTimeField
 | **inputProps** | object | undefined | Defines additional attributes for the input element of the component. |
 | **minDate** | moment | undefined | The earliest date allowed for entry in the calendar view. |
 | **maxDate** | moment | undefined | The latest date allowed for entry in the calendar view. |
+| **mode** | string | undefined | Allows to selectively display only the time picker ('time') or the date picker ('date') |
 
 Update Warning
 ===============================
