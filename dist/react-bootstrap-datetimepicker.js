@@ -71,14 +71,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	Glyphicon = __webpack_require__(4).Glyphicon;
 
+	Constants = __webpack_require__(6);
+
 	DateTimeField = React.createClass({displayName: "DateTimeField",
 	  propTypes: {
 	    dateTime: React.PropTypes.string,
 	    onChange: React.PropTypes.func,
 	    format: React.PropTypes.string,
-	    inputFormat: React.PropTypes.string,
 	    inputProps: React.PropTypes.object,
+	    inputFormat: React.PropTypes.string,
 	    defaultText: React.PropTypes.string,
+	    mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
 	    minDate: React.PropTypes.object,
 	    maxDate: React.PropTypes.object
 	  },
@@ -86,10 +89,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	      dateTime: moment().format('x'),
 	      format: 'x',
-	      inputFormat: "MM/DD/YY h:mm A",
 	      showToday: true,
 	      viewMode: 'days',
 	      daysOfWeekDisabled: [],
+	      mode: Constants.MODE_DATETIME,
 	      onChange: function (x) {
 	        console.log(x);
 	      }
@@ -97,8 +100,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  getInitialState: function() {
 	    return {
-	      showDatePicker: true,
-	      showTimePicker: false,
+	      showDatePicker: this.props.mode !== Constants.MODE_TIME,
+	      showTimePicker: this.props.mode === Constants.MODE_TIME,
+	      inputFormat: this.resolvePropsInputFormat(),
+	      buttonIcon: this.props.mode === Constants.MODE_TIME ? "time" : "calendar",
 	      widgetStyle: {
 	        display: 'block',
 	        position: 'absolute',
@@ -107,7 +112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 	      viewDate: moment(this.props.dateTime, this.props.format, true).startOf("month"),
 	      selectedDate: moment(this.props.dateTime, this.props.format, true),
-	      inputValue: typeof this.props.defaultText != 'undefined' ?  this.props.defaultText : moment(this.props.dateTime, this.props.format, true).format(this.props.inputFormat)
+	      inputValue: typeof this.props.defaultText != 'undefined' ?  this.props.defaultText : moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat())
 	    };
 	  },
 	  componentWillReceiveProps: function(nextProps) {
@@ -118,32 +123,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	        inputValue: moment(nextProps.dateTime, nextProps.format, true).format(nextProps.inputFormat)
 	      });
 	    }
+	    if (nextProps.inputFormat !== this.props.inputFormat) {
+	      return this.setState({
+	        inputFormat: nextProps.inputFormat
+	      });
+	    }
+	  },
+	  resolvePropsInputFormat: function() {
+	    if(this.props.inputFormat) return this.props.inputFormat;
+	    switch(this.props.mode) {
+	      case Constants.MODE_TIME:
+	        return "h:mm A";
+	      case Constants.MODE_DATE:
+	        return "MM/DD/YY";
+	      default:
+	        return "MM/DD/YY h:mm A";
+	    }
 	  },
 	  onChange: function(event) {
 	    var value = event.target == null ? event : event.target.value;
-	    if (moment(value, this.props.inputFormat, true).isValid()) {
+	    if (moment(value, this.state.inputFormat, true).isValid()) {
 	      this.setState({
-	        selectedDate: moment(value, this.props.inputFormat, true),
-	        viewDate: moment(value, this.props.inputFormat, true).startOf("month")
+	        selectedDate: moment(value, this.state.inputFormat, true),
+	        viewDate: moment(value, this.state.inputFormat, true).startOf("month")
 	      });
 	    }
 
 	    return this.setState({
 	      inputValue: value
 	    }, function() {
-	      return this.props.onChange(moment(this.state.inputValue, this.props.inputFormat, true).format(this.props.format));
+	      return this.props.onChange(moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format));
 	    });
 
 	  },
 	  setSelectedDate: function(e) {
-	    if (e.target.className && !e.target.className.match(/disabled/g)) {
+	    var target = e.target;
+	    if (target.className && !target.className.match(/disabled/g)) {
+	      var month;
+	      if(target.className.includes("new")) month = this.state.viewDate.month() + 1;
+	      else if(target.className.includes("old")) month = this.state.viewDate.month() - 1;
+	      else month = this.state.viewDate.month();
 	      return this.setState({
-	        selectedDate: this.state.viewDate.clone().date(parseInt(e.target.innerHTML)).hour(this.state.selectedDate.hours()).minute(this.state.selectedDate.minutes())
-	      }, function () {
+	        selectedDate: this.state.viewDate.clone().month(month).date(parseInt(e.target.innerHTML)).hour(this.state.selectedDate.hours()).minute(this.state.selectedDate.minutes())
+	      }, function() {
 	        this.closePicker();
 	        this.props.onChange(this.state.selectedDate.format(this.props.format));
 	        return this.setState({
-	          inputValue: this.state.selectedDate.format(this.props.inputFormat)
+	          inputValue: this.state.selectedDate.format(this.state.inputFormat)
 	        });
 	      });
 	    }
@@ -155,7 +181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.closePicker();
 	      this.props.onChange(this.state.selectedDate.format(this.props.format));
 	      return this.setState({
-	        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+	        inputValue: this.state.selectedDate.format(this.state.inputFormat)
 	      });
 	    });
 	  },
@@ -166,7 +192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.closePicker();
 	      this.props.onChange(this.state.selectedDate.format(this.props.format));
 	      return this.setState({
-	        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+	        inputValue: this.state.selectedDate.format(this.state.inputFormat)
 	      });
 	    });
 	  },
@@ -186,7 +212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, function() {
 	      this.props.onChange(this.state.selectedDate.format(this.props.format));
 	      return this.setState({
-	        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+	        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
 	      });
 	    });
 	  },
@@ -196,7 +222,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, function() {
 	      this.props.onChange(this.state.selectedDate.format(this.props.format));
 	      return this.setState({
-	        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+	        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
 	      });
 	    });
 	  },
@@ -221,7 +247,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, function() {
 	      this.props.onChange(this.state.selectedDate.format(this.props.format));
 	      return this.setState({
-	        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+	        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
 	      });
 	    });
 	  },
@@ -231,7 +257,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, function() {
 	      this.props.onChange(this.state.selectedDate.format(this.props.format));
 	      return this.setState({
-	        inputValue: this.state.selectedDate.format(this.props.inputFormat)
+	        inputValue: this.state.selectedDate.format(this.resolvePropsInputFormat())
 	      });
 	    });
 	  },
@@ -252,9 +278,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  togglePeriod: function() {
 	    if (this.state.selectedDate.hour() > 12) {
-	      return this.onChange(this.state.selectedDate.clone().subtract(12, 'hours').format(this.props.inputFormat));
+	      return this.onChange(this.state.selectedDate.clone().subtract(12, 'hours').format(this.state.inputFormat));
 	    } else {
-	      return this.onChange(this.state.selectedDate.clone().add(12, 'hours').format(this.props.inputFormat));
+	      return this.onChange(this.state.selectedDate.clone().add(12, 'hours').format(this.state.inputFormat));
 	    }
 	  },
 	  togglePicker: function() {
@@ -347,6 +373,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                  showToday: this.props.showToday, 
 	                  viewMode: this.props.viewMode, 
 	                  daysOfWeekDisabled: this.props.daysOfWeekDisabled, 
+	                  mode: this.props.mode, 
 	                  minDate: this.props.minDate, 
 	                  maxDate: this.props.maxDate, 
 	                  addDecade: this.addDecade, 
@@ -369,7 +396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            ), 
 	            React.createElement("div", {className: "input-group date", ref: "datetimepicker"}, 
 	              React.createElement("input", React.__spread({type: "text", className: "form-control", onChange: this.onChange, value: this.state.inputValue},  this.props.inputProps)), 
-	              React.createElement("span", {className: "input-group-addon", onClick: this.onClick, onBlur: this.onBlur, ref: "dtpbutton"}, React.createElement(Glyphicon, {glyph: "calendar"}))
+	              React.createElement("span", {className: "input-group-addon", onClick: this.onClick, onBlur: this.onBlur, ref: "dtpbutton"}, React.createElement(Glyphicon, {glyph: this.state.buttonIcon}))
 	            )
 	          )
 	    );
@@ -405,11 +432,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	React = __webpack_require__(2);
 
-	DateTimePickerDate = __webpack_require__(6);
+	DateTimePickerDate = __webpack_require__(7);
 
-	DateTimePickerTime = __webpack_require__(7);
+	DateTimePickerTime = __webpack_require__(8);
 
 	Glyphicon = __webpack_require__(4).Glyphicon;
+
+	Constants = __webpack_require__(6);
 
 	DateTimePicker = React.createClass({displayName: "DateTimePicker",
 	  propTypes: {
@@ -424,6 +453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      React.PropTypes.string,
 	      React.PropTypes.number
 	    ]),
+	    mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
 	    daysOfWeekDisabled: React.PropTypes.array,
 	    setSelectedDate: React.PropTypes.func.isRequired,
 	    subtractYear: React.PropTypes.func.isRequired,
@@ -479,11 +509,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	              subtractHour: this.props.subtractHour, 
 	              addMinute: this.props.addMinute, 
 	              subtractMinute: this.props.subtractMinute, 
-	              togglePeriod: this.props.togglePeriod}
+	              togglePeriod: this.props.togglePeriod, 
+	              mode: this.props.mode}
 	        )
 	      )
 	      );
 	    }
+	  },
+	  renderSwitchButton: function() {
+	      return this.props.mode === Constants.MODE_DATETIME ?
+	          (
+	              React.createElement("li", null, 
+	                React.createElement("span", {className: "btn picker-switch", style: {width:'100%'}, onClick: this.props.togglePicker}, React.createElement(Glyphicon, {glyph: this.props.showTimePicker ? 'calendar' : 'time'}))
+	              )
+	          ) :
+	          null;
 	  },
 	  render: function() {
 	    return (
@@ -493,9 +533,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	          this.renderDatePicker(), 
 
-	          React.createElement("li", null, 
-	            React.createElement("span", {className: "btn picker-switch", style: {width:'100%'}, onClick: this.props.togglePicker}, React.createElement(Glyphicon, {glyph: this.props.showTimePicker ? 'calendar' : 'time'}))
-	          ), 
+	          this.renderSwitchButton(), 
 
 	          this.renderTimePicker()
 
@@ -514,15 +552,25 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = {
+	    MODE_DATE: 'date',
+	    MODE_DATETIME: 'datetime',
+	    MODE_TIME: 'time'
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var DateTimePickerDate, DateTimePickerDays, DateTimePickerMonths, DateTimePickerYears, React;
 
 	React = __webpack_require__(2);
 
-	DateTimePickerDays = __webpack_require__(10);
+	DateTimePickerDays = __webpack_require__(9);
 
-	DateTimePickerMonths = __webpack_require__(11);
+	DateTimePickerMonths = __webpack_require__(10);
 
-	DateTimePickerYears = __webpack_require__(12);
+	DateTimePickerYears = __webpack_require__(11);
 
 	DateTimePickerDate = React.createClass({displayName: "DateTimePickerDate",
 	  propTypes: {
@@ -660,18 +708,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var DateTimePickerHours, DateTimePickerMinutes, DateTimePickerTime, Glyphicon, React;
 
 	React = __webpack_require__(2);
 
-	DateTimePickerMinutes = __webpack_require__(8);
+	DateTimePickerMinutes = __webpack_require__(12);
 
-	DateTimePickerHours = __webpack_require__(9);
+	DateTimePickerHours = __webpack_require__(13);
 
 	Glyphicon = __webpack_require__(4).Glyphicon;
+
+	Constants = __webpack_require__(6);
 
 	DateTimePickerTime = React.createClass({displayName: "DateTimePickerTime",
 	  propTypes: {
@@ -683,13 +733,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    addMinute: React.PropTypes.func.isRequired,
 	    viewDate: React.PropTypes.object.isRequired,
 	    selectedDate: React.PropTypes.object.isRequired,
-	    togglePeriod: React.PropTypes.func.isRequired
+	    togglePeriod: React.PropTypes.func.isRequired,
+	    mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME])
 	  },
 	  getInitialState: function() {
 	    return {
 	      minutesDisplayed: false,
 	      hoursDisplayed: false
 	    };
+	  },
+	  goBack: function() {
+	    return this.setState({
+	      minutesDisplayed: false,
+	      hoursDisplayed: false
+	    });
 	  },
 	  showMinutes: function() {
 	    return this.setState({
@@ -703,20 +760,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  renderMinutes: function() {
 	    if (this.state.minutesDisplayed) {
-	      return (React.createElement(DateTimePickerMinutes, {
-	            setSelectedMinute: this.props.setSelectedMinute}
-	       )
-	       );
+	      return React.createElement(DateTimePickerMinutes, React.__spread({},  this.props, {onSwitch: this.goBack}));
 	    } else {
 	      return null;
 	    }
 	  },
 	  renderHours: function() {
 	    if (this.state.hoursDisplayed) {
-	      return (React.createElement(DateTimePickerHours, {
-	            setSelectedHour: this.props.setSelectedHour}
-	      )
-	      );
+	      return React.createElement(DateTimePickerHours, React.__spread({},  this.props, {onSwitch: this.goBack}));
 	    } else {
 	      return null;
 	    }
@@ -783,149 +834,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var DateTimePickerMinutes, React;
-
-	React = __webpack_require__(2);
-
-	DateTimePickerMinutes = React.createClass({displayName: "DateTimePickerMinutes",
-	  propTypes: {
-	    setSelectedMinute: React.PropTypes.func.isRequired
-	  },
-	  render: function() {
-	    return (
-	      React.createElement("div", {className: "timepicker-minutes", "data-action": "selectMinute", style: {display: 'block'}}, 
-	        React.createElement("table", {className: "table-condensed"}, 
-	          React.createElement("tbody", null, 
-	            React.createElement("tr", null, 
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "00"), 
-
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "05"), 
-
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "10"), 
-
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "15")
-	            ), 
-
-	            React.createElement("tr", null, 
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "20"), 
-
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "25"), 
-
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "30"), 
-
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "35")
-	            ), 
-
-	            React.createElement("tr", null, 
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "40"), 
-
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "45"), 
-
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "50"), 
-
-	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "55")
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = DateTimePickerMinutes;
-
-
-/***/ },
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var DateTimePickerHours, React;
-
-	React = __webpack_require__(2);
-
-	DateTimePickerHours = React.createClass({displayName: "DateTimePickerHours",
-	  propTypes: {
-	    setSelectedHour: React.PropTypes.func.isRequired
-	  },
-	  render: function() {
-	    return (
-	      React.createElement("div", {className: "timepicker-hours", "data-action": "selectHour", style: {display: 'block'}}, 
-	        React.createElement("table", {className: "table-condensed"}, 
-	          React.createElement("tbody", null, 
-	            React.createElement("tr", null, 
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "01"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "02"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "03"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "04")
-	            ), 
-
-	            React.createElement("tr", null, 
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "05"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "06"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "07"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "08")
-	            ), 
-
-	            React.createElement("tr", null, 
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "09"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "10"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "11"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "12")
-	            ), 
-
-	            React.createElement("tr", null, 
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "13"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "14"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "15"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "16")
-	            ), 
-
-	            React.createElement("tr", null, 
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "17"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "18"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "19"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "20")
-	            ), 
-
-	            React.createElement("tr", null, 
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "21"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "22"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "23"), 
-
-	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "24")
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = DateTimePickerHours;
-
-
-/***/ },
-/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var DateTimePickerDays, React, moment;
@@ -1051,7 +960,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var DateTimePickerMonths, React, moment;
@@ -1080,7 +989,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        month: true,
 	        'active': i === month && this.props.viewDate.year() === this.props.selectedDate.year()
 	      };
-	      months.push(React.createElement("span", {className: React.addons.classSet(classes), onClick: this.props.setViewMonth}, monthsShort[i]));
+	      months.push(React.createElement("span", {key: i, className: React.addons.classSet(classes), onClick: this.props.setViewMonth}, monthsShort[i]));
 	      i++;
 	    }
 	    return months;
@@ -1114,7 +1023,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var DateTimePickerYears, React;
@@ -1141,7 +1050,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        old: i === -1 | i === 10,
 	        active: this.props.selectedDate.year() === year
 	      };
-	      years.push(React.createElement("span", {className: React.addons.classSet(classes), onClick: this.props.setViewYear}, year));
+	      years.push(React.createElement("span", {key: year, className: React.addons.classSet(classes), onClick: this.props.setViewYear}, year));
 	      year++;
 	      i++;
 	    }
@@ -1175,6 +1084,176 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	module.exports = DateTimePickerYears;
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var DateTimePickerMinutes, React;
+
+	React = __webpack_require__(2);
+	Glyphicon = __webpack_require__(4).Glyphicon;
+
+	DateTimePickerMinutes = React.createClass({displayName: "DateTimePickerMinutes",
+	  propTypes: {
+	    setSelectedMinute: React.PropTypes.func.isRequired,
+	    onSwitch: React.PropTypes.func.isRequired
+	  },
+	  renderSwitchButton: function() {
+	    return this.props.mode === Constants.MODE_TIME ?
+	        (
+	            React.createElement("ul", {className: "list-unstyled"}, 
+	              React.createElement("li", null, 
+	                React.createElement("span", {className: "btn picker-switch", style: {width:'100%'}, onClick: this.props.onSwitch}, React.createElement(Glyphicon, {glyph: "time"}))
+	              )
+	            )
+	        ) :
+	        null;
+	  },
+	  render: function() {
+	    return (
+	      React.createElement("div", {className: "timepicker-minutes", "data-action": "selectMinute", style: {display: 'block'}}, 
+	        this.renderSwitchButton(), 
+	        React.createElement("table", {className: "table-condensed"}, 
+	          React.createElement("tbody", null, 
+	            React.createElement("tr", null, 
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "00"), 
+
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "05"), 
+
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "10"), 
+
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "15")
+	            ), 
+
+	            React.createElement("tr", null, 
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "20"), 
+
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "25"), 
+
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "30"), 
+
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "35")
+	            ), 
+
+	            React.createElement("tr", null, 
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "40"), 
+
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "45"), 
+
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "50"), 
+
+	              React.createElement("td", {className: "minute", onClick: this.props.setSelectedMinute}, "55")
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = DateTimePickerMinutes;
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var DateTimePickerHours, React;
+
+	React = __webpack_require__(2);
+	Glyphicon = __webpack_require__(4).Glyphicon;
+
+	DateTimePickerHours = React.createClass({displayName: "DateTimePickerHours",
+	  propTypes: {
+	    setSelectedHour: React.PropTypes.func.isRequired,
+	    onSwitch: React.PropTypes.func.isRequired
+	  },
+	  renderSwitchButton: function() {
+	    return this.props.mode === Constants.MODE_TIME ?
+	        (
+	            React.createElement("ul", {className: "list-unstyled"}, 
+	              React.createElement("li", null, 
+	                React.createElement("span", {className: "btn picker-switch", style: {width:'100%'}, onClick: this.props.onSwitch}, React.createElement(Glyphicon, {glyph: "time"}))
+	              )
+	            )
+	        ) :
+	        null;
+	  },
+	  render: function() {
+	    return (
+	      React.createElement("div", {className: "timepicker-hours", "data-action": "selectHour", style: {display: 'block'}}, 
+	        this.renderSwitchButton(), 
+	        React.createElement("table", {className: "table-condensed"}, 
+	          React.createElement("tbody", null, 
+	            React.createElement("tr", null, 
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "01"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "02"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "03"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "04")
+	            ), 
+
+	            React.createElement("tr", null, 
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "05"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "06"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "07"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "08")
+	            ), 
+
+	            React.createElement("tr", null, 
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "09"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "10"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "11"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "12")
+	            ), 
+
+	            React.createElement("tr", null, 
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "13"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "14"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "15"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "16")
+	            ), 
+
+	            React.createElement("tr", null, 
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "17"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "18"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "19"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "20")
+	            ), 
+
+	            React.createElement("tr", null, 
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "21"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "22"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "23"), 
+
+	              React.createElement("td", {className: "hour", onClick: this.props.setSelectedHour}, "24")
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = DateTimePickerHours;
 
 
 /***/ }
