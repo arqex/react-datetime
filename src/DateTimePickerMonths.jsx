@@ -24,7 +24,7 @@ DateTimePickerMonths = React.createClass({
         month: true,
         'active': i === month && this.props.viewDate.year() === this.props.selectedDate.year()
       };
-      months.push(<span className={React.addons.classSet(classes)} onClick={this.props.setViewMonth}>{monthsShort[i]}</span>);
+      months.push(<span key={i} className={React.addons.classSet(classes)} onClick={this.props.setViewMonth}>{monthsShort[i]}</span>);
       i++;
     }
     return months;

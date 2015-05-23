@@ -59,8 +59,26 @@ var Basic = React.createClass({
 
               </div>
 						</div>
+            <div className="row">
+              <div className="col-xs-12">
+                  just time picker
+                  <DateTimeField
+                      mode="time"
+                      />
+                  <pre> {'<DateTimeField mode="time" />'} </pre>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-12">
+                  just date picker
+                  <DateTimeField
+                      mode="date"
+                      />
+                  <pre> {'<DateTimeField mode="date" />'} </pre>
+              </div>
+            </div>
 					</div>;
-	}
+   }
 
 });
 

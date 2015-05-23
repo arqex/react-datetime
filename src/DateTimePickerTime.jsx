@@ -8,6 +8,8 @@ DateTimePickerHours = require('./DateTimePickerHours');
 
 Glyphicon = require('react-bootstrap').Glyphicon;
 
+Constants = require('./Constants');
+
 DateTimePickerTime = React.createClass({
   propTypes: {
     setSelectedHour: React.PropTypes.func.isRequired,
@@ -18,13 +20,20 @@ DateTimePickerTime = React.createClass({
     addMinute: React.PropTypes.func.isRequired,
     viewDate: React.PropTypes.object.isRequired,
     selectedDate: React.PropTypes.object.isRequired,
-    togglePeriod: React.PropTypes.func.isRequired
+    togglePeriod: React.PropTypes.func.isRequired,
+    mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME])
   },
   getInitialState: function() {
     return {
       minutesDisplayed: false,
       hoursDisplayed: false
     };
+  },
+  goBack: function() {
+    return this.setState({
+      minutesDisplayed: false,
+      hoursDisplayed: false
+    });
   },
   showMinutes: function() {
     return this.setState({
@@ -38,20 +47,14 @@ DateTimePickerTime = React.createClass({
   },
   renderMinutes: function() {
     if (this.state.minutesDisplayed) {
-      return (<DateTimePickerMinutes
-            setSelectedMinute={this.props.setSelectedMinute}
-       />
-       );
+      return <DateTimePickerMinutes {...this.props} onSwitch={this.goBack} />;
     } else {
       return null;
     }
   },
   renderHours: function() {
     if (this.state.hoursDisplayed) {
-      return (<DateTimePickerHours
-            setSelectedHour={this.props.setSelectedHour}
-      />
-      );
+      return <DateTimePickerHours {...this.props} onSwitch={this.goBack} />;
     } else {
       return null;
     }
