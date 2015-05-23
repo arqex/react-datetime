@@ -21,7 +21,7 @@ render: function() {
   return <DateTimeField />;
 }
 ```
-See [Examples](examples/README.md) for more details.
+See [Examples](examples/) for more details.
 
 API
 ===============================
