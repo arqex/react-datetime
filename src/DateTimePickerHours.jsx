@@ -1,7 +1,7 @@
 var DateTimePickerHours, React;
 
 React = require('react');
-Glyphicon = require('react-bootstrap').Glyphicon;
+var Glyphicon = require('react-bootstrap').Glyphicon;
 
 DateTimePickerHours = React.createClass({
   propTypes: {
