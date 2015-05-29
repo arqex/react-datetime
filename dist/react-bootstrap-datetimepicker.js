@@ -69,9 +69,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	moment = __webpack_require__(3);
 
-	Glyphicon = __webpack_require__(4).Glyphicon;
+	var Glyphicon = __webpack_require__(4).Glyphicon;
 
-	Constants = __webpack_require__(6);
+	var Constants = __webpack_require__(6);
 
 	DateTimeField = React.createClass({displayName: "DateTimeField",
 	  propTypes: {
@@ -436,9 +436,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	DateTimePickerTime = __webpack_require__(8);
 
-	Glyphicon = __webpack_require__(4).Glyphicon;
+	var Glyphicon = __webpack_require__(4).Glyphicon;
 
-	Constants = __webpack_require__(6);
+	var Constants = __webpack_require__(6);
 
 	DateTimePicker = React.createClass({displayName: "DateTimePicker",
 	  propTypes: {
@@ -719,9 +719,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	DateTimePickerHours = __webpack_require__(13);
 
-	Glyphicon = __webpack_require__(4).Glyphicon;
+	var Glyphicon = __webpack_require__(4).Glyphicon;
 
-	Constants = __webpack_require__(6);
+	var Constants = __webpack_require__(6);
 
 	DateTimePickerTime = React.createClass({displayName: "DateTimePickerTime",
 	  propTypes: {
@@ -1093,8 +1093,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DateTimePickerMinutes, React;
 
 	React = __webpack_require__(2);
-	Glyphicon = __webpack_require__(4).Glyphicon;
-
+	var Glyphicon = __webpack_require__(4).Glyphicon;
+	var Constants = __webpack_require__(6);
+	  
 	DateTimePickerMinutes = React.createClass({displayName: "DateTimePickerMinutes",
 	  propTypes: {
 	    setSelectedMinute: React.PropTypes.func.isRequired,
@@ -1163,7 +1164,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DateTimePickerHours, React;
 
 	React = __webpack_require__(2);
-	Glyphicon = __webpack_require__(4).Glyphicon;
+	var Glyphicon = __webpack_require__(4).Glyphicon;
+	var Constants = __webpack_require__(6);
 
 	DateTimePickerHours = React.createClass({displayName: "DateTimePickerHours",
 	  propTypes: {
