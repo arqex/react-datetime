@@ -1,6 +1,6 @@
 var DateTimePickerDays, React, moment;
 
-React = require('react/addons');
+React = require('react');
 
 moment = require('moment');
 
@@ -35,40 +35,38 @@ DateTimePickerDays = React.createClass({
     html = [];
     cells = [];
     while (prevMonth.isBefore(nextMonth)) {
-      classes = {
-        day: true
-      };
+      classes = 'day';
       if (prevMonth.year() < year || (prevMonth.year() === year && prevMonth.month() < month)) {
-        classes['old'] = true;
+        classes += " old";
       } else if (prevMonth.year() > year || (prevMonth.year() === year && prevMonth.month() > month)) {
-        classes['new'] = true;
+        classes += " new";
       }
       if (prevMonth.isSame(moment({
         y: this.props.selectedDate.year(),
         M: this.props.selectedDate.month(),
         d: this.props.selectedDate.date()
       }))) {
-        classes['active'] = true;
+        classes += " active";
       }
       if (this.props.showToday) {
         if (prevMonth.isSame(moment(), 'day')) {
-          classes['today'] = true;
+          classes += " today";
         }
       }
       if ((minDate && prevMonth.isBefore(minDate)) || (maxDate && prevMonth.isAfter(maxDate))) {
-        classes['disabled'] = true;
+        classes += " disabled";
       }
       if (this.props.daysOfWeekDisabled) {
         _ref = this.props.daysOfWeekDisabled;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           i = _ref[_i];
           if (prevMonth.day() === this.props.daysOfWeekDisabled[i]) {
-            classes['disabled'] = true;
+            classes += " disabled";
             break;
           }
         }
       }
-      cells.push(<td key={prevMonth.month() + '-' + prevMonth.date()} className={React.addons.classSet(classes)} onClick={this.props.setSelectedDate}>{prevMonth.date()}</td>);
+      cells.push(<td key={prevMonth.month() + '-' + prevMonth.date()} className={ classes } onClick={this.props.updateDate}>{prevMonth.date()}</td>);
       if (prevMonth.weekday() === moment().endOf('week').weekday()) {
         row = <tr key={prevMonth.month() + '-' + prevMonth.date()}>{cells}</tr>;
         html.push(row);
@@ -79,16 +77,17 @@ DateTimePickerDays = React.createClass({
     return html;
   },
   render: function() {
+  	var footer = this.renderFooter();
     return (
     <div className="datepicker-days" style={{display: 'block'}}>
         <table className="table-condensed">
           <thead>
             <tr>
-              <th className="prev" onClick={this.props.subtractMonth}>‹</th>
+              <th className="prev" onClick={this.props.subtractTime(1, 'months')}>‹</th>
 
-              <th className="switch" colSpan="5" onClick={this.props.showMonths}>{moment.months()[this.props.viewDate.month()]} {this.props.viewDate.year()}</th>
+              <th className="switch" colSpan="5" onClick={this.props.showView('months')}>{moment.months()[this.props.viewDate.month()]} {this.props.viewDate.year()}</th>
 
-              <th className="next" onClick={this.props.addMonth}>›</th>
+              <th className="next" onClick={this.props.addTime(1, 'months')}>›</th>
             </tr>
 
             <tr>
@@ -111,9 +110,24 @@ DateTimePickerDays = React.createClass({
           <tbody>
             {this.renderDays()}
           </tbody>
+
+          { this.renderFooter() }
+
         </table>
       </div>
     );
+  },
+  renderFooter: function(){
+  		if( !this.props.timeFormat )
+  			return '';
+
+  		return (
+  			<tfoot>
+  				<tr>
+  					<td onClick={this.props.showView('time')} colSpan="7" className="timeToggle">&#8986; { this.props.selectedDate.format( this.props.timeFormat ) }</td>
+  				</tr>
+  			</tfoot>
+  		)
   }
 });
 

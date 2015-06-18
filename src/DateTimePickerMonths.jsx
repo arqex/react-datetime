@@ -1,6 +1,6 @@
 var DateTimePickerMonths, React, moment;
 
-React = require('react/addons');
+React = require('react');
 
 moment = require('moment');
 
@@ -14,42 +14,48 @@ DateTimePickerMonths = React.createClass({
     setViewMonth: React.PropTypes.func.isRequired
   },
   renderMonths: function() {
-    var classes, i, month, months, monthsShort;
+    var classes, i, month, months, monthsShort, rows;
     month = this.props.selectedDate.month();
     monthsShort = moment.monthsShort();
+    rows = [],
     i = 0;
     months = [];
     while (i < 12) {
-      classes = {
-        month: true,
-        'active': i === month && this.props.viewDate.year() === this.props.selectedDate.year()
-      };
-      months.push(<span key={i} className={React.addons.classSet(classes)} onClick={this.props.setViewMonth}>{monthsShort[i]}</span>);
+    	if( i && i % 4 == 0 ){
+    		rows.push( <tr>{ months }</tr> );
+    		months = [];
+    	}
+
+      classes = "month";
+      if( i === month && this.props.viewDate.year() === this.props.selectedDate.year() )
+        classes += " active";
+
+      months.push(<td key={i} className={ classes } onClick={this.props.setDate('month')}>{monthsShort[i]}</td>);
       i++;
     }
-    return months;
+    rows.push( <tr>{ months }</tr> );
+    return rows;
   },
   render: function() {
     return (
-    <div className="datepicker-months" style={{display: 'block'}}>
-          <table className="table-condensed">
-            <thead>
-              <tr>
-                <th className="prev" onClick={this.props.subtractYear}>‹</th>
+    	<div className="datepicker-months" style={{display: 'block'}}>
+			<table className="table-condensed">
+				<thead>
+					<tr>
+						<th className="prev" onClick={this.props.subtractTime(1, 'years')}>‹</th>
 
-                <th className="switch" colSpan="5" onClick={this.props.showYears}>{this.props.viewDate.year()}</th>
+						<th className="switch" colSpan="5" onClick={this.props.showView('years')}>{this.props.viewDate.year()}</th>
 
-                <th className="next" onClick={this.props.addYear}>›</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td colSpan="7">{this.renderMonths()}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+						<th className="next" onClick={this.props.addTime(1, 'years')}>›</th>
+					</tr>
+				</thead>
+			</table>
+			<table>
+				<tbody>
+					{this.renderMonths()}
+				</tbody>
+			</table>
+		</div>
     );
   }
 });

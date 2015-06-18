@@ -2,7 +2,7 @@ var webpack = require('webpack');
 
 var plugins = [
   new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    	'process.env': { NODE_ENV: '"production"'}
   })
 ];
 
@@ -22,7 +22,7 @@ module.exports = {
 
   output: {
     path: __dirname + "/dist/",
-    library: 'ReactBootstrapDatetimepicker',
+    library: 'Datetime',
     libraryTarget: 'umd',
   },
 
@@ -32,8 +32,6 @@ module.exports = {
 
   externals: {
     'react': 'React',
-    'react/addons': 'React',
-    'react-bootstrap': 'ReactBootstrap',
     'moment': 'moment'
   },
 

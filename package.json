@@ -10,8 +10,8 @@
   "main": "./lib/DateTimeField.js",
   "scripts": {
     "build-npm": "jsx -x jsx ./src/ ./lib/",
-    "build": "NODE_ENV=production webpack --output-file react-bootstrap-datetimepicker.js",
-    "build-min": "NODE_ENV=production COMPRESS=1 webpack --output-file react-bootstrap-datetimepicker.min.js",
+    "build": "webpack --output-file react-bootstrap-datetimepicker.js",
+    "build-min": "$COMPRESS=1 webpack --output-file react-bootstrap-datetimepicker.min.js",
     "examples": "webpack-dev-server --config ./examples/webpack.config.js",
     "test-watch": "./node_modules/.bin/grunt watch 2>&1 >/dev/null & karma start karma.dev.js",
     "test": "./node_modules/.bin/grunt build && karma start karma.ci.js"
@@ -26,7 +26,8 @@
   "author": "Loïc CHOLLIER <loic@chollier.com>",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=0.12"
+    "react": ">=0.12",
+    "moment": "^2.8.2"
   },
   "devDependencies": {
     "envify": "~3.2.0",
@@ -50,7 +51,7 @@
     "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
-    "moment": "^2.8.2",
-    "react-bootstrap": "^0.16.1"
+    "object-assign": "^3.0.0",
+    "react-onclickoutside": "^0.2.4"
   }
 }
