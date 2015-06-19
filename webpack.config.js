@@ -18,7 +18,7 @@ if (process.env.COMPRESS) {
 
 module.exports = {
 
-  entry: ['./src/DateTimeField.jsx'],
+  entry: ['./src/DateTime.jsx'],
 
   output: {
     path: __dirname + "/dist/",

@@ -1,10 +1,8 @@
-var DateTimePickerHours, React;
+'use strict';
 
-React = require('react');
+var React = require('react');
 
-var Constants = require('./Constants');
-
-DateTimePickerTime = React.createClass({
+var DateTimePickerTime = React.createClass({
 	getInitialState: function(){
 		var date = this.props.selectedDate,
 			format = this.props.timeFormat,
@@ -64,47 +62,6 @@ DateTimePickerTime = React.createClass({
 		   </div>
 		</div>
   	);
-
-    return (
-      <div className="timepicker">
-		   <div className="timepicker-picker">
-		     <table className="table-condensed">
-		     	{ this.renderHeader() }
-		       <tbody>
-		         <tr>
-		           <td><a className="btn" onClick={this.props.addTime(1, 'hours', true)}>&#x25B2;</a></td>
-
-		           <td className="separator"></td>
-
-		           <td><a className="btn" onClick={this.props.addTime(1, 'minutes', true)}>&#x25B2;</a></td>
-
-		           <td className="separator"></td>
-		         </tr>
-
-		         <tr>
-		           <td><span className="timepicker-hour">{this.props.selectedDate.format('H')}</span></td>
-
-		           <td className="separator">:</td>
-
-		           <td><span className="timepicker-minute">{this.props.selectedDate.format('mm')}</span></td>
-
-		           <td className="separator"></td>
-		         </tr>
-
-		         <tr>
-		           <td><a className="btn" onClick={this.props.subtractTime( 1, 'hours', true )}>&#x25BC;</a></td>
-
-		           <td className="separator"></td>
-
-		           <td><a className="btn" onClick={this.props.subtractTime( 1, 'minutes', true )}>&#x25BC;</a></td>
-
-		           <td className="separator"></td>
-		         </tr>
-		       </tbody>
-		     </table>
-		   </div>
-      </div>
-   );
   },
   renderHeader: function(){
   	if( !this.props.dateFormat )
@@ -148,17 +105,17 @@ DateTimePickerTime = React.createClass({
 	padValues: {
 		hours: 1,
 		minutes: 2,
-		minutes: 2,
+		seconds: 2,
 		milliseconds: 3
 	},
 	increase: function( type ){
-		value = parseInt(this.state[ type ]) + 1;
+		var value = parseInt(this.state[ type ]) + 1;
 		if( value > this.maxValues[ type ] )
 			value = 0;
 		return this.pad( type, value );
 	},
 	decrease: function( type ){
-		value = parseInt(this.state[ type ]) - 1;
+		var value = parseInt(this.state[ type ]) - 1;
 		if( value < 0 )
 			value = this.maxValues[ type ];
 		return this.pad( type, value );

@@ -1,16 +1,19 @@
 'use strict';
 
 var assign = require('object-assign'),
-React = require('react'),
-DaysView = require('./DateTimePickerDays'),
-MonthsView = require('./DateTimePickerMonths'),
-YearsView = require('./DateTimePickerYears'),
-TimeView = require('./DateTimePickerTime'),
-moment = require('moment'),
-Constants = require('./Constants')
+	React = require('react'),
+	DaysView = require('./DaysView'),
+	MonthsView = require('./MonthsView'),
+	YearsView = require('./YearsView'),
+	TimeView = require('./TimeView'),
+	moment = require('moment')
 ;
 
-var noop = function(){};
+var Constants = {
+    MODE_DATE: 'date',
+    MODE_DATETIME: 'datetime',
+    MODE_TIME: 'time'
+};
 
 var DateTimeField = React.createClass({
 	mixins: [
@@ -67,10 +70,6 @@ var DateTimeField = React.createClass({
 			selectedDate: moment(date),
 			inputValue: typeof this.props.defaultText != 'undefined' ?  this.props.defaultText : moment(date).format( formats.datetime )
 		};
-	},
-
-	getFormat: function( props ){
-		return this.getFormats( props ).datetime;
 	},
 
 	getFormats: function( props ){
@@ -136,7 +135,7 @@ var DateTimeField = React.createClass({
 		return this.setState({
 			inputValue: value
 		}, function() {
-			return this.props.onChange(moment(this.state.inputValue, this.state.inputFormat, true).format( this.getFormat( this.props )));
+			return this.props.onChange(moment(this.state.inputValue, this.state.inputFormat, true).format( this.state.inputFormat ));
 		});
 	},
 
@@ -149,10 +148,10 @@ var DateTimeField = React.createClass({
 
 	setDate: function( type ){
 		var me = this,
-		nextViews = {
-			month: 'days',
-			year: 'months'
-		}
+			nextViews = {
+				month: 'days',
+				year: 'months'
+			}
 		;
 		return function( e ){
 			me.setState({
@@ -189,16 +188,22 @@ var DateTimeField = React.createClass({
 			nextType
 		;
 
+		// It is needed to set all the time properties
+		// to not to reset the time
 		date[ type ]( value );
 		for (; index < this.allowedSetTime.length; index++) {
 			nextType = this.allowedSetTime[index];
 			date[ nextType ]( date[nextType]() );
 		}
-		this.setState({ selectedDate: date, inputValue: date.format( this.state.inputFormat ) }, this.callOnChange );
+
+		this.setState({
+			selectedDate: date,
+			inputValue: date.format( this.state.inputFormat )
+		}, this.callOnChange );
 	},
 
 	callOnChange: function(){
-		this.props.onChange(this.state.selectedDate.format( this.getFormat( this.props )));
+		this.props.onChange(this.state.selectedDate.format( this.state.inputFormat ));
 	},
 
 	updateDate: function( e ) {
