@@ -1,13 +1,13 @@
 {
-  "name": "react-bootstrap-datetimepicker",
-  "version": "0.0.17",
-  "description": "A bootstrap datetime picker component for React.js",
-  "homepage": "http://dev.quri.com/react-bootstrap-datetimepicker/",
+  "name": "react-datetime",
+  "version": "0.1.0",
+  "description": "A lightweight but complete datetime picker React.js component.",
+  "homepage": "https://github.com/arqex/react-datetime",
   "repository": {
     "type": "git",
-    "url": "http://github.com/quri/react-bootstrap-datetimepicker"
+    "url": "https://github.com/arqex/react-datetime"
   },
-  "main": "./lib/DateTimeField.js",
+  "main": "./lib/DateTime.jsx",
   "scripts": {
     "build-npm": "jsx -x jsx ./src/ ./lib/",
     "build": "webpack --output-file react-bootstrap-datetimepicker.js",
@@ -23,7 +23,7 @@
     "datetimepicker",
     "datetime"
   ],
-  "author": "Loïc CHOLLIER <loic@chollier.com>",
+  "author": "Javier Marquez <arqex.com>",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=0.12",

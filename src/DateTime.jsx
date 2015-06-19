@@ -15,7 +15,7 @@ var Constants = {
     MODE_TIME: 'time'
 };
 
-var DateTimeField = React.createClass({
+var Datetime = React.createClass({
 	mixins: [
 		require('react-onclickoutside')
 	],
@@ -31,9 +31,8 @@ var DateTimeField = React.createClass({
 		dateFormat: React.PropTypes.string,
 		timeFormat: React.PropTypes.string,
 		inputProps: React.PropTypes.object,
-		inputFormat: React.PropTypes.string,
 		defaultText: React.PropTypes.string,
-		mode: React.PropTypes.oneOf([Constants.MODE_DATE, Constants.MODE_DATETIME, Constants.MODE_TIME]),
+		viewMode: React.PropTypes.oneOf(['years', 'months', 'days', 'time']),
 		minDate: React.PropTypes.object,
 		maxDate: React.PropTypes.object
 	},
@@ -41,11 +40,7 @@ var DateTimeField = React.createClass({
 
 		return {
 			date: false,
-			format: 'x',
-			showToday: true,
 			viewMode: 'days',
-			daysOfWeekDisabled: [],
-			mode: Constants.MODE_DATETIME,
 			onChange: function (x) {
 				console.log(x);
 			}
@@ -53,12 +48,10 @@ var DateTimeField = React.createClass({
 	},
 	getInitialState: function() {
 		var formats = this.getFormats( this.props ),
-		date = this.props.date || new Date()
+			date = this.props.date || new Date()
 		;
 		return {
-			currentView: this.props.mode === Constants.MODE_TIME ? 'time' : 'days',
-			showDatePicker: this.props.mode !== Constants.MODE_TIME,
-			showTimePicker: this.props.mode === Constants.MODE_TIME,
+			currentView: this.props.viewMode,
 			inputFormat: formats.datetime,
 			widgetStyle: {
 				display: 'block',
@@ -109,13 +102,6 @@ var DateTimeField = React.createClass({
 
 	componentWillReceiveProps: function(nextProps) {
 		var formats = this.getFormats( nextProps );
-		if(moment(nextProps.date).isValid()) {
-			return this.setState({
-				viewDate: moment(nextProps.date).startOf("month"),
-				selectedDate: moment(nextProps.date),
-				inputValue: moment(nextProps.date).format(nextProps.inputFormat)
-			});
-		}
 		if ( formats.datetime !== this.getFormats(this.props).datetime ) {
 			return this.setState({
 				inputFormat: nextProps.inputFormat
@@ -158,15 +144,17 @@ var DateTimeField = React.createClass({
 				viewDate: me.state.viewDate.clone()[ type ]( e.target.innerHTML ).startOf( type ),
 				currentView: nextViews[ type ]
 			});
-		}
+		};
 	},
 
 	addTime: function( amount, type, toSelected ){
 		return this.updateTime( 'add', amount, type, toSelected );
 	},
+
 	subtractTime: function( amount, type, toSelected ){
 		return this.updateTime( 'subtract', amount, type, toSelected );
 	},
+
 	updateTime: function( op, amount, type, toSelected ){
 		var me = this;
 
@@ -243,7 +231,7 @@ var DateTimeField = React.createClass({
 
 		this.setState({
 			widgetStyle: styles,
-			widgetClasses: 'dropdown-menu bottom pull-right',
+			widgetClasses: 'dropdown-menu bottom',
 			showPicker: true
 		});
 	},
@@ -256,8 +244,8 @@ var DateTimeField = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['showToday', 'viewMode', 'daysOfWeekDisabled', 'mode', 'minDate', 'maxDate'],
-		fromState: ['showDatePicker', 'showTimePicker', 'viewDate', 'selectedDate' ],
+		fromProps: ['viewMode', 'minDate', 'maxDate'],
+		fromState: ['viewDate', 'selectedDate' ],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateDate']
 	},
 
@@ -293,4 +281,4 @@ var DateTimeField = React.createClass({
 	}
 });
 
-module.exports = DateTimeField;
+module.exports = Datetime;

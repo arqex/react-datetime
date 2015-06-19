@@ -5,23 +5,7 @@ React = require('react');
 moment = require('moment');
 
 DateTimePickerDays = React.createClass({
-  propTypes: {
-    subtractMonth: React.PropTypes.func.isRequired,
-    addMonth: React.PropTypes.func.isRequired,
-    viewDate: React.PropTypes.object.isRequired,
-    selectedDate: React.PropTypes.object.isRequired,
-    showToday: React.PropTypes.bool,
-    daysOfWeekDisabled: React.PropTypes.array,
-    setSelectedDate: React.PropTypes.func.isRequired,
-    showMonths: React.PropTypes.func.isRequired,
-    minDate: React.PropTypes.object,
-    maxDate: React.PropTypes.object
-  },
-  getDefaultProps: function() {
-    return {
-      showToday: true
-    };
-  },
+
   renderDays: function() {
     var cells, classes, days, html, i, month, nextMonth, prevMonth, minDate, maxDate, row, year, _i, _len, _ref;
     year = this.props.viewDate.year();
@@ -48,24 +32,15 @@ DateTimePickerDays = React.createClass({
       }))) {
         classes += " active";
       }
-      if (this.props.showToday) {
-        if (prevMonth.isSame(moment(), 'day')) {
-          classes += " today";
-        }
-      }
+
+		if (prevMonth.isSame(moment(), 'day')) {
+		 classes += " today";
+		}
+
       if ((minDate && prevMonth.isBefore(minDate)) || (maxDate && prevMonth.isAfter(maxDate))) {
         classes += " disabled";
       }
-      if (this.props.daysOfWeekDisabled) {
-        _ref = this.props.daysOfWeekDisabled;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          i = _ref[_i];
-          if (prevMonth.day() === this.props.daysOfWeekDisabled[i]) {
-            classes += " disabled";
-            break;
-          }
-        }
-      }
+
       cells.push(<td key={prevMonth.month() + '-' + prevMonth.date()} className={ classes } onClick={this.props.updateDate}>{prevMonth.date()}</td>);
       if (prevMonth.weekday() === moment().endOf('week').weekday()) {
         row = <tr key={prevMonth.month() + '-' + prevMonth.date()}>{cells}</tr>;

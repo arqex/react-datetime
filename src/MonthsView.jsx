@@ -5,14 +5,6 @@ React = require('react');
 moment = require('moment');
 
 DateTimePickerMonths = React.createClass({
-  propTypes: {
-    subtractYear: React.PropTypes.func.isRequired,
-    addYear: React.PropTypes.func.isRequired,
-    viewDate: React.PropTypes.object.isRequired,
-    selectedDate: React.PropTypes.object.isRequired,
-    showYears: React.PropTypes.func.isRequired,
-    setViewMonth: React.PropTypes.func.isRequired
-  },
   renderMonths: function() {
     var classes, i, month, months, monthsShort, rows;
     month = this.props.selectedDate.month();

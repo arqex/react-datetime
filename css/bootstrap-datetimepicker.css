@@ -13,7 +13,7 @@
   z-index: 99999 !important;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0,0,0,.1);
-  transition: height .5s;
+  border: 1px solid #f9f9f9;
 }
 .dropdown-menu.timepicker-sbs {
   width: 600px;
@@ -23,8 +23,7 @@
   display: inline-block;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-bottom: 7px solid #ccc;
-  border-bottom-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 7px solid #eee;
   position: absolute;
   top: -7px;
   left: 7px;
@@ -44,7 +43,7 @@
   display: inline-block;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-top: 7px solid #ccc;
+  border-top: 7px solid #eee;
   border-top-color: rgba(0, 0, 0, 0.2);
   position: absolute;
   bottom: -7px;
@@ -62,14 +61,6 @@
 }
 .dropdown-menu .dow {
   width: 14.2857%;
-}
-.dropdown-menu.pull-right:before {
-  left: auto;
-  right: 6px;
-}
-.dropdown-menu.pull-right:after {
-  left: auto;
-  right: 7px;
 }
 .dropdown-menu > ul {
   list-style-type: none;

@@ -3,13 +3,6 @@ var DateTimePickerYears, React;
 React = require('react');
 
 DateTimePickerYears = React.createClass({
-  propTypes: {
-    subtractDecade: React.PropTypes.func.isRequired,
-    addDecade: React.PropTypes.func.isRequired,
-    viewDate: React.PropTypes.object.isRequired,
-    selectedDate: React.PropTypes.object.isRequired,
-    setViewYear: React.PropTypes.func.isRequired
-  },
   renderYears: function() {
     var classes, i, year, years, rows;
     years = [];
