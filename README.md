@@ -26,9 +26,6 @@ See [Examples](examples/) for more details.
 API
 ===============================
 
-DateTimeField
-========
-
 | Name         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
 | **date** | Date  | new Date() | Represents the inital dateTime, this string is then parsed by moment.js |

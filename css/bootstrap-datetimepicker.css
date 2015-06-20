@@ -180,9 +180,6 @@
   left: auto;
   right: 7px;
 }
-.dropdown-menu ul.list-unstyled li div.timepicker div.timepicker-picker table.table-condensed tbody > tr > td {
-  padding: 0px !important;
-}
 
 td.month,
 td.year {

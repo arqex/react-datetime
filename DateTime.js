@@ -2,10 +2,10 @@
 
 var assign = require('object-assign'),
 	React = require('react'),
-	DaysView = require('./DaysView'),
-	MonthsView = require('./MonthsView'),
-	YearsView = require('./YearsView'),
-	TimeView = require('./TimeView'),
+	DaysView = require('./src/DaysView'),
+	MonthsView = require('./src/MonthsView'),
+	YearsView = require('./src/YearsView'),
+	TimeView = require('./src/TimeView'),
 	moment = require('moment')
 ;
 
@@ -41,6 +41,7 @@ var Datetime = React.createClass({
 		return {
 			date: false,
 			viewMode: 'days',
+			inputProps: {},
 			onChange: function (x) {
 				console.log(x);
 			}
@@ -269,15 +270,23 @@ var Datetime = React.createClass({
 	},
 
 	render: function() {
-		var Component = this.viewComponents[ this.state.currentView ];
-		return (
-			<div className="datetimePicker">
-				<input ref="input" type="text" className="form-control" onFocus={this.openCalendar} onChange={this.onChange} value={this.state.inputValue} {...this.props.inputProps}/>
-				<div className={ this.state.widgetClasses } style={ this.state.widgetStyle }>
-					<Component { ...this.getComponentProps() } />
-				</div>
-			</div>
-		);
+		var Component = this.viewComponents[ this.state.currentView ],
+			inputProps = assign({
+				type:'text',
+				className:'form-control',
+				onFocus: this.openCalendar,
+				onChange: this.onChange,
+				value: this.state.inputValue
+			}, this.props.inputProps ),
+			DOM = React.DOM
+		;
+
+		return DOM.div({className: 'datetimePicker'}, [
+			DOM.input( inputProps ),
+			DOM.div( {className: this.state.widgetClasses, style: this.state.widgetStyle },
+				React.createElement( Component, this.getComponentProps() )
+			)
+		]);
 	}
 });
 
