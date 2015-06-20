@@ -1,7 +1,8 @@
 react-datetime
 ===============================
+A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time.
 
-This project is a port of https://github.com/Eonasdan/bootstrap-datetimepicker for React.js
+This project started as a fork of https://github.com/quri/react-bootstrap-datetimepicker but the code and the API has changed a lot.
 
 Usage
 ===============================
@@ -21,7 +22,7 @@ render: function() {
   return <Datetime />;
 }
 ```
-See [Examples](examples/) for more details.
+[See this example working](http://codepen.io/arqex/pen/BNRNBw).
 
 API
 ===============================

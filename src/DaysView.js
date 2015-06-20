@@ -12,15 +12,15 @@ var DateTimePickerDays = React.createClass({
 		;
 
 		tableChildren = [
-		DOM.thead({}, [
-			DOM.tr({},[
-				DOM.th({ className: 'prev', onClick: this.props.subtractTime(1, 'months') }, '‹'),
-				DOM.th({ className: 'switch', onClick: this.props.showView('months'), colSpan: 5 }, moment.months()[date.month()] + ' ' + date.year() ),
-				DOM.th({ className: 'next', onClick: this.props.addTime(1, 'months')}, '›' )
+			DOM.thead({ key: 'th'}, [
+				DOM.tr({ key: 'h'},[
+					DOM.th({ key: 'p', className: 'prev', onClick: this.props.subtractTime(1, 'months') }, '‹'),
+					DOM.th({ key: 's', className: 'switch', onClick: this.props.showView('months'), colSpan: 5 }, moment.months()[date.month()] + ' ' + date.year() ),
+					DOM.th({ key: 'n', className: 'next', onClick: this.props.addTime(1, 'months')}, '›' )
+				]),
+				DOM.tr({ key: 'd'}, moment.weekdaysMin().map( function( day ){ return DOM.th({ key: day, className: 'dow'}, day) }) )
 			]),
-			DOM.tr({}, moment.weekdaysMin().map( function( day ){ return DOM.th({className: 'dow'}, day) }) )
-		]),
-		DOM.tbody({}, this.renderDays())
+			DOM.tbody({key: 'tb'}, this.renderDays())
 		];
 
 		if( footer )
@@ -37,7 +37,7 @@ var DateTimePickerDays = React.createClass({
 			prevMonth = date.clone().subtract( 1, 'months' ),
 			currentYear = date.year(),
 			currentMonth = date.month(),
-			selectedDate = {y: selected.year(), M: selected.months(), d: selected.date()},
+			selectedDate = {y: selected.year(), M: selected.month(), d: selected.date()},
 			minDate = this.props.minDate,
 			maxDate = this.props.maxDate,
 			weeks = [],
@@ -87,7 +87,7 @@ var DateTimePickerDays = React.createClass({
 		if( !this.props.timeFormat )
 			return '';
 
-		return DOM.tfoot({},
+		return DOM.tfoot({ key: 'tf'},
 			DOM.tr({},
 				DOM.td({ onClick: this.props.showView('time'), colSpan: 7, className: 'timeToggle'}, this.props.selectedDate.format( this.props.timeFormat ))
 			)

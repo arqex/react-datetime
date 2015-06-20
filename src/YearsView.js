@@ -6,8 +6,9 @@ var DOM = React.DOM;
 var DateTimePickerYears = React.createClass({
 	renderYears: function( year ) {
 		var years = [],
-			i = -1;
-			rows = []
+			i = -1,
+			rows = [],
+			classes
 		;
 
 		year--;

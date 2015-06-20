@@ -29,10 +29,10 @@ var DateTimePickerTime = React.createClass({
 		};
 	},
 	renderCounter: function( type ){
-		return DOM.div({className: 'dtCounter'}, [
-			DOM.div({ className: 'btn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
-			DOM.div({ className: 'dtCount' }, this.state[ type ] ),
-			DOM.div({ className: 'btn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▼' )
+		return DOM.div({ key: type, className: 'dtCounter'}, [
+			DOM.div({ key:'up', className: 'btn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
+			DOM.div({ key:'c', className: 'dtCount' }, this.state[ type ] ),
+			DOM.div({ key:'do', className: 'btn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▼' )
 		]);
 	},
 	render: function() {
@@ -42,14 +42,14 @@ var DateTimePickerTime = React.createClass({
 
 		this.state.counters.forEach( function(c){
 			if( counters.length )
-				counters.push( DOM.div( {className: 'dtCounterSeparator' }, ':' ));
+				counters.push( DOM.div( {key: 'sep' + counters.length, className: 'dtCounterSeparator' }, ':' ));
 			counters.push( me.renderCounter( c ) );
 		});
 
 		if( this.state.counters.length == 3 && this.props.timeFormat.indexOf('S') != -1 ){
-			counters.push( DOM.div( {className: 'dtCounterSeparator' }, ':' ));
+			counters.push( DOM.div( {className: 'dtCounterSeparator', key: 'sep5' }, ':' ));
 			counters.push(
-				DOM.div( {className: 'dtCounter dtMilli'},
+				DOM.div( {className: 'dtCounter dtMilli', key:'m'},
 					DOM.input({ value: this.state.milliseconds, type: 'text', onChange: this.updateMilli })
 					)
 				);
@@ -59,7 +59,7 @@ var DateTimePickerTime = React.createClass({
 			DOM.div( {className: 'timepicker-picker'},
 				DOM.table( {}, [
 					this.renderHeader(),
-					DOM.tbody({}, DOM.tr({}, DOM.td({},
+					DOM.tbody({key: 'b'}, DOM.tr({}, DOM.td({},
 						DOM.div({ className: 'dtCounters' }, counters )
 					)))
 				])
@@ -78,7 +78,7 @@ var DateTimePickerTime = React.createClass({
 		if( !this.props.dateFormat )
 			return '';
 
-		return DOM.thead({}, DOM.tr({},
+		return DOM.thead({ key: 'h'}, DOM.tr({},
 			DOM.th( {colSpan: 4, onClick: this.props.showView('days')}, this.props.selectedDate.format( this.props.dateFormat ) )
 		));
 	},

@@ -6,19 +6,9 @@ var plugins = [
   })
 ];
 
-if (process.env.COMPRESS) {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    })
-  );
-}
-
 module.exports = {
 
-  entry: ['./src/DateTime.jsx'],
+  entry: ['./DateTime.js'],
 
   output: {
     path: __dirname + "/dist/",
@@ -27,7 +17,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js']
   },
 
   externals: {
@@ -35,12 +25,5 @@ module.exports = {
     'moment': 'moment'
   },
 
-  module: {
-    loaders: [
-      { test: /\.jsx$/, loader: 'jsx-loader' }
-    ]
-  },
-
   plugins: plugins
-
 };

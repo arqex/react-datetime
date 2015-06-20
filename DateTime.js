@@ -272,6 +272,7 @@ var Datetime = React.createClass({
 	render: function() {
 		var Component = this.viewComponents[ this.state.currentView ],
 			inputProps = assign({
+				key: 'i',
 				type:'text',
 				className:'form-control',
 				onFocus: this.openCalendar,
@@ -283,7 +284,7 @@ var Datetime = React.createClass({
 
 		return DOM.div({className: 'datetimePicker'}, [
 			DOM.input( inputProps ),
-			DOM.div( {className: this.state.widgetClasses, style: this.state.widgetStyle },
+			DOM.div( { key: 'dt', className: this.state.widgetClasses, style: this.state.widgetStyle },
 				React.createElement( Component, this.getComponentProps() )
 			)
 		]);
