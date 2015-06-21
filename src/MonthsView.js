@@ -33,7 +33,7 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	render: function() {
-		return DOM.div({ className: 'datepicker-months' },[
+		return DOM.div({ className: 'rdtMonths' },[
 			DOM.table({ key: 'a'}, DOM.thead({}, DOM.tr({},[
 				DOM.th({ key: 'prev', className: 'prev', onClick: this.props.subtractTime(1, 'years') }, '‹'),
 				DOM.th({ key: 'year', className: 'switch', onClick: this.props.showView('years'), colSpan: 5 }, this.props.viewDate.year() ),

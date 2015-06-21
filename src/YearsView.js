@@ -34,7 +34,7 @@ var DateTimePickerYears = React.createClass({
 	render: function() {
 		var year = parseInt(this.props.viewDate.year() / 10, 10) * 10;
 
-		return DOM.div({ className: 'datepicker-years' },[
+		return DOM.div({ className: 'rdtYears' },[
 			DOM.table({ key: 'a'}, DOM.thead({}, DOM.tr({},[
 				DOM.th({ key: 'prev', className: 'prev', onClick: this.props.subtractTime(10, 'years') }, '‹'),
 				DOM.th({ key: 'year', className: 'switch', onClick: this.props.showView('years'), colSpan: 5 }, year + '-' + (year + 9) ),

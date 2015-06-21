@@ -9,12 +9,6 @@ var assign = require('object-assign'),
 	moment = require('moment')
 ;
 
-var Constants = {
-    MODE_DATE: 'date',
-    MODE_DATETIME: 'datetime',
-    MODE_TIME: 'time'
-};
-
 var Datetime = React.createClass({
 	mixins: [
 		require('react-onclickoutside')
@@ -26,12 +20,12 @@ var Datetime = React.createClass({
 		time: TimeView
 	},
 	propTypes: {
-		date: React.PropTypes.string,
+		date: React.PropTypes.object,
 		onChange: React.PropTypes.func,
+		input: React.PropTypes.bool,
 		dateFormat: React.PropTypes.string,
 		timeFormat: React.PropTypes.string,
 		inputProps: React.PropTypes.object,
-		defaultText: React.PropTypes.string,
 		viewMode: React.PropTypes.oneOf(['years', 'months', 'days', 'time']),
 		minDate: React.PropTypes.object,
 		maxDate: React.PropTypes.object
@@ -39,9 +33,10 @@ var Datetime = React.createClass({
 	getDefaultProps: function() {
 
 		return {
-			date: false,
+			date: new Date(),
 			viewMode: 'days',
 			inputProps: {},
+			input: true,
 			onChange: function (x) {
 				console.log(x);
 			}
@@ -49,20 +44,15 @@ var Datetime = React.createClass({
 	},
 	getInitialState: function() {
 		var formats = this.getFormats( this.props ),
-			date = this.props.date || new Date()
+			date = this.props.date
 		;
 		return {
 			currentView: this.props.viewMode,
+			open: !this.props.input,
 			inputFormat: formats.datetime,
-			widgetStyle: {
-				display: 'block',
-				position: 'absolute',
-				left: -9999,
-				zIndex: '9999 !important'
-			},
 			viewDate: moment(date).startOf("month"),
 			selectedDate: moment(date),
-			inputValue: typeof this.props.defaultText != 'undefined' ?  this.props.defaultText : moment(date).format( formats.datetime )
+			inputValue: moment(date).format( formats.datetime )
 		};
 	},
 
@@ -224,24 +214,12 @@ var Datetime = React.createClass({
 	},
 
 	openCalendar: function() {
-		var styles = {
-			display: 'block',
-			position: 'absolute'
-		}
-		;
-
-		this.setState({
-			widgetStyle: styles,
-			widgetClasses: 'dropdown-menu bottom',
-			showPicker: true
-		});
+		this.setState({ open: true });
 	},
 
 	handleClickOutside: function(){
-		this.setState({
-			showPicker: false,
-			widgetStyle: { display: 'none' }
-		});
+		if( this.props.input && this.state.open )
+			this.setState({ open: false });
 	},
 
 	componentProps: {
@@ -252,8 +230,8 @@ var Datetime = React.createClass({
 
 	getComponentProps: function(){
 		var me = this,
-		formats = this.getFormats( this.props ),
-		props = {dateFormat: formats.date, timeFormat: formats.time}
+			formats = this.getFormats( this.props ),
+			props = {dateFormat: formats.date, timeFormat: formats.time}
 		;
 
 		this.componentProps.fromProps.forEach( function( name ){
@@ -271,23 +249,34 @@ var Datetime = React.createClass({
 
 	render: function() {
 		var Component = this.viewComponents[ this.state.currentView ],
-			inputProps = assign({
+			DOM = React.DOM,
+			className = 'rdt',
+			children = []
+		;
+
+		if( this.props.input ){
+			children = [ DOM.input( assign({
 				key: 'i',
 				type:'text',
 				className:'form-control',
 				onFocus: this.openCalendar,
 				onChange: this.onChange,
 				value: this.state.inputValue
-			}, this.props.inputProps ),
-			DOM = React.DOM
-		;
+			}, this.props.inputProps ))];
+		}
+		else {
+			className += ' rdtStatic';
+		}
 
-		return DOM.div({className: 'datetimePicker'}, [
-			DOM.input( inputProps ),
-			DOM.div( { key: 'dt', className: this.state.widgetClasses, style: this.state.widgetStyle },
-				React.createElement( Component, this.getComponentProps() )
+		if( this.state.open )
+			className += ' rdtOpen';
+
+		return DOM.div({className: className}, children.concat(
+			DOM.div(
+				{ key: 'dt', className: 'rdtPicker' },
+				React.createElement( Component, this.getComponentProps())
 			)
-		]);
+		));
 	}
 });
 

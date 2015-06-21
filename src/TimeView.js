@@ -29,9 +29,9 @@ var DateTimePickerTime = React.createClass({
 		};
 	},
 	renderCounter: function( type ){
-		return DOM.div({ key: type, className: 'dtCounter'}, [
+		return DOM.div({ key: type, className: 'rdtCounter'}, [
 			DOM.div({ key:'up', className: 'btn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
-			DOM.div({ key:'c', className: 'dtCount' }, this.state[ type ] ),
+			DOM.div({ key:'c', className: 'rdtCount' }, this.state[ type ] ),
 			DOM.div({ key:'do', className: 'btn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▼' )
 		]);
 	},
@@ -42,28 +42,26 @@ var DateTimePickerTime = React.createClass({
 
 		this.state.counters.forEach( function(c){
 			if( counters.length )
-				counters.push( DOM.div( {key: 'sep' + counters.length, className: 'dtCounterSeparator' }, ':' ));
+				counters.push( DOM.div( {key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ));
 			counters.push( me.renderCounter( c ) );
 		});
 
 		if( this.state.counters.length == 3 && this.props.timeFormat.indexOf('S') != -1 ){
-			counters.push( DOM.div( {className: 'dtCounterSeparator', key: 'sep5' }, ':' ));
+			counters.push( DOM.div( {className: 'rdtCounterSeparator', key: 'sep5' }, ':' ));
 			counters.push(
-				DOM.div( {className: 'dtCounter dtMilli', key:'m'},
+				DOM.div( {className: 'rdtCounter rdtMilli', key:'m'},
 					DOM.input({ value: this.state.milliseconds, type: 'text', onChange: this.updateMilli })
 					)
 				);
 		}
 
-		return DOM.div( {className: 'timepicker'},
-			DOM.div( {className: 'timepicker-picker'},
-				DOM.table( {}, [
-					this.renderHeader(),
-					DOM.tbody({key: 'b'}, DOM.tr({}, DOM.td({},
-						DOM.div({ className: 'dtCounters' }, counters )
-					)))
-				])
-			)
+		return DOM.div( {className: 'rdtTime'},
+			DOM.table( {}, [
+				this.renderHeader(),
+				DOM.tbody({key: 'b'}, DOM.tr({}, DOM.td({},
+					DOM.div({ className: 'rdtCounters' }, counters )
+				)))
+			])
 		);
 
 	},

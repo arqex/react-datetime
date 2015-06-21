@@ -26,7 +26,7 @@ var DateTimePickerDays = React.createClass({
 		if( footer )
 			tableChildren.push( footer );
 
-		return DOM.div({ className: 'datepicker-days' },
+		return DOM.div({ className: 'rdtDays' },
 			DOM.table({}, tableChildren )
 		);
 	},
