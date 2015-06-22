@@ -36,9 +36,9 @@ var DateTimePickerYears = React.createClass({
 
 		return DOM.div({ className: 'rdtYears' },[
 			DOM.table({ key: 'a'}, DOM.thead({}, DOM.tr({},[
-				DOM.th({ key: 'prev', className: 'prev', onClick: this.props.subtractTime(10, 'years') }, '‹'),
-				DOM.th({ key: 'year', className: 'switch', onClick: this.props.showView('years'), colSpan: 5 }, year + '-' + (year + 9) ),
-				DOM.th({ key: 'next', className: 'next', onClick: this.props.addTime(10, 'years')}, '›' )
+				DOM.th({ key: 'prev', className: 'prev' }, DOM.button({onClick: this.props.subtractTime(10, 'years')}, '‹')),
+				DOM.th({ key: 'year', className: 'switch', onClick: this.props.showView('years'), colSpan: 2 }, year + '-' + (year + 9) ),
+				DOM.th({ key: 'next', className: 'next'}, DOM.button({onClick: this.props.addTime(10, 'years')}, '›'))
 				]))),
 			DOM.table({ key: 'years'}, DOM.tbody({}, this.renderYears( year )))
 		]);

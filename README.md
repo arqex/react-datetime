@@ -51,7 +51,7 @@ require('moment/locale/fr');
 
 If there are multiple locales loaded, you can use the prop `locale` to define what language should be used by the instance:
 ```js
-<Datetime locale="fr" />
+<Datetime locale="fr-ca" />
 <Datetime locale="de" />
 ```
 [Here you can see the i18n example working](http://codepen.io/arqex/pen/PqJMQV).
