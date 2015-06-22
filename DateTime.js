@@ -9,6 +9,7 @@ var assign = require('object-assign'),
 	moment = require('moment')
 ;
 
+var TYPES = React.PropTypes;
 var Datetime = React.createClass({
 	mixins: [
 		require('react-onclickoutside')
@@ -20,15 +21,16 @@ var Datetime = React.createClass({
 		time: TimeView
 	},
 	propTypes: {
-		date: React.PropTypes.object,
-		onChange: React.PropTypes.func,
-		input: React.PropTypes.bool,
-		dateFormat: React.PropTypes.string,
-		timeFormat: React.PropTypes.string,
-		inputProps: React.PropTypes.object,
-		viewMode: React.PropTypes.oneOf(['years', 'months', 'days', 'time']),
-		minDate: React.PropTypes.object,
-		maxDate: React.PropTypes.object
+		date: TYPES.object,
+		onChange: TYPES.func,
+		locale: TYPES.string,
+		input: TYPES.bool,
+		dateFormat: TYPES.string,
+		timeFormat: TYPES.string,
+		inputProps: TYPES.object,
+		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
+		minDate: TYPES.object,
+		maxDate: TYPES.object
 	},
 	getDefaultProps: function() {
 
@@ -50,18 +52,20 @@ var Datetime = React.createClass({
 			currentView: this.props.viewMode,
 			open: !this.props.input,
 			inputFormat: formats.datetime,
-			viewDate: moment(date).startOf("month"),
-			selectedDate: moment(date),
-			inputValue: moment(date).format( formats.datetime )
+			viewDate: this.localMoment(date).startOf("month"),
+			selectedDate: this.localMoment(date),
+			inputValue: this.localMoment(date).format( formats.datetime )
 		};
 	},
 
 	getFormats: function( props ){
 		var formats = {
-			date: '',
-			time: '',
-			datetime: ''
-		};
+				date: '',
+				time: '',
+				datetime: ''
+			},
+			locale = this.localMoment( props.date ).localeData()
+		;
 
 		if( props.dateFormat ){
 			formats.date = props.dateFormat;
@@ -71,9 +75,9 @@ var Datetime = React.createClass({
 		}
 
 		if( !formats.date && !formats.time ){
-			formats.date = 'MM/DD/YY';
-			formats.time = 'H:mm';
-			formats.datetime = 'MM/DD/YY H:mm';
+			formats.date = locale.longDateFormat('L');
+			formats.time = locale.longDateFormat('LT');
+			formats.datetime = formats.date + ' ' + formats.time;
 		}
 		else {
 			if( props.dateFormat ){
@@ -101,18 +105,21 @@ var Datetime = React.createClass({
 	},
 
 	onChange: function(event) {
-		var value = event.target == null ? event : event.target.value;
-		if (moment(value).isValid()) {
+		var value = event.target == null ? event : event.target.value,
+			localMoment = this.localMoment( date )
+		;
+
+		if (localMoment.isValid()) {
 			this.setState({
-				selectedDate: moment(value),
-				viewDate: moment(value).startOf("month")
+				selectedDate: localMoment,
+				viewDate: localMoment.clone().startOf("month")
 			});
 		}
 
 		return this.setState({
 			inputValue: value
 		}, function() {
-			return this.props.onChange(moment(this.state.inputValue, this.state.inputFormat, true).format( this.state.inputFormat ));
+			return this.props.onChange( localMoment.toDate() );
 		});
 	},
 
@@ -187,9 +194,9 @@ var Datetime = React.createClass({
 
 	updateDate: function( e ) {
 		var target = e.target,
-		modifier = 0,
-		currentDate = this.state.selectedDate,
-		date
+			modifier = 0,
+			currentDate = this.state.selectedDate,
+			date
 		;
 
 		if(target.className.indexOf("new") != -1)
@@ -222,10 +229,17 @@ var Datetime = React.createClass({
 			this.setState({ open: false });
 	},
 
+	localMoment: function( date ){
+		var m = moment( date );
+		if( this.props.locale )
+			m.locale( this.props.locale );
+		return m;
+	},
+
 	componentProps: {
 		fromProps: ['viewMode', 'minDate', 'maxDate'],
 		fromState: ['viewDate', 'selectedDate' ],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateDate']
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateDate', 'localMoment']
 	},
 
 	getComponentProps: function(){

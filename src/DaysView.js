@@ -8,6 +8,7 @@ var DateTimePickerDays = React.createClass({
 	render: function() {
 		var footer = this.renderFooter(),
 			date = this.props.viewDate,
+			locale = date.localeData(),
 			tableChildren
 		;
 
@@ -15,10 +16,10 @@ var DateTimePickerDays = React.createClass({
 			DOM.thead({ key: 'th'}, [
 				DOM.tr({ key: 'h'},[
 					DOM.th({ key: 'p', className: 'prev', onClick: this.props.subtractTime(1, 'months') }, '‹'),
-					DOM.th({ key: 's', className: 'switch', onClick: this.props.showView('months'), colSpan: 5 }, moment.months()[date.month()] + ' ' + date.year() ),
+					DOM.th({ key: 's', className: 'switch', onClick: this.props.showView('months'), colSpan: 5 }, locale.months( date ) + ' ' + date.year() ),
 					DOM.th({ key: 'n', className: 'next', onClick: this.props.addTime(1, 'months')}, '›' )
 				]),
-				DOM.tr({ key: 'd'}, moment.weekdaysMin().map( function( day ){ return DOM.th({ key: day, className: 'dow'}, day) }) )
+				DOM.tr({ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day ){ return DOM.th({ key: day, className: 'dow'}, day ); }) )
 			]),
 			DOM.tbody({key: 'tb'}, this.renderDays())
 		];
@@ -29,6 +30,25 @@ var DateTimePickerDays = React.createClass({
 		return DOM.div({ className: 'rdtDays' },
 			DOM.table({}, tableChildren )
 		);
+	},
+
+	/**
+	 * Get a list of the days of the week
+	 * depending on the current locale
+	 * @return {array} A list with the shortname of the days
+	 */
+	getDaysOfWeek: function( locale ){
+		var days = locale._weekdaysMin,
+			first = locale.firstDayOfWeek(),
+			dow = [],
+			i = 0
+		;
+
+		days.forEach( function( day ){
+			dow[ (7 + (i++) - first) % 7 ] = day;
+		});
+
+		return dow;
 	},
 
 	renderDays: function() {
