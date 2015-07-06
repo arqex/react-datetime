@@ -53,7 +53,7 @@ var DateTimePickerDays = React.createClass({
 
 	renderDays: function() {
 		var date = this.props.viewDate,
-			selected = this.props.selectedDate,
+			selected = this.props.selectedDate.clone(),
 			prevMonth = date.clone().subtract( 1, 'months' ),
 			currentYear = date.year(),
 			currentMonth = date.month(),
@@ -62,6 +62,7 @@ var DateTimePickerDays = React.createClass({
 			maxDate = this.props.maxDate,
 			weeks = [],
 			days = [],
+			renderer = this.props.renderDay || this.renderDay,
 			classes, disabled, dayProps
 		;
 
@@ -87,11 +88,16 @@ var DateTimePickerDays = React.createClass({
 			if( disabled )
 				classes += ' disabled';
 
-			dayProps = { key: prevMonth.format('M_D'), className: classes };
+			dayProps = {
+				key: prevMonth.format('M_D'),
+				'data-value': prevMonth.date(),
+				className: classes
+			};
 			if( !disabled )
 				dayProps.onClick = this.props.updateDate;
 
-			days.push( DOM.td( dayProps, prevMonth.date() ));
+			days.push( renderer( dayProps, prevMonth.clone(), selected ) );
+
 			if( days.length == 7 ){
 				weeks.push( DOM.tr( {key: prevMonth.format('M_D')}, days ) );
 				days = [];
@@ -101,6 +107,10 @@ var DateTimePickerDays = React.createClass({
 		}
 
 		return weeks;
+	},
+
+	renderDay: function( props, currentDate, selectedDate ){
+		return DOM.td( props, currentDate.date() );
 	},
 
 	renderFooter: function(){

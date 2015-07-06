@@ -4,33 +4,6 @@ var React = require('react');
 
 var DOM = React.DOM;
 var DateTimePickerYears = React.createClass({
-	renderYears: function( year ) {
-		var years = [],
-			i = -1,
-			rows = [],
-			classes
-		;
-
-		year--;
-		while (i < 11) {
-			classes = 'year';
-			if( i === -1 | i === 10 )
-				classes += ' old';
-			if( this.props.selectedDate.year() === year )
-				classes += ' active';
-
-			years.push( DOM.td({ key: year, className: classes, onClick: this.props.setDate('year') }, year ));
-			// years.push(<td key={year} className={ classes } onClick={this.props.setDate('year')}>{year}</td>);
-			if( years.length == 4 ){
-				rows.push( DOM.tr({ key: i }, years ) );
-				years = [];
-			}
-
-			year++;
-			i++;
-		}
-		return rows;
-	},
 	render: function() {
 		var year = parseInt(this.props.viewDate.year() / 10, 10) * 10;
 
@@ -42,6 +15,47 @@ var DateTimePickerYears = React.createClass({
 				]))),
 			DOM.table({ key: 'years'}, DOM.tbody({}, this.renderYears( year )))
 		]);
+	},
+
+	renderYears: function( year ) {
+		var years = [],
+			i = -1,
+			rows = [],
+			renderer = this.props.renderYear || this.renderYear,
+			classes, props
+		;
+
+		year--;
+		while (i < 11) {
+			classes = 'year';
+			if( i === -1 | i === 10 )
+				classes += ' old';
+			if( this.props.selectedDate.year() === year )
+				classes += ' active';
+
+			props = {
+				key: year,
+				'data-value': year,
+				className: classes,
+				onClick: this.props.setDate('year')
+			};
+
+			years.push( renderer( props, year, this.props.selectedDate.clone() ));
+
+			if( years.length == 4 ){
+				rows.push( DOM.tr({ key: i }, years ) );
+				years = [];
+			}
+
+			year++;
+			i++;
+		}
+
+		return rows;
+	},
+
+	renderYear: function( props, year, selectedDate ){
+		return DOM.td( props, year );
 	}
 });
 

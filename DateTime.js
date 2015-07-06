@@ -139,7 +139,7 @@ var Datetime = React.createClass({
 		;
 		return function( e ){
 			me.setState({
-				viewDate: me.state.viewDate.clone()[ type ]( e.target.innerHTML ).startOf( type ),
+				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.dataset.value) ).startOf( type ),
 				currentView: nextViews[ type ]
 			});
 		};
@@ -206,7 +206,7 @@ var Datetime = React.createClass({
 
 		date = this.state.viewDate.clone()
 			.month( this.state.viewDate.month() + modifier )
-			.date( parseInt( target.innerHTML ) )
+			.date( parseInt( target.dataset.value ) )
 			.hours( currentDate.hours() )
 			.minutes( currentDate.minutes() )
 			.seconds( currentDate.seconds() )
@@ -237,7 +237,7 @@ var Datetime = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['viewMode', 'minDate', 'maxDate'],
+		fromProps: ['viewMode', 'minDate', 'maxDate', 'renderDay', 'renderMonth', 'renderYear'],
 		fromState: ['viewDate', 'selectedDate' ],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateDate', 'localMoment']
 	},
