@@ -217,7 +217,7 @@ var Datetime = React.createClass({
 			selectedDate: date,
 			viewDate: date.clone().startOf('month'),
 			inputValue: date.format( this.state.inputFormat )
-		});
+		}, this.callOnChange );
 	},
 
 	openCalendar: function() {
