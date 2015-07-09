@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/arqex/react-datetime"
   },
-  "main": "./lib/DateTime.jsx",
+  "main": "./DateTime.js",
   "scripts": {
     "build-npm": "jsx -x jsx ./src/ ./lib/",
     "build": "./node_modules/.bin/gulp.cmd",
