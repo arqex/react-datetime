@@ -22,6 +22,7 @@ var Datetime = React.createClass({
 	},
 	propTypes: {
 		date: TYPES.object,
+		onBlur: TYPES.func,
 		onChange: TYPES.func,
 		locale: TYPES.string,
 		input: TYPES.bool,
@@ -39,6 +40,7 @@ var Datetime = React.createClass({
 			viewMode: 'days',
 			inputProps: {},
 			input: true,
+			onBlur: function () {},
 			onChange: function (x) {
 				console.log(x);
 			}
@@ -217,7 +219,7 @@ var Datetime = React.createClass({
 			selectedDate: date,
 			viewDate: date.clone().startOf('month'),
 			inputValue: date.format( this.state.inputFormat )
-		});
+		}, this.callOnChange );
 	},
 
 	openCalendar: function() {
@@ -225,6 +227,7 @@ var Datetime = React.createClass({
 	},
 
 	handleClickOutside: function(){
+		this.props.onBlur(this.state.inputValue);
 		if( this.props.input && this.state.open )
 			this.setState({ open: false });
 	},
