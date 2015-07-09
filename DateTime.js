@@ -112,7 +112,7 @@ var Datetime = React.createClass({
 
 	onChange: function(event) {
 		var value = event.target == null ? event : event.target.value,
-			localMoment = this.localMoment( date )
+			localMoment = this.localMoment( value )
 		;
 
 		if (localMoment.isValid()) {
