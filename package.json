@@ -1,6 +1,6 @@
 {
   "name": "react-datetime",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "A lightweight but complete datetime picker React.js component.",
   "homepage": "https://github.com/arqex/react-datetime",
   "repository": {
@@ -9,12 +9,7 @@
   },
   "main": "./DateTime.js",
   "scripts": {
-    "build-npm": "jsx -x jsx ./src/ ./lib/",
-    "build": "./node_modules/.bin/gulp.cmd",
-    "build-min": "$COMPRESS=1 webpack --output-file react-bootstrap-datetimepicker.min.js",
-    "examples": "webpack-dev-server --config ./examples/webpack.config.js",
-    "test-watch": "./node_modules/.bin/grunt watch 2>&1 >/dev/null & karma start karma.dev.js",
-    "test": "./node_modules/.bin/grunt build && karma start karma.ci.js"
+    "build": "./node_modules/.bin/gulp.cmd"
   },
   "keywords": [
     "react",
