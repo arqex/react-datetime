@@ -115,11 +115,13 @@ var Datetime = React.createClass({
 			localMoment = this.localMoment( value )
 		;
 
+
 		if (localMoment.isValid()) {
-			this.setState({
+			return this.setState({
 				selectedDate: localMoment,
+				inputValue: value,
 				viewDate: localMoment.clone().startOf("month")
-			});
+			}, this.callOnChange);
 		}
 
 		return this.setState({
