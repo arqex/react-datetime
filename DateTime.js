@@ -1,5 +1,7 @@
 'use strict';
 
+require('classlist-polyfill');
+
 var assign = require('object-assign'),
 	React = require('react'),
 	DaysView = require('./src/DaysView'),
@@ -21,6 +23,7 @@ var Datetime = React.createClass({
 		time: TimeView
 	},
 	propTypes: {
+		className: TYPES.string,
 		date: TYPES.object,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
@@ -36,6 +39,7 @@ var Datetime = React.createClass({
 	getDefaultProps: function() {
 
 		return {
+			className: 'form-control',
 			date: new Date(),
 			viewMode: 'days',
 			inputProps: {},
@@ -108,14 +112,16 @@ var Datetime = React.createClass({
 
 	onChange: function(event) {
 		var value = event.target == null ? event : event.target.value,
-			localMoment = this.localMoment( date )
+			localMoment = this.localMoment( value )
 		;
 
+
 		if (localMoment.isValid()) {
-			this.setState({
+			return this.setState({
 				selectedDate: localMoment,
+				inputValue: value,
 				viewDate: localMoment.clone().startOf("month")
-			});
+			}, this.callOnChange);
 		}
 
 		return this.setState({
@@ -141,7 +147,7 @@ var Datetime = React.createClass({
 		;
 		return function( e ){
 			me.setState({
-				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.dataset.value) ).startOf( type ),
+				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value')) ).startOf( type ),
 				currentView: nextViews[ type ]
 			});
 		};
@@ -208,7 +214,7 @@ var Datetime = React.createClass({
 
 		date = this.state.viewDate.clone()
 			.month( this.state.viewDate.month() + modifier )
-			.date( parseInt( target.dataset.value ) )
+			.date( parseInt( target.getAttribute('data-value') ) )
 			.hours( currentDate.hours() )
 			.minutes( currentDate.minutes() )
 			.seconds( currentDate.seconds() )
@@ -275,7 +281,7 @@ var Datetime = React.createClass({
 			children = [ DOM.input( assign({
 				key: 'i',
 				type:'text',
-				className:'form-control',
+				className: this.props.className,
 				onFocus: this.openCalendar,
 				onChange: this.onChange,
 				value: this.state.inputValue
