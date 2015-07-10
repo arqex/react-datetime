@@ -96,11 +96,14 @@ var DateTimePickerTime = React.createClass({
 				},80);
 			}, 500);
 
-			document.body.addEventListener('mouseup', function(){
+			me.mouseUpListener = function(){
 				clearTimeout( me.timer );
 				clearInterval( me.increaseTimer );
 				me.props.setTime( type, me.state[ type ] );
-			});
+				document.body.removeEventListener('mouseup', me.mouseUpListener);
+			};
+
+			document.body.addEventListener('mouseup', me.mouseUpListener);
 		};
 	},
 

@@ -34,16 +34,14 @@ var Datetime = React.createClass({
 		maxDate: TYPES.object
 	},
 	getDefaultProps: function() {
-
+		var nof = function(){};
 		return {
 			date: new Date(),
 			viewMode: 'days',
 			inputProps: {},
 			input: true,
-			onBlur: function () {},
-			onChange: function (x) {
-				console.log(x);
-			}
+			onBlur: nof,
+			onChange: nof
 		};
 	},
 	getInitialState: function() {
@@ -187,11 +185,9 @@ var Datetime = React.createClass({
 		this.setState({
 			selectedDate: date,
 			inputValue: date.format( this.state.inputFormat )
-		}, this.callOnChange );
-	},
+		});
 
-	callOnChange: function(){
-		this.props.onChange(this.state.selectedDate.format( this.state.inputFormat ));
+		this.props.onChange( date );
 	},
 
 	updateDate: function( e ) {
@@ -219,7 +215,9 @@ var Datetime = React.createClass({
 			selectedDate: date,
 			viewDate: date.clone().startOf('month'),
 			inputValue: date.format( this.state.inputFormat )
-		}, this.callOnChange );
+		});
+
+		this.props.onChange( date );
 	},
 
 	openCalendar: function() {
@@ -227,7 +225,7 @@ var Datetime = React.createClass({
 	},
 
 	handleClickOutside: function(){
-		this.props.onBlur(this.state.inputValue);
+		this.props.onBlur( this.state.selectedDate );
 		if( this.props.input && this.state.open )
 			this.setState({ open: false });
 	},
