@@ -23,7 +23,6 @@ var Datetime = React.createClass({
 		time: TimeView
 	},
 	propTypes: {
-		className: TYPES.string,
 		date: TYPES.object,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
@@ -279,7 +278,7 @@ var Datetime = React.createClass({
 			children = [ DOM.input( assign({
 				key: 'i',
 				type:'text',
-				className: this.props.className,
+				className: 'form-control', 
 				onFocus: this.openCalendar,
 				onChange: this.onChange,
 				value: this.state.inputValue
