@@ -31,13 +31,13 @@ API
 
 | Name         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
-| **date** | Date  | new Date() | Represents the inital dateTime, this string is then parsed by moment.js |
+| **date** | Date  | new Date() | Represents the inital dateTime, this prop is parsed by moment.js, so it is possible to use a date string. |
 | **dateFormat**   | string  | Locale default | Defines the format moment.js should use to parse and output the date. The default is only set if there is not `timeFormat` defined. |
 | **timeFormat**   | string  | Locale default | Defines the format moment.js should use to parse and output the time. The default is only set if there is not `dateFormat` defined. |
 | **input** | boolean | true | Wether to show an input field to edit the date manually. |
 | **locale** | string | null | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
-| **onChange** | function | empty functin | Callback trigger when the date changes. The callback receives the selected `Date` object as only parameter. |
-| **onBlur** | function | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `Date` object as only parameter. |
+| **onChange** | function | empty functin | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter. |
+| **onBlur** | function | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter. |
 | **viewMode** | string or number | 'days' | The default view to display when the picker is shown. ('years', 'months', 'days', 'time') |
 | **inputProps** | object | undefined | Defines additional attributes for the input element of the component. |
 | **minDate** | moment | undefined | The earliest date allowed for entry in the calendar view. |

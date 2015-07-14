@@ -106,7 +106,7 @@ var Datetime = React.createClass({
 
 	onChange: function(event) {
 		var value = event.target == null ? event : event.target.value,
-			localMoment = this.localMoment( date )
+			localMoment = this.localMoment( value )
 		;
 
 		if (localMoment.isValid()) {
@@ -119,7 +119,7 @@ var Datetime = React.createClass({
 		return this.setState({
 			inputValue: value
 		}, function() {
-			return this.props.onChange( localMoment.toDate() );
+			return this.props.onChange( localMoment );
 		});
 	},
 
@@ -294,5 +294,8 @@ var Datetime = React.createClass({
 		));
 	}
 });
+
+// Make moment accessible through the Datetime class
+Datetime.moment = moment;
 
 module.exports = Datetime;
