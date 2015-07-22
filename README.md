@@ -32,8 +32,8 @@ API
 | Name         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
 | **date** | Date  | new Date() | Represents the inital dateTime, this prop is parsed by moment.js, so it is possible to use a date string. |
-| **dateFormat**   | string  | Locale default | Defines the format moment.js should use to parse and output the date. The default is only set if there is not `timeFormat` defined. |
-| **timeFormat**   | string  | Locale default | Defines the format moment.js should use to parse and output the time. The default is only set if there is not `dateFormat` defined. |
+| **dateFormat**   | `bool` or `string`  | `true` | Defines the format for the date. It accepts any [moment.js date format](http://momentjs.com/docs/#/displaying/format/). If `true` the date will be displayed using the defaults for the current locale. If `false` the datepicker is disabled and the component can be used as timepicker. |
+| **timeFormat**   | `bool` or `string`  | `true` | Defines the format for the time. It accepts any [moment.js time format](http://momentjs.com/docs/#/displaying/format/). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker. |
 | **input** | boolean | true | Wether to show an input field to edit the date manually. |
 | **locale** | string | null | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
 | **onChange** | function | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter. |

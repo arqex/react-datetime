@@ -28,8 +28,8 @@ var Datetime = React.createClass({
 		onChange: TYPES.func,
 		locale: TYPES.string,
 		input: TYPES.bool,
-		dateFormat: TYPES.string,
-		timeFormat: TYPES.string,
+		// dateFormat: TYPES.string | TYPES.bool,
+		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
 		isValidDate: TYPES.func,
@@ -45,15 +45,22 @@ var Datetime = React.createClass({
 			inputProps: {},
 			input: true,
 			onBlur: nof,
-			onChange: nof
+			onChange: nof,
+			timeFormat: true,
+			dateFormat: true
 		};
 	},
 	getInitialState: function() {
 		var formats = this.getFormats( this.props ),
-			date = this.props.date
+			date = this.props.date,
+			currentView = this.props.viewMode
 		;
+
+		if( !formats.date )
+			currentView = 'time';
+
 		return {
-			currentView: this.props.viewMode,
+			currentView: currentView,
 			open: !this.props.input,
 			inputFormat: formats.datetime,
 			viewDate: this.localMoment(date).startOf("month"),
@@ -64,37 +71,20 @@ var Datetime = React.createClass({
 
 	getFormats: function( props ){
 		var formats = {
-				date: '',
-				time: '',
-				datetime: ''
+				date: props.dateFormat || '',
+				time: props.timeFormat || ''
 			},
 			locale = this.localMoment( props.date ).localeData()
 		;
 
-		if( props.dateFormat ){
-			formats.date = props.dateFormat;
+		if( formats.date === true ){
+			formats.date = locale.longDateFormat('L');
 		}
-		if( props.timeFormat ){
-			formats.time = props.timeFormat;
+		if( formats.time === true ){
+			formats.time = locale.longDateFormat('LT');
 		}
 
-		if( !formats.date && !formats.time ){
-			formats.date = locale.longDateFormat('L');
-			formats.time = locale.longDateFormat('LT');
-			formats.datetime = formats.date + ' ' + formats.time;
-		}
-		else {
-			if( props.dateFormat ){
-				formats.date = props.dateFormat;
-				formats.datetime = formats.date;
-			}
-			if( props.timeFormat ){
-				if( formats.date )
-					formats.datetime += ' ';
-				formats.time = props.timeFormat;
-				formats.datetime += formats.time;
-			}
-		}
+		formats.datetime = formats.date + ' ' + formats.time;
 
 		return formats;
 	},
