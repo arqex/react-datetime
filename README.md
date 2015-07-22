@@ -36,12 +36,11 @@ API
 | **timeFormat**   | string  | Locale default | Defines the format moment.js should use to parse and output the time. The default is only set if there is not `dateFormat` defined. |
 | **input** | boolean | true | Wether to show an input field to edit the date manually. |
 | **locale** | string | null | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
-| **onChange** | function | empty functin | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter. |
+| **onChange** | function | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter. |
 | **onBlur** | function | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter. |
 | **viewMode** | string or number | 'days' | The default view to display when the picker is shown. ('years', 'months', 'days', 'time') |
 | **inputProps** | object | undefined | Defines additional attributes for the input element of the component. |
-| **minDate** | moment | undefined | The earliest date allowed for entry in the calendar view. |
-| **maxDate** | moment | undefined | The latest date allowed for entry in the calendar view. |
+| **isValidDate** | function | () => true | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and should return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
 | **renderDay** | function | DOM.td( day ) | Customize the way that the days are shown in the day picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance_customization) |
 | **renderMonth** | function | DOM.td( month ) | Customize the way that the months are shown in the month picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance_customization) |
 | **renderYear** | function | DOM.td( year ) | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance_customization) |
@@ -89,6 +88,31 @@ var MyDTPicker = React.createClass({
 * `props` is the object that react-date picker has calculated for this object. It is convenient to use this object as the props for your custom component, since it knows how to handle the click event and its `className` attribute is used by the default styles.
 * `selectedDate` and `currentDate` are Moment.js objects and can be used to change the output depending on the selected date, or the date for the current day.
 * `month` and `year` are the numeric representation of the current month and year to be displayed. Notice that the possible `month` values go from `0` to `11`.
+
+## Selectable dates
+It is possible to disable dates in the calendar if we don't want the user to select them. It is possible thanks to the prop `isValidDate`, which admits a function in the form `function( currentDate, selectedDate )` where both arguments are moment.js objects. The function should return `true` for selectable dates, and `false` for disabled ones.
+
+If we want to disable all the dates before today we can do like
+```js
+var valid = function( current ){
+    var limit = new Date(); // Today
+
+    // Yesterday
+    limit.setDate(limit.getDate() - 1);
+
+    // Only dates after yesterday are ok
+    return current > limit;
+};
+<Datetime isValidDate={ valid } />
+```
+
+If we want only odd dates to be valid we could do like
+```js
+var valid = function( current ){
+    return current.date() % 2;
+};
+<Datetime isValidDate={ valid } />
+```
 
 Contributions
 ===============================
