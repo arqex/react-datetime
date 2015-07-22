@@ -63,7 +63,8 @@ var DateTimePickerDays = React.createClass({
 			weeks = [],
 			days = [],
 			renderer = this.props.renderDay || this.renderDay,
-			classes, disabled, dayProps
+			isValid = this.props.isValidDate || this.isValidDate,
+			classes, disabled, dayProps, currentDate
 		;
 
 		// Go to the last week of the previous month
@@ -72,6 +73,7 @@ var DateTimePickerDays = React.createClass({
 
 		while( prevMonth.isBefore( lastDay ) ){
 			classes = 'day';
+			currentDate = prevMonth.clone();
 
 			if( prevMonth.year() < currentYear || prevMonth.month() < currentMonth )
 				classes += ' old';
@@ -84,7 +86,7 @@ var DateTimePickerDays = React.createClass({
 			if (prevMonth.isSame(moment(), 'day') )
 				classes += ' today';
 
-			disabled = minDate && prevMonth.isBefore(minDate) || maxDate && prevMonth.isAfter(maxDate);
+			disabled = !isValid( currentDate, selected );
 			if( disabled )
 				classes += ' disabled';
 
@@ -96,7 +98,7 @@ var DateTimePickerDays = React.createClass({
 			if( !disabled )
 				dayProps.onClick = this.props.updateDate;
 
-			days.push( renderer( dayProps, prevMonth.clone(), selected ) );
+			days.push( renderer( dayProps, currentDate, selected ) );
 
 			if( days.length == 7 ){
 				weeks.push( DOM.tr( {key: prevMonth.format('M_D')}, days ) );
@@ -122,7 +124,8 @@ var DateTimePickerDays = React.createClass({
 				DOM.td({ onClick: this.props.showView('time'), colSpan: 7, className: 'timeToggle'}, this.props.selectedDate.format( this.props.timeFormat ))
 			)
 		);
-	}
+	},
+	isValidDate: function(){ return 1; }
 });
 
 module.exports = DateTimePickerDays;
