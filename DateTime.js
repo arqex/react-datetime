@@ -26,8 +26,8 @@ var Datetime = React.createClass({
 		onChange: TYPES.func,
 		locale: TYPES.string,
 		input: TYPES.bool,
-		// enableDate: TYPES.string,
-		// enableTime: TYPES.string,
+		// dateFormat: TYPES.string,
+		// timeFormat: TYPES.string,
 		inputProps: TYPES.object,
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
 		minDate: TYPES.object,
@@ -40,8 +40,8 @@ var Datetime = React.createClass({
 			viewMode: 'days',
 			inputProps: {},
 			input: true,
-			enableTime: true,
-			enableDate: true,
+			timeFormat: true,
+			dateFormat: true,
 			onBlur: function () {},
 			onChange: function (x) {
 				console.log(x);
@@ -69,8 +69,8 @@ var Datetime = React.createClass({
 
 	getFormats: function( props ){
 		var formats = {
-				date: props.enableDate || '',
-				time: props.enableTime || ''
+				date: props.dateFormat || '',
+				time: props.timeFormat || ''
 			},
 			locale = this.localMoment( props.date ).localeData()
 		;
