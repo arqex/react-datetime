@@ -122,7 +122,8 @@ var Datetime = React.createClass({
 		return this.setState({
 			inputValue: value
 		}, function() {
-			return this.props.onChange( localMoment );
+			if( localMoment.isValid() )
+				return this.props.onChange( localMoment );
 		});
 	},
 
@@ -276,7 +277,7 @@ var Datetime = React.createClass({
 			children = [ DOM.input( assign({
 				key: 'i',
 				type:'text',
-				className: 'form-control', 
+				className: 'form-control',
 				onFocus: this.openCalendar,
 				onChange: this.onChange,
 				value: this.state.inputValue
