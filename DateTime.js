@@ -37,10 +37,11 @@ var Datetime = React.createClass({
 		minDate: TYPES.object,
 		maxDate: TYPES.object
 	},
+
 	getDefaultProps: function() {
 		var nof = function(){};
 		return {
-			className: 'form-control',
+			className: '',
 			value: false,
 			defaultValue: new Date(),
 			viewMode: 'days',
@@ -278,7 +279,7 @@ var Datetime = React.createClass({
 	render: function() {
 		var Component = this.viewComponents[ this.state.currentView ],
 			DOM = React.DOM,
-			className = 'rdt',
+			className = 'rdt ' + this.props.className,
 			children = []
 		;
 
