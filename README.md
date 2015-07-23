@@ -31,7 +31,8 @@ API
 
 | Name         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
-| **date** | Date  | new Date() | Represents the inital dateTime, this prop is parsed by moment.js, so it is possible to use a date string. |
+| **value** | Date | new Date() | Represents the value for the compones, in order to use it as a [controlled component](https://facebook.github.io/react/docs/forms.html#controlled-components). This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date. |
+| **defaultValue** | Date | new Date() | Represents the inital value for the component to use it as a [uncontrolled component](https://facebook.github.io/react/docs/forms.html#uncontrolled-components). This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date. |
 | **dateFormat**   | `bool` or `string`  | `true` | Defines the format for the date. It accepts any [moment.js date format](http://momentjs.com/docs/#/displaying/format/). If `true` the date will be displayed using the defaults for the current locale. If `false` the datepicker is disabled and the component can be used as timepicker. |
 | **timeFormat**   | `bool` or `string`  | `true` | Defines the format for the time. It accepts any [moment.js time format](http://momentjs.com/docs/#/displaying/format/). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker. |
 | **input** | boolean | true | Wether to show an input field to edit the date manually. |

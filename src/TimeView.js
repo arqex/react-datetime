@@ -5,8 +5,11 @@ var React = require('react');
 var DOM = React.DOM;
 var DateTimePickerTime = React.createClass({
 	getInitialState: function(){
-		var date = this.props.selectedDate,
-			format = this.props.timeFormat,
+		return this.calculateState( this.props );
+	},
+	calculateState: function( props ){
+		var date = props.selectedDate,
+			format = props.timeFormat,
 			counters = []
 		;
 
@@ -63,7 +66,9 @@ var DateTimePickerTime = React.createClass({
 				)))
 			])
 		);
-
+	},
+	componentWillReceiveProps: function( nextProps, nextState ){
+		this.setState( this.calculateState( nextProps ) );
 	},
 	updateMilli: function( e ){
 		var milli = parseInt( e.target.value );
@@ -82,8 +87,10 @@ var DateTimePickerTime = React.createClass({
 	},
 	onStartClicking: function( action, type ){
 		var me = this,
-			update = {}
+			update = {},
+			value = this.state[ type ]
 		;
+
 		return function(){
 			var update = {};
 			update[ type ] = me[ action ]( type );
@@ -93,7 +100,7 @@ var DateTimePickerTime = React.createClass({
 				me.increaseTimer = setInterval( function(){
 					update[ type ] = me[ action ]( type );
 					me.setState( update );
-				},80);
+				},70);
 			}, 500);
 
 			me.mouseUpListener = function(){

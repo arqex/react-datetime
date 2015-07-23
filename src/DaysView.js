@@ -96,7 +96,7 @@ var DateTimePickerDays = React.createClass({
 				className: classes
 			};
 			if( !disabled )
-				dayProps.onClick = this.props.updateDate;
+				dayProps.onClick = this.props.updateSelectedDate;
 
 			days.push( renderer( dayProps, currentDate, selected ) );
 

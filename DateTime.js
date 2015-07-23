@@ -23,7 +23,8 @@ var Datetime = React.createClass({
 		time: TimeView
 	},
 	propTypes: {
-		date: TYPES.object,
+		value: TYPES.object,
+		defaultValue: TYPES.object,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
 		locale: TYPES.string,
@@ -40,7 +41,8 @@ var Datetime = React.createClass({
 		var nof = function(){};
 		return {
 			className: 'form-control',
-			date: new Date(),
+			value: false,
+			defaultValue: new Date(),
 			viewMode: 'days',
 			inputProps: {},
 			input: true,
@@ -50,18 +52,28 @@ var Datetime = React.createClass({
 			dateFormat: true
 		};
 	},
+
 	getInitialState: function() {
-		var formats = this.getFormats( this.props ),
-			date = this.props.date,
-			currentView = this.props.viewMode
+		var state = this.getStateFromProps( this.props );
+
+		state.open = !this.props.input;
+		state.currentView = this.props.viewMode;
+
+		return state;
+	},
+
+	getStateFromProps: function( props ){
+		var formats = this.getFormats( props ),
+			date = props.value || props.defaultValue,
+			selectedDate
 		;
 
-		if( !formats.date )
-			currentView = 'time';
+		if( typeof date == 'string')
+			selectedDate = this.localMoment( date, formats.datetime );
+		else
+			selectedDate = this.localMoment( date );
 
 		return {
-			currentView: currentView,
-			open: !this.props.input,
 			inputFormat: formats.datetime,
 			viewDate: this.localMoment(date).startOf("month"),
 			selectedDate: this.localMoment(date),
@@ -90,29 +102,32 @@ var Datetime = React.createClass({
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-		var formats = this.getFormats( nextProps );
-		if ( formats.datetime !== this.getFormats(this.props).datetime ) {
-			return this.setState({
-				inputFormat: nextProps.inputFormat
-			});
-		}
-	},
-
-	onChange: function(event) {
-		var value = event.target == null ? event : event.target.value,
-			localMoment = this.localMoment( value )
+		var formats = this.getFormats( nextProps ),
+			update = {}
 		;
 
-		if (localMoment.isValid()) {
-			this.setState({
-				selectedDate: localMoment,
-				viewDate: localMoment.clone().startOf("month")
-			});
+		if( nextProps.value ){
+			update = this.getStateFromProps( nextProps );
+		}
+		if ( formats.datetime !== this.getFormats( this.props ).datetime ) {
+			update.inputFormat = formats.datetime;
 		}
 
-		return this.setState({
-			inputValue: value
-		}, function() {
+		this.setState( update );
+	},
+
+	onInputChange: function( e ) {
+		var value = e.target == null ? e : e.target.value,
+			localMoment = this.localMoment( value, this.state.inputFormat ),
+			update = { inputValue: value }
+		;
+
+		if ( localMoment.isValid() && !this.props.value ) {
+			update.selectedDate = localMoment;
+			update.viewDate = localMoment.clone().startOf("month");
+		}
+
+		return this.setState( update, function() {
 			if( localMoment.isValid() )
 				return this.props.onChange( localMoment );
 		});
@@ -177,15 +192,16 @@ var Datetime = React.createClass({
 			date[ nextType ]( date[nextType]() );
 		}
 
-		this.setState({
-			selectedDate: date,
-			inputValue: date.format( this.state.inputFormat )
-		});
-
+		if( !this.props.value ){
+			this.setState({
+				selectedDate: date,
+				inputValue: date.format( this.state.inputFormat )
+			});
+		}
 		this.props.onChange( date );
 	},
 
-	updateDate: function( e ) {
+	updateSelectedDate: function( e ) {
 		var target = e.target,
 			modifier = 0,
 			currentDate = this.state.selectedDate,
@@ -206,11 +222,13 @@ var Datetime = React.createClass({
 			.milliseconds( currentDate.milliseconds() )
 		;
 
-		this.setState({
-			selectedDate: date,
-			viewDate: date.clone().startOf('month'),
-			inputValue: date.format( this.state.inputFormat )
-		});
+		if( !this.props.value ){
+			this.setState({
+				selectedDate: date,
+				viewDate: date.clone().startOf('month'),
+				inputValue: date.format( this.state.inputFormat )
+			});
+		}
 
 		this.props.onChange( date );
 	},
@@ -225,17 +243,17 @@ var Datetime = React.createClass({
 			this.setState({ open: false });
 	},
 
-	localMoment: function( date ){
-		var m = moment( date );
+	localMoment: function( date, format ){
+		var m = moment( date, format );
 		if( this.props.locale )
 			m.locale( this.props.locale );
 		return m;
 	},
 
 	componentProps: {
-		fromProps: ['isValidDate', 'renderDay', 'renderMonth', 'renderYear'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear'],
 		fromState: ['viewDate', 'selectedDate' ],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateDate', 'localMoment']
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
 	},
 
 	getComponentProps: function(){
@@ -270,7 +288,7 @@ var Datetime = React.createClass({
 				type:'text',
 				className: 'form-control',
 				onFocus: this.openCalendar,
-				onChange: this.onChange,
+				onChange: this.onInputChange,
 				value: this.state.inputValue
 			}, this.props.inputProps ))];
 		}
