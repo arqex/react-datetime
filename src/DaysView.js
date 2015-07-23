@@ -15,9 +15,9 @@ var DateTimePickerDays = React.createClass({
 		tableChildren = [
 			DOM.thead({ key: 'th'}, [
 				DOM.tr({ key: 'h'},[
-					DOM.th({ key: 'p', className: 'prev' }, DOM.button({onClick: this.props.subtractTime(1, 'months')}, '‹')),
+					DOM.th({ key: 'p', className: 'prev' }, DOM.button({onClick: this.props.subtractTime(1, 'months'), type: 'button' }, '‹')),
 					DOM.th({ key: 's', className: 'switch', onClick: this.props.showView('months'), colSpan: 5 }, locale.months( date ) + ' ' + date.year() ),
-					DOM.th({ key: 'n', className: 'next' }, DOM.button({onClick: this.props.addTime(1, 'months')}, '›'))
+					DOM.th({ key: 'n', className: 'next' }, DOM.button({onClick: this.props.addTime(1, 'months'), type: 'button' }, '›'))
 				]),
 				DOM.tr({ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day ){ return DOM.th({ key: day, className: 'dow'}, day ); }) )
 			]),
