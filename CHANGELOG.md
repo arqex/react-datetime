@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 1.0.0-rc.2
+* Added travis CI
+* Fixed not showing timepicker when `dateFormat`=`false`.
+
 ## 1.0.0-rc.1
 This is the release candidate for this project. Now it is pretty usable and API won't change drastically in a while. If you were using the alpha versions (v0.x) there is a bunch of breaking changes:
 
