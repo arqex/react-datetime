@@ -10,6 +10,8 @@ var React = require('react'),
 	moment = require('moment')
 ;
 
+console.log( React );
+
 var createDatetime = function( props ){
 	document.body.innerHTML = '';
 
