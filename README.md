@@ -2,6 +2,8 @@ react-datetime
 ===============================
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time.
 
+[![Build Status](https://secure.travis-ci.org/arqex/react-datetime.svg)](https://travis-ci.org/arqex/react-datetime)
+
 It allows to edit even date's milliseconds.
 
 This project started as a fork of https://github.com/quri/react-bootstrap-datetimepicker but the code and the API has changed a lot.
