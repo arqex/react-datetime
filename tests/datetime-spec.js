@@ -30,11 +30,9 @@ var date = new Date( 2000, 0, 15 ),
 	strDate = mDate.format('L') + ' ' + mDate.format('LT')
 ;
 
-console.log( date );
-
 describe( 'Datetime', function(){
-
 	it( 'Create Datetime', function(){
+		console.log( React );
 		var component = createDatetime({});
 		assert( component );
 		assert.equal( component.children.length, 2 );
