@@ -11,13 +11,11 @@ var React = require('react'),
 ;
 
 // Needs to receive react to work in Travis CI
-var createDatetime = function( React, props ){
+var createDatetime = function( r, props ){
 	document.body.innerHTML = '';
 
-	props.onUpdated = function(){};
-
-	React.render(
-		React.createElement( Datetime, props ),
+	r.render(
+		r.createElement( Datetime, props ),
 		document.body
 	);
 
