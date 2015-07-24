@@ -44,8 +44,8 @@ API
 | **inputProps** | object | undefined | Defines additional attributes for the input element of the component. |
 | **isValidDate** | function | () => true | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and should return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
 | **renderDay** | function | DOM.td( day ) | Customize the way that the days are shown in the day picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance_customization) |
-| **renderMonth** | function | DOM.td( month ) | Customize the way that the months are shown in the month picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance_customization) |
-| **renderYear** | function | DOM.td( year ) | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance_customization) |
+| **renderMonth** | function | DOM.td( month ) | Customize the way that the months are shown in the month picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [appearance customization](#appearance_customization) |
+| **renderYear** | function | DOM.td( year ) | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [appearance customization](#appearance_customization) |
 
 ## i18n
 Different language and date formats are supported by react-datetime. React uses [moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
@@ -75,17 +75,18 @@ var MyDTPicker = React.createClass({
             renderYear={ this.renderYear }
         />;
     },
-    renderDay: function( selectedDate, currentDate, props ){
-        return <td {...props}>{ currentDate.date() }</td>;
+    renderDay: function( props, currentDate, selectedDate ){
+        return <td {...props}>{ '0' + currentDate.date() }</td>;
     },
-    renderMonth: function( selectedDate, currentMonthDate, props ){
+    renderMonth: function( props, month, year, selectedDate){
         return <td {...props}>{ month }</td>;
     },
-    renderDay: function( selectedDate, year, props ){
-        return <td {...props}>{ currentDate.date() }</td>;
+    renderYear: function( props, year, selectedDate ){
+        return <td {...props}>{ year % 100 }</td>;
     }
 });
 ```
+[You can see this customized calendar here.](http://codepen.io/arqex/pen/mJzRwM)
 
 * `props` is the object that react-date picker has calculated for this object. It is convenient to use this object as the props for your custom component, since it knows how to handle the click event and its `className` attribute is used by the default styles.
 * `selectedDate` and `currentDate` are Moment.js objects and can be used to change the output depending on the selected date, or the date for the current day.
@@ -96,25 +97,23 @@ It is possible to disable dates in the calendar if we don't want the user to sel
 
 If we want to disable all the dates before today we can do like
 ```js
+// Let's use moment static reference in the Datetime component.
+var yesterday = Datetime.moment().subtract(1,'day');
 var valid = function( current ){
-    var limit = new Date(); // Today
-
-    // Yesterday
-    limit.setDate(limit.getDate() - 1);
-
-    // Only dates after yesterday are ok
-    return current > limit;
+    return current.isAfter( yesterday );
 };
 <Datetime isValidDate={ valid } />
 ```
+[See the isValidDate prop working here](http://codepen.io/arqex/pen/jPeyGX).
 
-If we want only odd dates to be valid we could do like
+If we want to disable the weekends
 ```js
 var valid = function( current ){
-    return current.date() % 2;
+    return current.day() != 0 && current.day() != 6;
 };
 <Datetime isValidDate={ valid } />
 ```
+[The example working here](http://codepen.io/arqex/pen/VLEPXb).
 
 Contributions
 ===============================
