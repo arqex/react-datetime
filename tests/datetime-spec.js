@@ -5,7 +5,7 @@ DOM();
 var React = require('react'),
 	ReactAddons = require('react/addons'),
 	Utils = React.addons.TestUtils,
-	Datetime = require('../Datetime'),
+	Datetime = require('../DateTime'),
 	assert = require('assert'),
 	moment = require('moment')
 ;
