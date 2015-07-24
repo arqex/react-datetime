@@ -23,8 +23,8 @@ var Datetime = React.createClass({
 		time: TimeView
 	},
 	propTypes: {
-		value: TYPES.object,
-		defaultValue: TYPES.object,
+		// value: TYPES.object | TYPES.string,
+		// defaultValue: TYPES.object | TYPES.string,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
 		locale: TYPES.string,
@@ -42,7 +42,6 @@ var Datetime = React.createClass({
 		var nof = function(){};
 		return {
 			className: '',
-			value: false,
 			defaultValue: new Date(),
 			viewMode: 'days',
 			inputProps: {},
@@ -58,7 +57,7 @@ var Datetime = React.createClass({
 		var state = this.getStateFromProps( this.props );
 
 		state.open = !this.props.input;
-		state.currentView = this.props.viewMode;
+		state.currentView = this.props.dateFormat ? this.props.viewMode : 'time';
 
 		return state;
 	},
@@ -69,16 +68,16 @@ var Datetime = React.createClass({
 			selectedDate
 		;
 
-		if( typeof date == 'string')
+		if( typeof date == 'string' )
 			selectedDate = this.localMoment( date, formats.datetime );
 		else
 			selectedDate = this.localMoment( date );
 
 		return {
 			inputFormat: formats.datetime,
-			viewDate: this.localMoment(date).startOf("month"),
-			selectedDate: this.localMoment(date),
-			inputValue: this.localMoment(date).format( formats.datetime )
+			viewDate: selectedDate.clone().startOf("month"),
+			selectedDate: selectedDate,
+			inputValue: selectedDate.format( formats.datetime )
 		};
 	},
 
@@ -97,7 +96,10 @@ var Datetime = React.createClass({
 			formats.time = locale.longDateFormat('LT');
 		}
 
-		formats.datetime = formats.date + ' ' + formats.time;
+		formats.datetime = formats.date && formats.time ?
+			formats.date + ' ' + formats.time :
+			formats.date || formats.time
+		;
 
 		return formats;
 	},
