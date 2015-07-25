@@ -2,6 +2,8 @@
 var DOM = require( './testdom');
 DOM();
 
+
+// Needs to be global to work in Travis CI
 React = require('react');
 
 var ReactAddons = require('react/addons'),
@@ -11,12 +13,11 @@ var ReactAddons = require('react/addons'),
 	moment = require('moment')
 ;
 
-// Needs to receive react to work in Travis CI
-var createDatetime = function( r, props ){
+var createDatetime = function( props ){
 	document.body.innerHTML = '';
 
-	r.render(
-		r.createElement( Datetime, props ),
+	React.render(
+		React.createElement( Datetime, props ),
 		document.body
 	);
 
@@ -30,7 +31,7 @@ var date = new Date( 2000, 0, 15 ),
 
 describe( 'Datetime', function(){
 	it( 'Create Datetime', function(){
-		var component = createDatetime( React, {});
+		var component = createDatetime({});
 		assert( component );
 		assert.equal( component.children.length, 2 );
 		assert.equal( component.children[0].tagName , 'INPUT' );
@@ -38,63 +39,63 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'input=false', function(){
-		var component = createDatetime( React, { input: false });
+		var component = createDatetime({ input: false });
 		assert( component );
 		assert.equal( component.children.length, 1 );
 		assert.equal( component.children[0].tagName , 'DIV' );
 	});
 
 	it( 'Date value', function(){
-		var component = createDatetime( React, { value: date }),
+		var component = createDatetime({ value: date }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
 	it( 'Moment value', function(){
-		var component = createDatetime( React, { value: mDate }),
+		var component = createDatetime({ value: mDate }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
 	it( 'String value', function(){
-		var component = createDatetime( React, { value: strDate }),
+		var component = createDatetime({ value: strDate }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
 	it( 'Date defaultValue', function(){
-		var component = createDatetime( React, { defaultValue: date }),
+		var component = createDatetime({ defaultValue: date }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
 	it( 'Moment defaultValue', function(){
-		var component = createDatetime( React, { defaultValue: mDate }),
+		var component = createDatetime({ defaultValue: mDate }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
 	it( 'String defaultValue', function(){
-		var component = createDatetime( React, { defaultValue: strDate }),
+		var component = createDatetime({ defaultValue: strDate }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
 	it( 'dateFormat', function(){
-		var component = createDatetime( React, { value: date, dateFormat: 'M&D' }),
+		var component = createDatetime({ value: date, dateFormat: 'M&D' }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, mDate.format('M&D LT') );
 	});
 
 	it( 'dateFormat=false', function(){
-		var component = createDatetime( React, { value: date, dateFormat: false }),
+		var component = createDatetime({ value: date, dateFormat: false }),
 			input = component.children[0],
 			view = component.children[1].children[0]
 		;
@@ -107,14 +108,14 @@ describe( 'Datetime', function(){
 
 	it( 'timeFormat', function(){
 		var format = 'HH:mm:ss:SSS',
-			component = createDatetime( React, { value: date, timeFormat: format }),
+			component = createDatetime({ value: date, timeFormat: format }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, mDate.format('L ' + format) );
 	});
 
 	it( 'timeFormat=false', function(){
-		var component = createDatetime( React, { value: date, timeFormat: false }),
+		var component = createDatetime({ value: date, timeFormat: false }),
 			input = component.children[0],
 			view = component.children[1].children[0]
 		;
@@ -126,7 +127,7 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'viewMode=years', function(){
-		var component = createDatetime( React, { viewMode: 'years' }),
+		var component = createDatetime({ viewMode: 'years' }),
 			view = component.children[1].children[0]
 		;
 
@@ -134,7 +135,7 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'viewMode=months', function(){
-		var component = createDatetime( React, { viewMode: 'months' }),
+		var component = createDatetime({ viewMode: 'months' }),
 			view = component.children[1].children[0]
 		;
 
@@ -142,7 +143,7 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'viewMode=time', function(){
-		var component = createDatetime( React, { viewMode: 'time' }),
+		var component = createDatetime({ viewMode: 'time' }),
 			view = component.children[1].children[0]
 		;
 
@@ -150,12 +151,12 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'className', function(){
-		var component = createDatetime( React, { className: 'custom' });
+		var component = createDatetime({ className: 'custom' });
 		assert.notEqual( component.className.indexOf('custom'), -1 );
 	});
 
 	it( 'inputProps', function(){
-		var component = createDatetime( React, { inputProps: { className: 'myInput', type: 'email' } }),
+		var component = createDatetime({ inputProps: { className: 'myInput', type: 'email' } }),
 			input = component.children[0]
 		;
 
@@ -165,7 +166,7 @@ describe( 'Datetime', function(){
 
 	it( 'renderDay', function(){
 		var props, currentDate, selectedDate,
-			component = createDatetime( React, { value: mDate, renderDay: function( p, current, selected ){
+			component = createDatetime({ value: mDate, renderDay: function( p, current, selected ){
 				props = p;
 				currentDate = current;
 				selectedDate = selected;
@@ -192,7 +193,7 @@ describe( 'Datetime', function(){
 
 	it( 'renderMonth', function(){
 		var props, month, year, selectedDate,
-			component = createDatetime( React, { value: mDate, viewMode: 'months', renderMonth: function( p, m, y, selected ){
+			component = createDatetime({ value: mDate, viewMode: 'months', renderMonth: function( p, m, y, selected ){
 				props = p;
 				month = m;
 				year = y;
@@ -218,7 +219,7 @@ describe( 'Datetime', function(){
 
 	it( 'renderYear', function(){
 		var props, year, selectedDate,
-			component = createDatetime( React, { value: mDate, viewMode: 'years', renderYear: function( p, y, selected ){
+			component = createDatetime({ value: mDate, viewMode: 'years', renderYear: function( p, y, selected ){
 				props = p;
 				year = y;
 				selectedDate = selected;
