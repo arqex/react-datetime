@@ -2,8 +2,9 @@
 var DOM = require( './testdom');
 DOM();
 
-var React = require('react'),
-	ReactAddons = require('react/addons'),
+React = require('react');
+
+var ReactAddons = require('react/addons'),
 	Utils = React.addons.TestUtils,
 	Datetime = require('../DateTime'),
 	assert = require('assert'),
