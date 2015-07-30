@@ -3,6 +3,7 @@ react-datetime
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time.
 
 [![Build Status](https://secure.travis-ci.org/arqex/react-datetime.svg)](https://travis-ci.org/arqex/react-datetime)
+[![npm version](https://badge.fury.io/js/react-datetime.svg)](http://badge.fury.io/js/react-datetime)
 
 It allows to edit even date's milliseconds.
 
