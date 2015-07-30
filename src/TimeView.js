@@ -82,7 +82,7 @@ var DateTimePickerTime = React.createClass({
 			return '';
 
 		return DOM.thead({ key: 'h'}, DOM.tr({},
-			DOM.th( {colSpan: 4, onClick: this.props.showView('days')}, this.props.selectedDate.format( this.props.dateFormat ) )
+			DOM.th( {className: 'switch', colSpan: 4, onClick: this.props.showView('days')}, this.props.selectedDate.format( this.props.dateFormat ) )
 		));
 	},
 	onStartClicking: function( action, type ){
@@ -90,6 +90,7 @@ var DateTimePickerTime = React.createClass({
 			update = {},
 			value = this.state[ type ]
 		;
+
 
 		return function(){
 			var update = {};

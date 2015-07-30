@@ -4,7 +4,7 @@ DOM();
 
 
 // Needs to be global to work in Travis CI
-React = require('react');
+React = require('react/addons');
 
 var ReactAddons = require('react/addons'),
 	Utils = React.addons.TestUtils,
@@ -24,7 +24,67 @@ var createDatetime = function( props ){
 	return document.body.children[0];
 };
 
-var date = new Date( 2000, 0, 15 ),
+var trigger = function( name, element ){
+	var ev = document.createEvent("MouseEvents");
+   ev.initEvent(name, true, true);
+   element.dispatchEvent( ev );
+};
+
+var ev = React.addons.TestUtils.Simulate;
+var dt = {
+	dt: function(){
+		return document.body.children[0];
+	},
+	view: function(){
+		return this.dt().children[1].children[0];
+	},
+	input: function(){
+		return this.dt().children[0];
+	},
+	switcher: function(){
+		return document.querySelector('.switch');
+	},
+	timeSwitcher: function(){
+		return document.querySelector('.timeToggle');
+	},
+	year: function( n ){
+		var years = document.querySelectorAll('.year');
+		return years[ n || 0 ];
+	},
+	month: function( n ){
+		var months = document.querySelectorAll('.month');
+		return months[ n || 0 ];
+	},
+	day: function( n ){
+		return document.querySelector('.day[data-value="' + n + '"]');
+	},
+	next: function(){
+		return document.querySelector('.next button');
+	},
+	prev: function(){
+		return document.querySelector('.prev button');
+	},
+	timeUp: function( n ){
+		return document.querySelectorAll('.rdtCounter')[ n ].children[0];
+	},
+	timeDown: function( n ){
+		return document.querySelectorAll('.rdtCounter')[ n ].children[2];
+	},
+	hour: function(){
+		return document.querySelectorAll('.rdtCount')[0];
+	},
+	minute: function(){
+		return document.querySelectorAll('.rdtCount')[1];
+	},
+	second: function(){
+		return document.querySelectorAll('.rdtCount')[2];
+	},
+	milli: function(){
+		return document.querySelector('.rdtMilli input');
+	}
+};
+
+var date = new Date( 2000, 0, 15, 2, 2, 2, 2 ),
 	mDate = moment( date ),
 	strDate = mDate.format('L') + ' ' + mDate.format('LT')
 ;
@@ -97,7 +157,7 @@ describe( 'Datetime', function(){
 	it( 'dateFormat=false', function(){
 		var component = createDatetime({ value: date, dateFormat: false }),
 			input = component.children[0],
-			view = component.children[1].children[0]
+			view = dt.view()
 		;
 		assert.equal( input.value, mDate.format('LT') );
 		// The view must be the timepicker
@@ -117,7 +177,7 @@ describe( 'Datetime', function(){
 	it( 'timeFormat=false', function(){
 		var component = createDatetime({ value: date, timeFormat: false }),
 			input = component.children[0],
-			view = component.children[1].children[0]
+			view = dt.view()
 		;
 		assert.equal( input.value, mDate.format('L') );
 		// The view must be the daypicker
@@ -128,7 +188,7 @@ describe( 'Datetime', function(){
 
 	it( 'viewMode=years', function(){
 		var component = createDatetime({ viewMode: 'years' }),
-			view = component.children[1].children[0]
+			view = dt.view()
 		;
 
 		assert.equal( view.className, 'rdtYears' );
@@ -136,7 +196,7 @@ describe( 'Datetime', function(){
 
 	it( 'viewMode=months', function(){
 		var component = createDatetime({ viewMode: 'months' }),
-			view = component.children[1].children[0]
+			view = dt.view()
 		;
 
 		assert.equal( view.className, 'rdtMonths' );
@@ -144,7 +204,7 @@ describe( 'Datetime', function(){
 
 	it( 'viewMode=time', function(){
 		var component = createDatetime({ viewMode: 'time' }),
-			view = component.children[1].children[0]
+			view = dt.view()
 		;
 
 		assert.equal( view.className, 'rdtTime' );
@@ -173,7 +233,7 @@ describe( 'Datetime', function(){
 
 				return React.DOM.td( props, 'day' );
 			}}),
-			view = component.children[1].children[0]
+			view = dt.view()
 		;
 
 		// Last day should be 6th of february
@@ -201,7 +261,7 @@ describe( 'Datetime', function(){
 
 				return React.DOM.td( props, 'month' );
 			}}),
-			view = component.children[1].children[0]
+			view = dt.view()
 		;
 
 		// The date must be the same
@@ -226,7 +286,7 @@ describe( 'Datetime', function(){
 
 				return React.DOM.td( props, 'year' );
 			}}),
-			view = component.children[1].children[0]
+			view = dt.view()
 		;
 
 		// The date must be the same
@@ -239,6 +299,246 @@ describe( 'Datetime', function(){
 
 		// The cell text should be 'day'
 		assert.equal( view.querySelector('.year').innerHTML, 'year' );
+	});
+
+	it( 'Time pickers depends on the time format', function() {
+		createDatetime({ viewMode: 'time', timeFormat: "HH:mm:ss:SSS"});
+		assert.equal( document.querySelectorAll('.rdtCounter').length, 4 );
+
+		createDatetime({ viewMode: 'time', timeFormat: "HH:mm:ss"});
+		assert.equal( document.querySelectorAll('.rdtCounter').length, 3 );
+
+		createDatetime({ viewMode: 'time', timeFormat: "HH:mm"});
+		assert.equal( document.querySelectorAll('.rdtCounter').length, 2 );
+
+		createDatetime({ viewMode: 'time', timeFormat: "HH"});
+		assert.equal( document.querySelectorAll('.rdtCounter').length, 1 );
+	});
+
+	it( 'viewChange', function() {
+		createDatetime({viewMode: 'time' });
+
+		assert.equal( dt.view().className, 'rdtTime' );
+		ev.click( dt.switcher() );
+		assert.equal( dt.view().className, 'rdtDays' );
+		ev.click( dt.switcher() );
+		assert.equal( dt.view().className, 'rdtMonths' );
+		ev.click( dt.switcher() );
+		assert.equal( dt.view().className, 'rdtYears' );
+	});
+
+	it( 'switch to time', function(){
+		createDatetime({});
+		assert.equal( dt.view().className, 'rdtDays' );
+		ev.click( dt.timeSwitcher() );
+		assert.equal( dt.view().className, 'rdtTime' );
+	})
+
+	it( 'selectYear', function(){
+		createDatetime({ viewMode: 'years', defaultValue: date });
+		assert.equal( dt.view().className, 'rdtYears' );
+		assert.equal( dt.switcher().innerHTML, '2000-2009' );
+
+		// First year is 1999
+		ev.click( dt.year() );
+		assert.equal( dt.view().className, 'rdtMonths' );
+		assert.equal( dt.switcher().innerHTML, '1999' );
+	});
+
+	it( 'increase decade', function(){
+		createDatetime({ viewMode: 'years', defaultValue: date });
+
+		assert.equal( dt.switcher().innerHTML, '2000-2009' );
+		ev.click( dt.next() );
+		assert.equal( dt.switcher().innerHTML, '2010-2019' );
+		ev.click( dt.next() );
+		assert.equal( dt.switcher().innerHTML, '2020-2029' );
+	});
+
+
+	it( 'decrease decade', function(){
+		createDatetime({ viewMode: 'years', defaultValue: date });
+
+		assert.equal( dt.switcher().innerHTML, '2000-2009' );
+		ev.click( dt.prev() );
+		assert.equal( dt.switcher().innerHTML, '1990-1999' );
+		ev.click( dt.prev() );
+		assert.equal( dt.switcher().innerHTML, '1980-1989' );
+	});
+
+	it( 'selectMonth', function(){
+		createDatetime({ viewMode: 'months', defaultValue: date });
+		assert.equal( dt.view().className, 'rdtMonths' );
+		assert.equal( dt.switcher().innerHTML, '2000' );
+
+		ev.click( dt.month(1) );
+		assert.equal( dt.view().className, 'rdtDays' );
+		assert.equal( dt.switcher().getAttribute('data-value'), "1" );
+	});
+
+	it( 'increase year', function(){
+		createDatetime({ viewMode: 'months', defaultValue: date });
+
+		assert.equal( dt.switcher().getAttribute('data-value'), '2000' );
+		ev.click( dt.next() );
+		assert.equal( dt.switcher().getAttribute('data-value'), '2001' );
+		ev.click( dt.next() );
+		assert.equal( dt.switcher().getAttribute('data-value'), '2002' );
+	});
+
+
+	it( 'decrease year', function(){
+		createDatetime({ viewMode: 'months', defaultValue: date });
+
+		assert.equal( dt.switcher().getAttribute('data-value'), '2000' );
+		ev.click( dt.prev() );
+		assert.equal( dt.switcher().getAttribute('data-value'), '1999' );
+		ev.click( dt.prev() );
+		assert.equal( dt.switcher().getAttribute('data-value'), '1998' );
+	});
+
+	it( 'increase month', function(){
+		createDatetime({ defaultValue: date });
+
+		assert.equal( dt.switcher().getAttribute('data-value'), '0' );
+		ev.click( dt.next() );
+		assert.equal( dt.switcher().getAttribute('data-value'), '1' );
+		ev.click( dt.next() );
+		assert.equal( dt.switcher().getAttribute('data-value'), '2' );
+	});
+
+	it( 'decrease month', function(){
+		createDatetime({ defaultValue: date });
+
+		assert.equal( dt.switcher().getAttribute('data-value'), '0' );
+		ev.click( dt.prev() );
+		assert.equal( dt.switcher().getAttribute('data-value'), '11' );
+		ev.click( dt.prev() );
+		assert.equal( dt.switcher().getAttribute('data-value'), '10' );
+	});
+
+	it( 'open picker', function(){
+		createDatetime({});
+		assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
+		ev.focus( dt.input() );
+		assert.notEqual(dt.dt().className.indexOf('rdtOpen'), -1);
+	});
+
+	it( 'onSelect', function( done ){
+		createDatetime({ defaultValue: date, onChange: function( selected ){
+			assert.equal( selected.date(), 2 );
+			assert.equal( selected.month(), mDate.month() );
+			assert.equal( selected.year(), mDate.year() );
+			done();
+		}});
+
+		ev.click( dt.day( 2 ) );
+	});
+
+	it( 'multiple onSelect', function( done ){
+		var i = 0;
+		createDatetime({ defaultValue: date, onChange: function( selected ){
+			i++;
+			if( i > 2 ){
+				assert.equal( selected.date(), 4 );
+				assert.equal( selected.month(), mDate.month() );
+				assert.equal( selected.year(), mDate.year() );
+				done();
+			}
+		}});
+
+		ev.click( dt.day( 2 ) );
+		ev.click( dt.day( 3 ) );
+		ev.click( dt.day( 4 ) );
+	});
+
+	it( 'onBlur', function(){
+		createDatetime({ value: date, onBlur: function( selected ){
+			assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+			assert.equal( selected.date(), mDate.date() );
+			assert.equal( selected.month(), mDate.month() );
+			assert.equal( selected.year(), mDate.year() );
+			done();
+		}});
+
+		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		ev.focus( dt.input() );
+		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		trigger( 'click', document.body );
+	});
+
+	it( 'increase time', function( done ){
+		var i = 0;
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
+			i++;
+			if( i > 2 ){
+				assert.equal( selected.hour(), 3 );
+				assert.equal( selected.minute(), 3 );
+				assert.equal( selected.second(), 3 );
+				done();
+			}
+		}});
+
+		trigger( 'mousedown', dt.timeUp( 0 ) );
+		trigger('mouseup', document.body );
+		assert.equal( dt.hour().innerHTML, 3 );
+		trigger( 'mousedown', dt.timeUp( 1 ) );
+		trigger( 'mouseup', dt.timeUp( 1 ) );
+		assert.equal( dt.minute().innerHTML, 3 );
+		trigger( 'mousedown', dt.timeUp( 2 ) );
+		trigger( 'mouseup', dt.timeUp( 2 ) );
+		assert.equal( dt.second().innerHTML, 3 );
+	});
+
+	it( 'decrease time', function( done ){
+		var i = 0;
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
+			i++;
+			if( i > 2 ){
+				assert.equal( selected.hour(), 1 );
+				assert.equal( selected.minute(), 1 );
+				assert.equal( selected.second(), 1 );
+				done();
+			}
+		}});
+
+		trigger('mousedown', dt.timeDown( 0 ) );
+		trigger('mouseup', dt.timeDown( 0 ) );
+		assert.equal( dt.hour().innerHTML, 1 );
+		trigger('mousedown', dt.timeDown( 1 ) );
+		trigger('mouseup', dt.timeDown( 1 ) );
+		assert.equal( dt.minute().innerHTML, 1 );
+		trigger('mousedown', dt.timeDown( 2 ) );
+		trigger('mouseup', dt.timeDown( 2 ) );
+		assert.equal( dt.second().innerHTML, 1 );
+	});
+
+	it( 'long increase time', function( done ){
+		var i = 0;
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date});
+
+		trigger( 'mousedown', dt.timeUp( 0 ) );
+		setTimeout( function(){
+			trigger('mouseup', document.body );
+			assert.notEqual( dt.hour().innerHTML, 2 );
+			assert.notEqual( dt.hour().innerHTML, 3 );
+			console.log( dt.hour(). innerHTML );
+			done();
+		}, 700 );
+	});
+
+	it( 'long decrease time', function( done ){
+		var i = 0;
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date});
+
+		trigger( 'mousedown', dt.timeDown( 0 ) );
+		setTimeout( function(){
+			trigger('mouseup', document.body );
+			assert.notEqual( dt.hour().innerHTML, 1 );
+			assert.notEqual( dt.hour().innerHTML, 0 );
+			console.log( dt.hour(). innerHTML );
+			done();
+		}, 700 );
 	});
 });
 
