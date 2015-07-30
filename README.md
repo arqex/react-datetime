@@ -16,6 +16,8 @@ Installation :
 npm install react-datetime
 ```
 
+[React.js](http://facebook.github.io/react/) and [Moment.js](http://momentjs.com/) are peer dependencies for react-datetime. These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datetime picker work.
+
 Then
 ```javascript
 require('react-datetime');
