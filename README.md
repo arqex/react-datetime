@@ -2,6 +2,8 @@ react-datetime
 ===============================
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time.
 
+[![Build Status](https://secure.travis-ci.org/arqex/react-datetime.svg)](https://travis-ci.org/arqex/react-datetime)
+
 It allows to edit even date's milliseconds.
 
 This project started as a fork of https://github.com/quri/react-bootstrap-datetimepicker but the code and the API has changed a lot.
@@ -13,6 +15,8 @@ Installation :
 ```
 npm install react-datetime
 ```
+
+[React.js](http://facebook.github.io/react/) and [Moment.js](http://momentjs.com/) are peer dependencies for react-datetime. These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datetime picker work.
 
 Then
 ```javascript
@@ -31,8 +35,8 @@ API
 
 | Name         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
-| **value** | Date | new Date() | Represents the value for the compones, in order to use it as a [controlled component](https://facebook.github.io/react/docs/forms.html#controlled-components). This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date. |
-| **defaultValue** | Date | new Date() | Represents the inital value for the component to use it as a [uncontrolled component](https://facebook.github.io/react/docs/forms.html#uncontrolled-components). This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date. |
+| **value** | Date | new Date() | Represents the selected date by the component, in order to use it as a [controlled component](https://facebook.github.io/react/docs/forms.html#controlled-components). This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date. |
+| **defaultValue** | Date | new Date() | Represents the selected date for the component to use it as a [uncontrolled component](https://facebook.github.io/react/docs/forms.html#uncontrolled-components). This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date. |
 | **dateFormat**   | `bool` or `string`  | `true` | Defines the format for the date. It accepts any [moment.js date format](http://momentjs.com/docs/#/displaying/format/). If `true` the date will be displayed using the defaults for the current locale. If `false` the datepicker is disabled and the component can be used as timepicker. |
 | **timeFormat**   | `bool` or `string`  | `true` | Defines the format for the time. It accepts any [moment.js time format](http://momentjs.com/docs/#/displaying/format/). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker. |
 | **input** | boolean | true | Wether to show an input field to edit the date manually. |
@@ -43,9 +47,9 @@ API
 | **className** | string | `""` | Extra class names for the component markup. |
 | **inputProps** | object | undefined | Defines additional attributes for the input element of the component. |
 | **isValidDate** | function | () => true | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and should return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
-| **renderDay** | function | DOM.td( day ) | Customize the way that the days are shown in the day picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance_customization) |
-| **renderMonth** | function | DOM.td( month ) | Customize the way that the months are shown in the month picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [appearance customization](#appearance_customization) |
-| **renderYear** | function | DOM.td( year ) | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [appearance customization](#appearance_customization) |
+| **renderDay** | function | DOM.td( day ) | Customize the way that the days are shown in the day picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance-customization) |
+| **renderMonth** | function | DOM.td( month ) | Customize the way that the months are shown in the month picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization) |
+| **renderYear** | function | DOM.td( year ) | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization) |
 
 ## i18n
 Different language and date formats are supported by react-datetime. React uses [moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
