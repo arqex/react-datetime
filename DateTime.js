@@ -42,7 +42,7 @@ var Datetime = React.createClass({
 		var nof = function(){};
 		return {
 			className: '',
-			defaultValue: new Date(),
+			defaultValue: '',
 			viewMode: 'days',
 			inputProps: {},
 			input: true,
@@ -65,19 +65,27 @@ var Datetime = React.createClass({
 	getStateFromProps: function( props ){
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
-			selectedDate
+			selectedDate, viewDate
 		;
 
-		if( typeof date == 'string' )
+		if( date && typeof date == 'string' )
 			selectedDate = this.localMoment( date, formats.datetime );
-		else
+		else if( date )
 			selectedDate = this.localMoment( date );
+
+		if( selectedDate && !selectedDate.isValid() )
+			selectedDate = null;
+
+		viewDate = selectedDate ?
+			selectedDate.clone().startOf("month") :
+			this.localMoment().startOf("month")
+		;
 
 		return {
 			inputFormat: formats.datetime,
-			viewDate: selectedDate.clone().startOf("month"),
+			viewDate: viewDate,
 			selectedDate: selectedDate,
-			inputValue: selectedDate.format( formats.datetime )
+			inputValue: selectedDate ? selectedDate.format( formats.datetime ) : (date || '')
 		};
 	},
 
@@ -129,10 +137,12 @@ var Datetime = React.createClass({
 			update.selectedDate = localMoment;
 			update.viewDate = localMoment.clone().startOf("month");
 		}
+		else {
+			update.selectedDate = null;
+		}
 
 		return this.setState( update, function() {
-			if( localMoment.isValid() )
-				return this.props.onChange( localMoment );
+			return this.props.onChange( localMoment.isValid() ? localMoment : this.state.inputValue );
 		});
 	},
 
@@ -183,7 +193,8 @@ var Datetime = React.createClass({
 	allowedSetTime: ['hours','minutes','seconds', 'milliseconds'],
 	setTime: function( type, value ){
 		var index = this.allowedSetTime.indexOf( type ) + 1,
-			date = this.state.selectedDate.clone(),
+			state = this.state,
+			date = (state.selectedDate || state.viewDate).clone(),
 			nextType
 		;
 
@@ -198,7 +209,7 @@ var Datetime = React.createClass({
 		if( !this.props.value ){
 			this.setState({
 				selectedDate: date,
-				inputValue: date.format( this.state.inputFormat )
+				inputValue: date.format( state.inputFormat )
 			});
 		}
 		this.props.onChange( date );
@@ -207,7 +218,8 @@ var Datetime = React.createClass({
 	updateSelectedDate: function( e ) {
 		var target = e.target,
 			modifier = 0,
-			currentDate = this.state.selectedDate,
+			viewDate = this.state.viewDate,
+			currentDate = this.state.selectedDate || viewDate,
 			date
 		;
 
@@ -216,8 +228,8 @@ var Datetime = React.createClass({
 		else if(target.className.indexOf("old") != -1)
 			modifier = -1;
 
-		date = this.state.viewDate.clone()
-			.month( this.state.viewDate.month() + modifier )
+		date = viewDate.clone()
+			.month( viewDate.month() + modifier )
 			.date( parseInt( target.getAttribute('data-value') ) )
 			.hours( currentDate.hours() )
 			.minutes( currentDate.minutes() )
@@ -241,9 +253,10 @@ var Datetime = React.createClass({
 	},
 
 	handleClickOutside: function(){
-		this.props.onBlur( this.state.selectedDate );
-		if( this.props.input && this.state.open )
+		if( this.props.input && this.state.open ){
 			this.setState({ open: false });
+			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+		}
 	},
 
 	localMoment: function( date, format ){

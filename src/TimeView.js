@@ -8,7 +8,7 @@ var DateTimePickerTime = React.createClass({
 		return this.calculateState( this.props );
 	},
 	calculateState: function( props ){
-		var date = props.selectedDate,
+		var date = props.selectedDate || props.viewDate,
 			format = props.timeFormat,
 			counters = []
 		;
@@ -81,8 +81,9 @@ var DateTimePickerTime = React.createClass({
 		if( !this.props.dateFormat )
 			return '';
 
+		var date = this.props.selectedDate || this.props.viewDate;
 		return DOM.thead({ key: 'h'}, DOM.tr({},
-			DOM.th( {className: 'switch', colSpan: 4, onClick: this.props.showView('days')}, this.props.selectedDate.format( this.props.dateFormat ) )
+			DOM.th( {className: 'switch', colSpan: 4, onClick: this.props.showView('days')}, date.format( this.props.dateFormat ) )
 		));
 	},
 	onStartClicking: function( action, type ){

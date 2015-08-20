@@ -522,7 +522,6 @@ describe( 'Datetime', function(){
 			trigger('mouseup', document.body );
 			assert.notEqual( dt.hour().innerHTML, 2 );
 			assert.notEqual( dt.hour().innerHTML, 3 );
-			console.log( dt.hour(). innerHTML );
 			done();
 		}, 700 );
 	});
@@ -536,9 +535,28 @@ describe( 'Datetime', function(){
 			trigger('mouseup', document.body );
 			assert.notEqual( dt.hour().innerHTML, 1 );
 			assert.notEqual( dt.hour().innerHTML, 0 );
-			console.log( dt.hour(). innerHTML );
 			done();
 		}, 700 );
+	});
+
+	it( 'invalid input value', function( done ){
+		createDatetime({ defaultValue: 'luis', onChange: function( updated ){
+			assert.equal( mDate.format('L LT'), updated.format('L LT') );
+			done();
+		}});
+
+		assert.equal( dt.input().value, 'luis' );
+		dt.input().value = strDate;
+		Utils.Simulate.change( dt.input() );
+	});
+
+	it( 'delete input value', function( done ){
+		createDatetime({ defaultValue: date, onChange: function( date ){
+			assert.equal( date, '' );
+			done();
+		}});
+		dt.input().value = '';
+		Utils.Simulate.change( dt.input() );
 	});
 });
 

@@ -19,7 +19,7 @@ var DateTimePickerMonths = React.createClass({
 
 	renderMonths: function() {
 		var date = this.props.selectedDate,
-			month = date.month(),
+			month = this.props.viewDate.month(),
 			year = this.props.viewDate.year(),
 			rows = [],
 			i = 0,
@@ -30,7 +30,7 @@ var DateTimePickerMonths = React.createClass({
 
 		while (i < 12) {
 			classes = "month";
-			if( i === month && year === date.year() )
+			if( date && i === month && year === date.year() )
 				classes += " active";
 
 			props = {
@@ -40,7 +40,7 @@ var DateTimePickerMonths = React.createClass({
 				onClick: this.props.setDate('month')
 			};
 
-			months.push( renderer( props, i, year, date.clone() ));
+			months.push( renderer( props, i, year, date && date.clone() ));
 
 			if( months.length == 4 ){
 				rows.push( DOM.tr({ key: month + '_' + rows.length }, months) );
@@ -54,7 +54,7 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	renderMonth: function( props, month, year, selectedDate ) {
-		return DOM.td( props, selectedDate.localeData()._monthsShort[ month ] );
+		return DOM.td( props, this.props.viewDate.localeData()._monthsShort[ month ] );
 	}
 });
 

@@ -53,11 +53,10 @@ var DateTimePickerDays = React.createClass({
 
 	renderDays: function() {
 		var date = this.props.viewDate,
-			selected = this.props.selectedDate.clone(),
+			selected = this.props.selectedDate && this.props.selectedDate.clone(),
 			prevMonth = date.clone().subtract( 1, 'months' ),
 			currentYear = date.year(),
 			currentMonth = date.month(),
-			selectedDate = {y: selected.year(), M: selected.month(), d: selected.date()},
 			minDate = this.props.minDate,
 			maxDate = this.props.maxDate,
 			weeks = [],
@@ -80,7 +79,7 @@ var DateTimePickerDays = React.createClass({
 			else if( prevMonth.year() > currentYear || prevMonth.month() > currentMonth )
 				classes += ' new';
 
-			if( prevMonth.isSame( selectedDate ) )
+			if( selected && prevMonth.isSame( {y: selected.year(), M: selected.month(), d: selected.date()} ) )
 				classes += ' active';
 
 			if (prevMonth.isSame(moment(), 'day') )
@@ -119,9 +118,10 @@ var DateTimePickerDays = React.createClass({
 		if( !this.props.timeFormat )
 			return '';
 
+		var date = this.props.selectedDate || this.props.viewDate;
 		return DOM.tfoot({ key: 'tf'},
 			DOM.tr({},
-				DOM.td({ onClick: this.props.showView('time'), colSpan: 7, className: 'timeToggle'}, this.props.selectedDate.format( this.props.timeFormat ))
+				DOM.td({ onClick: this.props.showView('time'), colSpan: 7, className: 'timeToggle'}, date.format( this.props.timeFormat ))
 			)
 		);
 	},

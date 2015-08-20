@@ -42,8 +42,8 @@ API
 | **timeFormat**   | `bool` or `string`  | `true` | Defines the format for the time. It accepts any [moment.js time format](http://momentjs.com/docs/#/displaying/format/). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker. |
 | **input** | boolean | true | Wether to show an input field to edit the date manually. |
 | **locale** | string | null | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
-| **onChange** | function | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter. |
-| **onBlur** | function | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter. |
+| **onChange** | function | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If it isn't, the value of the input (a string) is returned. |
+| **onBlur** | function | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If it isn't, the value of the input (a string) is returned. |
 | **viewMode** | string or number | 'days' | The default view to display when the picker is shown. ('years', 'months', 'days', 'time') |
 | **className** | string | `""` | Extra class names for the component markup. |
 | **inputProps** | object | undefined | Defines additional attributes for the input element of the component. |
