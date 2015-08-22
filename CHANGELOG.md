@@ -1,5 +1,8 @@
 Changelog
 =========
+## 1.1.1
+* Updates react-onclickoutside dependency to avoid the bug https://github.com/Pomax/react-onclickoutside/issues/20
+
 ## 1.1.0
 * Datepicker can have an empty value. If the value in the input is not valid, `onChange` and `onBlur` will return input value.
 * `onBlur` is not triggered anymore if the calendar is not open.
