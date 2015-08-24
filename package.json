@@ -1,6 +1,6 @@
 {
   "name": "react-datetime",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A lightweight but complete datetime picker React.js component.",
   "homepage": "https://github.com/arqex/react-datetime",
   "repository": {
@@ -40,7 +40,6 @@
   },
   "dependencies": {
     "classlist-polyfill": "^1.0.1",
-    "object-assign": "^3.0.0",
     "react-onclickoutside": "^0.3.1"
   }
 }
