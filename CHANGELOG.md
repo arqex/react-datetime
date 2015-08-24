@@ -1,5 +1,9 @@
 Changelog
 =========
+
+## 1.2.0
+* Removed classlist-polyfill so the component can be used in the server side.
+
 ## 1.1.1
 * Updates react-onclickoutside dependency to avoid the bug https://github.com/Pomax/react-onclickoutside/issues/20
 
