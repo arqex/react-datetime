@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.2.0
+## 1.2.1
 * Removed classlist-polyfill so the component can be used in the server side.
 
 ## 1.1.1
