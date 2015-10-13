@@ -4,7 +4,7 @@ module.exports = function(markup) {
    global.document    = jsdom(markup || '<!doctype html><html><body></body></html>');
    global.window		 = document.parentWindow;
 
-   global.navigator = window.navigator = {};
+   global.navigator = global.window.navigator = {};
 	navigator.userAgent = 'NodeJs JsDom';
 	navigator.appVersion = '';
 

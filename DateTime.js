@@ -31,9 +31,7 @@ var Datetime = React.createClass({
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
-		isValidDate: TYPES.func,
-		minDate: TYPES.object,
-		maxDate: TYPES.object
+		isValidDate: TYPES.func
 	},
 
 	getDefaultProps: function() {
@@ -115,7 +113,7 @@ var Datetime = React.createClass({
 			update = {}
 		;
 
-		if( nextProps.value ){
+		if( nextProps.value != this.props.value ){
 			update = this.getStateFromProps( nextProps );
 		}
 		if ( formats.datetime !== this.getFormats( this.props ).datetime ) {
