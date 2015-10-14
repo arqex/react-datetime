@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.3.0
+* Added open prop.
+* Added strictParsing prop.
+* Fixed not possible to set value to `''`.
+
 ## 1.2.1
 * Removed classlist-polyfill so the component can be used in the server side.
 
