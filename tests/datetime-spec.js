@@ -558,5 +558,27 @@ describe( 'Datetime', function(){
 		dt.input().value = '';
 		Utils.Simulate.change( dt.input() );
 	});
+
+	it( 'strictParsing=true', function( done ){
+		var invalidStrDate = strDate + 'x';
+		createDatetime({ defaultValue: '', strictParsing: true, onChange: function( updated ){
+			assert.equal( updated, invalidStrDate);
+			done();
+		}});
+
+		dt.input().value = invalidStrDate;
+		Utils.Simulate.change( dt.input() );
+	});
+
+	it( 'strictParsing=false', function( done ){
+		var invalidStrDate = strDate + 'x';
+		createDatetime({ defaultValue: '', strictParsing: false, onChange: function( updated ){
+			assert.equal( mDate.format('L LT'), updated.format('L LT') );
+			done();
+		}});
+
+		dt.input().value = invalidStrDate;
+		Utils.Simulate.change( dt.input() );
+	});
 });
 
