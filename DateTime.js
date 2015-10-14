@@ -31,7 +31,9 @@ var Datetime = React.createClass({
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
-		isValidDate: TYPES.func
+		isValidDate: TYPES.func,
+		open: TYPES.bool,
+		strictParsing: TYPES.bool
 	},
 
 	getDefaultProps: function() {
@@ -45,7 +47,8 @@ var Datetime = React.createClass({
 			onBlur: nof,
 			onChange: nof,
 			timeFormat: true,
-			dateFormat: true
+			dateFormat: true,
+			strictParsing: true
 		};
 	},
 
@@ -259,7 +262,7 @@ var Datetime = React.createClass({
 	},
 
 	localMoment: function( date, format ){
-		var m = moment( date, format );
+		var m = moment( date, format, this.props.strictParsing );
 		if( this.props.locale )
 			m.locale( this.props.locale );
 		return m;
