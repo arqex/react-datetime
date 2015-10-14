@@ -52,7 +52,9 @@ var Datetime = React.createClass({
 	getInitialState: function() {
 		var state = this.getStateFromProps( this.props );
 
-		state.open = !this.props.input;
+		if( state.open == undefined )
+			state.open = !this.props.input;
+
 		state.currentView = this.props.dateFormat ? this.props.viewMode : 'time';
 
 		return state;
@@ -81,7 +83,8 @@ var Datetime = React.createClass({
 			inputFormat: formats.datetime,
 			viewDate: viewDate,
 			selectedDate: selectedDate,
-			inputValue: selectedDate ? selectedDate.format( formats.datetime ) : (date || '')
+			inputValue: selectedDate ? selectedDate.format( formats.datetime ) : (date || ''),
+			open: props.open != undefined ? props.open : this.state && this.state.open
 		};
 	},
 
@@ -249,7 +252,7 @@ var Datetime = React.createClass({
 	},
 
 	handleClickOutside: function(){
-		if( this.props.input && this.state.open ){
+		if( this.props.input && this.state.open && !this.props.open ){
 			this.setState({ open: false });
 			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 		}
