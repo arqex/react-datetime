@@ -31,6 +31,19 @@ render: function() {
 ```
 [See this example working](http://codepen.io/arqex/pen/BNRNBw).
 
+To use within a from, add a name property.
+
+```
+render: function() {
+  var inputProps = {
+    name: 'name-for-your-field'
+  };
+  return <form>
+    <Datetime inputProps={inputProps}/>
+  </form>;
+}
+```
+
 API
 ===============================
 
