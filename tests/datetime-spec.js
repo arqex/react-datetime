@@ -5,6 +5,7 @@ DOM();
 
 // Needs to be global to work in Travis CI
 React = require('react/addons');
+ReactDOM = require('react-dom');
 
 var ReactAddons = require('react/addons'),
 	Utils = React.addons.TestUtils,
@@ -14,14 +15,14 @@ var ReactAddons = require('react/addons'),
 ;
 
 var createDatetime = function( props ){
-	document.body.innerHTML = '';
+	document.body.innerHTML = '<div id="root"></div>';
 
-	React.render(
+	ReactDOM.render(
 		React.createElement( Datetime, props ),
-		document.body
+		document.getElementById('root')
 	);
 
-	return document.body.children[0];
+	return document.getElementById('root').children[0];
 };
 
 var trigger = function( name, element ){
@@ -33,7 +34,7 @@ var trigger = function( name, element ){
 var ev = React.addons.TestUtils.Simulate;
 var dt = {
 	dt: function(){
-		return document.body.children[0];
+		return document.getElementById('root').children[0];
 	},
 	view: function(){
 		return this.dt().children[1].children[0];
@@ -42,27 +43,27 @@ var dt = {
 		return this.dt().children[0];
 	},
 	switcher: function(){
-		return document.querySelector('.switch');
+		return document.querySelector('.rdtSwitch');
 	},
 	timeSwitcher: function(){
-		return document.querySelector('.timeToggle');
+		return document.querySelector('.rdtTimeToggle');
 	},
 	year: function( n ){
-		var years = document.querySelectorAll('.year');
+		var years = document.querySelectorAll('.rdtYear');
 		return years[ n || 0 ];
 	},
 	month: function( n ){
-		var months = document.querySelectorAll('.month');
+		var months = document.querySelectorAll('.rdtMonth');
 		return months[ n || 0 ];
 	},
 	day: function( n ){
-		return document.querySelector('.day[data-value="' + n + '"]');
+		return document.querySelector('.rdtDay[data-value="' + n + '"]');
 	},
 	next: function(){
-		return document.querySelector('.next button');
+		return document.querySelector('.rdtNext button');
 	},
 	prev: function(){
-		return document.querySelector('.prev button');
+		return document.querySelector('.rdtPrev button');
 	},
 	timeUp: function( n ){
 		return document.querySelectorAll('.rdtCounter')[ n ].children[0];
@@ -247,7 +248,7 @@ describe( 'Datetime', function(){
 		assert.equal( typeof props.onClick, 'function' );
 
 		// The cell text should be 'day'
-		assert.equal( view.querySelector('.day').innerHTML, 'day' );
+		assert.equal( view.querySelector('.rdtDay').innerHTML, 'day' );
 	});
 
 
@@ -274,7 +275,7 @@ describe( 'Datetime', function(){
 		assert.equal( typeof props.onClick, 'function' );
 
 		// The cell text should be 'day'
-		assert.equal( view.querySelector('.month').innerHTML, 'month' );
+		assert.equal( view.querySelector('.rdtMonth').innerHTML, 'month' );
 	});
 
 	it( 'renderYear', function(){
@@ -298,7 +299,7 @@ describe( 'Datetime', function(){
 		assert.equal( typeof props.onClick, 'function' );
 
 		// The cell text should be 'day'
-		assert.equal( view.querySelector('.year').innerHTML, 'year' );
+		assert.equal( view.querySelector('.rdtYear').innerHTML, 'year' );
 	});
 
 	it( 'Time pickers depends on the time format', function() {
