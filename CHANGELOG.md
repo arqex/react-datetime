@@ -1,5 +1,9 @@
 Changelog
 =========
+## 2.0.0
+* DOM classes are now prefixed with `rdt`.
+* A modified version of OnClickOutside is now included in the code to handle react 0.13 and 0.14 versions.
+* Updated dependencies.
 
 ## 1.3.0
 * Added open prop.

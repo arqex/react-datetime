@@ -31,6 +31,8 @@ render: function() {
 ```
 [See this example working](http://codepen.io/arqex/pen/BoqgaG).
 
+Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.
+
 API
 ===============================
 
