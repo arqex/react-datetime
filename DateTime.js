@@ -12,7 +12,7 @@ var assign = require('object-assign'),
 var TYPES = React.PropTypes;
 var Datetime = React.createClass({
 	mixins: [
-		require('react-onclickoutside')
+		require('./src/onClickOutside')
 	],
 	viewComponents: {
 		days: DaysView,

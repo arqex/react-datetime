@@ -23,7 +23,7 @@
   "author": "Javier Marquez",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=0.12",
+    "react": ">=0.13",
     "moment": ">=2.8.1"
   },
   "devDependencies": {
@@ -33,13 +33,13 @@
     "gulp-webpack": "^1.5.0",
     "jsdom": "^3.1.2",
     "mocha": "^2.2.5",
-    "react": ">=0.12",
-    "react-tools": "^0.12.2",
+    "react": ">=0.13",
+    "react-tools": "^0.13.2",
     "webpack": "^1.5.1",
     "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
     "object-assign": "^3.0.0",
-    "react-onclickoutside": "^0.3.4"
+    "react-onclickoutside": "^4.1.0"
   }
 }
