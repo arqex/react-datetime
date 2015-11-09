@@ -29,7 +29,7 @@ render: function() {
   return <Datetime />;
 }
 ```
-[See this example working](http://codepen.io/arqex/pen/BNRNBw).
+[See this example working](http://codepen.io/arqex/pen/BoqgaG).
 
 API
 ===============================
