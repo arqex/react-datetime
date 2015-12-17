@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.0.1
+* Fixed two days can't have the same header name.
+
 ## 2.0.0
 * DOM classes are now prefixed with `rdt`.
 * A modified version of OnClickOutside is now included in the code to handle react 0.13 and 0.14 versions.
