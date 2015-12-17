@@ -72,9 +72,9 @@ var DateTimePickerDays = React.createClass({
 			classes = 'rdtDay';
 			currentDate = prevMonth.clone();
 
-			if( prevMonth.year() < currentYear || prevMonth.month() < currentMonth )
+			if( ( prevMonth.year() == currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) )
 				classes += ' rdtOld';
-			else if( prevMonth.year() > currentYear || prevMonth.month() > currentMonth )
+			else if( ( prevMonth.year() == currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) )
 				classes += ' rdtNew';
 
 			if( selected && prevMonth.isSame( {y: selected.year(), M: selected.month(), d: selected.date()} ) )
