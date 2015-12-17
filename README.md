@@ -9,6 +9,12 @@ It allows to edit even date's milliseconds.
 
 This project started as a fork of https://github.com/quri/react-bootstrap-datetimepicker but the code and the API has changed a lot.
 
+Collaborator needed
+===================
+I moved to some projects where I don't use this library anymore, and I don't have much time to update it.
+Since there are a lot of people using it, it would be nice that some dev user could maintain the library.
+If you think your are good enough to handle this hard task just ping me :)
+
 Usage
 ===============================
 
@@ -79,8 +85,8 @@ It is possible to customize the way that the datetime picker display the days, m
 var MyDTPicker = React.createClass({
     render: function(){
         return <Datetime
-            renderDay={ this.renderDay } 
-            renderMonth={ this.renderMonth } 
+            renderDay={ this.renderDay }
+            renderMonth={ this.renderMonth }
             renderYear={ this.renderYear }
         />;
     },

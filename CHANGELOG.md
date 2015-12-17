@@ -1,5 +1,9 @@
 Changelog
 =========
+
+## 2.0.2
+* Fixed january days go to november problem.
+
 ## 2.0.1
 * Fixed two days can't have the same header name.
 
@@ -38,7 +42,3 @@ This is the release candidate for this project. Now it is pretty usable and API 
 Moreover:
 * Buttons doesn't submit anymore when the Datetime component is in a form.
 * `className` prop has been added to customize component class.
-
-
-
-
