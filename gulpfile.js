@@ -15,6 +15,9 @@ var getWPConfig = function( filename ){
 			},
 			moment: {
 				root: 'moment'
+			},
+			'react-dom': {
+				root: 'ReactDOM'
 			}
 		},
 		output: {
