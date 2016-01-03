@@ -14,7 +14,10 @@ module.exports = {
     path: __dirname + "/dist/",
     library: 'Datetime',
     libraryTarget: 'umd',
+    filename: 'react-datetime.js'
   },
+
+  devtool: 'source-map',
 
   resolve: {
     extensions: ['', '.js']
