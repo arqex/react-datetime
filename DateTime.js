@@ -129,6 +129,12 @@ var Datetime = React.createClass({
 		this.setState( update );
 	},
 
+	handleOnKeyDown: function( e ) {
+		if(e.shiftKey && e.keyCode === 9) {
+			this.closeCalendar();
+		}
+ 	},
+
 	onInputChange: function( e ) {
 		var value = e.target == null ? e : e.target.value,
 			localMoment = this.localMoment( value, this.state.inputFormat ),
@@ -254,6 +260,10 @@ var Datetime = React.createClass({
 		this.setState({ open: true });
 	},
 
+	closeCalendar: function() {
+		this.setState({ open: false });
+	},
+
 	handleClickOutside: function(){
 		if( this.props.input && this.state.open && !this.props.open ){
 			this.setState({ open: false });
@@ -275,10 +285,13 @@ var Datetime = React.createClass({
 	},
 
 	getComponentProps: function(){
-		var me = this,
-			formats = this.getFormats( this.props ),
-			props = {dateFormat: formats.date, timeFormat: formats.time}
-		;
+		var me = this;
+		var formats = this.getFormats(this.props);
+		var props = {
+			closeCalendar: this.closeCalendar,
+			dateFormat: formats.date,
+			timeFormat: formats.time
+		};
 
 		this.componentProps.fromProps.forEach( function( name ){
 			props[ name ] = me.props[ name ];
@@ -307,6 +320,7 @@ var Datetime = React.createClass({
 				className: 'form-control',
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
+				onKeyDown: this.handleOnKeyDown,
 				value: this.state.inputValue
 			}, this.props.inputProps ))];
 		}
