@@ -256,7 +256,7 @@ var Datetime = React.createClass({
 
 	handleClickOutside: function(){
 		if( this.props.input && this.state.open && !this.props.open ){
-			this.setState({ open: false });
+			this.setState({ open: false, currentView: this.props.dateFormat ? this.props.viewMode : 'time' });
 			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 		}
 	},
