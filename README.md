@@ -61,6 +61,7 @@ API
 | **renderMonth** | function | DOM.td( month ) | Customize the way that the months are shown in the month picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization) |
 | **renderYear** | function | DOM.td( year ) | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization) |
 | **strictParsing** | boolean | false | Whether to use moment's [strict parsing](http://momentjs.com/docs/#/parsing/string-format/) when parsing input.
+| **closeOnSelect** | boolean | false | When `true`, once the day has been selected, the react-datetime will be automatically closed.
 
 ## i18n
 Different language and date formats are supported by react-datetime. React uses [moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
