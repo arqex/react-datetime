@@ -79,7 +79,7 @@ var DateTimePickerTime = React.createClass({
 	},
 	renderHeader: function(){
 		if( !this.props.dateFormat )
-			return '';
+			return null;
 
 		var date = this.props.selectedDate || this.props.viewDate;
 		return DOM.thead({ key: 'h'}, DOM.tr({},
