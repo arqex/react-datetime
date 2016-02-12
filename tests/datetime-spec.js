@@ -581,5 +581,25 @@ describe( 'Datetime', function(){
 		dt.input().value = invalidStrDate;
 		Utils.Simulate.change( dt.input() );
 	});
+
+	it( 'minview month', function(){
+		createDatetime({ viewMode: 'months', minView: 'months', closeOnSelect:true, defaultValue: date });
+		ev.focus( dt.input() );
+		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		ev.click( dt.month(1) );
+		assert.equal( dt.view().className, 'rdtMonths' );
+		assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
+	});
+
+	it( 'minview year', function(){
+		createDatetime({ viewMode: 'months', minView: 'years', closeOnSelect:true, defaultValue: date });
+		ev.focus( dt.input() );
+		assert.equal( dt.view().className, 'rdtYears' );
+		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		ev.click( dt.year(1) );
+		assert.equal( dt.view().className, 'rdtYears' );
+		assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
+	});
+
 });
 

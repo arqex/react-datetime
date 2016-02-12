@@ -21,9 +21,11 @@ var DateTimePickerYears = React.createClass({
 		var years = [],
 			i = -1,
 			rows = [],
+			selected = this.props.selectedDate && this.props.selectedDate.clone(),
 			renderer = this.props.renderYear || this.renderYear,
-			selectedDate = this.props.selectedDate,
-			classes, props
+			isValid = this.props.isValidYear || this.isValidYear,
+			isMinView = this.props.minView === 'years',
+			classes, props, disabled
 		;
 
 		year--;
@@ -31,7 +33,7 @@ var DateTimePickerYears = React.createClass({
 			classes = 'rdtYear';
 			if( i === -1 | i === 10 )
 				classes += ' rdtOld';
-			if( selectedDate && selectedDate.year() === year )
+			if( selected && selected.year() === year )
 				classes += ' rdtActive';
 
 			props = {
@@ -41,7 +43,20 @@ var DateTimePickerYears = React.createClass({
 				onClick: this.props.setDate('year')
 			};
 
-			years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
+			if (isMinView) {
+
+				disabled = !isValid(year, selected);
+				if (disabled)
+					classes += ' rdtDisabled';
+
+				if (!disabled)
+					props.onClick = this.updateSelectedDate;
+			}
+			else {
+				props.onClick = this.props.setDate('year');
+			}
+
+			years.push( renderer( props, year, selected ));
 
 			if( years.length == 4 ){
 				rows.push( DOM.tr({ key: i }, years ) );
@@ -55,9 +70,14 @@ var DateTimePickerYears = React.createClass({
 		return rows;
 	},
 
+	updateSelectedDate: function( event ) {
+		this.props.updateSelectedDate(event, true);
+	},
+
 	renderYear: function( props, year, selectedDate ){
 		return DOM.td( props, year );
-	}
+	},
+	isValidYear: function(){ return 1; }
 });
 
 module.exports = DateTimePickerYears;

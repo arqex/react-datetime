@@ -8,7 +8,7 @@ var assign = require('object-assign'),
 	TimeView = require('./src/TimeView'),
 	moment = require('moment')
 ;
-
+var views = ['years', 'months', 'days', 'time'];
 var TYPES = React.PropTypes;
 var Datetime = React.createClass({
 	mixins: [
@@ -31,8 +31,11 @@ var Datetime = React.createClass({
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
-		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
+		viewMode: TYPES.oneOf(views),
+		minView: TYPES.oneOf(views),
 		isValidDate: TYPES.func,
+		isValidMonth: TYPES.func,
+		isValidYear: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool
 	},
@@ -43,6 +46,7 @@ var Datetime = React.createClass({
 			className: '',
 			defaultValue: '',
 			viewMode: 'days',
+			minView: 'time',
 			inputProps: {},
 			input: true,
 			onBlur: nof,
@@ -58,8 +62,8 @@ var Datetime = React.createClass({
 
 		if( state.open == undefined )
 			state.open = !this.props.input;
-
-		state.currentView = this.props.dateFormat ? this.props.viewMode : 'time';
+		var minix = views.indexOf(this.props.minView);
+		state.currentView = this.props.dateFormat ? (views.indexOf(this.props.viewMode) > minix ? this.props.minView : this.props.viewMode) : 'time';
 
 		return state;
 	},
@@ -219,26 +223,45 @@ var Datetime = React.createClass({
 	},
 
 	updateSelectedDate: function( e, close ) {
+
 		var target = e.target,
 			modifier = 0,
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
-			date
+			date,
+			className = e.target.className
 		;
 
-		if(target.className.indexOf("rdtNew") != -1)
-			modifier = 1;
-		else if(target.className.indexOf("rdtOld") != -1)
-			modifier = -1;
+		var isMonth = className.indexOf('rdtMonth') != -1;
+		var isYear = className.indexOf('rdtYear') != -1;
+		if(isYear||isMonth) {
+			if (!this.props.minView||(isYear&&this.props.minView=='months')) {
+				return;
+			}
+			date = viewDate.clone()
+				.year(isYear ? parseInt( target.getAttribute('data-value') ) : viewDate.year())
+				.month(isMonth ? parseInt( target.getAttribute('data-value') ): viewDate.month())
+				.date(1)
+				.hours( currentDate.hours() )
+				.minutes( currentDate.minutes() )
+				.seconds( currentDate.seconds() )
+				.milliseconds( currentDate.milliseconds() );
+		}
+		else {
 
-		date = viewDate.clone()
-			.month( viewDate.month() + modifier )
-			.date( parseInt( target.getAttribute('data-value') ) )
-			.hours( currentDate.hours() )
-			.minutes( currentDate.minutes() )
-			.seconds( currentDate.seconds() )
-			.milliseconds( currentDate.milliseconds() )
-		;
+			if(className.indexOf("rdtNew") != -1)
+				modifier = 1;
+			else if(className.indexOf("rdtOld") != -1)
+				modifier = -1;
+
+			date = viewDate.clone()
+				.month( viewDate.month() + modifier )
+				.date( parseInt( target.getAttribute('data-value') ) )
+				.hours( currentDate.hours() )
+				.minutes( currentDate.minutes() )
+				.seconds( currentDate.seconds() )
+				.milliseconds( currentDate.milliseconds() );
+		}
 
 		if( !this.props.value ){
 			this.setState({
@@ -278,7 +301,7 @@ var Datetime = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear'],
+		fromProps: ['value', 'isValidDate', 'isValidMonth', 'isValidYear', 'renderDay', 'renderMonth', 'renderYear', 'minView'],
 		fromState: ['viewDate', 'selectedDate' ],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
 	},
