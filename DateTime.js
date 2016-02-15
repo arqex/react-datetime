@@ -263,17 +263,15 @@ var Datetime = React.createClass({
 				.milliseconds( currentDate.milliseconds() );
 		}
 
-		if( !this.props.value ){
-			this.setState({
-				selectedDate: date,
-				viewDate: date.clone().startOf('month'),
-				inputValue: date.format( this.state.inputFormat )
-			}, function () {
-				if (this.props.closeOnSelect && close) {
-					this.closeCalendar();
-				}
-			});
-		}
+		this.setState({
+			selectedDate: date,
+			viewDate: date.clone().startOf('month'),
+			inputValue: date.format( this.state.inputFormat )
+		}, function () {
+			if (this.props.closeOnSelect && close) {
+				this.closeCalendar();
+			}
+		});
 
 		this.props.onChange( date );
 	},
