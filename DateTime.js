@@ -24,6 +24,7 @@ var Datetime = React.createClass({
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
 		closeOnSelect: TYPES.bool,
+		onFocus: TYPES.func,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
 		locale: TYPES.string,
@@ -50,6 +51,7 @@ var Datetime = React.createClass({
 			inputProps: {},
 			input: true,
 			onBlur: nof,
+      onFocus: nof,
 			onChange: nof,
 			timeFormat: true,
 			dateFormat: true,
@@ -276,18 +278,19 @@ var Datetime = React.createClass({
 		this.props.onChange( date );
 	},
 
-	openCalendar: function() {
+	openCalendar: function(e) {
 		this.setState({ open: true });
+		this.props.onFocus(e);
 	},
 
 	closeCalendar: function() {
 		this.setState({ open: false });
 	},
 
-	handleClickOutside: function(){
+	handleClickOutside: function(e){
 		if( this.props.input && this.state.open && !this.props.open ){
 			this.setState({ open: false });
-			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+			this.props.onBlur(this.state.selectedDate || this.state.inputValue , e);
 		}
 	},
 
@@ -337,6 +340,7 @@ var Datetime = React.createClass({
 				className: 'form-control',
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
+        onBlur: this.handleClickOutside,
 				value: this.state.inputValue
 			}, this.props.inputProps ))];
 		}
