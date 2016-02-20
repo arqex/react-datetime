@@ -223,7 +223,6 @@ var Datetime = React.createClass({
 		}
 		this.props.onChange( date );
 	},
-
 	updateSelectedDate: function( e, close ) {
 
 		var target = e.target,
@@ -279,8 +278,9 @@ var Datetime = React.createClass({
 	},
 
 	openCalendar: function(e) {
-		this.setState({ open: true });
-		this.props.onFocus(e);
+		this.setState({ open: true }, function() {
+      this.props.onFocus(e);
+    });
 	},
 
 	closeCalendar: function() {
@@ -289,11 +289,25 @@ var Datetime = React.createClass({
 
 	handleClickOutside: function(e){
 		if( this.props.input && this.state.open && !this.props.open ){
-			this.setState({ open: false });
-			this.props.onBlur(this.state.selectedDate || this.state.inputValue , e);
+			this.setState({ open: false }, function() {
+        this.props.onBlur(this.state.selectedDate || this.state.inputValue , e)
+      });
 		}
 	},
-
+	handleOnBlur: function(e,inputid) {
+		if(!e||!inputid) {
+			return;
+		}
+		var ctrl_index = inputid.substr(0,inputid.lastIndexOf('.'));
+		if(!e.relatedTarget) {
+			return;
+		}
+		var target_id = e.relatedTarget.dataset['reactid'];
+		if(target_id.startsWith(ctrl_index)){
+			return
+		}
+		this.handleClickOutside(e);
+	},
 	localMoment: function( date, format ){
 		var m = moment( date, format, this.props.strictParsing );
 		if( this.props.locale )
@@ -340,7 +354,7 @@ var Datetime = React.createClass({
 				className: 'form-control',
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
-        onBlur: this.handleClickOutside,
+        onBlur: this.handleOnBlur,
 				value: this.state.inputValue
 			}, this.props.inputProps ))];
 		}
