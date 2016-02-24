@@ -276,10 +276,10 @@ var Datetime = React.createClass({
 			if (this.props.closeOnSelect && close) {
 				this.closeCalendar();
 			}
-			this.props.onSelect(date.clone());
-		});
 
-		this.props.onChange( date );
+		});
+		this.props.onChange(date);
+		this.props.onSelect(date);
 	},
 
 	openCalendar: function(e) {
