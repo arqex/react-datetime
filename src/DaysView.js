@@ -109,7 +109,6 @@ var DateTimePickerDays = React.createClass({
 	},
 
 	updateSelectedDate: function( event ) {
-		console.log('update1');
 		this.props.updateSelectedDate(event, true);
 	},
 
