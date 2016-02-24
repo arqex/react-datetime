@@ -27,6 +27,7 @@ var Datetime = React.createClass({
 		onFocus: TYPES.func,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
+		onSelect: TYPES.func,
 		locale: TYPES.string,
 		input: TYPES.bool,
 		disabled: TYPES.bool,
@@ -54,6 +55,7 @@ var Datetime = React.createClass({
 			onBlur: nof,
       onFocus: nof,
 			onChange: nof,
+			onSelect: nof,
 			timeFormat: true,
 			dateFormat: true,
 			strictParsing: true,
@@ -274,6 +276,7 @@ var Datetime = React.createClass({
 			if (this.props.closeOnSelect && close) {
 				this.closeCalendar();
 			}
+			this.onSelect(date.clone());
 		});
 
 		this.props.onChange( date );
