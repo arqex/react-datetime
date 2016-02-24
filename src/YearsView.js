@@ -36,6 +36,10 @@ var DateTimePickerYears = React.createClass({
 			if( selected && selected.year() === year )
 				classes += ' rdtActive';
 
+			disabled = !isValid(year, selected);
+				if (disabled)
+					classes += ' rdtDisabled';
+
 			props = {
 				key: year,
 				'data-value': year,
@@ -44,10 +48,6 @@ var DateTimePickerYears = React.createClass({
 			};
 
 			if (isMinView) {
-
-				disabled = !isValid(year, selected);
-				if (disabled)
-					classes += ' rdtDisabled';
 
 				if (!disabled)
 					props.onClick = this.updateSelectedDate;
