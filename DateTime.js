@@ -8,7 +8,7 @@ var assign = require('object-assign'),
 	TimeView = require('./src/TimeView'),
 	moment = require('moment')
 ;
-
+var views = ['years', 'months', 'days', 'time'];
 var TYPES = React.PropTypes;
 var Datetime = React.createClass({
 	mixins: [
@@ -24,15 +24,21 @@ var Datetime = React.createClass({
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
 		closeOnSelect: TYPES.bool,
+		onFocus: TYPES.func,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
+		onSelect: TYPES.func,
 		locale: TYPES.string,
 		input: TYPES.bool,
+		disabled: TYPES.bool,
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
-		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
+		viewMode: TYPES.oneOf(views),
+		minView: TYPES.oneOf(views),
 		isValidDate: TYPES.func,
+		isValidMonth: TYPES.func,
+		isValidYear: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool
 	},
@@ -43,13 +49,17 @@ var Datetime = React.createClass({
 			className: '',
 			defaultValue: '',
 			viewMode: 'days',
+			minView: 'time',
 			inputProps: {},
 			input: true,
 			onBlur: nof,
+      onFocus: nof,
 			onChange: nof,
+			onSelect: nof,
 			timeFormat: true,
 			dateFormat: true,
-			strictParsing: true
+			strictParsing: true,
+			disabled: false
 		};
 	},
 
@@ -58,8 +68,8 @@ var Datetime = React.createClass({
 
 		if( state.open == undefined )
 			state.open = !this.props.input;
-
-		state.currentView = this.props.dateFormat ? this.props.viewMode : 'time';
+		var minix = views.indexOf(this.props.minView);
+		state.currentView = this.props.dateFormat ? (views.indexOf(this.props.viewMode) > minix ? this.props.minView : this.props.viewMode) : 'time';
 
 		return state;
 	},
@@ -217,59 +227,95 @@ var Datetime = React.createClass({
 		}
 		this.props.onChange( date );
 	},
-
 	updateSelectedDate: function( e, close ) {
+
 		var target = e.target,
 			modifier = 0,
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
-			date
+			date,
+			className = e.target.className
 		;
 
-		if(target.className.indexOf("rdtNew") != -1)
-			modifier = 1;
-		else if(target.className.indexOf("rdtOld") != -1)
-			modifier = -1;
+		var isMonth = className.indexOf('rdtMonth') != -1;
+		var isYear = className.indexOf('rdtYear') != -1;
+		if(isYear||isMonth) {
+			if (!this.props.minView||(isYear&&this.props.minView=='months')) {
+				return;
+			}
+			date = viewDate.clone()
+				.year(isYear ? parseInt( target.getAttribute('data-value') ) : viewDate.year())
+				.month(isMonth ? parseInt( target.getAttribute('data-value') ): viewDate.month())
+				.date(1)
+				.hours( currentDate.hours() )
+				.minutes( currentDate.minutes() )
+				.seconds( currentDate.seconds() )
+				.milliseconds( currentDate.milliseconds() );
+		}
+		else {
 
-		date = viewDate.clone()
-			.month( viewDate.month() + modifier )
-			.date( parseInt( target.getAttribute('data-value') ) )
-			.hours( currentDate.hours() )
-			.minutes( currentDate.minutes() )
-			.seconds( currentDate.seconds() )
-			.milliseconds( currentDate.milliseconds() )
-		;
+			if(className.indexOf("rdtNew") != -1)
+				modifier = 1;
+			else if(className.indexOf("rdtOld") != -1)
+				modifier = -1;
 
-		if( !this.props.value ){
-			this.setState({
-				selectedDate: date,
-				viewDate: date.clone().startOf('month'),
-				inputValue: date.format( this.state.inputFormat )
-			}, function () {
-				if (this.props.closeOnSelect && close) {
-					this.closeCalendar();
-				}
-			});
+			date = viewDate.clone()
+				.month( viewDate.month() + modifier )
+				.date( parseInt( target.getAttribute('data-value') ) )
+				.hours( currentDate.hours() )
+				.minutes( currentDate.minutes() )
+				.seconds( currentDate.seconds() )
+				.milliseconds( currentDate.milliseconds() );
 		}
 
-		this.props.onChange( date );
+		this.setState({
+			selectedDate: date,
+			viewDate: date.clone().startOf('month'),
+			inputValue: date.format( this.state.inputFormat )
+		}, function () {
+			if (this.props.closeOnSelect && close) {
+				this.closeCalendar();
+			}
+
+		});
+		this.props.onChange(date);
+		this.props.onSelect(date);
 	},
 
-	openCalendar: function() {
-		this.setState({ open: true });
+	openCalendar: function(e) {
+		if(this.props.disabled) {
+			return;
+		}
+		this.setState({ open: true }, function() {
+      this.props.onFocus(e);
+    });
 	},
 
 	closeCalendar: function() {
 		this.setState({ open: false });
 	},
 
-	handleClickOutside: function(){
+	handleClickOutside: function(e){
 		if( this.props.input && this.state.open && !this.props.open ){
-			this.setState({ open: false });
-			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+			this.setState({ open: false }, function() {
+        this.props.onBlur(this.state.selectedDate || this.state.inputValue , e)
+      });
 		}
 	},
-
+	handleOnBlur: function(e,inputid) {
+		if(!e||!inputid) {
+			return;
+		}
+		var ctrl_index = inputid.substr(0,inputid.lastIndexOf('.'));
+		if(!e.relatedTarget) {
+			return;
+		}
+		var target_id = e.relatedTarget.dataset['reactid'];
+		if(target_id.startsWith(ctrl_index)){
+			return
+		}
+		this.handleClickOutside(e);
+	},
 	localMoment: function( date, format ){
 		var m = moment( date, format, this.props.strictParsing );
 		if( this.props.locale )
@@ -278,7 +324,7 @@ var Datetime = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear'],
+		fromProps: ['value', 'isValidDate', 'isValidMonth', 'isValidYear', 'renderDay', 'renderMonth', 'renderYear', 'minView'],
 		fromState: ['viewDate', 'selectedDate' ],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
 	},
@@ -316,7 +362,9 @@ var Datetime = React.createClass({
 				className: 'form-control',
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
-				value: this.state.inputValue
+        onBlur: this.handleOnBlur,
+				value: this.state.inputValue,
+				disabled: this.props.disabled
 			}, this.props.inputProps ))];
 		}
 		else {
