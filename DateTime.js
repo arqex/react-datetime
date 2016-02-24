@@ -29,6 +29,7 @@ var Datetime = React.createClass({
 		onChange: TYPES.func,
 		locale: TYPES.string,
 		input: TYPES.bool,
+		disabled: TYPES.bool,
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
@@ -55,7 +56,8 @@ var Datetime = React.createClass({
 			onChange: nof,
 			timeFormat: true,
 			dateFormat: true,
-			strictParsing: true
+			strictParsing: true,
+			disabled: false
 		};
 	},
 
@@ -278,6 +280,9 @@ var Datetime = React.createClass({
 	},
 
 	openCalendar: function(e) {
+		if(this.props.disabled) {
+			return;
+		}
 		this.setState({ open: true }, function() {
       this.props.onFocus(e);
     });
@@ -355,7 +360,8 @@ var Datetime = React.createClass({
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
         onBlur: this.handleOnBlur,
-				value: this.state.inputValue
+				value: this.state.inputValue,
+				disabled: this.props.disabled
 			}, this.props.inputProps ))];
 		}
 		else {
