@@ -10,7 +10,8 @@
   "main": "./DateTime.js",
   "scripts": {
     "build": "./node_modules/.bin/gulp.cmd",
-    "test": "node node_modules/mocha/bin/mocha tests"
+    "test": "node node_modules/mocha/bin/mocha tests",
+    "dev": "webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example"
   },
   "keywords": [
     "react",
