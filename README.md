@@ -52,6 +52,7 @@ API
 | **open** | boolean | null | Wether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside. |
 | **locale** | string | null | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
 | **onChange** | function | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If it isn't, the value of the input (a string) is returned. |
+| **onFocus** | function | empty function | Callback trigger for when the user opens the datepicker. |
 | **onBlur** | function | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If it isn't, the value of the input (a string) is returned. |
 | **viewMode** | string or number | 'days' | The default view to display when the picker is shown. ('years', 'months', 'days', 'time') |
 | **className** | string | `""` | Extra class names for the component markup. |
