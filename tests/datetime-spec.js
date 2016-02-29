@@ -453,6 +453,16 @@ describe( 'Datetime', function(){
 		ev.click( dt.day( 4 ) );
 	});
 
+	it( 'onFocus', function(){
+		var focus = false;
+		createDatetime({ value: date, onFocus: function( selected ){
+			focus = true;
+		}});
+
+		ev.focus( dt.input() );
+		assert.equal( focus, true );
+	});
+
 	it( 'onBlur', function(){
 		createDatetime({ value: date, onBlur: function( selected ){
 			assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
