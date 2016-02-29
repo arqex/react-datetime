@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## 2.1.0
+* Fixed rdtActive not getting set.
+* Add react-dom as external dependency.
+* Fixed rendering a span directly under the calendar table.
+* Added dev setup
+* Added example
+
 ## 2.0.2
 * Fixed january days go to november problem.
 
