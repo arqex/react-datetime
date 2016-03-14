@@ -36,8 +36,7 @@ var Datetime = React.createClass({
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
-		disabled: TYPES.bool,
-		readOnly: TYPES.oneOf(['readonly', ''])
+		disabled: TYPES.bool
 	},
 
 	getDefaultProps: function() {
@@ -54,8 +53,7 @@ var Datetime = React.createClass({
 			timeFormat: true,
 			dateFormat: true,
 			strictParsing: true,
-			disabled: false,
-			readOnly: ''
+			disabled: false
 		};
 	},
 
@@ -326,8 +324,7 @@ var Datetime = React.createClass({
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				value: this.state.inputValue,
-				disabled: this.props.disabled,
-				readOnly: this.props.readOnly
+				disabled: this.props.disabled
 			}, this.props.inputProps ))];
 		}
 		else {
