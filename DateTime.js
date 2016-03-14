@@ -35,7 +35,8 @@ var Datetime = React.createClass({
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
-		strictParsing: TYPES.bool
+		strictParsing: TYPES.bool,
+		isDisabled: TYPES.bool
 	},
 
 	getDefaultProps: function() {
@@ -51,7 +52,8 @@ var Datetime = React.createClass({
 			onChange: nof,
 			timeFormat: true,
 			dateFormat: true,
-			strictParsing: true
+			strictParsing: true,
+			isDisabled: false
 		};
 	},
 
@@ -321,7 +323,8 @@ var Datetime = React.createClass({
 				className: 'form-control',
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
-				value: this.state.inputValue
+				value: this.state.inputValue,
+				disabled: this.props.isDisabled 
 			}, this.props.inputProps ))];
 		}
 		else {
