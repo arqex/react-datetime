@@ -27,9 +27,9 @@ var DateTimePickerDays = React.createClass({
 		if( footer )
 			tableChildren.push( footer );
 
-		return DOM.div({ className: 'rdtDays' },
-			DOM.table({}, tableChildren )
-		);
+		return DOM.div({ className: 'rdtDays' }, [
+			DOM.table({key: 'tbl'}, tableChildren )
+		]);
 	},
 
 	/**
@@ -121,11 +121,19 @@ var DateTimePickerDays = React.createClass({
 			return '';
 
 		var date = this.props.selectedDate || this.props.viewDate;
-		return DOM.tfoot({ key: 'tf'},
-			DOM.tr({},
+
+    var footerItems = [
+      DOM.tr({key: 'time'},
 				DOM.td({ onClick: this.props.showView('time'), colSpan: 7, className: 'rdtTimeToggle'}, date.format( this.props.timeFormat ))
-			)
-		);
+			)]
+
+    if (this.props.nowLabel) {
+      footerItems.push(DOM.tr({key: 'today'},
+        DOM.td({ onClick:this.props.setNow, colSpan: 7, className: 'rdtTimeToggle'}, this.props.nowLabel)
+      ));
+    }
+
+		return DOM.tfoot({ key: 'tf'}, footerItems);
 	},
 	isValidDate: function(){ return 1; }
 });

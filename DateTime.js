@@ -35,7 +35,8 @@ var Datetime = React.createClass({
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
-		strictParsing: TYPES.bool
+		strictParsing: TYPES.bool,
+		nowLabel: TYPES.string
 	},
 
 	getDefaultProps: function() {
@@ -51,7 +52,8 @@ var Datetime = React.createClass({
 			onChange: nof,
 			timeFormat: true,
 			dateFormat: true,
-			strictParsing: true
+			strictParsing: true,
+			nowLabel: ''
 		};
 	},
 
@@ -150,6 +152,21 @@ var Datetime = React.createClass({
 			return this.props.onChange( localMoment.isValid() ? localMoment : this.state.inputValue );
 		});
 	},
+
+  setNow: function () {
+
+    var now = moment()
+
+    var update = {
+      inputValue: now.format("MM/DD/YYYY h:mm A"),
+      selectedDate: now,
+			viewDate: now.clone().startOf("month")
+    }
+
+		return this.setState(update, function() {
+			return this.props.onChange(now);
+		});
+  },
 
 	showView: function( view ){
 		var me = this;
@@ -283,9 +300,9 @@ var Datetime = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'nowLabel'],
 		fromState: ['viewDate', 'selectedDate' ],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'setNow']
 	},
 
 	getComponentProps: function(){
