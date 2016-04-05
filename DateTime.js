@@ -69,7 +69,7 @@ var Datetime = React.createClass({
 	getStateFromProps: function( props ){
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
-			selectedDate, viewDate
+			selectedDate, viewDate, updateOn
 		;
 
 		if( date && typeof date == 'string' )
@@ -85,13 +85,26 @@ var Datetime = React.createClass({
 			this.localMoment().startOf("month")
 		;
 
+		updateOn = this.getUpdateOn(formats);
+
 		return {
+			updateOn: updateOn,
 			inputFormat: formats.datetime,
 			viewDate: viewDate,
 			selectedDate: selectedDate,
 			inputValue: selectedDate ? selectedDate.format( formats.datetime ) : (date || ''),
 			open: props.open != undefined ? props.open : this.state && this.state.open
 		};
+	},
+
+	getUpdateOn: function(formats){
+		if(formats.datetime.indexOf("D") != -1){
+			return "date";
+		}else if(formats.datetime.indexOf("M") != -1){
+			return "month";
+		}else if(formats.datetime.indexOf("Y") != -1){
+			return "year";
+		}
 	},
 
 	getFormats: function( props ){
@@ -226,21 +239,33 @@ var Datetime = React.createClass({
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
 			date
-		;
+        ;
 
-		if(target.className.indexOf("rdtNew") != -1)
-			modifier = 1;
-		else if(target.className.indexOf("rdtOld") != -1)
-			modifier = -1;
+		if(target.className.indexOf("rdtDay") != -1){
+			if(target.className.indexOf("rdtNew") != -1)
+				modifier = 1;
+			else if(target.className.indexOf("rdtOld") != -1)
+				modifier = -1;
 
-		date = viewDate.clone()
-			.month( viewDate.month() + modifier )
-			.date( parseInt( target.getAttribute('data-value') ) )
-			.hours( currentDate.hours() )
+			date = viewDate.clone()
+				.month( viewDate.month() + modifier )
+				.date( parseInt( target.getAttribute('data-value') ) )
+			;
+		}else if(target.className.indexOf("rdtMonth") != -1){
+			date = viewDate.clone()
+				.month( parseInt( target.getAttribute('data-value') ) )
+				.date( currentDate.date() )
+		}else if(target.className.indexOf("rdtYear") != -1){
+			date = viewDate.clone()
+				.month( currentDate.month() )
+				.date( currentDate.date() )
+				.year( parseInt( target.getAttribute('data-value') ) )
+		}
+
+		date.hours( currentDate.hours() )
 			.minutes( currentDate.minutes() )
 			.seconds( currentDate.seconds() )
 			.milliseconds( currentDate.milliseconds() )
-		;
 
 		if( !this.props.value ){
 			this.setState({
@@ -284,7 +309,7 @@ var Datetime = React.createClass({
 
 	componentProps: {
 		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear'],
-		fromState: ['viewDate', 'selectedDate' ],
+		fromState: ['viewDate', 'selectedDate', 'updateOn'],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
 	},
 
