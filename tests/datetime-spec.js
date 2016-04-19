@@ -4,14 +4,13 @@ DOM();
 
 
 // Needs to be global to work in Travis CI
-React = require('react/addons');
+React = require('react');
 ReactDOM = require('react-dom');
 
-var ReactAddons = require('react/addons'),
-	Utils = React.addons.TestUtils,
-	Datetime = require('../DateTime'),
+var Datetime = require('../DateTime'),
 	assert = require('assert'),
-	moment = require('moment')
+	moment = require('moment'),
+	TestUtils = require('react-addons-test-utils')
 ;
 
 var createDatetime = function( props ){
@@ -31,7 +30,7 @@ var trigger = function( name, element ){
    element.dispatchEvent( ev );
 };
 
-var ev = React.addons.TestUtils.Simulate;
+var ev = TestUtils.Simulate;
 var dt = {
 	dt: function(){
 		return document.getElementById('root').children[0];
@@ -106,6 +105,7 @@ describe( 'Datetime', function(){
 		assert.equal( component.children[0].tagName , 'DIV' );
 	});
 
+
 	it( 'Date value', function(){
 		var component = createDatetime({ value: date }),
 			input = component.children[0]
@@ -166,7 +166,6 @@ describe( 'Datetime', function(){
 		// There must not be a date toggle
 		assert.equal( view.querySelectorAll('thead').length, 0);
 	});
-
 	it( 'timeFormat', function(){
 		var format = 'HH:mm:ss:SSS',
 			component = createDatetime({ value: date, timeFormat: format }),
@@ -558,7 +557,7 @@ describe( 'Datetime', function(){
 
 		assert.equal( dt.input().value, 'luis' );
 		dt.input().value = strDate;
-		Utils.Simulate.change( dt.input() );
+		ev.change( dt.input() );
 	});
 
 	it( 'delete input value', function( done ){
@@ -567,7 +566,7 @@ describe( 'Datetime', function(){
 			done();
 		}});
 		dt.input().value = '';
-		Utils.Simulate.change( dt.input() );
+		ev.change( dt.input() );
 	});
 
 	it( 'strictParsing=true', function( done ){
@@ -578,7 +577,7 @@ describe( 'Datetime', function(){
 		}});
 
 		dt.input().value = invalidStrDate;
-		Utils.Simulate.change( dt.input() );
+		ev.change( dt.input() );
 	});
 
 	it( 'strictParsing=false', function( done ){
@@ -589,7 +588,6 @@ describe( 'Datetime', function(){
 		}});
 
 		dt.input().value = invalidStrDate;
-		Utils.Simulate.change( dt.input() );
+		ev.change( dt.input() );
 	});
 });
-

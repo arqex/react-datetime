@@ -37,7 +37,7 @@ var DateTimePickerMonths = React.createClass({
 				key: i,
 				'data-value': i,
 				className: classes,
-				onClick: this.props.updateOn=="month"?this.updateSelectedMonth:this.props.setDate('month')
+				onClick: this.props.updateOn=="months"? this.updateSelectedMonth : this.props.setDate('month')
 			};
 
 			months.push( renderer( props, i, year, date && date.clone() ));

@@ -38,7 +38,7 @@ var DateTimePickerYears = React.createClass({
 				key: year,
 				'data-value': year,
 				className: classes,
-				onClick: this.props.updateOn=="year"?this.updateSelectedYear:this.props.setDate('year')
+				onClick: this.props.updateOn=="years" ? this.updateSelectedYear : this.props.setDate('year')
 			};
 
 			years.push( renderer( props, year, selectedDate && selectedDate.clone() ));

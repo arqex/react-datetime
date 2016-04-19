@@ -43,7 +43,6 @@ var Datetime = React.createClass({
 		return {
 			className: '',
 			defaultValue: '',
-			viewMode: 'days',
 			inputProps: {},
 			input: true,
 			onFocus: nof,
@@ -61,7 +60,7 @@ var Datetime = React.createClass({
 		if( state.open == undefined )
 			state.open = !this.props.input;
 
-		state.currentView = this.props.dateFormat ? this.props.viewMode : 'time';
+		state.currentView = this.props.dateFormat ? (this.props.viewMode || state.updateOn || 'days') : 'time';
 
 		return state;
 	},
@@ -98,13 +97,17 @@ var Datetime = React.createClass({
 	},
 
 	getUpdateOn: function(formats){
-		if(formats.datetime.indexOf("D") != -1){
-			return "date";
-		}else if(formats.datetime.indexOf("M") != -1){
-			return "month";
-		}else if(formats.datetime.indexOf("Y") != -1){
-			return "year";
+		if( formats.date.match(/[lLD]/) ){
+			return "days";
 		}
+		else if( formats.date.indexOf("M") != -1 ){
+			return "months";
+		}
+		else if( formats.date.indexOf("Y") != -1 ){
+			return "years";
+		}
+
+		return 'days';
 	},
 
 	getFormats: function( props ){
@@ -118,6 +121,10 @@ var Datetime = React.createClass({
 		if( formats.date === true ){
 			formats.date = locale.longDateFormat('L');
 		}
+		else if( this.getUpdateOn(formats) !== 'days' ){
+			formats.time = '';
+		}
+
 		if( formats.time === true ){
 			formats.time = locale.longDateFormat('LT');
 		}
