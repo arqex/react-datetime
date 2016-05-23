@@ -36,7 +36,7 @@
     "jsdom": "^7.0.2",
     "mocha": "^2.2.5",
     "react": ">=0.13",
-    "react-addons-test-utils": "^0.14.8",
+    "react-addons-test-utils": ">=0.13",
     "react-tools": "^0.13.2",
     "webpack": "^1.5.1",
     "webpack-dev-server": "^1.7.0"
