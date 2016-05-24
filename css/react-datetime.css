@@ -37,6 +37,9 @@
   text-align: center;
   height: 28px;
 }
+.rdtPicker td {
+  cursor: pointer;
+}
 .rdtPicker td.rdtToday:hover,
 .rdtPicker td.rdtHour:hover,
 .rdtPicker td.rdtMinute:hover,
