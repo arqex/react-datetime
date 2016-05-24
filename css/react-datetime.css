@@ -37,7 +37,7 @@
   text-align: center;
   height: 28px;
 }
-.rdtPicker td.rdtToday:hover,
+.rdtPicker td.rdtDay:hover,
 .rdtPicker td.rdtHour:hover,
 .rdtPicker td.rdtMinute:hover,
 .rdtPicker td.rdtSecond:hover,
