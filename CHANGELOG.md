@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.2.1
+* Controlled datepicker now working for controlled datepickers
+
 ## 2.2.0
 * The picker can be used as a month or year picker just giving a format date without days/months
 * Updates test suite

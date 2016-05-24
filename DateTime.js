@@ -92,7 +92,7 @@ var Datetime = React.createClass({
 			viewDate: viewDate,
 			selectedDate: selectedDate,
 			inputValue: selectedDate ? selectedDate.format( formats.datetime ) : (date || ''),
-			open: props.open != undefined ? props.open : this.state && this.state.open
+			open: props.open
 		};
 	},
 
@@ -246,7 +246,7 @@ var Datetime = React.createClass({
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
 			date
-        ;
+    ;
 
 		if(target.className.indexOf("rdtDay") != -1){
 			if(target.className.indexOf("rdtNew") != -1)
@@ -278,12 +278,14 @@ var Datetime = React.createClass({
 			this.setState({
 				selectedDate: date,
 				viewDate: date.clone().startOf('month'),
-				inputValue: date.format( this.state.inputFormat )
-			}, function () {
-				if (this.props.closeOnSelect && close) {
-					this.closeCalendar();
-				}
+				inputValue: date.format( this.state.inputFormat ),
+				open: !(this.props.closeOnSelect && close )
 			});
+		}
+		else {
+			if (this.props.closeOnSelect && close) {
+				this.closeCalendar();
+			}
 		}
 
 		this.props.onChange( date );
@@ -298,6 +300,7 @@ var Datetime = React.createClass({
 
 	closeCalendar: function() {
 		this.setState({ open: false });
+		this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 	},
 
 	handleClickOutside: function(){
