@@ -1,5 +1,9 @@
 Changelog
 =========
+## 2.3.0
+* Added typescript definition file.
+* Changed button markup and updated styles.
+
 ## 2.2.1
 * Controlled datepicker now working for controlled datepickers
 

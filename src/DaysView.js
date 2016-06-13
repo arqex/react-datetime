@@ -15,9 +15,9 @@ var DateTimePickerDays = React.createClass({
 		tableChildren = [
 			DOM.thead({ key: 'th'}, [
 				DOM.tr({ key: 'h'},[
-					DOM.th({ key: 'p', className: 'rdtPrev' }, DOM.button({onClick: this.props.subtractTime(1, 'months'), type: 'button' }, '‹')),
+					DOM.th({ key: 'p', className: 'rdtPrev' }, DOM.span({onClick: this.props.subtractTime(1, 'months')}, '‹')),
 					DOM.th({ key: 's', className: 'rdtSwitch', onClick: this.props.showView('months'), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-					DOM.th({ key: 'n', className: 'rdtNext' }, DOM.button({onClick: this.props.addTime(1, 'months'), type: 'button' }, '›'))
+					DOM.th({ key: 'n', className: 'rdtNext' }, DOM.span({onClick: this.props.addTime(1, 'months')}, '›'))
 				]),
 				DOM.tr({ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ){ return DOM.th({ key: day + index, className: 'dow'}, day ); }) )
 			]),
@@ -121,7 +121,7 @@ var DateTimePickerDays = React.createClass({
 			return '';
 
 		var date = this.props.selectedDate || this.props.viewDate;
-		
+
 		return DOM.tfoot({ key: 'tf'},
 			DOM.tr({},
 				DOM.td({ onClick: this.props.showView('time'), colSpan: 7, className: 'rdtTimeToggle'}, date.format( this.props.timeFormat ))

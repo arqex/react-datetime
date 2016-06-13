@@ -33,9 +33,9 @@ var DateTimePickerTime = React.createClass({
 	},
 	renderCounter: function( type ){
 		return DOM.div({ key: type, className: 'rdtCounter'}, [
-			DOM.button({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), type: 'button' }, '▲' ),
+			DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
 			DOM.div({ key:'c', className: 'rdtCount' }, this.state[ type ] ),
-			DOM.button({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), type: 'button' }, '▼' )
+			DOM.span({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
 		]);
 	},
 	render: function() {
