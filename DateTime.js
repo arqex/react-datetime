@@ -149,6 +149,16 @@ var Datetime = React.createClass({
 			update.inputFormat = formats.datetime;
 		}
 
+		if( update.open === undefined ){
+			if( this.props.closeOnSelect && this.state.currentView !== 'time' ){
+				update.open = false;
+			}
+			else{
+				update.open = this.state.open;
+			}
+		}
+
+
 		this.setState( update );
 	},
 

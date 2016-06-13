@@ -59,10 +59,10 @@ var dt = {
 		return document.querySelector('.rdtDay[data-value="' + n + '"]');
 	},
 	next: function(){
-		return document.querySelector('.rdtNext button');
+		return document.querySelector('.rdtNext span');
 	},
 	prev: function(){
-		return document.querySelector('.rdtPrev button');
+		return document.querySelector('.rdtPrev span');
 	},
 	timeUp: function( n ){
 		return document.querySelectorAll('.rdtCounter')[ n ].children[0];

@@ -105,6 +105,18 @@
   font-size: 21px;
   vertical-align: top;
 }
+
+.rdtPrev span,
+.rdtNext span {
+	display: block;
+	-webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
+}
+
 .rdtPicker th.rdtDisabled,
 .rdtPicker th.rdtDisabled:hover {
   background: none;
@@ -169,8 +181,16 @@ td.rdtYear:hover {
 
 .rdtCounter .rdtBtn {
 	height: 40%;
-  	line-height: 40px;
-  	cursor: pointer;
+	line-height: 40px;
+	cursor: pointer;
+	display: block;
+
+	-webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
 }
 .rdtCounter .rdtBtn:hover {
 	background: #eee;
