@@ -36,7 +36,8 @@ var Datetime = React.createClass({
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
-		nowLabel: TYPES.string
+		nowLabel: TYPES.string,
+		setLabel: TYPES.string
 	},
 
 	getDefaultProps: function() {
@@ -53,7 +54,8 @@ var Datetime = React.createClass({
 			timeFormat: true,
 			dateFormat: true,
 			strictParsing: true,
-			nowLabel: ''
+			nowLabel: '',
+			setLabel: ''
 		};
 	},
 
@@ -300,9 +302,9 @@ var Datetime = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'nowLabel'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'nowLabel', 'setLabel'],
 		fromState: ['viewDate', 'selectedDate' ],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'setNow']
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'setNow', 'closeCalendar']
 	},
 
 	getComponentProps: function(){

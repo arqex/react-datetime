@@ -39,7 +39,8 @@ var DateTimePickerTime = React.createClass({
 		]);
 	},
 	render: function() {
-		var me = this,
+		var footer = this.renderFooter(),
+			me = this,
 			counters = []
 		;
 
@@ -58,14 +59,32 @@ var DateTimePickerTime = React.createClass({
 				);
 		}
 
-		return DOM.div( {className: 'rdtTime'},
-			DOM.table( {}, [
+		var tableChildren = [
 				this.renderHeader(),
 				DOM.tbody({key: 'b'}, DOM.tr({}, DOM.td({},
 					DOM.div({ className: 'rdtCounters' }, counters )
 				)))
-			])
+			]
+
+			if (footer) {
+				tableChildren.push(footer);
+			}
+
+		return DOM.div( {className: 'rdtTime'},
+			DOM.table( {}, tableChildren)
 		);
+	},
+	renderFooter: function(){
+
+		var footerItems = []
+
+    if (this.props.setLabel) {
+      footerItems.push(DOM.tr({key: 'acceptDate'},
+        DOM.td({ onClick:this.props.closeCalendar, colSpan: 7, className: 'rdtTimeToggle'}, this.props.setLabel)
+      ));
+
+			return DOM.tfoot({ key: 'tf'}, footerItems);
+    }
 	},
 	componentWillReceiveProps: function( nextProps, nextState ){
 		this.setState( this.calculateState( nextProps ) );

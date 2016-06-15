@@ -133,6 +133,12 @@ var DateTimePickerDays = React.createClass({
       ));
     }
 
+    if (this.props.setLabel) {
+      footerItems.push(DOM.tr({key: 'acceptDate'},
+        DOM.td({ onClick:this.props.closeCalendar, colSpan: 7, className: 'rdtTimeToggle'}, this.props.setLabel)
+      ));
+    }
+
 		return DOM.tfoot({ key: 'tf'}, footerItems);
 	},
 	isValidDate: function(){ return 1; }
