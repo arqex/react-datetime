@@ -23,20 +23,33 @@ var DateTimePickerTime = React.createClass({
 			}
 		}
 
+		let daypart = false;
+		if( this.props.timeFormat.indexOf(' A') != -1  && this.state != null ){
+			daypart = ( this.state.hours > 12 ) ? 'PM' : 'AM';
+		}
+
 		return {
 			hours: date.format('H'),
 			minutes: date.format('mm'),
 			seconds: date.format('ss'),
 			milliseconds: date.format('SSS'),
+			daypart: daypart,
 			counters: counters
 		};
 	},
 	renderCounter: function( type ){
-		return DOM.div({ key: type, className: 'rdtCounter'}, [
-			DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
-			DOM.div({ key:'c', className: 'rdtCount' }, this.state[ type ] ),
-			DOM.span({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
-		]);
+		if (type !== 'daypart') {
+			let value = this.state[ type ];
+			if (type === 'hours' && this.props.timeFormat.indexOf(' A') != -1 && value > 12) {
+				value = value - 12;
+			}
+			return DOM.div({ key: type, className: 'rdtCounter'}, [
+				DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
+				DOM.div({ key:'c', className: 'rdtCount' }, value ),
+				DOM.span({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
+			]);
+		}
+		return '';
 	},
 	render: function() {
 		var me = this,
@@ -48,6 +61,11 @@ var DateTimePickerTime = React.createClass({
 				counters.push( DOM.div( {key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ));
 			counters.push( me.renderCounter( c ) );
 		});
+
+
+		if (this.state.daypart !== false) {
+			counters.push(DOM.div({ key: this.state.daypart, className: 'rdtDayPart'}, this.state.daypart ));
+		}
 
 		if( this.state.counters.length == 3 && this.props.timeFormat.indexOf('S') != -1 ){
 			counters.push( DOM.div( {className: 'rdtCounterSeparator', key: 'sep5' }, ':' ));
