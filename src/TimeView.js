@@ -23,7 +23,7 @@ var DateTimePickerTime = React.createClass({
 			}
 		}
 
-		let daypart = false;
+		var daypart = false;
 		if( this.props.timeFormat.indexOf(' A') != -1  && this.state != null ){
 			daypart = ( this.state.hours > 12 ) ? 'PM' : 'AM';
 		}
@@ -39,7 +39,7 @@ var DateTimePickerTime = React.createClass({
 	},
 	renderCounter: function( type ){
 		if (type !== 'daypart') {
-			let value = this.state[ type ];
+			var value = this.state[ type ];
 			if (type === 'hours' && this.props.timeFormat.indexOf(' A') != -1 && value > 12) {
 				value = value - 12;
 			}

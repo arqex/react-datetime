@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.3.2
+* Time editor now handles the A format to display 12h times.
+
 ## 2.3.0
 * Added typescript definition file.
 * Changed button markup and updated styles.
