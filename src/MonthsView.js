@@ -58,7 +58,7 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	renderMonth: function( props, month, year, selectedDate ) {
-		return DOM.td( props, this.props.viewDate.localeData()._monthsShort[ month ] );
+		return DOM.td( props, (moment.monthsShort())[ month ] );
 	}
 });
 
