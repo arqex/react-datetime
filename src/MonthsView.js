@@ -58,8 +58,16 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	renderMonth: function( props, month, year, selectedDate ) {
-		return DOM.td( props, this.props.viewDate.localeData()._monthsShort[ month ] );
+		const monthsShort = this.props.viewDate.localeData()._monthsShort
+		return DOM.td( props, monthsShort.standalone
+			? capitalize( monthsShort.standalone[ month ] )
+			: monthsShort[ month ]
+		)
 	}
 });
+
+function capitalize(str) {
+	return str.charAt(0).toUpperCase() + str.slice(1)
+}
 
 module.exports = DateTimePickerMonths;
