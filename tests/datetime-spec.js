@@ -533,7 +533,7 @@ describe( 'Datetime', function(){
 			assert.notEqual( dt.hour().innerHTML, 2 );
 			assert.notEqual( dt.hour().innerHTML, 3 );
 			done();
-		}, 700 );
+		}, 920 );
 	});
 
 	it( 'long decrease time', function( done ){
@@ -546,7 +546,7 @@ describe( 'Datetime', function(){
 			assert.notEqual( dt.hour().innerHTML, 1 );
 			assert.notEqual( dt.hour().innerHTML, 0 );
 			done();
-		}, 700 );
+		}, 920 );
 	});
 
 	it( 'invalid input value', function( done ){
