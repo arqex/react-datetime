@@ -3,11 +3,11 @@
  */
 
 .rdt {
-	position: relative;
+  position: relative;
 }
 .rdtPicker {
-	display: none;
-	position: absolute;
+  display: none;
+  position: absolute;
   width: 250px;
   padding: 4px;
   margin-top: 1px;
@@ -17,15 +17,15 @@
   border: 1px solid #f9f9f9;
 }
 .rdtOpen .rdtPicker {
-	display: block;
+  display: block;
 }
 .rdtStatic .rdtPicker {
-	box-shadow: none;
-	position: static;
+  box-shadow: none;
+  position: static;
 }
 
 .rdtPicker .rdtTimeToggle {
-	text-align: center;
+  text-align: center;
 }
 
 .rdtPicker table {
@@ -91,7 +91,7 @@
   cursor: not-allowed;
 }
 .rdtPicker th {
-	border-bottom: 1px solid #f9f9f9;
+  border-bottom: 1px solid #f9f9f9;
 }
 .rdtPicker .dow {
   width: 14.2857%;
@@ -108,8 +108,8 @@
 
 .rdtPrev span,
 .rdtNext span {
-	display: block;
-	-webkit-touch-callout: none; /* iOS Safari */
+  display: block;
+  -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none;   /* Chrome/Safari/Opera */
   -khtml-user-select: none;    /* Konqueror */
   -moz-user-select: none;      /* Firefox */
@@ -130,62 +130,62 @@
   background: #eeeeee;
 }
 
-.rdtPicker tfoot{
-	border-top: 1px solid #f9f9f9;
+.rdtPicker tfoot {
+  border-top: 1px solid #f9f9f9;
 }
 
 .rdtPicker button {
-	border: none;
-	background: none;
-	cursor: pointer;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 .rdtPicker button:hover {
-	background-color: #eee;
+  background-color: #eee;
 }
 
 .rdtPicker thead button {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 td.rdtMonth,
 td.rdtYear {
-	height: 50px;
-	width: 25%;
-	cursor: pointer;
+  height: 50px;
+  width: 25%;
+  cursor: pointer;
 }
 td.rdtMonth:hover,
 td.rdtYear:hover {
-	background: #eee;
+  background: #eee;
 }
 
 .rdtCounters {
-	display: inline-block;
+  display: inline-block;
 }
 
-.rdtCounters > div{
-	float: left;
-}
-
-.rdtCounter {
-	height: 100px;
+.rdtCounters > div {
+  float: left;
 }
 
 .rdtCounter {
-	width: 40px;
+  height: 100px;
+}
+
+.rdtCounter {
+  width: 40px;
 }
 
 .rdtCounterSeparator {
-	line-height: 100px;
+  line-height: 100px;
 }
 
 .rdtCounter .rdtBtn {
-	height: 40%;
-	line-height: 40px;
-	cursor: pointer;
-	display: block;
+  height: 40%;
+  line-height: 40px;
+  cursor: pointer;
+  display: block;
 
-	-webkit-touch-callout: none; /* iOS Safari */
+  -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none;   /* Chrome/Safari/Opera */
   -khtml-user-select: none;    /* Konqueror */
   -moz-user-select: none;      /* Firefox */
@@ -193,25 +193,25 @@ td.rdtYear:hover {
   user-select: none;
 }
 .rdtCounter .rdtBtn:hover {
-	background: #eee;
+  background: #eee;
 }
 .rdtCounter .rdtCount {
-	height: 20%;
-	font-size: 1.2em;
+  height: 20%;
+  font-size: 1.2em;
 }
 
 .rdtMilli {
-	vertical-align: middle;
-	padding-left: 8px;
-	width: 48px;
+  vertical-align: middle;
+  padding-left: 8px;
+  width: 48px;
 }
 
 .rdtMilli input {
-	width: 100%;
-	font-size: 1.2em;
-	margin-top: 37px;
+  width: 100%;
+  font-size: 1.2em;
+  margin-top: 37px;
 }
 
 .rdtDayPart {
-	margin-top: 43px;
+  margin-top: 43px;
 }
