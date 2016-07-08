@@ -1,6 +1,7 @@
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+	assign = require('object-assign');
 
 var DOM = React.DOM;
 var DateTimePickerTime = React.createClass({
@@ -85,6 +86,12 @@ var DateTimePickerTime = React.createClass({
 			])
 		);
 	},
+	componentWillMount: function() {
+		var me = this;
+		['hours', 'minutes', 'seconds', 'milliseconds'].forEach(function(type) {
+			assign(me.settings[type], me.props[type]);
+		});
+	},
 	componentWillReceiveProps: function( nextProps, nextState ){
 		this.setState( this.calculateState( nextProps ) );
 	},
@@ -133,34 +140,47 @@ var DateTimePickerTime = React.createClass({
 			document.body.addEventListener('mouseup', me.mouseUpListener);
 		};
 	},
-
-	maxValues: {
-		hours: 23,
-		minutes: 59,
-		seconds: 59,
-		milliseconds: 999
-	},
-	padValues: {
-		hours: 1,
-		minutes: 2,
-		seconds: 2,
-		milliseconds: 3
+	settings: {
+		hours: {
+			min: 0,
+			max: 23,
+			pad: 1,
+			step: 1,
+		},
+		minutes: {
+			min: 0,
+			max: 59,
+			pad: 2,
+			step: 1,
+		},
+		seconds: {
+			min: 0,
+			max: 59,
+			pad: 2,
+			step: 1,
+		},
+		milliseconds: {
+			min: 0,
+			max: 999,
+			pad: 3,
+			step: 1,
+		},
 	},
 	increase: function( type ){
-		var value = parseInt(this.state[ type ]) + 1;
-		if( value > this.maxValues[ type ] )
-			value = 0;
+		var value = parseInt(this.state[ type ]) + this.settings[ type ].step;
+		if( value > this.settings[ type ].max )
+			value = this.settings[ type ].min;
 		return this.pad( type, value );
 	},
 	decrease: function( type ){
-		var value = parseInt(this.state[ type ]) - 1;
-		if( value < 0 )
-			value = this.maxValues[ type ];
+		var value = parseInt(this.state[ type ]) - this.settings[ type ].step;
+		if( value < this.settings[ type ].min )
+			value = this.settings[ type ].max;
 		return this.pad( type, value );
 	},
 	pad: function( type, value ){
 		var str = value + '';
-		while( str.length < this.padValues[ type ] )
+		while( str.length < this.settings[ type ].pad )
 			str = '0' + str;
 		return str;
 	}
