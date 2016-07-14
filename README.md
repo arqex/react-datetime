@@ -12,9 +12,9 @@ This project started as a fork of https://github.com/quri/react-bootstrap-dateti
 Usage
 ===============================
 
-Installation :
+Installation:
 ```
-npm install react-datetime
+npm install --save react-datetime
 ```
 
 [React.js](http://facebook.github.io/react/) and [Moment.js](http://momentjs.com/) are peer dependencies for react-datetime. These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datetime picker work.
@@ -29,9 +29,19 @@ render: function() {
   return <Datetime />;
 }
 ```
-[See this example working](http://codepen.io/arqex/pen/BoqgaG).
+[See this example working](http://codepen.io/simeg/pen/mEmQmP).
 
-Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.
+**Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
+
+Build the component (Mac / Linux):
+```
+npm run build:mac
+```
+
+Build the component (Windows):
+```
+npm run build:windows
+```
 
 API
 ===============================
