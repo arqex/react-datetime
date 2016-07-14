@@ -1,7 +1,8 @@
 var DateTime = require('../DateTime.js');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
-React.render(
+ReactDOM.render(
   React.createElement(DateTime, { timeFormat: true }),
   document.getElementById('datetime')
 );
