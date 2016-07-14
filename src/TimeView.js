@@ -25,7 +25,7 @@ var DateTimePickerTime = React.createClass({
 
 		var daypart = false;
 		if( this.props.timeFormat.indexOf(' A') != -1  && this.state != null ){
-			daypart = ( this.state.hours > 12 ) ? 'PM' : 'AM';
+			daypart = ( this.state.hours >= 12 ) ? 'PM' : 'AM';
 		}
 
 		return {
@@ -41,7 +41,12 @@ var DateTimePickerTime = React.createClass({
 		if (type !== 'daypart') {
 			var value = this.state[ type ];
 			if (type === 'hours' && this.props.timeFormat.indexOf(' A') != -1 && value > 12) {
-				value = value - 12;
+				if(value > 12){
+					value = value - 12;
+				}
+				if(value == 0) {
+					value = 12;
+				}
 			}
 			return DOM.div({ key: type, className: 'rdtCounter'}, [
 				DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
