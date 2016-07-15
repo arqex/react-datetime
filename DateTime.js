@@ -35,7 +35,8 @@ var Datetime = React.createClass({
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
-		strictParsing: TYPES.bool
+		strictParsing: TYPES.bool,
+		inputDecorator: TYPES.func
 	},
 
 	getDefaultProps: function() {
@@ -360,14 +361,19 @@ var Datetime = React.createClass({
 		;
 
 		if( this.props.input ){
-			children = [ DOM.input( assign({
+			var inputComponent = DOM.input( assign({
 				key: 'i',
 				type:'text',
 				className: 'form-control',
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				value: this.state.inputValue
-			}, this.props.inputProps ))];
+			}, this.props.inputProps ))
+
+			if( this.props.inputDecorator ){
+				inputComponent = this.props.inputDecorator(inputComponent, this.props);
+			}
+			children = [inputComponent];
 		}
 		else {
 			className += ' rdtStatic';
