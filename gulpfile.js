@@ -29,9 +29,10 @@ var cr = ('/*\n%%name%% v%%version%%\n%%homepage%%\n%%license%%: https://github.
 	.replace( '%%homepage%%', pack.homepage)
 ;
 
-var handleError =  function( err ){
-	console.log( 'ERRRRROOOOOORRRR', err );
+var handleError = function( err ){
+	console.log( 'Error: ', err );
 };
+
 function wp( config, minify ){
 	var stream =  gulp.src('./Datetime.js')
 		.pipe( webpack( config ) )
@@ -43,12 +44,10 @@ function wp( config, minify ){
 
 	return stream.pipe( insert.prepend( cr ) )
 		.pipe( gulp.dest('dist/') )
-
 	;
 }
 
-
-gulp.task("build", function( callback ) {
+gulp.task( 'build', function( callback ) {
 	var config = getWPConfig( 'react-datetime' );
 	config.devtool = '#eval';
 	wp( config );
