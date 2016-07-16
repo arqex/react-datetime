@@ -140,6 +140,12 @@ Contributions
 ===============================
 Any help is always welcome :)
 
+**Please use the linter before submitting your pull request.**
+
+```
+npm run lint
+```
+
 ### [Changelog](CHANGELOG.md)
 
 ### [MIT Licensed](LICENSE)
