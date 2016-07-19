@@ -23,7 +23,6 @@ var Datetime = React.createClass({
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
-		closeOnSelect: TYPES.bool,
 		onFocus: TYPES.func,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
@@ -35,7 +34,9 @@ var Datetime = React.createClass({
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
-		strictParsing: TYPES.bool
+		strictParsing: TYPES.bool,
+		closeOnSelect: TYPES.bool,
+		closeOnTab: TYPES.bool
 	},
 
 	getDefaultProps: function() {
@@ -50,7 +51,9 @@ var Datetime = React.createClass({
 			onChange: nof,
 			timeFormat: true,
 			dateFormat: true,
-			strictParsing: true
+			strictParsing: true,
+			closeOnSelect: false,
+			closeOnTab: true
 		};
 	},
 
@@ -178,6 +181,12 @@ var Datetime = React.createClass({
 		return this.setState( update, function() {
 			return this.props.onChange( localMoment.isValid() ? localMoment : this.state.inputValue );
 		});
+	},
+
+	onInputKey: function( e ){
+		if( e.which === 9 && this.props.closeOnTab ){
+			this.closeCalendar();
+		}
 	},
 
 	showView: function( view ){
@@ -363,6 +372,7 @@ var Datetime = React.createClass({
 				className: 'form-control',
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
+				onKeyDown: this.onInputKey,
 				value: this.state.inputValue
 			}, this.props.inputProps ))];
 		} else {

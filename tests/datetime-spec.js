@@ -477,6 +477,28 @@ describe( 'Datetime', function(){
 		trigger( 'click', document.body );
 	});
 
+	it( 'closeOnTab:true', function(){
+		createDatetime({ value: date });
+
+		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		ev.focus( dt.input() );
+		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
+		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		trigger( 'click', document.body );
+	});
+
+	it( 'closeOnTab:false', function(){
+		createDatetime({ value: date, closeOnTab: false });
+
+		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		ev.focus( dt.input() );
+		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
+		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		trigger( 'click', document.body );
+	});
+
 	it( 'increase time', function( done ){
 		var i = 0;
 		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
