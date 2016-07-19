@@ -12,7 +12,8 @@
     "build:win": "./node_modules/.bin/gulp.cmd",
     "build:mac": "./node_modules/.bin/gulp",
     "test": "node node_modules/mocha/bin/mocha tests",
-    "dev": "webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example"
+    "dev": "webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
+    "lint": "./node_modules/.bin/eslint src/ DateTime.js"
   },
   "keywords": [
     "react",
@@ -30,6 +31,7 @@
     "moment": ">=2.8.1"
   },
   "devDependencies": {
+    "eslint": "^3.1.0",
     "gulp": "^3.9.0",
     "gulp-insert": "^0.4.0",
     "gulp-uglify": "^1.2.0",

@@ -57,7 +57,7 @@ var Datetime = React.createClass({
 	getInitialState: function() {
 		var state = this.getStateFromProps( this.props );
 
-		if( state.open == undefined )
+		if ( state.open === undefined )
 			state.open = !this.props.input;
 
 		state.currentView = this.props.dateFormat ? (this.props.viewMode || state.updateOn || 'days') : 'time';
@@ -71,17 +71,17 @@ var Datetime = React.createClass({
 			selectedDate, viewDate, updateOn
 		;
 
-		if( date && typeof date == 'string' )
+		if ( date && typeof date === 'string' )
 			selectedDate = this.localMoment( date, formats.datetime );
-		else if( date )
+		else if ( date )
 			selectedDate = this.localMoment( date );
 
-		if( selectedDate && !selectedDate.isValid() )
+		if ( selectedDate && !selectedDate.isValid() )
 			selectedDate = null;
 
 		viewDate = selectedDate ?
-			selectedDate.clone().startOf("month") :
-			this.localMoment().startOf("month")
+			selectedDate.clone().startOf('month') :
+			this.localMoment().startOf('month')
 		;
 
 		updateOn = this.getUpdateOn(formats);
@@ -97,14 +97,14 @@ var Datetime = React.createClass({
 	},
 
 	getUpdateOn: function(formats){
-		if( formats.date.match(/[lLD]/) ){
-			return "days";
+		if ( formats.date.match(/[lLD]/) ){
+			return 'days';
 		}
-		else if( formats.date.indexOf("M") != -1 ){
-			return "months";
+		else if ( formats.date.indexOf('M') !== -1 ){
+			return 'months';
 		}
-		else if( formats.date.indexOf("Y") != -1 ){
-			return "years";
+		else if ( formats.date.indexOf('Y') !== -1 ){
+			return 'years';
 		}
 
 		return 'days';
@@ -118,14 +118,14 @@ var Datetime = React.createClass({
 			locale = this.localMoment( props.date ).localeData()
 		;
 
-		if( formats.date === true ){
+		if ( formats.date === true ){
 			formats.date = locale.longDateFormat('L');
 		}
-		else if( this.getUpdateOn(formats) !== 'days' ){
+		else if ( this.getUpdateOn(formats) !== 'days' ){
 			formats.time = '';
 		}
 
-		if( formats.time === true ){
+		if ( formats.time === true ){
 			formats.time = locale.longDateFormat('LT');
 		}
 
@@ -142,35 +142,34 @@ var Datetime = React.createClass({
 			update = {}
 		;
 
-		if( nextProps.value != this.props.value ){
+		if ( nextProps.value !== this.props.value ){
 			update = this.getStateFromProps( nextProps );
 		}
 		if ( formats.datetime !== this.getFormats( this.props ).datetime ) {
 			update.inputFormat = formats.datetime;
 		}
 
-		if( update.open === undefined ){
-			if( this.props.closeOnSelect && this.state.currentView !== 'time' ){
+		if ( update.open === undefined ){
+			if ( this.props.closeOnSelect && this.state.currentView !== 'time' ){
 				update.open = false;
 			}
-			else{
+			else {
 				update.open = this.state.open;
 			}
 		}
-
 
 		this.setState( update );
 	},
 
 	onInputChange: function( e ) {
-		var value = e.target == null ? e : e.target.value,
+		var value = e.target === null ? e : e.target.value,
 			localMoment = this.localMoment( value, this.state.inputFormat ),
 			update = { inputValue: value }
 		;
 
 		if ( localMoment.isValid() && !this.props.value ) {
 			update.selectedDate = localMoment;
-			update.viewDate = localMoment.clone().startOf("month");
+			update.viewDate = localMoment.clone().startOf('month');
 		}
 		else {
 			update.selectedDate = null;
@@ -183,7 +182,7 @@ var Datetime = React.createClass({
 
 	showView: function( view ){
 		var me = this;
-		return function( e ){
+		return function(){
 			me.setState({ currentView: view });
 		};
 	},
@@ -197,7 +196,7 @@ var Datetime = React.createClass({
 		;
 		return function( e ){
 			me.setState({
-				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value')) ).startOf( type ),
+				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
 				currentView: nextViews[ type ]
 			});
 		};
@@ -225,7 +224,7 @@ var Datetime = React.createClass({
 		};
 	},
 
-	allowedSetTime: ['hours','minutes','seconds', 'milliseconds'],
+	allowedSetTime: ['hours', 'minutes', 'seconds', 'milliseconds'],
 	setTime: function( type, value ){
 		var index = this.allowedSetTime.indexOf( type ) + 1,
 			state = this.state,
@@ -241,7 +240,7 @@ var Datetime = React.createClass({
 			date[ nextType ]( date[nextType]() );
 		}
 
-		if( !this.props.value ){
+		if ( !this.props.value ){
 			this.setState({
 				selectedDate: date,
 				inputValue: date.format( state.inputFormat )
@@ -258,41 +257,39 @@ var Datetime = React.createClass({
 			date
     ;
 
-		if(target.className.indexOf("rdtDay") != -1){
-			if(target.className.indexOf("rdtNew") != -1)
+		if (target.className.indexOf('rdtDay') !== -1){
+			if (target.className.indexOf('rdtNew') !== -1)
 				modifier = 1;
-			else if(target.className.indexOf("rdtOld") != -1)
+			else if (target.className.indexOf('rdtOld') !== -1)
 				modifier = -1;
 
 			date = viewDate.clone()
 				.month( viewDate.month() + modifier )
-				.date( parseInt( target.getAttribute('data-value') ) )
-			;
-		}else if(target.className.indexOf("rdtMonth") != -1){
+				.date( parseInt( target.getAttribute('data-value'), 10 ) );
+		} else if (target.className.indexOf('rdtMonth') !== -1){
 			date = viewDate.clone()
-				.month( parseInt( target.getAttribute('data-value') ) )
-				.date( currentDate.date() )
-		}else if(target.className.indexOf("rdtYear") != -1){
+				.month( parseInt( target.getAttribute('data-value'), 10 ) )
+				.date( currentDate.date() );
+		} else if (target.className.indexOf('rdtYear') !== -1){
 			date = viewDate.clone()
 				.month( currentDate.month() )
 				.date( currentDate.date() )
-				.year( parseInt( target.getAttribute('data-value') ) )
+				.year( parseInt( target.getAttribute('data-value'), 10 ) );
 		}
 
 		date.hours( currentDate.hours() )
 			.minutes( currentDate.minutes() )
 			.seconds( currentDate.seconds() )
-			.milliseconds( currentDate.milliseconds() )
+			.milliseconds( currentDate.milliseconds() );
 
-		if( !this.props.value ){
+		if ( !this.props.value ){
 			this.setState({
 				selectedDate: date,
 				viewDate: date.clone().startOf('month'),
 				inputValue: date.format( this.state.inputFormat ),
 				open: !(this.props.closeOnSelect && close )
 			});
-		}
-		else {
+		} else {
 			if (this.props.closeOnSelect && close) {
 				this.closeCalendar();
 			}
@@ -314,7 +311,7 @@ var Datetime = React.createClass({
 	},
 
 	handleClickOutside: function(){
-		if( this.props.input && this.state.open && !this.props.open ){
+		if ( this.props.input && this.state.open && !this.props.open ){
 			this.setState({ open: false });
 			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 		}
@@ -322,7 +319,7 @@ var Datetime = React.createClass({
 
 	localMoment: function( date, format ){
 		var m = moment( date, format, this.props.strictParsing );
-		if( this.props.locale )
+		if ( this.props.locale )
 			m.locale( this.props.locale );
 		return m;
 	},
@@ -359,7 +356,7 @@ var Datetime = React.createClass({
 			children = []
 		;
 
-		if( this.props.input ){
+		if ( this.props.input ){
 			children = [ DOM.input( assign({
 				key: 'i',
 				type:'text',
@@ -368,12 +365,11 @@ var Datetime = React.createClass({
 				onChange: this.onInputChange,
 				value: this.state.inputValue
 			}, this.props.inputProps ))];
-		}
-		else {
+		} else {
 			className += ' rdtStatic';
 		}
 
-		if( this.state.open )
+		if ( this.state.open )
 			className += ' rdtOpen';
 
 		return DOM.div({className: className}, children.concat(

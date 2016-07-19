@@ -13,18 +13,18 @@ var DateTimePickerTime = React.createClass({
 			counters = []
 		;
 
-		if( format.indexOf('H') != -1 || format.indexOf('h') != -1 ){
+		if ( format.indexOf('H') !== -1 || format.indexOf('h') !== -1 ){
 			counters.push('hours');
-			if( format.indexOf('m') != -1 ){
+			if ( format.indexOf('m') !== -1 ){
 				counters.push('minutes');
-				if( format.indexOf('s') != -1 ){
+				if ( format.indexOf('s') !== -1 ){
 					counters.push('seconds');
 				}
 			}
 		}
 
 		var daypart = false;
-		if( this.props.timeFormat.indexOf(' A') != -1  && this.state != null ){
+		if ( this.props.timeFormat.indexOf(' A') !== -1  && this.state !== null ){
 			daypart = ( this.state.hours >= 12 ) ? 'PM' : 'AM';
 		}
 
@@ -40,11 +40,11 @@ var DateTimePickerTime = React.createClass({
 	renderCounter: function( type ){
 		if (type !== 'daypart') {
 			var value = this.state[ type ];
-			if (type === 'hours' && this.props.timeFormat.indexOf(' A') != -1 && value > 12) {
-				if(value > 12){
+			if (type === 'hours' && this.props.timeFormat.indexOf(' A') !== -1 && value > 12) {
+				if (value > 12){
 					value = value - 12;
 				}
-				if(value == 0) {
+				if (value === 0) {
 					value = 12;
 				}
 			}
@@ -62,17 +62,16 @@ var DateTimePickerTime = React.createClass({
 		;
 
 		this.state.counters.forEach( function(c){
-			if( counters.length )
+			if ( counters.length )
 				counters.push( DOM.div( {key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ));
 			counters.push( me.renderCounter( c ) );
 		});
-
 
 		if (this.state.daypart !== false) {
 			counters.push(DOM.div({ key: this.state.daypart, className: 'rdtDayPart'}, this.state.daypart ));
 		}
 
-		if( this.state.counters.length == 3 && this.props.timeFormat.indexOf('S') != -1 ){
+		if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf('S') !== -1 ){
 			counters.push( DOM.div( {className: 'rdtCounterSeparator', key: 'sep5' }, ':' ));
 			counters.push(
 				DOM.div( {className: 'rdtCounter rdtMilli', key:'m'},
@@ -90,18 +89,18 @@ var DateTimePickerTime = React.createClass({
 			])
 		);
 	},
-	componentWillReceiveProps: function( nextProps, nextState ){
+	componentWillReceiveProps: function( nextProps ){
 		this.setState( this.calculateState( nextProps ) );
 	},
 	updateMilli: function( e ){
-		var milli = parseInt( e.target.value );
-		if( milli == e.target.value && milli >= 0 && milli < 1000 ){
+		var milli = parseInt( e.target.value, 10 );
+		if ( milli === e.target.value && milli >= 0 && milli < 1000 ){
 			this.props.setTime( 'milliseconds', milli );
 			this.setState({ milliseconds: milli });
 		}
 	},
 	renderHeader: function(){
-		if( !this.props.dateFormat )
+		if ( !this.props.dateFormat )
 			return null;
 
 		var date = this.props.selectedDate || this.props.viewDate;
@@ -110,11 +109,7 @@ var DateTimePickerTime = React.createClass({
 		));
 	},
 	onStartClicking: function( action, type ){
-		var me = this,
-			update = {},
-			value = this.state[ type ]
-		;
-
+		var me = this;
 
 		return function(){
 			var update = {};
@@ -125,7 +120,7 @@ var DateTimePickerTime = React.createClass({
 				me.increaseTimer = setInterval( function(){
 					update[ type ] = me[ action ]( type );
 					me.setState( update );
-				},70);
+				}, 70);
 			}, 500);
 
 			me.mouseUpListener = function(){
@@ -152,20 +147,20 @@ var DateTimePickerTime = React.createClass({
 		milliseconds: 3
 	},
 	increase: function( type ){
-		var value = parseInt(this.state[ type ]) + 1;
-		if( value > this.maxValues[ type ] )
+		var value = parseInt(this.state[ type ], 10) + 1;
+		if ( value > this.maxValues[ type ] )
 			value = 0;
 		return this.pad( type, value );
 	},
 	decrease: function( type ){
-		var value = parseInt(this.state[ type ]) - 1;
-		if( value < 0 )
+		var value = parseInt(this.state[ type ], 10) - 1;
+		if ( value < 0 )
 			value = this.maxValues[ type ];
 		return this.pad( type, value );
 	},
 	pad: function( type, value ){
 		var str = value + '';
-		while( str.length < this.padValues[ type ] )
+		while ( str.length < this.padValues[ type ] )
 			str = '0' + str;
 		return str;
 	}

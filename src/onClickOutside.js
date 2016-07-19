@@ -1,3 +1,5 @@
+'use strict';
+
 // This is extracted from https://github.com/Pomax/react-onclickoutside
 // And modified to support react 0.13 and react 0.14
 
@@ -5,7 +7,7 @@ var React = require('react'),
 	version = React.version && React.version.split('.')
 ;
 
-if( version && ( version[0] > 0 || version[1] > 13 ) )
+if ( version && ( version[0] > 0 || version[1] > 13 ) )
 	React = require('react-dom');
 
 // Use a parallel array because we can't use
@@ -33,8 +35,8 @@ var isSourceFound = function(source, localNode) {
 
 module.exports = {
  componentDidMount: function() {
-   if(typeof this.handleClickOutside !== "function")
-     throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+   if (typeof this.handleClickOutside !== 'function')
+     throw new Error('Component lacks a handleClickOutside(event) function for processing outside click events.');
 
    var fn = this.__outsideClickHandler = (function(localNode, eventHandler) {
      return function(evt) {
@@ -46,13 +48,13 @@ module.exports = {
        // a layered approach, too, but that requires going back to
        // thinking in terms of Dom node nesting, running counter
        // to React's "you shouldn't care about the DOM" philosophy.
-       while(source.parentNode) {
+       while (source.parentNode) {
          found = isSourceFound(source, localNode);
-         if(found) return;
+         if (found) return;
          source = source.parentNode;
        }
        eventHandler(evt);
-     }
+     };
    }(React.findDOMNode(this), this.handleClickOutside));
 
    var pos = registeredComponents.length;
@@ -70,7 +72,7 @@ module.exports = {
    this.disableOnClickOutside();
    this.__outsideClickHandler = false;
    var pos = registeredComponents.indexOf(this);
-   if( pos>-1) {
+   if ( pos>-1) {
      if (handlers[pos]) {
        // clean up so we don't leak memory
        handlers.splice(pos, 1);
@@ -85,8 +87,8 @@ module.exports = {
   */
  enableOnClickOutside: function() {
    var fn = this.__outsideClickHandler;
-   document.addEventListener("mousedown", fn);
-   document.addEventListener("touchstart", fn);
+   document.addEventListener('mousedown', fn);
+   document.addEventListener('touchstart', fn);
  },
 
  /**
@@ -95,7 +97,7 @@ module.exports = {
   */
  disableOnClickOutside: function() {
    var fn = this.__outsideClickHandler;
-   document.removeEventListener("mousedown", fn);
-   document.removeEventListener("touchstart", fn);
+   document.removeEventListener('mousedown', fn);
+   document.removeEventListener('touchstart', fn);
  }
 };
