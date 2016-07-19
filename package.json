@@ -12,6 +12,7 @@
     "build:win": "./node_modules/.bin/gulp.cmd",
     "build:mac": "./node_modules/.bin/gulp",
     "test": "node node_modules/mocha/bin/mocha tests",
+    "test:watch": "node node_modules/mocha/bin/mocha --watch tests",
     "dev": "webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
     "lint": "./node_modules/.bin/eslint src/ DateTime.js"
   },
