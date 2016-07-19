@@ -1,5 +1,9 @@
 Changelog
 =========
+## 2.4.0
+* Added ES linting.
+* Added `closeOnTab` property.
+
 ## 2.3.3
 * Updated readme.
 * Fixed short months for not English locales.
