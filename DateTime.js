@@ -31,6 +31,7 @@ var Datetime = React.createClass({
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
+		timeConstraints: TYPES.object,
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
@@ -50,6 +51,7 @@ var Datetime = React.createClass({
 			onBlur: nof,
 			onChange: nof,
 			timeFormat: true,
+			timeConstraints: {},
 			dateFormat: true,
 			strictParsing: true,
 			closeOnSelect: false,
@@ -184,7 +186,7 @@ var Datetime = React.createClass({
 	},
 
 	onInputKey: function( e ){
-		if( e.which === 9 && this.props.closeOnTab ){
+		if ( e.which === 9 && this.props.closeOnTab ){
 			this.closeCalendar();
 		}
 	},
@@ -334,7 +336,7 @@ var Datetime = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'hours', 'minutes', 'seconds', 'milliseconds'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
 	},

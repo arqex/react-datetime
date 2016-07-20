@@ -93,7 +93,7 @@ var DateTimePickerTime = React.createClass({
 	componentWillMount: function() {
 		var me = this;
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach(function(type) {
-			assign(me.settings[type], me.props[type]);
+			assign(me.timeConstraints[type], me.props.timeConstraints[type]);
 		});
 	},
 	componentWillReceiveProps: function( nextProps ){
@@ -140,63 +140,49 @@ var DateTimePickerTime = React.createClass({
 			document.body.addEventListener('mouseup', me.mouseUpListener);
 		};
 	},
-	settings: {
+	timeConstraints: {
 		hours: {
 			min: 0,
 			max: 23,
-			pad: 1,
-			step: 1,
+			step: 1
 		},
 		minutes: {
 			min: 0,
 			max: 59,
-			pad: 2,
-			step: 1,
+			step: 1
 		},
 		seconds: {
 			min: 0,
 			max: 59,
-			pad: 2,
 			step: 1,
 		},
 		milliseconds: {
 			min: 0,
 			max: 999,
-			pad: 3,
-			step: 1,
-		},
+			step: 1
+		}
+	},
+	padValues: {
+		hours: 1,
+		minutes: 2,
+		seconds: 2,
+		milliseconds: 3
 	},
 	increase: function( type ){
-<<<<<<< HEAD
-		var value = parseInt(this.state[ type ]) + this.settings[ type ].step;
-		if( value > this.settings[ type ].max )
-			value = this.settings[ type ].min;
+		var value = parseInt(this.state[ type ], 10) + this.timeConstraints[ type ].step;
+		if ( value > this.timeConstraints[ type ].max )
+			value = this.timeConstraints[ type ].min;
 		return this.pad( type, value );
 	},
 	decrease: function( type ){
-		var value = parseInt(this.state[ type ]) - this.settings[ type ].step;
-		if( value < this.settings[ type ].min )
-			value = this.settings[ type ].max;
-=======
-		var value = parseInt(this.state[ type ], 10) + 1;
-		if ( value > this.maxValues[ type ] )
-			value = 0;
-		return this.pad( type, value );
-	},
-	decrease: function( type ){
-		var value = parseInt(this.state[ type ], 10) - 1;
-		if ( value < 0 )
-			value = this.maxValues[ type ];
->>>>>>> upstream/master
+		var value = parseInt(this.state[ type ], 10) - this.timeConstraints[ type ].step;
+		if ( value < this.timeConstraints[ type ].min )
+			value = this.timeConstraints[ type ].max;
 		return this.pad( type, value );
 	},
 	pad: function( type, value ){
 		var str = value + '';
-<<<<<<< HEAD
-		while( str.length < this.settings[ type ].pad )
-=======
 		while ( str.length < this.padValues[ type ] )
->>>>>>> upstream/master
 			str = '0' + str;
 		return str;
 	}
