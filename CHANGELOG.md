@@ -1,5 +1,14 @@
 Changelog
 =========
+## 2.4.0
+* Added ES linting.
+* Added `closeOnTab` property.
+
+## 2.3.3
+* Updated readme.
+* Fixed short months for not English locales.
+* Fixed mixed 12 AM/PM.
+
 ## 2.3.2
 * Time editor now handles the A format to display 12h times.
 

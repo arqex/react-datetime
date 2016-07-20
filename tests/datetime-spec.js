@@ -477,6 +477,28 @@ describe( 'Datetime', function(){
 		trigger( 'click', document.body );
 	});
 
+	it( 'closeOnTab:true', function(){
+		createDatetime({ value: date });
+
+		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		ev.focus( dt.input() );
+		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
+		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		trigger( 'click', document.body );
+	});
+
+	it( 'closeOnTab:false', function(){
+		createDatetime({ value: date, closeOnTab: false });
+
+		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		ev.focus( dt.input() );
+		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
+		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		trigger( 'click', document.body );
+	});
+
 	it( 'increase time', function( done ){
 		var i = 0;
 		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
@@ -533,7 +555,7 @@ describe( 'Datetime', function(){
 			assert.notEqual( dt.hour().innerHTML, 2 );
 			assert.notEqual( dt.hour().innerHTML, 3 );
 			done();
-		}, 700 );
+		}, 920 );
 	});
 
 	it( 'long decrease time', function( done ){
@@ -546,7 +568,7 @@ describe( 'Datetime', function(){
 			assert.notEqual( dt.hour().innerHTML, 1 );
 			assert.notEqual( dt.hour().innerHTML, 0 );
 			done();
-		}, 700 );
+		}, 920 );
 	});
 
 	it( 'invalid input value', function( done ){

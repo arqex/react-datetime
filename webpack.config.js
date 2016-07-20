@@ -11,9 +11,9 @@ module.exports = {
   entry: ['./DateTime.js'],
 
   output: {
-    path: __dirname + "/dist/",
+    path: __dirname + '/dist/',
     library: 'Datetime',
-    libraryTarget: 'umd',
+    libraryTarget: 'umd'
   },
 
   resolve: {

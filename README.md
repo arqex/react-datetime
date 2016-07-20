@@ -12,9 +12,9 @@ This project started as a fork of https://github.com/quri/react-bootstrap-dateti
 Usage
 ===============================
 
-Installation :
+Installation:
 ```
-npm install react-datetime
+npm install --save react-datetime
 ```
 
 [React.js](http://facebook.github.io/react/) and [Moment.js](http://momentjs.com/) are peer dependencies for react-datetime. These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datetime picker work.
@@ -29,9 +29,19 @@ render: function() {
   return <Datetime />;
 }
 ```
-[See this example working](http://codepen.io/arqex/pen/BoqgaG).
+[See this example working](http://codepen.io/simeg/pen/mEmQmP).
 
-Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.
+**Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
+
+Build the component (Mac / Linux):
+```
+npm run build:mac
+```
+
+Build the component (Windows):
+```
+npm run build:windows
+```
 
 API
 ===============================
@@ -57,6 +67,7 @@ API
 | **renderYear** | function | DOM.td( year ) | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization) |
 | **strictParsing** | boolean | false | Whether to use moment's [strict parsing](http://momentjs.com/docs/#/parsing/string-format/) when parsing input.
 | **closeOnSelect** | boolean | false | When `true`, once the day has been selected, the react-datetime will be automatically closed.
+| **closeOnTab** | boolean | true | When `true` and the input is focused, pressing the `tab` key will close the picker.
 
 ## i18n
 Different language and date formats are supported by react-datetime. React uses [moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
@@ -129,6 +140,12 @@ var valid = function( current ){
 Contributions
 ===============================
 Any help is always welcome :)
+
+**Please use the linter before submitting your pull request.**
+
+```
+npm run lint
+```
 
 ### [Changelog](CHANGELOG.md)
 
