@@ -38,8 +38,10 @@
     "gulp-webpack": "^1.5.0",
     "jsdom": "^7.0.2",
     "mocha": "^2.2.5",
+    "moment": "2.14.1",
     "react": ">=0.13",
     "react-addons-test-utils": ">=0.13",
+    "react-dom": "15.2.1",
     "react-tools": "^0.13.2",
     "webpack": "^1.5.1",
     "webpack-dev-server": "^1.7.0"
