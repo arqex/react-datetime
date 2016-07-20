@@ -571,6 +571,29 @@ describe( 'Datetime', function(){
 		}, 920 );
 	});
 
+	it( 'increase time with timeConstraints', function( done ){
+		var i = 0;
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
+			i++;
+			if( i > 2 ){
+				assert.equal( selected.hour(), 0 );
+				assert.equal( selected.minute(), 17 );
+				assert.equal( selected.second(), 3 );
+				done();
+			}
+		}, timeConstraints: { hours: { max: 2 }, minutes: { step: 15 }}});
+
+		trigger( 'mousedown', dt.timeUp( 0 ) );
+		trigger('mouseup', document.body );
+		assert.equal( dt.hour().innerHTML, 0 );
+		trigger( 'mousedown', dt.timeUp( 1 ) );
+		trigger( 'mouseup', dt.timeUp( 1 ) );
+		assert.equal( dt.minute().innerHTML, 17 );
+		trigger( 'mousedown', dt.timeUp( 2 ) );
+		trigger( 'mouseup', dt.timeUp( 2 ) );
+		assert.equal( dt.second().innerHTML, 3 );
+	});
+
 	it( 'invalid input value', function( done ){
 		createDatetime({ defaultValue: 'luis', onChange: function( updated ){
 			assert.equal( mDate.format('L LT'), updated.format('L LT') );
