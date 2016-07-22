@@ -117,15 +117,19 @@ var DateTimePickerDays = React.createClass({
 	},
 
 	renderFooter: function(){
-		if( !this.props.timeFormat )
+		if( !this.props.timeFormat && !this.props.nowLabel && !this.props.setLabel )
 			return '';
 
-		var date = this.props.selectedDate || this.props.viewDate;
+		var footerItems = [];
 
-    var footerItems = [
-      DOM.tr({key: 'time'},
-				DOM.td({ onClick: this.props.showView('time'), colSpan: 7, className: 'rdtTimeToggle'}, date.format( this.props.timeFormat ))
-			)]
+		if (this.props.timeFormat) {
+
+			var date = this.props.selectedDate || this.props.viewDate;
+	    footerItems.push(DOM.tr({key: 'time'},
+					DOM.td({ onClick: this.props.showView('time'), colSpan: 7, className: 'rdtTimeToggle'}, date.format( this.props.timeFormat ))
+				));
+    }
+
 
     if (this.props.nowLabel) {
       footerItems.push(DOM.tr({key: 'today'},
