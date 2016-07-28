@@ -576,22 +576,33 @@ describe( 'Datetime', function(){
 		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
 			i++;
 			if( i > 2 ){
-				assert.equal( selected.hour(), 0 );
+				assert.equal( selected.hour(), 4 );
 				assert.equal( selected.minute(), 17 );
 				assert.equal( selected.second(), 3 );
 				done();
 			}
-		}, timeConstraints: { hours: { max: 2 }, minutes: { step: 15 }}});
+		}, timeConstraints: { hours: { max: 6, step: 8 }, minutes: { step: 15 }}});
 
 		trigger( 'mousedown', dt.timeUp( 0 ) );
 		trigger('mouseup', document.body );
-		assert.equal( dt.hour().innerHTML, 0 );
+		assert.equal( dt.hour().innerHTML, 4 );
 		trigger( 'mousedown', dt.timeUp( 1 ) );
 		trigger( 'mouseup', dt.timeUp( 1 ) );
 		assert.equal( dt.minute().innerHTML, 17 );
 		trigger( 'mousedown', dt.timeUp( 2 ) );
 		trigger( 'mouseup', dt.timeUp( 2 ) );
 		assert.equal( dt.second().innerHTML, 3 );
+	});
+
+	it( 'decrease time with timeConstraints', function( done ){
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
+			assert.equal( selected.minute(), 47 );
+			done();
+		}, timeConstraints: { minutes: { step: 15 }}});
+
+		trigger( 'mousedown', dt.timeDown( 1 ) );
+		trigger( 'mouseup', dt.timeDown( 1 ) );
+		assert.equal( dt.minute().innerHTML, 47 );
 	});
 
 	it( 'invalid input value', function( done ){
