@@ -576,7 +576,6 @@ describe( 'Datetime', function(){
 		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
 			i++;
 			if( i > 2 ){
-				assert.equal( selected.hour(), 4 );
 				assert.equal( selected.minute(), 17 );
 				assert.equal( selected.second(), 3 );
 				done();
@@ -585,7 +584,7 @@ describe( 'Datetime', function(){
 
 		trigger( 'mousedown', dt.timeUp( 0 ) );
 		trigger('mouseup', document.body );
-		assert.equal( dt.hour().innerHTML, 4 );
+		assert.equal( dt.hour().innerHTML, 3 );
 		trigger( 'mousedown', dt.timeUp( 1 ) );
 		trigger( 'mouseup', dt.timeUp( 1 ) );
 		assert.equal( dt.minute().innerHTML, 17 );

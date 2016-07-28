@@ -171,7 +171,7 @@ var DateTimePickerTime = React.createClass({
 	increase: function( type ){
 		var value = parseInt(this.state[ type ], 10) + this.timeConstraints[ type ].step;
 		if ( value > this.timeConstraints[ type ].max )
-			value = this.timeConstraints[ type ].min + ( value - this.timeConstraints[ type ].max );
+			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max  + 1) );
 		return this.pad( type, value );
 	},
 	decrease: function( type ){
