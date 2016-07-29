@@ -1,5 +1,9 @@
 Changelog
 =========
+## 2.5.0
+* Added pre-commit hook for tests.
+* Added the `timeConstraints` prop.
+
 ## 2.4.0
 * Added ES linting.
 * Added `closeOnTab` property.
