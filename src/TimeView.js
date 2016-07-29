@@ -1,6 +1,7 @@
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+	assign = require('object-assign');
 
 var DOM = React.DOM;
 var DateTimePickerTime = React.createClass({
@@ -89,6 +90,12 @@ var DateTimePickerTime = React.createClass({
 			])
 		);
 	},
+	componentWillMount: function() {
+		var me = this;
+		['hours', 'minutes', 'seconds', 'milliseconds'].forEach(function(type) {
+			assign(me.timeConstraints[type], me.props.timeConstraints[type]);
+		});
+	},
 	componentWillReceiveProps: function( nextProps ){
 		this.setState( this.calculateState( nextProps ) );
 	},
@@ -133,12 +140,27 @@ var DateTimePickerTime = React.createClass({
 			document.body.addEventListener('mouseup', me.mouseUpListener);
 		};
 	},
-
-	maxValues: {
-		hours: 23,
-		minutes: 59,
-		seconds: 59,
-		milliseconds: 999
+	timeConstraints: {
+		hours: {
+			min: 0,
+			max: 23,
+			step: 1
+		},
+		minutes: {
+			min: 0,
+			max: 59,
+			step: 1
+		},
+		seconds: {
+			min: 0,
+			max: 59,
+			step: 1,
+		},
+		milliseconds: {
+			min: 0,
+			max: 999,
+			step: 1
+		}
 	},
 	padValues: {
 		hours: 1,
@@ -147,15 +169,15 @@ var DateTimePickerTime = React.createClass({
 		milliseconds: 3
 	},
 	increase: function( type ){
-		var value = parseInt(this.state[ type ], 10) + 1;
-		if ( value > this.maxValues[ type ] )
-			value = 0;
+		var value = parseInt(this.state[ type ], 10) + this.timeConstraints[ type ].step;
+		if ( value > this.timeConstraints[ type ].max )
+			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max  + 1) );
 		return this.pad( type, value );
 	},
 	decrease: function( type ){
-		var value = parseInt(this.state[ type ], 10) - 1;
-		if ( value < 0 )
-			value = this.maxValues[ type ];
+		var value = parseInt(this.state[ type ], 10) - this.timeConstraints[ type ].step;
+		if ( value < this.timeConstraints[ type ].min )
+			value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
 		return this.pad( type, value );
 	},
 	pad: function( type, value ){
