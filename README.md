@@ -43,6 +43,19 @@ Build the component (Windows):
 npm run build:windows
 ```
 
+To use within a from, add a name property.
+
+```
+render: function() {
+  var inputProps = {
+    name: 'name-for-your-field'
+  };
+  return <form>
+    <Datetime inputProps={inputProps}/>
+  </form>;
+}
+```
+
 API
 ===============================
 
