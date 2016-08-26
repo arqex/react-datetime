@@ -6,10 +6,10 @@ var assign = require('object-assign'),
 	MonthsView = require('./src/MonthsView'),
 	YearsView = require('./src/YearsView'),
 	TimeView = require('./src/TimeView'),
-	moment = require('moment')
+	moment = require('moment'),
+	TYPES = require('prop-types')
 ;
 
-var TYPES = React.PropTypes;
 var Datetime = React.createClass({
 	mixins: [
 		require('./src/onClickOutside')
