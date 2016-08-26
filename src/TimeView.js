@@ -175,7 +175,7 @@ var DateTimePickerTime = React.createClass({
 		seconds: 2,
 		milliseconds: 3
 	},
-	toggleDayPart: function( type ){ // type is always 'daypart'
+	toggleDayPart: function( type ){ // type is always 'hours'
 		var value = parseInt(this.state[ type ], 10) + 12
 		if ( value > this.timeConstraints[ type ].max )
 			value = this.timeConstraints[ type ].min + (value - (this.timeConstraints[ type ].max + 1));
