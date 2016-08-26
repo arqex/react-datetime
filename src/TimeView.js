@@ -41,10 +41,8 @@ var DateTimePickerTime = React.createClass({
 	renderCounter: function( type ){
 		if (type !== 'daypart') {
 			var value = this.state[ type ];
-			if (type === 'hours' && this.props.timeFormat.indexOf(' A') !== -1 && value > 12) {
-				if (value > 12){
-					value = value - 12;
-				}
+			if (type === 'hours' && this.props.timeFormat.indexOf(' A') !== -1) {
+				value = (value - 1) % 12 + 1;
 				if (value === 0) {
 					value = 12;
 				}
@@ -95,6 +93,7 @@ var DateTimePickerTime = React.createClass({
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach(function(type) {
 			assign(me.timeConstraints[type], me.props.timeConstraints[type]);
 		});
+		this.setState( this.calculateState( this.props ) );
 	},
 	componentWillReceiveProps: function( nextProps ){
 		this.setState( this.calculateState( nextProps ) );
