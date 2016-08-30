@@ -99,6 +99,28 @@ var DateTimePickerTime = React.createClass({
 	},
 	componentWillMount: function() {
 		var me = this;
+		me.timeConstraints = {
+			hours: {
+				min: 0,
+				max: 23,
+				step: 1
+			},
+			minutes: {
+				min: 0,
+				max: 59,
+				step: 1
+			},
+			seconds: {
+				min: 0,
+				max: 59,
+				step: 1,
+			},
+			milliseconds: {
+				min: 0,
+				max: 999,
+				step: 1
+			}
+		};
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach(function(type) {
 			assign(me.timeConstraints[type], me.props.timeConstraints[type]);
 		});
@@ -146,28 +168,6 @@ var DateTimePickerTime = React.createClass({
 
 			document.body.addEventListener('mouseup', me.mouseUpListener);
 		};
-	},
-	timeConstraints: {
-		hours: {
-			min: 0,
-			max: 23,
-			step: 1
-		},
-		minutes: {
-			min: 0,
-			max: 59,
-			step: 1
-		},
-		seconds: {
-			min: 0,
-			max: 59,
-			step: 1,
-		},
-		milliseconds: {
-			min: 0,
-			max: 999,
-			step: 1
-		}
 	},
 	padValues: {
 		hours: 1,
