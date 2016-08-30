@@ -76,7 +76,7 @@ var DateTimePickerTime = React.createClass({
 		});
 
 		if (this.state.daypart !== false) {
-			counters.push( me.renderDayPart() )
+			counters.push( me.renderDayPart() );
 		}
 
 		if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf('S') !== -1 ){
@@ -176,7 +176,7 @@ var DateTimePickerTime = React.createClass({
 		milliseconds: 3
 	},
 	toggleDayPart: function( type ){ // type is always 'hours'
-		var value = parseInt(this.state[ type ], 10) + 12
+		var value = parseInt(this.state[ type ], 10) + 12;
 		if ( value > this.timeConstraints[ type ].max )
 			value = this.timeConstraints[ type ].min + (value - (this.timeConstraints[ type ].max + 1));
 		return this.pad( type, value );
