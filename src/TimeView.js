@@ -57,6 +57,13 @@ var DateTimePickerTime = React.createClass({
 		}
 		return '';
 	},
+	renderDayPart: function() {
+		return DOM.div({ className: 'rdtCounter'}, [
+			DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
+			DOM.div({ key: this.state.daypart, className: 'rdtCount'}, this.state.daypart ),
+			DOM.span({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
+		]);
+	},
 	render: function() {
 		var me = this,
 			counters = []
@@ -69,7 +76,7 @@ var DateTimePickerTime = React.createClass({
 		});
 
 		if (this.state.daypart !== false) {
-			counters.push(DOM.div({ key: this.state.daypart, className: 'rdtDayPart'}, this.state.daypart ));
+			counters.push( me.renderDayPart() );
 		}
 
 		if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf('S') !== -1 ){
@@ -167,6 +174,12 @@ var DateTimePickerTime = React.createClass({
 		minutes: 2,
 		seconds: 2,
 		milliseconds: 3
+	},
+	toggleDayPart: function( type ){ // type is always 'hours'
+		var value = parseInt(this.state[ type ], 10) + 12;
+		if ( value > this.timeConstraints[ type ].max )
+			value = this.timeConstraints[ type ].min + (value - (this.timeConstraints[ type ].max + 1));
+		return this.pad( type, value );
 	},
 	increase: function( type ){
 		var value = parseInt(this.state[ type ], 10) + this.timeConstraints[ type ].step;
