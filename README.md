@@ -69,6 +69,7 @@ API
 | **closeOnSelect** | boolean | false | When `true`, once the day has been selected, the react-datetime will be automatically closed.
 | **closeOnTab** | boolean | true | When `true` and the input is focused, pressing the `tab` key will close the picker.
 | **timeConstraints** | object | null | Allow to add some constraints to the time selector. It accepts an object with the format `{hours:{ min: 9, max: 15, step:2}}` so the hours can't be lower than 9 or higher than 15, and it will change adding or subtracting 2 hours everytime the buttons are clicked. The constraints can be added to the `hours`, `minutes`, `seconds` and `milliseconds`.
+| **disableOnClickOutside** | boolean | false | When `true`, keep the picker open when click event is triggered outside of component. When `false`, close it.
 
 ## i18n
 Different language and date formats are supported by react-datetime. React uses [moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
