@@ -363,7 +363,9 @@ var Datetime = React.createClass({
 	render: function() {
 		var Component = this.viewComponents[ this.state.currentView ],
 			DOM = React.DOM,
-			className = 'rdt ' + this.props.className,
+			className = 'rdt' + (this.props.className ?
+                  ( Array.isArray( this.props.className ) ?
+                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 			children = []
 		;
 

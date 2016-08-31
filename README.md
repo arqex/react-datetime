@@ -59,7 +59,7 @@ API
 | **onFocus** | function | empty function | Callback trigger for when the user opens the datepicker. |
 | **onBlur** | function | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If it isn't, the value of the input (a string) is returned. |
 | **viewMode** | string or number | 'days' | The default view to display when the picker is shown. ('years', 'months', 'days', 'time') |
-| **className** | string | `""` | Extra class names for the component markup. |
+| **className** | string or string array | `""` | Extra class name for the outermost markup element. |
 | **inputProps** | object | undefined | Defines additional attributes for the input element of the component. |
 | **isValidDate** | function | () => true | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and should return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
 | **renderDay** | function | DOM.td( day ) | Customize the way that the days are shown in the day picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance-customization) |
