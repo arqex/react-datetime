@@ -57,7 +57,7 @@ var DateTimePickerTime = React.createClass({
 		return '';
 	},
 	renderDayPart: function() {
-		return DOM.div({ className: 'rdtCounter'}, [
+		return DOM.div({ className: 'rdtCounter', key: 'dayPart'}, [
 			DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
 			DOM.div({ key: this.state.daypart, className: 'rdtCount'}, this.state.daypart ),
 			DOM.span({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
