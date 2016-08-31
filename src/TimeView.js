@@ -123,6 +123,7 @@ var DateTimePickerTime = React.createClass({
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach(function(type) {
 			assign(me.timeConstraints[type], me.props.timeConstraints[type]);
 		});
+		this.setState( this.calculateState( this.props ) );
 	},
 	componentWillReceiveProps: function( nextProps ){
 		this.setState( this.calculateState( nextProps ) );
