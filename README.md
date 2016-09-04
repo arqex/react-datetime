@@ -52,8 +52,8 @@ API
 | **defaultValue** | Date | new Date() | Represents the selected date for the component to use it as a [uncontrolled component](https://facebook.github.io/react/docs/forms.html#uncontrolled-components). This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date. |
 | **dateFormat**   | `bool` or `string`  | `true` | Defines the format for the date. It accepts any [moment.js date format](http://momentjs.com/docs/#/displaying/format/). If `true` the date will be displayed using the defaults for the current locale. If `false` the datepicker is disabled and the component can be used as timepicker. |
 | **timeFormat**   | `bool` or `string`  | `true` | Defines the format for the time. It accepts any [moment.js time format](http://momentjs.com/docs/#/displaying/format/). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker. |
-| **input** | boolean | true | Wether to show an input field to edit the date manually. |
-| **open** | boolean | null | Wether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside. |
+| **input** | boolean | true | Whether to show an input field to edit the date manually. |
+| **open** | boolean | null | Whether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside. |
 | **locale** | string | null | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
 | **onChange** | function | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If it isn't, the value of the input (a string) is returned. |
 | **onFocus** | function | empty function | Callback trigger for when the user opens the datepicker. |
