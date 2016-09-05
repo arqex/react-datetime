@@ -32,11 +32,11 @@ declare module ReactDatetime {
      */
     timeFormat?: boolean|string;
     /*
-     Wether to show an input field to edit the date manually.
+     Whether to show an input field to edit the date manually.
      */
     input?: boolean;
     /*
-     Wether to open or close the picker. If not set react-datetime will open the
+     Whether to open or close the picker. If not set react-datetime will open the
      datepicker on input focus and close it on click outside.
      */
     open?: boolean;
