@@ -1,5 +1,12 @@
 Changelog
 =========
+## 2.6.0
+* Fixed hover styles for days
+* Added multiple simultaneous datetime component support.
+* `className` prop now supports string arrays
+* Fixes 12:00am
+* Removed warning for missing element keys.
+
 ## 2.5.0
 * Added pre-commit hook for tests.
 * Added the `timeConstraints` prop.
