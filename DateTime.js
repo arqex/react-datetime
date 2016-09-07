@@ -399,7 +399,7 @@ var Datetime = React.createClass({
 							}, this.props.inputProps ))
 						]
 					)]
-				)]
+				)];
 			} else {
 				children = [ DOM.input( assign({
 					key: 'i',
