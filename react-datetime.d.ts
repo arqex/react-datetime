@@ -54,13 +54,13 @@ declare module ReactDatetime {
     /*
      Callback trigger for when the user opens the datepicker.
      */
-    onFocus?: (e) => void;
+    onFocus?: (e : FocusEvent) => void;
     /*
      Callback trigger for when the user clicks outside of the input, simulating a regular onBlur.
      The callback receives the selected moment object as only parameter, if the date in the
      input is valid. If it isn't, the value of the input (a string) is returned.
      */
-    onBlurs?: (e) => void;
+    onBlurs?: (e : FocusEvent) => void;
     /*
      The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
      */
