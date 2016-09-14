@@ -621,6 +621,18 @@ describe( 'Datetime', function(){
 		ev.change( dt.input() );
 	});
 
+	it( 'invalid moment object as input value', function( done ){
+		var value = moment(null);
+		createDatetime({ value: value, onChange: function( updated ){
+			assert.equal( mDate.format('L LT'), updated.format('L LT') );
+			done();
+		}});
+
+		assert.equal( dt.input().value, '' );
+		dt.input().value = strDate;
+		ev.change( dt.input() );
+	});
+
 	it( 'delete input value', function( done ){
 		createDatetime({ defaultValue: date, onChange: function( date ){
 			assert.equal( date, '' );
