@@ -112,7 +112,7 @@ declare module ReactDatetime {
     so the hours can't be lower than 9 or higher than 15, and it will change adding or subtracting 2 hours everytime the 
     buttons are clicked. The constraints can be added to the hours, minutes, seconds and milliseconds.
     */
-    timeConstraints: any; 
+    timeConstraints?: any; 
     /*
     When true, keep the picker open when click event is triggered outside of component. When false, close it.
     */
