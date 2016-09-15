@@ -13,12 +13,12 @@ declare module ReactDatetime {
      Represents the selected date by the component, in order to use it as a controlled component.
      This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
      */
-    value?: string;
+    value?: Date;
     /*
      Represents the selected date for the component to use it as a uncontrolled component.
      This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
      */
-    defaultValue?: string;
+    defaultValue?: Date;
     /*
      Defines the format for the date. It accepts any moment.js date format.
      If true the date will be displayed using the defaults for the current locale.
@@ -50,17 +50,17 @@ declare module ReactDatetime {
      only parameter, if the date in the input is valid. If it isn't, the value
      of the input (a string) is returned.
      */
-    onChange?:(x: string) => void;
+    onChange?:(x: string|any) => void;
     /*
      Callback trigger for when the user opens the datepicker.
      */
-    onFocus?: (e : FocusEvent) => void;
+    onFocus?: () => void;
     /*
      Callback trigger for when the user clicks outside of the input, simulating a regular onBlur.
      The callback receives the selected moment object as only parameter, if the date in the
      input is valid. If it isn't, the value of the input (a string) is returned.
      */
-    onBlurs?: (e : FocusEvent) => void;
+    onBlur?: (e : string|any) => void;
     /*
      The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
      */
@@ -77,27 +77,27 @@ declare module ReactDatetime {
      Define the dates that can be selected. The function receives (currentDate, selectedDate)
      and should return a true or false whether the currentDate is valid or not. See selectable dates.
      */
-    isValidDate?: (x: string) => void;
+    isValidDate?: (x: any, y: any) => boolean;
     /*
      Customize the way that the days are shown in the day picker. The accepted function has
      the selectedDate, the current date and the default calculated props for the cell,
      and must return a React component. See appearance customization
      */
-    renderDay?: (x: string) => void;
+    renderDay?: (x: string) => React.Component<any, any>;
     /*
      Customize the way that the months are shown in the month picker.
      The accepted function has the selectedDate, the current date and the default calculated
      props for the cell, the month and the year to be shown, and must return a
      React component. See appearance customization
      */
-    renderMonth?: (x: string) => void;
+    renderMonth?: (x: string) => React.Component<any, any>;
     /*
      Customize the way that the years are shown in the year picker.
      The accepted function has the selectedDate, the current date and the default calculated
      props for the cell, the year to be shown, and must return a React component.
      See appearance customization
      */
-    renderYear?: (x: string) => void;
+    renderYear?: (x: string) => React.Component<any, any>;
     /*
      Whether to use moment's strict parsing when parsing input.
      */
@@ -106,6 +106,18 @@ declare module ReactDatetime {
      When true, once the day has been selected, the react-datetime will be automatically closed.
      */
     closeOnSelect?: boolean;
+
+    /*
+    Allow to add some constraints to the time selector. It accepts an object with the format {hours:{ min: 9, max: 15, step:2}}
+    so the hours can't be lower than 9 or higher than 15, and it will change adding or subtracting 2 hours everytime the 
+    buttons are clicked. The constraints can be added to the hours, minutes, seconds and milliseconds.
+    */
+    timeConstraints: any; 
+    /*
+    When true, keep the picker open when click event is triggered outside of component. When false, close it.
+    */
+    disableOnClickOutside?:	boolean;
+
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {
