@@ -129,7 +129,7 @@ var valid = function( current ){
 [Working example of disabled weekends here.](http://codepen.io/arqex/pen/VLEPXb)
 
 ## Contributions
-* For information about how to contribute, see the [CONTRIBUTIONS](CONTRIBUTIONS.md) file.
+* For information about how to contribute, see the [CONTRIBUTING](CONTRIBUTING.md) file.
 * For development we recommend that you use [react-datetime-playground](https://github.com/arqex/react-datetime-playground).
 
 ### [Changelog](CHANGELOG.md)
