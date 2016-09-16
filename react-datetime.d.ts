@@ -46,21 +46,22 @@ declare module ReactDatetime {
      */
     locale?: string;
     /*
-     Callback trigger when the date changes. The callback receives the selected moment object as
-     only parameter, if the date in the input is valid. If it isn't, the value
-     of the input (a string) is returned.
+     Callback trigger when the date changes. The callback receives the selected `moment` object as
+     only parameter, if the date in the input is valid. If the date in the input is not valid, the
+     callback receives the value of the input (a string).
      */
-    onChange?:(x: string|any) => void;
+    onChange?: (momentOrInputString: string|any) => void;
     /*
      Callback trigger for when the user opens the datepicker.
      */
     onFocus?: () => void;
     /*
      Callback trigger for when the user clicks outside of the input, simulating a regular onBlur.
-     The callback receives the selected moment object as only parameter, if the date in the
-     input is valid. If it isn't, the value of the input (a string) is returned.
+     The callback receives the selected `moment` object as only parameter, if the date in the input
+     is valid. If the date in the input is not valid, the callback receives the value of the
+     input (a string).
      */
-    onBlur?: (e : string|any) => void;
+    onBlur?: (momentOrInputString : string|any) => void;
     /*
      The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
      */
@@ -77,27 +78,27 @@ declare module ReactDatetime {
      Define the dates that can be selected. The function receives (currentDate, selectedDate)
      and should return a true or false whether the currentDate is valid or not. See selectable dates.
      */
-    isValidDate?: (x: any, y: any) => boolean;
+    isValidDate?: (currentDate: any, selectedDate: any) => boolean;
     /*
      Customize the way that the days are shown in the day picker. The accepted function has
      the selectedDate, the current date and the default calculated props for the cell,
      and must return a React component. See appearance customization
      */
-    renderDay?: (x: string) => React.Component<any, any>;
+    renderDay?: (props: any, currentDate: any, selectedDate: any) => React.Component<any, any>;
     /*
      Customize the way that the months are shown in the month picker.
      The accepted function has the selectedDate, the current date and the default calculated
      props for the cell, the month and the year to be shown, and must return a
      React component. See appearance customization
      */
-    renderMonth?: (x: string) => React.Component<any, any>;
+    renderMonth?: (props: any, month: number, year: number, selectedDate: any) => React.Component<any, any>;
     /*
      Customize the way that the years are shown in the year picker.
      The accepted function has the selectedDate, the current date and the default calculated
      props for the cell, the year to be shown, and must return a React component.
      See appearance customization
      */
-    renderYear?: (x: string) => React.Component<any, any>;
+    renderYear?: (props: any, year: number, selectedDate: any) => React.Component<any, any>;
     /*
      Whether to use moment's strict parsing when parsing input.
      */
@@ -106,18 +107,18 @@ declare module ReactDatetime {
      When true, once the day has been selected, the react-datetime will be automatically closed.
      */
     closeOnSelect?: boolean;
-
     /*
-    Allow to add some constraints to the time selector. It accepts an object with the format {hours:{ min: 9, max: 15, step:2}}
-    so the hours can't be lower than 9 or higher than 15, and it will change adding or subtracting 2 hours everytime the 
-    buttons are clicked. The constraints can be added to the hours, minutes, seconds and milliseconds.
+     Allow to add some constraints to the time selector. It accepts an object with the format
+     {hours:{ min: 9, max: 15, step:2}} so the hours can't be lower than 9 or higher than 15, and
+     it will change adding or subtracting 2 hours everytime the buttons are clicked. The constraints
+     can be added to the hours, minutes, seconds and milliseconds.
     */
-    timeConstraints?: any; 
+    timeConstraints?: Object; 
     /*
-    When true, keep the picker open when click event is triggered outside of component. When false, close it.
+     When true, keep the picker open when click event is triggered outside of component. When false,
+     close it.
     */
-    disableOnClickOutside?:	boolean;
-
+    disableOnClickOutside?: boolean;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {
