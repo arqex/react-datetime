@@ -73,7 +73,7 @@ var Datetime = React.createClass({
 	getStateFromProps: function( props ){
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
-			selectedDate, viewDate, updateOn
+			selectedDate, viewDate, updateOn, inputValue
 		;
 
 		if ( date && typeof date === 'string' )
@@ -91,12 +91,19 @@ var Datetime = React.createClass({
 
 		updateOn = this.getUpdateOn(formats);
 
+		if ( selectedDate )
+			inputValue = selectedDate.format(formats.datetime);
+		else if ( date.isValid && !date.isValid() )
+			inputValue = '';
+		else
+			inputValue = date || '';
+
 		return {
 			updateOn: updateOn,
 			inputFormat: formats.datetime,
 			viewDate: viewDate,
 			selectedDate: selectedDate,
-			inputValue: selectedDate ? selectedDate.format( formats.datetime ) : (date || ''),
+			inputValue: inputValue,
 			open: props.open
 		};
 	},
