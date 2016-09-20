@@ -42,9 +42,9 @@ render: function() {
 | **input** | `boolean` | `true` | Whether to show an input field to edit the date manually. |
 | **open** | `boolean` | `null` | Whether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside. |
 | **locale** | `string` | `null` | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
-| **onChange** | `function` | empty `function` | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If it isn't, the value of the input (a `string`) is returned. |
-| **onFocus** | `function` | empty `function` | Callback trigger for when the user opens the datepicker. |
-| **onBlur** | `function` | empty `function` | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If it isn't, the value of the input (a `string`) is returned. |
+| **onChange** | `function` | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback receives the value of the input (a string). |
+| **onFocus** | `function` | empty function | Callback trigger for when the user opens the datepicker. |
+| **onBlur** | `function` | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned. |
 | **viewMode** | `string` or `number` | `'days'` | The default view to display when the picker is shown (`'years'`, `'months'`, `'days'`, `'time'`). |
 | **className** | `string` or `string array` | `''` | Extra class name for the outermost markup element. |
 | **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `placeholder`, `disabled` and `required`. |
