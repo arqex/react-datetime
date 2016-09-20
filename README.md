@@ -42,9 +42,9 @@ render: function() {
 | **input** | `boolean` | `true` | Whether to show an input field to edit the date manually. |
 | **open** | `boolean` | `null` | Whether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside. |
 | **locale** | `string` | `null` | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
-| **onChange** | function | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback receives the value of the input (a string). |
-| **onFocus** | function | empty function | Callback trigger for when the user opens the datepicker. |
-| **onBlur** | function | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned. |
+| **onChange** | `function` | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback receives the value of the input (a string). |
+| **onFocus** | `function` | empty function | Callback trigger for when the user opens the datepicker. |
+| **onBlur** | `function` | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned. |
 | **viewMode** | `string` or `number` | `'days'` | The default view to display when the picker is shown (`'years'`, `'months'`, `'days'`, `'time'`). |
 | **className** | `string` or `string array` | `''` | Extra class name for the outermost markup element. |
 | **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `placeholder`, `disabled` and `required`. |
@@ -57,7 +57,6 @@ render: function() {
 | **closeOnTab** | `boolean` | `true` | When `true` and the input is focused, pressing the `tab` key will close the datepicker.
 | **timeConstraints** | `object` | `null` | Add some constraints to the timepicker. It accepts an `object` with the format `{ hours: { min: 9, max: 15, step: 2 }}`, this example means the hours can't be lower than `9` and higher than `15`, and it will change adding or subtracting `2` hours everytime the buttons are clicked. The constraints can be added to the `hours`, `minutes`, `seconds` and `milliseconds`.
 | **disableOnClickOutside** | `boolean` | `false` | When `true`, keep the datepicker open when click event is triggered outside of component. When `false`, close it.
->>>>>>> upstream/master
 
 ## i18n
 Different language and date formats are supported by react-datetime. React uses [Moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the Moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
