@@ -298,7 +298,7 @@ describe( 'Datetime', function(){
 		// The date must be the same
 		assert.equal( selectedDate.isSame( mDate ), true );
 
-		assert.equal( year, 2010 );
+		assert.equal( year, 2004 );
 
 		// There should be a onClick function in the props
 		assert.equal( typeof props.onClick, 'function' );
@@ -343,33 +343,33 @@ describe( 'Datetime', function(){
 	it( 'selectYear', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
 		assert.equal( dt.view().className, 'rdtYears' );
-		assert.equal( dt.switcher().innerHTML, '2000-2009' );
+		assert.equal( dt.switcher().innerHTML, '1993-2004' );
 
 		// First year is 1999
 		ev.click( dt.year() );
 		assert.equal( dt.view().className, 'rdtMonths' );
-		assert.equal( dt.switcher().innerHTML, '1999' );
+		assert.equal( dt.switcher().innerHTML, '1993' );
 	});
 
-	it( 'increase decade', function(){
+	it( 'forward year range', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
 
-		assert.equal( dt.switcher().innerHTML, '2000-2009' );
+		assert.equal( dt.switcher().innerHTML, '1993-2004' );
 		ev.click( dt.next() );
-		assert.equal( dt.switcher().innerHTML, '2010-2019' );
+		assert.equal( dt.switcher().innerHTML, '2005-2016' );
 		ev.click( dt.next() );
-		assert.equal( dt.switcher().innerHTML, '2020-2029' );
+		assert.equal( dt.switcher().innerHTML, '2017-2028' );
 	});
 
 
-	it( 'decrease decade', function(){
+	it( 'back year range', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
 
-		assert.equal( dt.switcher().innerHTML, '2000-2009' );
+		assert.equal( dt.switcher().innerHTML, '1993-2004' );
 		ev.click( dt.prev() );
-		assert.equal( dt.switcher().innerHTML, '1990-1999' );
+		assert.equal( dt.switcher().innerHTML, '1981-1992' );
 		ev.click( dt.prev() );
-		assert.equal( dt.switcher().innerHTML, '1980-1989' );
+		assert.equal( dt.switcher().innerHTML, '1969-1980' );
 	});
 
 	it( 'selectMonth', function(){

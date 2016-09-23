@@ -47,7 +47,8 @@ var DateTimePickerDays = React.createClass({
 		;
 
 		days.forEach( function( day ){
-			dow[ (7 + (i++) - first) % 7 ] = day;
+			// TODO: Make the day header format flexible. This returns the day's initial.
+			dow[ (7 + (i++) - first) % 7 ] = day.substring(0, 1);
 		});
 
 		return dow;

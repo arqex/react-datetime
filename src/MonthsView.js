@@ -56,10 +56,10 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	renderMonth: function( props, month ) {
-		var monthsShort = this.props.viewDate.localeData()._monthsShort;
-		return DOM.td( props, monthsShort.standalone
-			? capitalize( monthsShort.standalone[ month ] )
-			: monthsShort[ month ]
+		var months = this.props.viewDate.localeData()._months;
+		return DOM.td( props, months.standalone
+			? capitalize( months.standalone[ month ] )
+			: months[ month ]
 		);
 	}
 });
