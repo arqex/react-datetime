@@ -23,13 +23,14 @@ var DateTimePickerYears = React.createClass({
 			rows = [],
 			renderer = this.props.renderYear || this.renderYear,
 			selectedDate = this.props.selectedDate,
+			numYears = this.props.yearColumns * this.props.yearRows,
 			classes, props
 		;
 
 		year--;
-		while (i < 11) {
+		while (i < numYears + 1) {
 			classes = 'rdtYear';
-			if ( i === -1 | i === 10 )
+			if ( i === -1 | i === numYears )
 				classes += ' rdtOld';
 			if ( selectedDate && selectedDate.year() === year )
 				classes += ' rdtActive';
@@ -43,7 +44,7 @@ var DateTimePickerYears = React.createClass({
 
 			years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
 
-			if ( years.length === 4 ){
+			if ( years.length === this.props.yearColumns ){
 				rows.push( DOM.tr({ key: i }, years ) );
 				years = [];
 			}

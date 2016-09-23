@@ -37,7 +37,10 @@ var Datetime = React.createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		monthColumns: TYPES.number,
+		yearColumns: TYPES.number,
+		yearRows: TYPES.number
 	},
 
 	getDefaultProps: function() {
@@ -55,7 +58,10 @@ var Datetime = React.createClass({
 			dateFormat: true,
 			strictParsing: true,
 			closeOnSelect: false,
-			closeOnTab: true
+			closeOnTab: true,
+			monthColumns: 4,
+			yearColumns: 4,
+			yearRows: 3
 		};
 	},
 
@@ -343,7 +349,7 @@ var Datetime = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'monthColumns', 'yearColumns', 'yearRows'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
 	},

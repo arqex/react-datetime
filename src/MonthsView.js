@@ -40,7 +40,7 @@ var DateTimePickerMonths = React.createClass({
 
 			months.push( renderer( props, i, year, date && date.clone() ));
 
-			if ( months.length === 4 ){
+			if ( months.length === this.props.monthColumns ){
 				rows.push( DOM.tr({ key: month + '_' + rows.length }, months) );
 				months = [];
 			}
