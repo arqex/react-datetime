@@ -48,15 +48,15 @@ var dt = {
 		return document.querySelector('.rdtTimeToggle');
 	},
 	year: function( n ){
-		var years = document.querySelectorAll('.rdtYear');
+		var years = document.querySelectorAll('.rdtYear button');
 		return years[ n || 0 ];
 	},
 	month: function( n ){
-		var months = document.querySelectorAll('.rdtMonth');
+		var months = document.querySelectorAll('.rdtMonth button');
 		return months[ n || 0 ];
 	},
 	day: function( n ){
-		return document.querySelector('.rdtDay[data-value="' + n + '"]');
+		return Array.from(document.querySelectorAll('.rdtDay button')).find(function(button) { return button.innerHTML === n; });
 	},
 	next: function(){
 		return document.querySelector('.rdtNext span');
@@ -345,7 +345,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.view().className, 'rdtYears' );
 		assert.equal( dt.switcher().innerHTML, '1993 - 2004' );
 
-		// First year is 1999
+		// First year is 1993
 		ev.click( dt.year() );
 		assert.equal( dt.view().className, 'rdtMonths' );
 		assert.equal( dt.switcher().innerHTML, '1993' );
@@ -438,7 +438,7 @@ describe( 'Datetime', function(){
 			done();
 		}});
 
-		ev.click( dt.day( 2 ) );
+		ev.click( dt.day( '02' ) );
 	});
 
 	it( 'multiple onSelect', function( done ){
@@ -453,9 +453,9 @@ describe( 'Datetime', function(){
 			}
 		}});
 
-		ev.click( dt.day( 2 ) );
-		ev.click( dt.day( 3 ) );
-		ev.click( dt.day( 4 ) );
+		ev.click( dt.day( '02' ) );
+		ev.click( dt.day( '03' ) );
+		ev.click( dt.day( '04' ) );
 	});
 
 	it( 'onFocus', function(){

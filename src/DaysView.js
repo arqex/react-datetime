@@ -77,13 +77,18 @@ var DateTimePickerDays = React.createClass({
 		var lastDay = prevMonth.clone().add(42, 'd');
 
 		while ( prevMonth.isBefore( lastDay ) ){
+			var action = { type: 'day', date: prevMonth.date() };
 			classes = 'rdtDay';
 			currentDate = prevMonth.clone();
 
-			if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) )
+			if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) ) {
 				classes += ' rdtOld';
-			else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) )
+				action.old = true;
+      }
+			else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) ) {
 				classes += ' rdtNew';
+				action.new = true;
+      }
 
 			if ( selected && prevMonth.isSame(selected, 'day') )
 				classes += ' rdtActive';
@@ -97,11 +102,10 @@ var DateTimePickerDays = React.createClass({
 
 			dayProps = {
 				key: prevMonth.format('M_D'),
-				'data-value': prevMonth.date(),
 				className: classes
 			};
 			if ( !disabled )
-				dayProps.onClick = this.updateSelectedDate;
+				dayProps.onClick = this.updateSelectedDate.bind(this, action);
 
 			days.push( renderer( dayProps, currentDate, selected ) );
 
@@ -116,12 +120,12 @@ var DateTimePickerDays = React.createClass({
 		return weeks;
 	},
 
-	updateSelectedDate: function( event ) {
-		this.props.updateSelectedDate(event, true);
+	updateSelectedDate: function( action, event ) {
+		this.props.updateSelectedDate(event, action, true);
 	},
 
 	renderDay: function( props, currentDate ){
-		return DOM.td( props, currentDate.date() );
+		return DOM.td({ key: props.key, className: props.className }, DOM.button( { onClick: props.onClick }, currentDate.format('DD') ));
 	},
 
 	renderFooter: function(){
@@ -132,7 +136,7 @@ var DateTimePickerDays = React.createClass({
 
 		return DOM.tfoot({ key: 'tf'},
 			DOM.tr({},
-				DOM.td({ onClick: this.props.showView('time'), colSpan: 7, className: 'rdtTimeToggle'}, date.format( this.props.timeFormat ))
+				DOM.td({ colSpan: 7 }, DOM.button({ onClick: this.props.showView('time'), className: 'rdtTimeToggle'}, date.format( this.props.timeFormat )))
 			)
 		);
 	},

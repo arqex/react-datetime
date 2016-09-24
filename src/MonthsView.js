@@ -34,15 +34,15 @@ var DateTimePickerMonths = React.createClass({
 		;
 
 		while (i < 12) {
+			var action = { type: 'month', month: i };
 			classes = 'rdtMonth';
 			if ( date && i === month && year === date.year() )
 				classes += ' rdtActive';
 
 			props = {
 				key: i,
-				'data-value': i,
 				className: classes,
-				onClick: this.props.updateOn === 'months'? this.updateSelectedMonth : this.props.setDate('month')
+				onClick: this.props.updateOn === 'months'? this.updateSelectedMonth.bind(this, action) : this.props.setDate('month', i)
 			};
 
 			months.push( renderer( props, i, year, date && date.clone() ));
@@ -58,16 +58,16 @@ var DateTimePickerMonths = React.createClass({
 		return rows;
 	},
 
-	updateSelectedMonth: function( event ) {
-		this.props.updateSelectedDate(event, true);
+	updateSelectedMonth: function( action, event ) {
+		this.props.updateSelectedDate(event, action, true);
 	},
 
 	renderMonth: function( props, month ) {
 		var months = this.props.viewDate.localeData()._months;
-		return DOM.td( props, months.standalone
+		return DOM.td({ key: props.key, className: props.className }, DOM.button( { onClick: props.onClick }, months.standalone
 			? capitalize( months.standalone[ month ] )
 			: months[ month ]
-		);
+		));
 	}
 });
 

@@ -141,7 +141,7 @@ var DateTimePickerTime = React.createClass({
 
 		var date = this.props.selectedDate || this.props.viewDate;
 		return DOM.thead({ key: 'h'}, DOM.tr({},
-			DOM.th( {className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView('days')}, date.format( this.props.dateFormat ) )
+			DOM.th({}, DOM.button( {className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView('days')}, date.format( this.props.dateFormat ) ))
 		));
 	},
 	onStartClicking: function( action, type ){

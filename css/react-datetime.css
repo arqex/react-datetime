@@ -36,6 +36,7 @@
 .rdtPicker th {
   text-align: center;
   height: 28px;
+  padding: 0;
 }
 .rdtPicker td {
   cursor: pointer;
@@ -48,8 +49,9 @@
   background: #eeeeee;
   cursor: pointer;
 }
-.rdtPicker td.rdtOld,
-.rdtPicker td.rdtNew {
+.rdtPicker td.rdtOld button,
+.rdtPicker td.rdtNew button {
+
   color: #999999;
 }
 .rdtPicker td.rdtToday {
@@ -93,15 +95,16 @@
 .rdtPicker th {
   border-bottom: 1px solid #f9f9f9;
 }
+.rdtPicker th button {
+  font-weight: inherit;
+}
 .rdtPicker .dow {
   width: 14.2857%;
   border-bottom: none;
 }
-.rdtPicker th.rdtSwitch {
-  width: 100px;
-}
-.rdtPicker th.rdtNext,
-.rdtPicker th.rdtPrev {
+
+.rdtPicker button.rdtNext,
+.rdtPicker button.rdtPrev {
   font-size: 21px;
   vertical-align: top;
 }
@@ -117,12 +120,6 @@
   user-select: none;
 }
 
-.rdtPicker th.rdtDisabled,
-.rdtPicker th.rdtDisabled:hover {
-  background: none;
-  color: #999999;
-  cursor: not-allowed;
-}
 .rdtPicker thead tr:first-child th {
   cursor: pointer;
 }
@@ -138,9 +135,12 @@
   border: none;
   background: none;
   cursor: pointer;
-}
-.rdtPicker button:hover {
-  background-color: #eee;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
 }
 
 .rdtPicker thead button {
@@ -151,7 +151,6 @@
 td.rdtMonth,
 td.rdtYear {
   height: 50px;
-  width: 25%;
   cursor: pointer;
 }
 td.rdtMonth:hover,

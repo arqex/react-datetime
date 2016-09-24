@@ -211,16 +211,16 @@ var Datetime = React.createClass({
 		};
 	},
 
-	setDate: function( type ){
+	setDate: function( type, value ){
 		var me = this,
 			nextViews = {
 				month: 'days',
 				year: 'months'
 			}
 		;
-		return function( e ){
+		return function(){
 			me.setState({
-				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
+				viewDate: me.state.viewDate.clone()[ type ]( value ).startOf( type ),
 				currentView: nextViews[ type ]
 			});
 		};
@@ -273,32 +273,31 @@ var Datetime = React.createClass({
 		this.props.onChange( date );
 	},
 
-	updateSelectedDate: function( e, close ) {
-		var target = e.target,
-			modifier = 0,
+	updateSelectedDate: function( e, action, close ) {
+		var modifier = 0,
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
 			date
     ;
 
-		if (target.className.indexOf('rdtDay') !== -1){
-			if (target.className.indexOf('rdtNew') !== -1)
+		if (action.type === 'day'){
+			if (action.new)
 				modifier = 1;
-			else if (target.className.indexOf('rdtOld') !== -1)
+			else if (action.old)
 				modifier = -1;
 
 			date = viewDate.clone()
 				.month( viewDate.month() + modifier )
-				.date( parseInt( target.getAttribute('data-value'), 10 ) );
-		} else if (target.className.indexOf('rdtMonth') !== -1){
+				.date( action.date );
+		} else if (action.type === 'month'){
 			date = viewDate.clone()
-				.month( parseInt( target.getAttribute('data-value'), 10 ) )
+				.month( action.month )
 				.date( currentDate.date() );
-		} else if (target.className.indexOf('rdtYear') !== -1){
+		} else if (action.type === 'year'){
 			date = viewDate.clone()
 				.month( currentDate.month() )
 				.date( currentDate.date() )
-				.year( parseInt( target.getAttribute('data-value'), 10 ) );
+				.year( action.year );
 		}
 
 		date.hours( currentDate.hours() )

@@ -41,15 +41,15 @@ var DateTimePickerYears = React.createClass({
 		;
 
 		while (i < this._getRange() - 1) {
+			var action = { type: 'year', year: year };
 			classes = 'rdtYear';
 			if ( selectedDate && selectedDate.year() === year )
 				classes += ' rdtActive';
 
 			props = {
 				key: year,
-				'data-value': year,
 				className: classes,
-				onClick: this.props.updateOn === 'years' ? this.updateSelectedYear : this.props.setDate('year')
+				onClick: this.props.updateOn === 'years' ? this.updateSelectedYear.bind(this, action) : this.props.setDate('year', year)
 			};
 
 			years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
@@ -66,12 +66,12 @@ var DateTimePickerYears = React.createClass({
 		return rows;
 	},
 
-	updateSelectedYear: function( event ) {
-		this.props.updateSelectedDate(event, true);
+	updateSelectedYear: function( action, event ) {
+		this.props.updateSelectedDate(event, action, true);
 	},
 
 	renderYear: function( props, year ){
-		return DOM.td( props, year );
+		return DOM.td({ key: props.key, className: props.className }, DOM.button( { onClick: props.onClick }, year ));
 	}
 });
 
