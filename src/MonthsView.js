@@ -1,7 +1,8 @@
 'use strict';
 
 var React = require('react'),
-	HeaderControls = require('./HeaderControls')
+	HeaderControls = require('./HeaderControls'),
+	utils = require('./utils')
 ;
 
 var DOM = React.DOM;
@@ -35,15 +36,23 @@ var DateTimePickerMonths = React.createClass({
 
 		while (i < 12) {
 			var action = { type: 'month', month: i };
-			classes = 'rdtMonth';
-			if ( date && i === month && year === date.year() )
-				classes += ' rdtActive';
-
 			props = {
 				key: i,
-				className: classes,
 				onClick: this.props.updateOn === 'months'? this.updateSelectedMonth.bind(this, action) : this.props.setDate('month', i)
 			};
+
+			classes = 'rdtMonth';
+			if ( i === month ) {
+				classes += ' rdtActive';
+				if (this.props.open) {
+					props.ref = utils.focusInput;
+				}
+			}
+
+			if ( date && i === date.month() && year === date.year() )
+				classes += ' rdtSelected';
+
+			props.className = classes;
 
 			months.push( renderer( props, i, year, date && date.clone() ));
 
@@ -63,11 +72,55 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	renderMonth: function( props, month ) {
-		var months = this.props.viewDate.localeData()._months;
-		return DOM.td({ key: props.key, className: props.className }, DOM.button( { onClick: props.onClick }, months.standalone
+		var months = this.props.viewDate.localeData()._months,
+			buttonProps = { onClick: props.onClick, ref: props.ref }
+		;
+		return DOM.td({ key: props.key, className: props.className }, DOM.button( buttonProps, months.standalone
 			? capitalize( months.standalone[ month ] )
 			: months[ month ]
 		));
+	},
+
+	handleKeyDown: function( key ) {
+		// TODO: Curry/make nicer
+		switch (key) {
+			case 'select':
+				if (this.props.updateOn === 'months')
+					this.updateSelectedMonth({ type: 'month', month: this.props.viewDate.month() });
+				else
+					this.props.setDate('month', this.props.viewDate.month())();
+				break;
+			case 'nextView':
+				this.props.showView('years')();
+				break;
+			case 'prevView':
+				this.props.showView('days')();
+				break;
+			case 'left':
+				this.props.subtractTime(1, 'months')();
+				break;
+			case 'up':
+				this.props.subtractTime(this.props.monthColumns, 'months')();
+				break;
+			case 'right':
+				this.props.addTime(1, 'months')();
+				break;
+			case 'down':
+				this.props.addTime(this.props.monthColumns, 'months')();
+				break;
+			case 'pageup':
+				this.props.subtractTime(1, 'years')();
+				break;
+			case 'pagedown':
+				this.props.addTime(1, 'years')();
+				break;
+			case 'home':
+				this.props.startOf('year')();
+				break;
+			case 'end':
+				this.props.endOf('year')();
+				break;
+		}
 	}
 });
 

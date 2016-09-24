@@ -2,12 +2,12 @@
 
 var React = require('react'),
 	moment = require('moment'),
-	HeaderControls = require('./HeaderControls')
+	HeaderControls = require('./HeaderControls'),
+	utils = require('./utils')
 ;
 
 var DOM = React.DOM;
 var DateTimePickerDays = React.createClass({
-
 	render: function() {
 		var footer = this.renderFooter(),
 			date = this.props.viewDate,
@@ -46,7 +46,7 @@ var DateTimePickerDays = React.createClass({
 	 */
 	getDaysOfWeek: function( locale ){
 		var days = locale._weekdaysMin,
-			first = locale.firstDayOfWeek(),
+			first = this.firstDayOfWeek(),
 			dow = [],
 			i = 0
 		;
@@ -57,6 +57,24 @@ var DateTimePickerDays = React.createClass({
 		});
 
 		return dow;
+	},
+
+	firstDayOfWeek: function(){
+		return this.props.startingDay == null
+			? this.props.viewDate.localeData().firstDayOfWeek()
+			: this.props.startingDay;
+	},
+
+	setToLastWeekInMonth: function(date){
+		var firstDayOfWeek = this.firstDayOfWeek(),
+			lastDay = date.endOf('month'),
+			sub
+		;
+		if (lastDay.day() >= firstDayOfWeek)
+			sub = lastDay.day() - firstDayOfWeek;
+		else
+			sub = lastDay.day() + (7 - firstDayOfWeek);
+		lastDay.subtract(sub, 'days');
 	},
 
 	renderDays: function() {
@@ -72,26 +90,33 @@ var DateTimePickerDays = React.createClass({
 			classes, disabled, dayProps, currentDate
 		;
 
-		// Go to the last week of the previous month
-		prevMonth.date( prevMonth.daysInMonth() ).startOf('week');
+		this.setToLastWeekInMonth(prevMonth);
 		var lastDay = prevMonth.clone().add(42, 'd');
 
 		while ( prevMonth.isBefore( lastDay ) ){
 			var action = { type: 'day', date: prevMonth.date() };
+			dayProps = { key: prevMonth.format('M_D') };
 			classes = 'rdtDay';
 			currentDate = prevMonth.clone();
 
 			if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) ) {
 				classes += ' rdtOld';
 				action.old = true;
-      }
+			}
 			else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) ) {
 				classes += ' rdtNew';
 				action.new = true;
-      }
+			}
+
+			if ( prevMonth.isSame(date, 'day') ) {
+				classes += ' rdtActive';
+				if (this.props.open) {
+					dayProps.ref = utils.focusInput;
+				}
+			}
 
 			if ( selected && prevMonth.isSame(selected, 'day') )
-				classes += ' rdtActive';
+				classes += ' rdtSelected';
 
 			if (prevMonth.isSame(moment(), 'day') )
 				classes += ' rdtToday';
@@ -100,10 +125,9 @@ var DateTimePickerDays = React.createClass({
 			if ( disabled )
 				classes += ' rdtDisabled';
 
-			dayProps = {
-				key: prevMonth.format('M_D'),
-				className: classes
-			};
+			dayProps.className = classes;
+
+			// TODO: Button component with action as prop instead of bound click handler?
 			if ( !disabled )
 				dayProps.onClick = this.updateSelectedDate.bind(this, action);
 
@@ -125,7 +149,8 @@ var DateTimePickerDays = React.createClass({
 	},
 
 	renderDay: function( props, currentDate ){
-		return DOM.td({ key: props.key, className: props.className }, DOM.button( { onClick: props.onClick }, currentDate.format('DD') ));
+		var buttonProps = { onClick: props.onClick, ref: props.ref };
+		return DOM.td({ key: props.key, className: props.className }, DOM.button( buttonProps, currentDate.format('DD') ));
 	},
 
 	renderFooter: function(){
@@ -140,6 +165,43 @@ var DateTimePickerDays = React.createClass({
 			)
 		);
 	},
+
+	handleKeyDown: function( key ){
+		// TODO: Curry/make nicer
+		switch (key) {
+			case 'select':
+				this.updateSelectedDate({ type: 'day', date: this.props.viewDate.date() });
+				break;
+			case 'nextView':
+				this.props.showView('months')();
+				break;
+			case 'left':
+				this.props.subtractTime(1, 'days')();
+				break;
+			case 'up':
+				this.props.subtractTime(1, 'weeks')();
+				break;
+			case 'right':
+				this.props.addTime(1, 'days')();
+				break;
+			case 'down':
+				this.props.addTime(1, 'weeks')();
+				break;
+			case 'pageup':
+				this.props.subtractTime(1, 'months')();
+				break;
+			case 'pagedown':
+				this.props.addTime(1, 'months')();
+				break;
+			case 'home':
+				this.props.startOf('month')();
+				break;
+			case 'end':
+				this.props.endOf('month')();
+				break;
+		}
+	},
+
 	isValidDate: function(){ return 1; }
 });
 

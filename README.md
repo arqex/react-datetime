@@ -6,7 +6,11 @@
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable** and it even allows to edit date's milliseconds.
 
-This project started as a fork of https://github.com/quri/react-bootstrap-datetimepicker but the code and the API has changed a lot.
+This project is a fork of https://github.com/YouCanBookMe/react-datetime, modified to align with the Angular UI Bootstrap Datepicker implementation at https://angular-ui.github.io/bootstrap/.
+
+There are some differences in the markup, but it's close enough to mimic the experience and the keyboard behaviour is the same. Not all options have been ported.
+
+Please note: installation instructions refer to original project.
 
 ## Usage
 
@@ -27,7 +31,8 @@ render: function() {
   return <Datetime />;
 }
 ```
-[See this example working](http://codepen.io/simeg/pen/mEmQmP).
+
+<pre>TODO: <u>See this example working.</u></pre>
 
 **Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
 
@@ -57,9 +62,26 @@ render: function() {
 | **closeOnTab** | `boolean` | `true` | When `true` and the input is focused, pressing the `tab` key will close the datepicker.
 | **timeConstraints** | `object` | `null` | Add some constraints to the timepicker. It accepts an `object` with the format `{ hours: { min: 9, max: 15, step: 2 }}`, this example means the hours can't be lower than `9` and higher than `15`, and it will change adding or subtracting `2` hours everytime the buttons are clicked. The constraints can be added to the `hours`, `minutes`, `seconds` and `milliseconds`.
 | **disableOnClickOutside** | `boolean` | `false` | When `true`, keep the datepicker open when click event is triggered outside of component. When `false`, close it.
+| **startingDay** | `number` | `moment([locale]) .localeData() .firstDayOfWeek()` | Starting day of the week from 0-6 (0=Sunday, ..., 6=Saturday). Defaults to Moment.js' first day of the week as determined by locale.
 | **monthColumns** | `number` | `4` | The number of columns of months to display in the month picker.
 | **yearColumns** | `number` | `4` | The number of columns of years to display in the year picker.
 | **yearRows** | `number` | `3` | The number of rows of years to display in the year picker.
+
+## Keyboard support
+Depending on datepicker's current mode, the date may refer either to day, month or year. Accordingly, the term view refers either to a month, year or year range.
+
+ * `Left`: Move focus to the previous date. Will move to the last date of the previous view, if the current date is the first date of a view.
+ * `Right`: Move focus to the next date. Will move to the first date of the following view, if the current date is the last date of a view.
+ * `Up`: Move focus to the same column of the previous row. Will wrap to the appropriate row in the previous view.
+ * `Down`: Move focus to the same column of the following row. Will wrap to the appropriate row in the following view.
+ * `PgUp`: Move focus to the same date of the previous view. If that date does not exist, focus is placed on the last date of the month.
+ * `PgDn`: Move focus to the same date of the following view. If that date does not exist, focus is placed on the last date of the month.
+ * `Home`: Move to the first date of the view.
+ * `End`: Move to the last date of the view.
+ * `Enter`/`Space`: Select date.
+ * `Ctrl`+`Up`: Move to an upper mode.
+ * `Ctrl`+`Down`: Move to a lower mode.
+ * `Esc`: Will close popup, and move focus to the input.
 
 ## i18n
 Different language and date formats are supported by react-datetime. React uses [Moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the Moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
@@ -75,7 +97,7 @@ If there are multiple locales loaded, you can use the prop `locale` to define wh
 <Datetime locale="fr-ca" />
 <Datetime locale="de" />
 ```
-[Here you can see the i18n example working](http://codepen.io/arqex/pen/PqJMQV).
+<pre>TODO: <u>Here you can see the i18n example working.</u></pre>
 
 ## Appearance customization
 It is possible to customize the way that the datepicker display the days, months and years in the calendar. To adapt the calendar for every need it is possible to use the props `renderDay(props, currentDate, selectedDate)`, `renderMonth(props, month, year, selectedDate)` and `renderYear(props, year, selectedDate)` to customize the output of each rendering method.
@@ -100,7 +122,7 @@ var MyDTPicker = React.createClass({
     }
 });
 ```
-[You can see a customized calendar here.](http://codepen.io/arqex/pen/mJzRwM)
+<pre>TODO: <u>You can see a customized calendar here.</u></pre>
 
 #### Method parameters
 * `props` is the object that the datepicker has calculated for this object. It is convenient to use this object as the `props` for your custom component, since it knows how to handle the click event and its `className` attribute is used by the default styles.
@@ -120,7 +142,7 @@ var valid = function( current ){
 };
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled days here.](http://codepen.io/arqex/pen/jPeyGX)
+<pre>TODO: <u>Working example of disabled days here.</u></pre>
 
 It's also possible to disable *the weekends*, as shown in the example below.
 ```js
@@ -129,7 +151,7 @@ var valid = function( current ){
 };
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled weekends here.](http://codepen.io/arqex/pen/VLEPXb)
+<pre>TODO: <u>Working example of disabled weekends here.</u></pre>
 
 ## Contributions
 * For information about how to contribute, see the [CONTRIBUTING](CONTRIBUTING.md) file.

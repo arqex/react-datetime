@@ -36,6 +36,7 @@
 .rdtPicker th {
   text-align: center;
   height: 28px;
+  padding: 0;
 }
 .rdtPicker td {
   cursor: pointer;
@@ -68,11 +69,18 @@
 }
 .rdtPicker td.rdtActive,
 .rdtPicker td.rdtActive:hover {
+  background: #eee;
+}
+.rdtPicker td.rdtActive button {
+  outline: none;
+}
+.rdtPicker td.rdtSelected,
+.rdtPicker td.rdtSelected:hover {
   background-color: #428bca;
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
-.rdtPicker td.rdtActive.rdtToday:before {
+.rdtPicker td.rdtSelected.rdtToday:before {
   border-bottom-color: #fff;
 }
 .rdtPicker td.rdtDisabled,
@@ -117,6 +125,16 @@
   -moz-user-select: none;      /* Firefox */
   -ms-user-select: none;       /* Internet Explorer/Edge */
   user-select: none;
+}
+.rdtPrev span:before,
+.rdtNext span:before {
+
+}
+.rdtPrev span:before {
+  content: '‹';
+}
+.rdtNext span:before {
+  content: '›';
 }
 
 .rdtPicker thead tr:first-child th {
