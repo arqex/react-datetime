@@ -1,16 +1,23 @@
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+	HeaderControls = require('./HeaderControls')
+;
 
 var DOM = React.DOM;
 var DateTimePickerMonths = React.createClass({
 	render: function() {
 		return DOM.div({ className: 'rdtMonths' }, [
-			DOM.table({ key: 'a'}, DOM.thead({}, DOM.tr({}, [
-				DOM.th({ key: 'prev', className: 'rdtPrev' }, DOM.span({onClick: this.props.subtractTime(1, 'years')}, '‹')),
-				DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView('years'), colSpan: 2, 'data-value': this.props.viewDate.year()}, this.props.viewDate.year() ),
-				DOM.th({ key: 'next', className: 'rdtNext' }, DOM.span({onClick: this.props.addTime(1, 'years')}, '›'))
-			]))),
+			DOM.table({ key: 'a'}, DOM.thead({},
+				React.createElement( HeaderControls, {
+					key: 'ctrl',
+					onPrevClick: this.props.subtractTime(1, 'years'),
+					onNextClick: this.props.addTime(1, 'years'),
+					onSwitchClick: this.props.showView('years'),
+					switchColspan: 2,
+					switchValue: this.props.viewDate.year(),
+					switchLabel: this.props.viewDate.year()
+				}))),
 			DOM.table({ key: 'months'}, DOM.tbody({ key: 'b'}, this.renderMonths()))
 		]);
 	},

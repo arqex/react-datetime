@@ -1,7 +1,8 @@
 'use strict';
 
 var React = require('react'),
-	moment = require('moment')
+	moment = require('moment'),
+	HeaderControls = require('./HeaderControls')
 ;
 
 var DOM = React.DOM;
@@ -16,11 +17,15 @@ var DateTimePickerDays = React.createClass({
 
 		tableChildren = [
 			DOM.thead({ key: 'th'}, [
-				DOM.tr({ key: 'h'}, [
-					DOM.th({ key: 'p', className: 'rdtPrev' }, DOM.span({onClick: this.props.subtractTime(1, 'months')}, '‹')),
-					DOM.th({ key: 's', className: 'rdtSwitch', onClick: this.props.showView('months'), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-					DOM.th({ key: 'n', className: 'rdtNext' }, DOM.span({onClick: this.props.addTime(1, 'months')}, '›'))
-				]),
+				React.createElement( HeaderControls, {
+					key: 'ctrl',
+					onPrevClick: this.props.subtractTime(1, 'months'),
+					onNextClick: this.props.addTime(1, 'months'),
+					onSwitchClick: this.props.showView('months'),
+					switchColspan: 5,
+					switchValue: this.props.viewDate.month(),
+					switchLabel: locale.months( date ) + ' ' + date.year()
+				}),
 				DOM.tr({ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ){ return DOM.th({ key: day + index, className: 'dow'}, day ); }) )
 			]),
 			DOM.tbody({key: 'tb'}, this.renderDays())

@@ -1,6 +1,8 @@
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+	HeaderControls = require('./HeaderControls')
+;
 
 var DOM = React.DOM;
 var DateTimePickerYears = React.createClass({
@@ -16,11 +18,15 @@ var DateTimePickerYears = React.createClass({
 		var year = this._getStartingYear(this.props.viewDate.year(), this._getRange());
 
 		return DOM.div({ className: 'rdtYears' }, [
-			DOM.table({ key: 'a'}, DOM.thead({}, DOM.tr({}, [
-				DOM.th({ key: 'prev', className: 'rdtPrev' }, DOM.span({onClick: this.props.subtractTime(this._getRange(), 'years')}, '‹')),
-				DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView('years'), colSpan: 2 }, year + ' - ' + (year + this._getRange() - 1) ),
-				DOM.th({ key: 'next', className: 'rdtNext'}, DOM.span({onClick: this.props.addTime(this._getRange(), 'years')}, '›'))
-				]))),
+			DOM.table({ key: 'a'}, DOM.thead({},
+				React.createElement( HeaderControls, {
+					key: 'ctrl',
+					onPrevClick: this.props.subtractTime(this._getRange(), 'years'),
+					onNextClick: this.props.addTime(this._getRange(), 'years'),
+					onSwitchClick: this.props.showView('years'),
+					switchColspan: 2,
+					switchLabel: year + ' - ' + (year + this._getRange() - 1)
+				}))),
 			DOM.table({ key: 'years'}, DOM.tbody({}, this.renderYears( year )))
 		]);
 	},
