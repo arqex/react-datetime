@@ -343,7 +343,7 @@ describe( 'Datetime', function(){
 	it( 'selectYear', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
 		assert.equal( dt.view().className, 'rdtYears' );
-		assert.equal( dt.switcher().innerHTML, '1993-2004' );
+		assert.equal( dt.switcher().innerHTML, '1993 - 2004' );
 
 		// First year is 1999
 		ev.click( dt.year() );
@@ -354,22 +354,22 @@ describe( 'Datetime', function(){
 	it( 'forward year range', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
 
-		assert.equal( dt.switcher().innerHTML, '1993-2004' );
+		assert.equal( dt.switcher().innerHTML, '1993 - 2004' );
 		ev.click( dt.next() );
-		assert.equal( dt.switcher().innerHTML, '2005-2016' );
+		assert.equal( dt.switcher().innerHTML, '2005 - 2016' );
 		ev.click( dt.next() );
-		assert.equal( dt.switcher().innerHTML, '2017-2028' );
+		assert.equal( dt.switcher().innerHTML, '2017 - 2028' );
 	});
 
 
 	it( 'back year range', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
 
-		assert.equal( dt.switcher().innerHTML, '1993-2004' );
+		assert.equal( dt.switcher().innerHTML, '1993 - 2004' );
 		ev.click( dt.prev() );
-		assert.equal( dt.switcher().innerHTML, '1981-1992' );
+		assert.equal( dt.switcher().innerHTML, '1981 - 1992' );
 		ev.click( dt.prev() );
-		assert.equal( dt.switcher().innerHTML, '1969-1980' );
+		assert.equal( dt.switcher().innerHTML, '1969 - 1980' );
 	});
 
 	it( 'selectMonth', function(){
