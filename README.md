@@ -54,6 +54,7 @@ render: function() {
 | **className** | `string` or `string array` | `''` | Extra class name for the outermost markup element. |
 | **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `placeholder`, `disabled` and `required`. |
 | **isValidDate** | `function` | `() => true` | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and should return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
+| **renderDayHeader** | `function` | `DOM.th(day)` | Customize the way that the day headers are shown in the daypicker. The accepted function has the short day name provided by Moment.js and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance-customization). |
 | **renderDay** | `function` | `DOM.td(day)` | Customize the way that the days are shown in the daypicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance-customization). |
 | **renderMonth** | `function` | `DOM.td(month)` | Customize the way that the months are shown in the monthpicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization). |
 | **renderYear** | `function` | `DOM.td(year)` | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization). |
@@ -66,6 +67,7 @@ render: function() {
 | **monthColumns** | `number` | `4` | The number of columns of months to display in the month picker.
 | **yearColumns** | `number` | `4` | The number of columns of years to display in the year picker.
 | **yearRows** | `number` | `3` | The number of rows of years to display in the year picker.
+| **allowTabs** | `boolean` | `false` | Allow tabbing through the daypicker UI controls.
 
 ## Keyboard support
 Depending on datepicker's current mode, the date may refer either to day, month or year. Accordingly, the term view refers either to a month, year or year range.

@@ -8,16 +8,16 @@ var React = require('react'),
 var DOM = React.DOM;
 var DateTimePickerMonths = React.createClass({
 	render: function() {
-		return DOM.div({ className: 'rdtMonths' }, [
+		return DOM.div(this.props.tabify({ className: 'rdtMonths' }), [
 			DOM.table({ key: 'a'}, DOM.thead({},
 				React.createElement( HeaderControls, {
 					key: 'ctrl',
 					onPrevClick: this.props.subtractTime(1, 'years'),
 					onNextClick: this.props.addTime(1, 'years'),
 					onSwitchClick: this.props.showView('years'),
-					switchColspan: 2,
 					switchValue: this.props.viewDate.year(),
-					switchLabel: this.props.viewDate.year()
+					switchLabel: this.props.viewDate.year(),
+					tabify: this.props.tabify
 				}))),
 			DOM.table({ key: 'months'}, DOM.tbody({ key: 'b'}, this.renderMonths()))
 		]);
@@ -36,10 +36,10 @@ var DateTimePickerMonths = React.createClass({
 
 		while (i < 12) {
 			var action = { type: 'month', month: i };
-			props = {
+			props = this.props.tabify({
 				key: i,
 				onClick: this.props.updateOn === 'months'? this.updateSelectedMonth.bind(this, action) : this.props.setDate('month', i)
-			};
+			});
 
 			classes = 'rdtMonth';
 			if ( i === month ) {
@@ -72,13 +72,11 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	renderMonth: function( props, month ) {
-		var months = this.props.viewDate.localeData()._months,
-			buttonProps = { onClick: props.onClick, ref: props.ref }
-		;
-		return DOM.td({ key: props.key, className: props.className }, DOM.button( buttonProps, months.standalone
+		var months = this.props.viewDate.localeData()._months;
+		return DOM.td( props, months.standalone
 			? capitalize( months.standalone[ month ] )
 			: months[ month ]
-		));
+		);
 	},
 
 	handleKeyDown: function( key ) {

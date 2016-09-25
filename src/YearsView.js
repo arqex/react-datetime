@@ -19,15 +19,15 @@ var DateTimePickerYears = React.createClass({
 	render: function() {
 		var year = this.getStartingYear();
 
-		return DOM.div({ className: 'rdtYears' }, [
+		return DOM.div(this.props.tabify({ className: 'rdtYears' }), [
 			DOM.table({ key: 'a'}, DOM.thead({},
 				React.createElement( HeaderControls, {
 					key: 'ctrl',
 					onPrevClick: this.props.subtractTime(this.getRange(), 'years'),
 					onNextClick: this.props.addTime(this.getRange(), 'years'),
 					onSwitchClick: this.props.showView('years'),
-					switchColspan: 2,
-					switchLabel: year + ' - ' + (year + this.getRange() - 1)
+					switchLabel: year + ' - ' + (year + this.getRange() - 1),
+					tabify: this.props.tabify
 				}))),
 			DOM.table({ key: 'years'}, DOM.tbody({}, this.renderYears( year )))
 		]);
@@ -45,10 +45,10 @@ var DateTimePickerYears = React.createClass({
 
 		while (i < this.getRange() - 1) {
 			var action = { type: 'year', year: year };
-			props = {
+			props = this.props.tabify({
 				key: year,
 				onClick: this.props.updateOn === 'years' ? this.updateSelectedYear.bind(this, action) : this.props.setDate('year', year)
-			};
+			});
 
 			classes = 'rdtYear';
 			if ( viewYear === year ) {
@@ -82,8 +82,7 @@ var DateTimePickerYears = React.createClass({
 	},
 
 	renderYear: function( props, year ){
-		var buttonProps = { onClick: props.onClick, ref: props.ref };
-		return DOM.td({ key: props.key, className: props.className }, DOM.button( buttonProps, year ));
+		return DOM.td( props, year );
 	},
 
 	handleKeyDown: function( key ) {

@@ -48,18 +48,18 @@ var dt = {
 		return document.querySelector('.rdtTimeToggle');
 	},
 	year: function( n ){
-		var years = document.querySelectorAll('.rdtYear button');
+		var years = document.querySelectorAll('.rdtYear');
 		return years[ n || 0 ];
 	},
 	month: function( n ){
-		var months = document.querySelectorAll('.rdtMonth button');
+		var months = document.querySelectorAll('.rdtMonth');
 		return months[ n || 0 ];
 	},
 	day: function( n ){
-		return Array.from(document.querySelectorAll('.rdtDay button')).find(function(button) { return button.innerHTML === n; });
+		return Array.from(document.querySelectorAll('.rdtDay')).find(function(day) { return day.innerHTML === n; });
 	},
 	active: function(){
-		return document.querySelector('.rdtActive button');
+		return document.querySelector('.rdtActive');
 	},
 	next: function(){
 		return document.querySelector('.rdtNext span');
@@ -232,6 +232,28 @@ describe( 'Datetime', function(){
 		assert.equal( input.className, 'myInput' );
 		assert.equal( input.type, 'email' );
 	});
+
+	it( 'renderDayHeader', function(){
+		var props, day, selectedDate,
+			component = createDatetime({ locale: 'en-gb', value: mDate, renderDayHeader: function( p, _day ){
+				props = p;
+				day = _day;
+
+				return React.DOM.td( props, 'dayHeader' );
+			}}),
+			view = dt.view()
+		;
+
+		// Last day should be Su (Sunday)
+		assert.equal( day, 'Su' );
+
+		// Validate props
+		assert.deepEqual( props, { key: 'Su6', className: 'dow' } );
+
+		// The cell text should be 'dayHeader'
+		assert.equal( view.querySelector('.dow').innerHTML, 'dayHeader' );
+	});
+
 
 	it( 'renderDay', function(){
 		var props, currentDate, selectedDate,

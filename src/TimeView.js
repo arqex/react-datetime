@@ -25,7 +25,7 @@ var DateTimePickerTime = React.createClass({
 		}
 
 		var daypart = false;
-		if ( this.props.timeFormat.indexOf(' A') !== -1  && this.state !== null ){
+		if ( this.props.timeFormat.indexOf(' A') !== -1	&& this.state !== null ){
 			daypart = ( this.state.hours >= 12 ) ? 'PM' : 'AM';
 		}
 
@@ -49,18 +49,18 @@ var DateTimePickerTime = React.createClass({
 				}
 			}
 			return DOM.div({ key: type, className: 'rdtCounter'}, [
-				DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
+				DOM.span(this.props.tabify({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }), '▲' ),
 				DOM.div({ key:'c', className: 'rdtCount' }, value ),
-				DOM.span({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
+				DOM.span(this.props.tabify({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }), '▼' )
 			]);
 		}
 		return '';
 	},
 	renderDayPart: function() {
 		return DOM.div({ className: 'rdtCounter', key: 'dayPart'}, [
-			DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
+			DOM.span(this.props.tabify({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }), '▲' ),
 			DOM.div({ key: this.state.daypart, className: 'rdtCount'}, this.state.daypart ),
-			DOM.span({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
+			DOM.span(this.props.tabify({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }), '▼' )
 		]);
 	},
 	render: function() {
@@ -87,7 +87,7 @@ var DateTimePickerTime = React.createClass({
 				);
 		}
 
-		return DOM.div( {className: 'rdtTime'},
+		return DOM.div( this.props.tabify({className: 'rdtTime'}),
 			DOM.table( {}, [
 				this.renderHeader(),
 				DOM.tbody({key: 'b'}, DOM.tr({}, DOM.td({},
@@ -141,7 +141,7 @@ var DateTimePickerTime = React.createClass({
 
 		var date = this.props.selectedDate || this.props.viewDate;
 		return DOM.thead({ key: 'h'}, DOM.tr({},
-			DOM.th({}, DOM.button( {className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView('days')}, date.format( this.props.dateFormat ) ))
+			DOM.th(this.props.tabify({className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView('days')}), date.format( this.props.dateFormat ) )
 		));
 	},
 	onStartClicking: function( action, type ){
@@ -184,7 +184,7 @@ var DateTimePickerTime = React.createClass({
 	increase: function( type ){
 		var value = parseInt(this.state[ type ], 10) + this.timeConstraints[ type ].step;
 		if ( value > this.timeConstraints[ type ].max )
-			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max  + 1) );
+			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max	+ 1) );
 		return this.pad( type, value );
 	},
 	decrease: function( type ){
@@ -198,6 +198,9 @@ var DateTimePickerTime = React.createClass({
 		while ( str.length < this.padValues[ type ] )
 			str = '0' + str;
 		return str;
+	},
+	handleKeyDown: function() {
+		// TODO
 	}
 });
 

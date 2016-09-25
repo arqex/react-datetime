@@ -12,6 +12,7 @@ var DateTimePickerDays = React.createClass({
 		var footer = this.renderFooter(),
 			date = this.props.viewDate,
 			locale = date.localeData(),
+			renderer = this.props.renderDayHeader || this.renderDayHeader,
 			tableChildren
 		;
 
@@ -24,9 +25,10 @@ var DateTimePickerDays = React.createClass({
 					onSwitchClick: this.props.showView('months'),
 					switchColspan: 5,
 					switchValue: this.props.viewDate.month(),
-					switchLabel: locale.months( date ) + ' ' + date.year()
+					switchLabel: locale.months( date ) + ' ' + date.year(),
+					tabify: this.props.tabify
 				}),
-				DOM.tr({ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ){ return DOM.th({ key: day + index, className: 'dow'}, day ); }) )
+				DOM.tr({ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ){ return renderer({ key: day + index, className: 'dow'}, day ); }) )
 			]),
 			DOM.tbody({key: 'tb'}, this.renderDays())
 		];
@@ -34,7 +36,7 @@ var DateTimePickerDays = React.createClass({
 		if ( footer )
 			tableChildren.push( footer );
 
-		return DOM.div({ className: 'rdtDays' },
+		return DOM.div(this.props.tabify({ className: 'rdtDays' }),
 			DOM.table({}, tableChildren )
 		);
 	},
@@ -52,8 +54,7 @@ var DateTimePickerDays = React.createClass({
 		;
 
 		days.forEach( function( day ){
-			// TODO: Make the day header format flexible. This returns the day's initial.
-			dow[ (7 + (i++) - first) % 7 ] = day.substring(0, 1);
+			dow[ (7 + (i++) - first) % 7 ] = day;
 		});
 
 		return dow;
@@ -77,6 +78,10 @@ var DateTimePickerDays = React.createClass({
 		lastDay.subtract(sub, 'days');
 	},
 
+	renderDayHeader: function(props, day) {
+		return DOM.th( props, day );
+	},
+
 	renderDays: function() {
 		var date = this.props.viewDate,
 			selected = this.props.selectedDate && this.props.selectedDate.clone(),
@@ -95,7 +100,7 @@ var DateTimePickerDays = React.createClass({
 
 		while ( prevMonth.isBefore( lastDay ) ){
 			var action = { type: 'day', date: prevMonth.date() };
-			dayProps = { key: prevMonth.format('M_D') };
+			dayProps = this.props.tabify({ key: prevMonth.format('M_D') });
 			classes = 'rdtDay';
 			currentDate = prevMonth.clone();
 
@@ -149,8 +154,7 @@ var DateTimePickerDays = React.createClass({
 	},
 
 	renderDay: function( props, currentDate ){
-		var buttonProps = { onClick: props.onClick, ref: props.ref };
-		return DOM.td({ key: props.key, className: props.className }, DOM.button( buttonProps, currentDate.format('DD') ));
+		return DOM.td( props, currentDate.format('DD') );
 	},
 
 	renderFooter: function(){
@@ -161,7 +165,7 @@ var DateTimePickerDays = React.createClass({
 
 		return DOM.tfoot({ key: 'tf'},
 			DOM.tr({},
-				DOM.td({ colSpan: 7 }, DOM.button({ onClick: this.props.showView('time'), className: 'rdtTimeToggle'}, date.format( this.props.timeFormat )))
+				DOM.td(this.props.tabify({ colSpan: 7, onClick: this.props.showView('time'), className: 'rdtTimeToggle'}), date.format( this.props.timeFormat ))
 			)
 		);
 	},

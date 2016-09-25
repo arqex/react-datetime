@@ -43,7 +43,8 @@ var Datetime = React.createClass({
 		startingDay: TYPES.number,
 		monthColumns: TYPES.number,
 		yearColumns: TYPES.number,
-		yearRows: TYPES.number
+		yearRows: TYPES.number,
+		allowTabs: TYPES.bool
 	},
 
 	getDefaultProps: function() {
@@ -64,7 +65,8 @@ var Datetime = React.createClass({
 			closeOnTab: true,
 			monthColumns: 4,
 			yearColumns: 4,
-			yearRows: 3
+			yearRows: 3,
+			allowTabs: false
 		};
 	},
 
@@ -337,6 +339,15 @@ var Datetime = React.createClass({
 		this.props.onChange( date );
 	},
 
+	toggleCalendar: function() {
+		if (this.state.open) {
+			this.closeCalendar();
+		}
+		else {
+			this.openCalendar();
+		}
+	},
+
 	openCalendar: function() {
 		if (!this.state.open) {
 			this.props.onFocus();
@@ -365,10 +376,16 @@ var Datetime = React.createClass({
 		return m;
 	},
 
+	tabify: function( props ){
+		return this.props.allowTabs
+			? assign({ tabIndex: 0 }, props)
+			: props;
+	},
+
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'startingDay', 'monthColumns', 'yearColumns', 'yearRows'],
+		fromProps: ['value', 'isValidDate', 'renderDayHeader', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'startingDay', 'monthColumns', 'yearColumns', 'yearRows'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn', 'open'],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'startOf', 'endOf', 'setYear', 'updateSelectedDate', 'localMoment']
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'startOf', 'endOf', 'setYear', 'updateSelectedDate', 'localMoment', 'tabify']
 	},
 
 	getComponentProps: function(){
