@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react'),
+	FaTrashIcon = require('react-icons/lib/fa/trash-o'),
 	moment = require('moment')
 ;
 
@@ -11,8 +12,8 @@ var DateTimePickerDays = React.createClass({
 		var footer = this.renderFooter(),
 			date = this.props.viewDate,
 			locale = date.localeData(),
-			tableChildren
-		;
+			tableChildren,
+			clearButton = '';
 
 		tableChildren = [
 			DOM.thead({ key: 'th'}, [
@@ -26,11 +27,15 @@ var DateTimePickerDays = React.createClass({
 			DOM.tbody({key: 'tb'}, this.renderDays())
 		];
 
+		if ( this.props.input )
+			clearButton = DOM.button({key:'rdtButton', type:'button', className: 'rdtClear', onClick: this.clearInput }, React.createElement( FaTrashIcon, null));
+
 		if ( footer )
 			tableChildren.push( footer );
 
 		return DOM.div({ className: 'rdtDays' },
-			DOM.table({}, tableChildren )
+			DOM.table({}, tableChildren ),
+			clearButton
 		);
 	},
 
@@ -116,6 +121,10 @@ var DateTimePickerDays = React.createClass({
 
 	renderDay: function( props, currentDate ){
 		return DOM.td( props, currentDate.date() );
+	},
+
+	clearInput: function() {
+		this.props.clearInput();
 	},
 
 	renderFooter: function(){

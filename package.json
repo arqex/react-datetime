@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "object-assign": "^3.0.0",
+    "react-icons": "^2.2.1",
     "react-onclickoutside": "^4.1.0"
   },
   "pre-commit": [

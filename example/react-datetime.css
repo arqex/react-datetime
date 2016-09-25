@@ -220,3 +220,16 @@ td.rdtYear:hover {
 .rdtDayPart {
   margin-top: 43px;
 }
+
+.rdtPicker button.rdtClear {
+    background: white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+	width: 100%;
+}
+
+.rdtPicker button.rdtClear:hover {
+    background: #eeeeee;
+}

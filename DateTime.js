@@ -192,6 +192,12 @@ var Datetime = React.createClass({
 		});
 	},
 
+	clearInput: function(){
+		var clearedDate = '';
+		this.setState({ inputValue: clearedDate });
+		return;
+	},
+
 	onInputKey: function( e ){
 		if ( e.which === 9 && this.props.closeOnTab ){
 			this.closeCalendar();
@@ -343,9 +349,9 @@ var Datetime = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'input'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'clearInput']
 	},
 
 	getComponentProps: function(){

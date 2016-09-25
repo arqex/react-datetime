@@ -211,3 +211,16 @@ td.rdtYear:hover {
   font-size: 1.2em;
   margin-top: 37px;
 }
+
+.rdtPicker button.rdtClear {
+    background: white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+	width: 100%;
+}
+
+.rdtPicker button.rdtClear:hover {
+    background: #eeeeee;
+}
