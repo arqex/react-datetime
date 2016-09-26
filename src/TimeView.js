@@ -38,7 +38,7 @@ var DateTimePickerTime = React.createClass({
 			counters: counters
 		};
 	},
-	renderCounter: function( type, isUpPossible, isDownPossible ){
+	renderCounter: function( type ){
 		if (type !== 'daypart') {
 			var value = this.state[ type ];
 			if (type === 'hours' && this.props.timeFormat.indexOf(' A') !== -1) {
@@ -49,9 +49,9 @@ var DateTimePickerTime = React.createClass({
 				}
 			}
 			return DOM.div({ key: type, className: 'rdtCounter'}, [
-				DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), style: this.showElement( isUpPossible ) }, '▲' ),
+				DOM.span({ key:'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
 				DOM.div({ key:'c', className: 'rdtCount' }, value ),
-				DOM.span({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), style: this.showElement( isDownPossible ) }, '▼' )
+				DOM.span({ key:'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
 			]);
 		}
 		return '';
@@ -71,7 +71,7 @@ var DateTimePickerTime = React.createClass({
 		this.state.counters.forEach( function(c){
 			if ( counters.length )
 				counters.push( DOM.div( {key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ));
-			counters.push( me.renderCounter( c, true, true ) );
+			counters.push( me.renderCounter( c ) );
 		});
 
 		if (this.state.daypart !== false) {
@@ -96,13 +96,6 @@ var DateTimePickerTime = React.createClass({
 			])
 		);
 	},
-	showElement(show){
-		var object = {};
-		if(!(show))
-			object.display = 'none';
-
-		return object;
-	},
 	componentWillMount: function() {
 		var me = this;
 		me.timeConstraints = {
@@ -125,11 +118,8 @@ var DateTimePickerTime = React.createClass({
 				min: 0,
 				max: 999,
 				step: 1
-			},
-			ḿaxTime: undefined,
-			minTime: undefined
+			}
 		};
-
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach(function(type) {
 			assign(me.timeConstraints[type], me.props.timeConstraints[type]);
 		});
@@ -137,7 +127,6 @@ var DateTimePickerTime = React.createClass({
 	},
 	componentWillReceiveProps: function( nextProps ){
 		this.setState( this.calculateState( nextProps ) );
-		this.isValidTime( nextProps.selectedDate || nextProps.viewDate );
 	},
 	updateMilli: function( e ){
 		var milli = parseInt( e.target.value, 10 );
@@ -194,40 +183,14 @@ var DateTimePickerTime = React.createClass({
 	},
 	increase: function( type ){
 		var value = parseInt(this.state[ type ], 10) + this.timeConstraints[ type ].step;
-		
-		if ( this.props.timeConstraints.maxTime) {
-			var futureSelectedTime = date.add( type, this.timeConstraints[ type ].step ).format("hh:mm:ss a");
-			if ( futureSelectedTime > this.props.timeConstraints.maxTime.format("hh:mm:ss a") ){
-				value = value - 1;
-				this.renderCounter( type, false, true );
-			}
-		}
-		else {
-
-			if ( value > this.timeConstraints[ type ].max )
-				value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max  + 1) );			
-		}
-
+		if ( value > this.timeConstraints[ type ].max )
+			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max  + 1) );
 		return this.pad( type, value );
 	},
 	decrease: function( type ){
-	
 		var value = parseInt(this.state[ type ], 10) - this.timeConstraints[ type ].step;
-
-		if ( this.props.timeConstraints.minTime ) {
-			var date = this.props.selectedDate || this.props.viewDate;
-			var futureSelectedTime = date.subtract( type, this.timeConstraints[ type ].step ).format("hh:mm:ss a");
-			if ( !(this.isValidTime( type, futureSelectedTime )) ){
-				value = value + 1;
-			}
-		}
-		else {
-			value = parseInt(this.state[ type ], 10) - this.timeConstraints[ type ].step;
-			
-			if ( value < this.timeConstraints[ type ].min )
-				value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
-		}
-
+		if ( value < this.timeConstraints[ type ].min )
+			value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
 		return this.pad( type, value );
 	},
 	pad: function( type, value ){
@@ -235,14 +198,6 @@ var DateTimePickerTime = React.createClass({
 		while ( str.length < this.padValues[ type ] )
 			str = '0' + str;
 		return str;
-	},
-	isValidTime(type, date){
-		if ( date < this.props.timeConstraints.minTime.format("hh:mm:ss a") ){
-				this.renderCounter( type, true, false );
-				return false;
-		}
-
-		return true;
 	}
 });
 
