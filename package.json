@@ -8,6 +8,7 @@
     "url": "https://github.com/arqex/react-datetime"
   },
   "main": "./DateTime.js",
+  "types": "./react-datetime.d.ts",
   "scripts": {
     "build:win": "./node_modules/.bin/gulp.cmd",
     "build:mac": "./node_modules/.bin/gulp",
