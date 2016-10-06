@@ -28,6 +28,7 @@ var Datetime = React.createClass({
 		onChange: TYPES.func,
 		locale: TYPES.string,
 		input: TYPES.bool,
+		inputComponent: TYPES.element,
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
@@ -46,6 +47,7 @@ var Datetime = React.createClass({
 			className: '',
 			defaultValue: '',
 			inputProps: {},
+			inputComponent: null,
 			input: true,
 			onFocus: nof,
 			onBlur: nof,
@@ -376,11 +378,20 @@ var Datetime = React.createClass({
 			children = []
 		;
 
-		if ( this.props.input ){
+		if ( this.props.input && !this.props.inputComponent ){
 			children = [ DOM.input( assign({
 				key: 'i',
 				type:'text',
 				className: 'form-control',
+				onFocus: this.openCalendar,
+				onChange: this.onInputChange,
+				onKeyDown: this.onInputKey,
+				value: this.state.inputValue
+			}, this.props.inputProps ))];
+		} else if ( this.props.inputComponent ) {
+			children = [
+				React.cloneElement( this.props.inputComponent, assign({
+				key: 'i',
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,

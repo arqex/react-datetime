@@ -57,6 +57,7 @@ render: function() {
 | **closeOnTab** | `boolean` | `true` | When `true` and the input is focused, pressing the `tab` key will close the datepicker.
 | **timeConstraints** | `object` | `null` | Add some constraints to the timepicker. It accepts an `object` with the format `{ hours: { min: 9, max: 15, step: 2 }}`, this example means the hours can't be lower than `9` and higher than `15`, and it will change adding or subtracting `2` hours everytime the buttons are clicked. The constraints can be added to the `hours`, `minutes`, `seconds` and `milliseconds`.
 | **disableOnClickOutside** | `boolean` | `false` | When `true`, keep the datepicker open when click event is triggered outside of component. When `false`, close it.
+| **inputComponent** | `element` | `null` | Custom input component. Handling events on your own.
 
 ## i18n
 Different language and date formats are supported by react-datetime. React uses [Moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the Moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
@@ -127,7 +128,21 @@ var valid = function( current ){
 <Datetime isValidDate={ valid } />
 ```
 [Working example of disabled weekends here.](http://codepen.io/arqex/pen/VLEPXb)
+## Custom input
+It is possible to override standard input component with React Component.
 
+```js
+const InputComponent = props => {
+  return (
+    <div>
+        <input
+          {...props}
+        />
+    </div>
+  );
+};
+<Datetime inputComponent={<InputComponent />} />
+```
 ## Contributions
 * For information about how to contribute, see the [CONTRIBUTING](CONTRIBUTING.md) file.
 * For development we recommend that you use [react-datetime-playground](https://github.com/arqex/react-datetime-playground).
