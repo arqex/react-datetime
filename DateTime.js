@@ -9,6 +9,8 @@ var assign = require('object-assign'),
 	moment = require('moment')
 ;
 
+var KEYS = { 13: 'enter', 27: 'esc', 32: 'space', 33: 'pageup', 34: 'pagedown', 35: 'end', 36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down' };
+
 var TYPES = React.PropTypes;
 var Datetime = React.createClass({
 	mixins: [
@@ -37,7 +39,12 @@ var Datetime = React.createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		startingDay: TYPES.number,
+		monthColumns: TYPES.number,
+		yearColumns: TYPES.number,
+		yearRows: TYPES.number,
+		allowTabs: TYPES.bool
 	},
 
 	getDefaultProps: function() {
@@ -55,7 +62,11 @@ var Datetime = React.createClass({
 			dateFormat: true,
 			strictParsing: true,
 			closeOnSelect: false,
-			closeOnTab: true
+			closeOnTab: true,
+			monthColumns: 4,
+			yearColumns: 4,
+			yearRows: 3,
+			allowTabs: false
 		};
 	},
 
@@ -85,8 +96,8 @@ var Datetime = React.createClass({
 			selectedDate = null;
 
 		viewDate = selectedDate ?
-			selectedDate.clone().startOf('month') :
-			this.localMoment().startOf('month')
+			selectedDate.clone().startOf('day') :
+			this.localMoment().startOf('day')
 		;
 
 		updateOn = this.getUpdateOn(formats);
@@ -181,7 +192,7 @@ var Datetime = React.createClass({
 
 		if ( localMoment.isValid() && !this.props.value ) {
 			update.selectedDate = localMoment;
-			update.viewDate = localMoment.clone().startOf('month');
+			update.viewDate = localMoment.clone().startOf('day');
 		}
 		else {
 			update.selectedDate = null;
@@ -205,38 +216,51 @@ var Datetime = React.createClass({
 		};
 	},
 
-	setDate: function( type ){
+	setDate: function( type, value ){
 		var me = this,
 			nextViews = {
 				month: 'days',
 				year: 'months'
 			}
 		;
-		return function( e ){
+		return function(){
 			me.setState({
-				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
+				viewDate: me.state.viewDate.clone()[ type ]( value ),
 				currentView: nextViews[ type ]
 			});
 		};
 	},
 
 	addTime: function( amount, type, toSelected ){
-		return this.updateTime( 'add', amount, type, toSelected );
+		return this.updateTime( 'add', [ amount, type ], toSelected );
 	},
 
 	subtractTime: function( amount, type, toSelected ){
-		return this.updateTime( 'subtract', amount, type, toSelected );
+		return this.updateTime( 'subtract', [ amount, type ], toSelected );
 	},
 
-	updateTime: function( op, amount, type, toSelected ){
+	startOf: function( type ){
+		return this.updateTime( 'startOf', [ type ] );
+	},
+
+	endOf: function( type ){
+		return this.updateTime( 'endOf', [ type ] );
+	},
+
+	setYear: function( year ){
+		return this.updateTime( 'year', [ year ] );
+	},
+
+	updateTime: function( op, args, toSelected ){
 		var me = this;
 
 		return function(){
 			var update = {},
-				date = toSelected ? 'selectedDate' : 'viewDate'
+				date = toSelected ? 'selectedDate' : 'viewDate',
+				newTime = me.state[ date ].clone()
 			;
 
-			update[ date ] = me.state[ date ].clone()[ op ]( amount, type );
+			update[ date ] = newTime[ op ].apply(newTime, args);
 
 			me.setState( update );
 		};
@@ -267,32 +291,31 @@ var Datetime = React.createClass({
 		this.props.onChange( date );
 	},
 
-	updateSelectedDate: function( e, close ) {
-		var target = e.target,
-			modifier = 0,
+	updateSelectedDate: function( e, action, close ) {
+		var modifier = 0,
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
 			date
-    ;
+		;
 
-		if (target.className.indexOf('rdtDay') !== -1){
-			if (target.className.indexOf('rdtNew') !== -1)
+		if (action.type === 'day'){
+			if (action.new)
 				modifier = 1;
-			else if (target.className.indexOf('rdtOld') !== -1)
+			else if (action.old)
 				modifier = -1;
 
 			date = viewDate.clone()
 				.month( viewDate.month() + modifier )
-				.date( parseInt( target.getAttribute('data-value'), 10 ) );
-		} else if (target.className.indexOf('rdtMonth') !== -1){
+				.date( action.date );
+		} else if (action.type === 'month'){
 			date = viewDate.clone()
-				.month( parseInt( target.getAttribute('data-value'), 10 ) )
+				.month( action.month )
 				.date( currentDate.date() );
-		} else if (target.className.indexOf('rdtYear') !== -1){
+		} else if (action.type === 'year'){
 			date = viewDate.clone()
 				.month( currentDate.month() )
 				.date( currentDate.date() )
-				.year( parseInt( target.getAttribute('data-value'), 10 ) );
+				.year( action.year );
 		}
 
 		date.hours( currentDate.hours() )
@@ -303,7 +326,7 @@ var Datetime = React.createClass({
 		if ( !this.props.value ){
 			this.setState({
 				selectedDate: date,
-				viewDate: date.clone().startOf('month'),
+				viewDate: date.clone().startOf('day'),
 				inputValue: date.format( this.state.inputFormat ),
 				open: !(this.props.closeOnSelect && close )
 			});
@@ -316,6 +339,15 @@ var Datetime = React.createClass({
 		this.props.onChange( date );
 	},
 
+	toggleCalendar: function() {
+		if (this.state.open) {
+			this.closeCalendar();
+		}
+		else {
+			this.openCalendar();
+		}
+	},
+
 	openCalendar: function() {
 		if (!this.state.open) {
 			this.props.onFocus();
@@ -326,6 +358,8 @@ var Datetime = React.createClass({
 	closeCalendar: function() {
 		this.setState({ open: false });
 		this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+		if (!(this.props.inputProps && this.props.inputProps.readOnly))
+			this.inputInstance.focus();
 	},
 
 	handleClickOutside: function(){
@@ -342,16 +376,22 @@ var Datetime = React.createClass({
 		return m;
 	},
 
+	tabify: function( props ){
+		return this.props.allowTabs
+			? assign({ tabIndex: 0 }, props)
+			: props;
+	},
+
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
-		fromState: ['viewDate', 'selectedDate', 'updateOn'],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
+		fromProps: ['value', 'isValidDate', 'renderDayHeader', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'startingDay', 'monthColumns', 'yearColumns', 'yearRows'],
+		fromState: ['viewDate', 'selectedDate', 'updateOn', 'open'],
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'startOf', 'endOf', 'setYear', 'updateSelectedDate', 'localMoment', 'tabify']
 	},
 
 	getComponentProps: function(){
 		var me = this,
 			formats = this.getFormats( this.props ),
-			props = {dateFormat: formats.date, timeFormat: formats.time}
+			props = {dateFormat: formats.date, timeFormat: formats.time, ref: this.refView}
 		;
 
 		this.componentProps.fromProps.forEach( function( name ){
@@ -367,18 +407,58 @@ var Datetime = React.createClass({
 		return props;
 	},
 
+	refView: function( viewInstance ){
+		this.viewInstance = viewInstance;
+	},
+
+	refInput: function( inputInstance ){
+		this.inputInstance = inputInstance;
+	},
+
+	onPickerKey: function( e ){
+		var key = KEYS[e.which];
+
+		// TODO: Disabled?
+		if (!key || e.shiftKey || e.altKey) { //|| $scope.disabled) {
+			return;
+		}
+
+		e.preventDefault();
+		// TODO: shortcutPropagation option?
+		//if (!self.shortcutPropagation)
+		e.stopPropagation();
+
+		if (key === 'esc') {
+			this.closeCalendar();
+			return;
+		}
+
+		if (key === 'enter' || key === 'space') {
+			key = 'select';
+		}
+		else if (e.ctrlKey && key === 'up') {
+			key = 'nextView';
+		}
+		else if (e.ctrlKey && key === 'down') {
+			key = 'prevView';
+		}
+
+		this.viewInstance.handleKeyDown(key, e);
+	},
+
 	render: function() {
 		var Component = this.viewComponents[ this.state.currentView ],
 			DOM = React.DOM,
 			className = 'rdt' + (this.props.className ?
-                  ( Array.isArray( this.props.className ) ?
-                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
+									( Array.isArray( this.props.className ) ?
+									' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 			children = []
 		;
 
 		if ( this.props.input ){
 			children = [ DOM.input( assign({
 				key: 'i',
+				ref: this.refInput,
 				type:'text',
 				className: 'form-control',
 				onFocus: this.openCalendar,
@@ -395,7 +475,7 @@ var Datetime = React.createClass({
 
 		return DOM.div({className: className}, children.concat(
 			DOM.div(
-				{ key: 'dt', className: 'rdtPicker' },
+				{ key: 'dt', className: 'rdtPicker', onKeyDown: this.onPickerKey },
 				React.createElement( Component, this.getComponentProps())
 			)
 		));

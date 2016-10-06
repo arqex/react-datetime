@@ -26,8 +26,8 @@ var createDatetime = function( props ){
 
 var trigger = function( name, element ){
 	var ev = document.createEvent("MouseEvents");
-   ev.initEvent(name, true, true);
-   element.dispatchEvent( ev );
+	 ev.initEvent(name, true, true);
+	 element.dispatchEvent( ev );
 };
 
 var ev = TestUtils.Simulate;
@@ -56,7 +56,10 @@ var dt = {
 		return months[ n || 0 ];
 	},
 	day: function( n ){
-		return document.querySelector('.rdtDay[data-value="' + n + '"]');
+		return Array.from(document.querySelectorAll('.rdtDay')).find(function(day) { return day.innerHTML === n; });
+	},
+	active: function(){
+		return document.querySelector('.rdtActive');
 	},
 	next: function(){
 		return document.querySelector('.rdtNext span');
@@ -215,11 +218,11 @@ describe( 'Datetime', function(){
 		assert.notEqual( component.className.indexOf('custom'), -1 );
 	});
 
-    it( 'className of type string array', function(){
-        var component = createDatetime({ className: ['custom1', 'custom2'] });
-        assert.notEqual( component.className.indexOf('custom1'), -1 );
-        assert.notEqual( component.className.indexOf('custom2'), -1 );
-    });
+		it( 'className of type string array', function(){
+				var component = createDatetime({ className: ['custom1', 'custom2'] });
+				assert.notEqual( component.className.indexOf('custom1'), -1 );
+				assert.notEqual( component.className.indexOf('custom2'), -1 );
+		});
 
 	it( 'inputProps', function(){
 		var component = createDatetime({ inputProps: { className: 'myInput', type: 'email' } }),
@@ -229,6 +232,28 @@ describe( 'Datetime', function(){
 		assert.equal( input.className, 'myInput' );
 		assert.equal( input.type, 'email' );
 	});
+
+	it( 'renderDayHeader', function(){
+		var props, day, selectedDate,
+			component = createDatetime({ locale: 'en-gb', value: mDate, renderDayHeader: function( p, _day ){
+				props = p;
+				day = _day;
+
+				return React.DOM.td( props, 'dayHeader' );
+			}}),
+			view = dt.view()
+		;
+
+		// Last day should be Su (Sunday)
+		assert.equal( day, 'Su' );
+
+		// Validate props
+		assert.deepEqual( props, { key: 'Su6', className: 'dow' } );
+
+		// The cell text should be 'dayHeader'
+		assert.equal( view.querySelector('.dow').innerHTML, 'dayHeader' );
+	});
+
 
 	it( 'renderDay', function(){
 		var props, currentDate, selectedDate,
@@ -298,7 +323,7 @@ describe( 'Datetime', function(){
 		// The date must be the same
 		assert.equal( selectedDate.isSame( mDate ), true );
 
-		assert.equal( year, 2010 );
+		assert.equal( year, 2004 );
 
 		// There should be a onClick function in the props
 		assert.equal( typeof props.onClick, 'function' );
@@ -307,7 +332,7 @@ describe( 'Datetime', function(){
 		assert.equal( view.querySelector('.rdtYear').innerHTML, 'year' );
 	});
 
-	it( 'Time pickers depends on the time format', function() {
+	it( 'Time pickers depends on the time format', function(){
 		createDatetime({ viewMode: 'time', timeFormat: "HH:mm:ss:SSS"});
 		assert.equal( document.querySelectorAll('.rdtCounter').length, 4 );
 
@@ -321,7 +346,7 @@ describe( 'Datetime', function(){
 		assert.equal( document.querySelectorAll('.rdtCounter').length, 1 );
 	});
 
-	it( 'viewChange', function() {
+	it( 'viewChange', function(){
 		createDatetime({viewMode: 'time' });
 
 		assert.equal( dt.view().className, 'rdtTime' );
@@ -343,33 +368,33 @@ describe( 'Datetime', function(){
 	it( 'selectYear', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
 		assert.equal( dt.view().className, 'rdtYears' );
-		assert.equal( dt.switcher().innerHTML, '2000-2009' );
+		assert.equal( dt.switcher().innerHTML, '1993 - 2004' );
 
-		// First year is 1999
+		// First year is 1993
 		ev.click( dt.year() );
 		assert.equal( dt.view().className, 'rdtMonths' );
-		assert.equal( dt.switcher().innerHTML, '1999' );
+		assert.equal( dt.switcher().innerHTML, '1993' );
 	});
 
-	it( 'increase decade', function(){
+	it( 'forward year range', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
 
-		assert.equal( dt.switcher().innerHTML, '2000-2009' );
+		assert.equal( dt.switcher().innerHTML, '1993 - 2004' );
 		ev.click( dt.next() );
-		assert.equal( dt.switcher().innerHTML, '2010-2019' );
+		assert.equal( dt.switcher().innerHTML, '2005 - 2016' );
 		ev.click( dt.next() );
-		assert.equal( dt.switcher().innerHTML, '2020-2029' );
+		assert.equal( dt.switcher().innerHTML, '2017 - 2028' );
 	});
 
 
-	it( 'decrease decade', function(){
+	it( 'back year range', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
 
-		assert.equal( dt.switcher().innerHTML, '2000-2009' );
+		assert.equal( dt.switcher().innerHTML, '1993 - 2004' );
 		ev.click( dt.prev() );
-		assert.equal( dt.switcher().innerHTML, '1990-1999' );
+		assert.equal( dt.switcher().innerHTML, '1981 - 1992' );
 		ev.click( dt.prev() );
-		assert.equal( dt.switcher().innerHTML, '1980-1989' );
+		assert.equal( dt.switcher().innerHTML, '1969 - 1980' );
 	});
 
 	it( 'selectMonth', function(){
@@ -438,7 +463,7 @@ describe( 'Datetime', function(){
 			done();
 		}});
 
-		ev.click( dt.day( 2 ) );
+		ev.click( dt.day( '02' ) );
 	});
 
 	it( 'multiple onSelect', function( done ){
@@ -453,9 +478,9 @@ describe( 'Datetime', function(){
 			}
 		}});
 
-		ev.click( dt.day( 2 ) );
-		ev.click( dt.day( 3 ) );
-		ev.click( dt.day( 4 ) );
+		ev.click( dt.day( '02' ) );
+		ev.click( dt.day( '03' ) );
+		ev.click( dt.day( '04' ) );
 	});
 
 	it( 'onFocus', function(){
@@ -503,6 +528,34 @@ describe( 'Datetime', function(){
 		TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
 		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
 		trigger( 'click', document.body );
+	});
+
+	describe( 'pressing ESC key', function(){
+		function runEscTestsWithProps(props) {
+			createDatetime(props);
+
+			assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+			ev.focus( dt.input() );
+			assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+			TestUtils.Simulate.keyDown(dt.view(), {key: "Escape", keyCode: 27, which: 27});
+			assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		}
+
+		describe( 'when input is writable', function(){
+			it( 'returns to the input and closes the datepicker', function() {
+				runEscTestsWithProps({});
+				assert.equal( document.activeElement.tagName, 'INPUT' );
+				trigger( 'click', document.body );
+			});
+		});
+
+		describe( 'when input is read-only', function(){
+			it( 'closes the datepicker without focusing the input', function() {
+				runEscTestsWithProps({ inputProps: { readOnly: true } });
+				assert.notEqual( document.activeElement.tagName, 'INPUT' );
+				trigger( 'click', document.body );
+			});
+		});
 	});
 
 	it( 'increase time', function( done ){
@@ -662,5 +715,257 @@ describe( 'Datetime', function(){
 
 		dt.input().value = invalidStrDate;
 		ev.change( dt.input() );
+	});
+
+	describe( 'keyboard navigation', function(){
+		function getTitle() {
+			return dt.switcher().innerHTML;
+		}
+
+		function getActiveLabel() {
+			return dt.active().innerHTML;
+		}
+
+		function triggerKeyDown(element, key, ctrl) {
+			var keyCodes = {
+				enter: 13,
+				space: 32,
+				pageup: 33,
+				pagedown: 34,
+				end: 35,
+				home: 36,
+				left: 37,
+				up: 38,
+				right: 39,
+				down: 40,
+				esc: 27
+			};
+
+			var props = { keyCode: keyCodes[key], which: keyCodes[key] };
+			if (ctrl) {
+				props.ctrlKey = true;
+			}
+
+			TestUtils.Simulate.keyDown(element, props);
+		}
+
+		beforeEach(function(){
+			var date = new Date('September 30, 2010 15:30:00');
+			createDatetime({
+				defaultValue: date,
+				monthColumns: 3,
+				yearColumns: 5,
+				yearRows: 4
+			});
+		});
+
+		describe( 'day mode', function(){
+			it( 'will be able to activate previous day', function(){
+				triggerKeyDown(dt.view(), 'left');
+				assert.strictEqual(getActiveLabel(), '29');
+			});
+
+			it( 'will be able to select with enter', function(){
+				triggerKeyDown(dt.view(), 'left');
+				triggerKeyDown(dt.view(), 'enter');
+				assert.equal(dt.input().value, '09/29/2010 3:30 PM');
+			});
+
+			it( 'will be able to select with space', function(){
+				triggerKeyDown(dt.view(), 'left');
+				triggerKeyDown(dt.view(), 'space');
+				assert.equal(dt.input().value, '09/29/2010 3:30 PM');
+			});
+
+			it( 'will be able to activate next day', function(){
+				triggerKeyDown(dt.view(), 'right');
+				assert.strictEqual(getActiveLabel(), '01');
+				assert.strictEqual(getTitle(), 'October 2010');
+			});
+
+			it( 'will be able to activate same day in previous week', function(){
+				triggerKeyDown(dt.view(), 'up');
+				assert.strictEqual(getActiveLabel(), '23');
+			});
+
+			it( 'will be able to activate same day in next week', function(){
+				triggerKeyDown(dt.view(), 'down');
+				assert.strictEqual(getActiveLabel(), '07');
+				assert.strictEqual(getTitle(), 'October 2010');
+			});
+
+			it( 'will be able to activate same date in previous month', function(){
+				triggerKeyDown(dt.view(), 'pageup');
+				assert.strictEqual(getActiveLabel(), '30');
+				assert.strictEqual(getTitle(), 'August 2010');
+			});
+
+			it( 'will be able to activate same date in next month', function(){
+				triggerKeyDown(dt.view(), 'pagedown');
+				assert.strictEqual(getActiveLabel(), '30');
+				assert.strictEqual(getTitle(), 'October 2010');
+			});
+
+			it( 'will be able to activate first day of the month', function(){
+				triggerKeyDown(dt.view(), 'home');
+				assert.strictEqual(getActiveLabel(), '01');
+				assert.strictEqual(getTitle(), 'September 2010');
+			});
+
+			it( 'will be able to activate last day of the month', function(){
+				dt.input().value = new Date('September 1, 2010 15:30:00');
+				triggerKeyDown(dt.view(), 'end');
+				assert.strictEqual(getActiveLabel(), '30');
+				assert.strictEqual(getTitle(), 'September 2010');
+			});
+
+			it( 'will be able to move to month mode', function(){
+				triggerKeyDown(dt.view(), 'up', true);
+				assert.strictEqual(getActiveLabel(), 'September');
+				assert.strictEqual(getTitle(), '2010');
+			});
+
+			it( 'will not respond when trying to move to lower mode', function(){
+				triggerKeyDown(dt.view(), 'down', true);
+				assert.strictEqual(getActiveLabel(), '30');
+				assert.strictEqual(getTitle(), 'September 2010');
+			});
+		});
+
+		describe( 'month mode', function(){
+			beforeEach(function(){
+				triggerKeyDown(dt.view(), 'up', true);
+			});
+
+			it( 'will be able to activate previous month', function(){
+				triggerKeyDown(dt.view(), 'left');
+				assert.strictEqual(getActiveLabel(), 'August');
+			});
+
+			it( 'will be able to activate next month', function(){
+				triggerKeyDown(dt.view(), 'right');
+				assert.strictEqual(getActiveLabel(), 'October');
+			});
+
+			it( 'will be able to activate same month in previous row', function(){
+				triggerKeyDown(dt.view(), 'up');
+				assert.strictEqual(getActiveLabel(), 'June');
+			});
+
+			it( 'will be able to activate same month in next row', function(){
+				triggerKeyDown(dt.view(), 'down');
+				assert.strictEqual(getActiveLabel(), 'December');
+			});
+
+			it( 'will be able to activate same date in previous year', function(){
+				triggerKeyDown(dt.view(), 'pageup');
+				assert.strictEqual(getActiveLabel(), 'September');
+				assert.strictEqual(getTitle(), '2009');
+			});
+
+			it( 'will be able to activate same date in next year', function(){
+				triggerKeyDown(dt.view(), 'pagedown');
+				assert.strictEqual(getActiveLabel(), 'September');
+				assert.strictEqual(getTitle(), '2011');
+			});
+
+			it( 'will be able to activate first month of the year', function(){
+				triggerKeyDown(dt.view(), 'home');
+				assert.strictEqual(getActiveLabel(), 'January');
+				assert.strictEqual(getTitle(), '2010');
+			});
+
+			it( 'will be able to activate last month of the year', function(){
+				triggerKeyDown(dt.view(), 'end');
+				assert.strictEqual(getActiveLabel(), 'December');
+				assert.strictEqual(getTitle(), '2010');
+			});
+
+			it( 'will be able to move to year mode', function(){
+				triggerKeyDown(dt.view(), 'up', true);
+				assert.strictEqual(getActiveLabel(), '2010');
+				assert.strictEqual(getTitle(), '2001 - 2020');
+			});
+
+			it( 'will be able to move to day mode', function(){
+				triggerKeyDown(dt.view(), 'down', true);
+				assert.strictEqual(getActiveLabel(), '30');
+				assert.strictEqual(getTitle(), 'September 2010');
+			});
+
+			it( 'will move to day mode when selecting', function(){
+				triggerKeyDown(dt.view(), 'left', true);
+				triggerKeyDown(dt.view(), 'enter', true);
+				assert.strictEqual(getActiveLabel(), '30');
+				assert.strictEqual(getTitle(), 'August 2010');
+				assert.equal(dt.input().value, '09/30/2010 3:30 PM');
+			});
+		});
+
+		describe( 'year mode', function(){
+			beforeEach(function(){
+				triggerKeyDown(dt.view(), 'up', true);
+				triggerKeyDown(dt.view(), 'up', true);
+			});
+
+			it( 'will be able to activate previous year', function(){
+				triggerKeyDown(dt.view(), 'left');
+				assert.strictEqual(getActiveLabel(), '2009');
+			});
+
+			it( 'will be able to activate next year', function(){
+				triggerKeyDown(dt.view(), 'right');
+				assert.strictEqual(getActiveLabel(), '2011');
+			});
+
+			it( 'will be able to activate same year in previous row', function(){
+				triggerKeyDown(dt.view(), 'up');
+				assert.strictEqual(getActiveLabel(), '2005');
+			});
+
+			it( 'will be able to activate same year in next row', function(){
+				triggerKeyDown(dt.view(), 'down');
+				assert.strictEqual(getActiveLabel(), '2015');
+			});
+
+			it( 'will be able to activate same date in previous view', function(){
+				triggerKeyDown(dt.view(), 'pageup');
+				assert.strictEqual(getActiveLabel(), '1990');
+			});
+
+			it( 'will be able to activate same date in next view', function(){
+				triggerKeyDown(dt.view(), 'pagedown');
+				assert.strictEqual(getActiveLabel(), '2030');
+			});
+
+			it( 'will be able to activate first year of the year', function(){
+				triggerKeyDown(dt.view(), 'home');
+				assert.strictEqual(getActiveLabel(), '2001');
+			});
+
+			it( 'will be able to activate last year of the year', function(){
+				triggerKeyDown(dt.view(), 'end');
+				assert.strictEqual(getActiveLabel(), '2020');
+			});
+
+			it( 'will not respond when trying to move to upper mode', function(){
+				triggerKeyDown(dt.view(), 'up', true);
+				assert.strictEqual(getTitle(), '2001 - 2020');
+			});
+
+			it( 'will be able to move to month mode', function(){
+				triggerKeyDown(dt.view(), 'down', true);
+				assert.strictEqual(getActiveLabel(), 'September');
+				assert.strictEqual(getTitle(), '2010');
+			});
+
+			it( 'will move to month mode when selecting', function(){
+				triggerKeyDown(dt.view(), 'left', true);
+				triggerKeyDown(dt.view(), 'enter', true);
+				assert.strictEqual(getActiveLabel(), 'September');
+				assert.strictEqual(getTitle(), '2009');
+				assert.equal(dt.input().value, '09/30/2010 3:30 PM');
+			});
+		});
 	});
 });
