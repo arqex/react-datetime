@@ -36,6 +36,7 @@ var Datetime = React.createClass({
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
+		blockInputEdit: TYPES.bool,
 		closeOnSelect: TYPES.bool,
 		closeOnTab: TYPES.bool
 	},
@@ -55,6 +56,7 @@ var Datetime = React.createClass({
 			dateFormat: true,
 			strictParsing: true,
 			closeOnSelect: false,
+			blockInputEdit: false,
 			closeOnTab: true
 		};
 	},
@@ -195,6 +197,12 @@ var Datetime = React.createClass({
 	onInputKey: function( e ){
 		if ( e.which === 9 && this.props.closeOnTab ){
 			this.closeCalendar();
+		}
+	},
+
+	onKeyPress: function( e ) {
+		if (this.props.blockInputEdit) {
+			e.preventDefault();
 		}
 	},
 
@@ -384,6 +392,7 @@ var Datetime = React.createClass({
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,
+				onKeyPress: this.onKeyPress,
 				value: this.state.inputValue
 			}, this.props.inputProps ))];
 		} else {
