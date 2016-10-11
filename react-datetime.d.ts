@@ -113,6 +113,10 @@ declare module ReactDatetime {
      it will change adding or subtracting 2 hours everytime the buttons are clicked. The constraints
      can be added to the hours, minutes, seconds and milliseconds.
     */
+    blockInputEdit?: boolean;
+    /*
+     If set to true, then prohibits the input of dates in the input field with the keyboard
+    */
     timeConstraints?: Object; 
     /*
      When true, keep the picker open when click event is triggered outside of component. When false,
