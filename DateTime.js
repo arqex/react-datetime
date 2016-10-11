@@ -392,7 +392,7 @@ var Datetime = React.createClass({
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,
-				onKeyPress: this.inKeyPress,
+				onKeyPress: this.onKeyPress,
 				value: this.state.inputValue
 			}, this.props.inputProps ))];
 		} else {
