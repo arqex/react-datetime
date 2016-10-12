@@ -84,7 +84,7 @@ var DateTimePickerMonths = React.createClass({
 		var monthStrFixedLength = monthStr.substring(0, strLength);
 		return DOM.td( props, capitalize( monthStrFixedLength ) );
 	},
-	
+
 	isValidDate: function(){
 		return 1;
 	}
