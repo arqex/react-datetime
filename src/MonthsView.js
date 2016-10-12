@@ -45,7 +45,7 @@ var DateTimePickerMonths = React.createClass({
 			};
 
 			if ( !disabled )
-				props.onClick = this.updateSelectedMonth;
+				props.onClick = this.props.updateOn === 'months'? this.updateSelectedMonth : this.props.setDate('month');
 
 			months.push( renderer( props, i, year, date && date.clone() ));
 
