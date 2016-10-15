@@ -663,4 +663,22 @@ describe( 'Datetime', function(){
 		dt.input().value = invalidStrDate;
 		ev.change( dt.input() );
 	});
+
+	it( 'disable months', function(){
+		createDatetime({ viewMode: 'months', isValidDate: function( current ){
+				return current.isBefore(moment('2016-06-01', 'YYYY-MM-DD'));
+		}});
+		assert.equal( dt.month(0).className, 'rdtMonth' );
+		assert.equal( dt.month(4).className, 'rdtMonth' );
+		assert.equal( dt.month(5).className, 'rdtMonth rdtDisabled' );
+		assert.equal( dt.month(11).className, 'rdtMonth rdtDisabled' );
+	});
+
+	it( 'disable years', function(){
+		createDatetime({ viewMode: 'years', isValidDate: function( current ){
+				return current.isBefore(moment('2016-01-01', 'YYYY-MM-DD'));
+		}});
+		assert.equal( dt.year(6).className, 'rdtYear' );
+		assert.equal( dt.year(7).className, 'rdtYear rdtDisabled' );
+	});
 });
