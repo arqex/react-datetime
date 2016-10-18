@@ -1,5 +1,10 @@
 Changelog
 =========
+## 2.6.1
+* Added a source-map file.
+* Fixed bug with invalid moment object.
+* Decreased npm package size by ~29.3KB.
+
 ## 2.6.0
 * Fixed hover styles for days
 * Added multiple simultaneous datetime component support.
