@@ -9,9 +9,9 @@ MIT: https://github.com/arqex/react-datetime/raw/master/LICENSE
 	else if(typeof define === 'function' && define.amd)
 		define(["React", "moment", "ReactDOM"], factory);
 	else if(typeof exports === 'object')
-		exports["Datetime"] = factory(require("React"), require("moment"), require("ReactDOM"));
+		exports["DatetimeContainer"] = factory(require("React"), require("moment"), require("ReactDOM"));
 	else
-		root["Datetime"] = factory(root["React"], root["moment"], root["ReactDOM"]);
+		root["DatetimeContainer"] = factory(root["React"], root["moment"], root["ReactDOM"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_9__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache

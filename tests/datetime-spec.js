@@ -10,8 +10,37 @@ ReactDOM = require('react-dom');
 var Datetime = require('../DateTime'),
 	assert = require('assert'),
 	moment = require('moment'),
-	TestUtils = require('react-addons-test-utils')
+	TestUtils = require('react-addons-test-utils'),
+  assign = require('object-assign')
 ;
+
+var DatetimeContainer = React.createClass({
+  getInitialState: function () {
+    return { opened: this.props.opened || false };
+  },
+
+  onOpen: function () {
+    this.setState({ opened: true });
+  },
+
+  onClose: function () {
+    this.setState({ opened: false });
+  },
+
+  render: function () {
+    var props = assign({
+      open: this.state.opened,
+      onOpen: this.onOpen,
+      onClose: this.onClose
+    }, this.props);
+
+    return React.createElement('div', { id: 'root' },
+      React.createElement(Datetime, props),
+      React.createElement('div', { onClick: this.onOpen, className: 'open-widget' }),
+      React.createElement('div', { onClick: this.onClose, className: 'close-widget' })
+    );
+  }
+});
 
 var createDatetime = function( props ){
 	document.body.innerHTML = '<div id="root"></div>';
@@ -22,6 +51,17 @@ var createDatetime = function( props ){
 	);
 
 	return document.getElementById('root').children[0];
+};
+
+var createDatetimeContainer = function( props ){
+	document.body.innerHTML = '<div id="container-root"></div>';
+
+	ReactDOM.render(
+		React.createElement( DatetimeContainer, props || {} ),
+		document.getElementById('container-root')
+	);
+
+	return document.getElementById('container-root').children[0];
 };
 
 var trigger = function( name, element ){
@@ -662,5 +702,78 @@ describe( 'Datetime', function(){
 
 		dt.input().value = invalidStrDate;
 		ev.change( dt.input() );
+	});
+
+	it( '`open` stateless: render opened widget', function(){
+    createDatetimeContainer({ opened: true });
+    assert.notEqual(dt.dt().className.indexOf('rdtOpen'), -1);
+	});
+
+	it( '`open` stateless: render closed widget', function(){
+    createDatetimeContainer({ opened: false });
+    assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
+	});
+
+	it( '`open` stateless: toggle via state of parent container', function(){
+    createDatetimeContainer();
+
+    assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
+
+    ev.click( document.querySelector('.open-widget') );
+    assert.notEqual(dt.dt().className.indexOf('rdtOpen'), -1);
+
+    ev.click( document.querySelector('.close-widget') );
+    assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
+	});
+
+	it( '`open` stateless: toggle via onCloseOnTab', function(){
+    var opened = false;
+
+    createDatetimeContainer({
+      onOpen: function() {
+        ev.click( document.querySelector('.open-widget') );
+        opened = true;
+      },
+      onClose: function() {
+        ev.click( document.querySelector('.close-widget') );
+        opened = false;
+      }
+    });
+
+    assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
+
+    ev.focus( dt.input() );
+    assert.notEqual(dt.dt().className.indexOf('rdtOpen'), -1);
+    assert.equal( opened, true );
+
+    TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
+    assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+    assert.equal( opened, false );
+	});
+
+	it( '`open` stateless: toggle via click outside', function(){
+    var opened = false;
+
+    createDatetimeContainer({
+      onOpen: function() {
+        ev.click( document.querySelector('.open-widget') );
+        opened = true;
+      },
+      onClose: function() {
+        ev.click( document.querySelector('.close-widget') );
+        opened = false;
+      }
+    });
+
+    assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
+
+    ev.focus( dt.input() );
+    assert.notEqual(dt.dt().className.indexOf('rdtOpen'), -1);
+    assert.equal( opened, true );
+
+    // blur / click outside
+    trigger( 'mousedown', document.body );
+    assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+    assert.equal( opened, false );
 	});
 });

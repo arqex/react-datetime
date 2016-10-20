@@ -26,6 +26,8 @@ var Datetime = React.createClass({
 		onFocus: TYPES.func,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
+		onOpen: TYPES.func,
+		onClose: TYPES.func,
 		locale: TYPES.string,
 		input: TYPES.bool,
 		// dateFormat: TYPES.string | TYPES.bool,
@@ -50,6 +52,8 @@ var Datetime = React.createClass({
 			onFocus: nof,
 			onBlur: nof,
 			onChange: nof,
+      onOpen: nof,
+      onClose: nof,
 			timeFormat: true,
 			timeConstraints: {},
 			dateFormat: true,
@@ -154,7 +158,7 @@ var Datetime = React.createClass({
 			update = {}
 		;
 
-		if ( nextProps.value !== this.props.value ){
+		if ( nextProps.value !== this.props.value || nextProps.open !== this.props.open ){
 			update = this.getStateFromProps( nextProps );
 		}
 		if ( formats.datetime !== this.getFormats( this.props ).datetime ) {
@@ -319,19 +323,28 @@ var Datetime = React.createClass({
 	openCalendar: function() {
 		if (!this.state.open) {
 			this.props.onFocus();
-			this.setState({ open: true });
+
+      if (this.props.open === undefined) {
+        this.setState({ open: true });
+      } else {
+        this.props.onOpen();
+      }
 		}
 	},
 
 	closeCalendar: function() {
-		this.setState({ open: false });
+    if ( this.props.open === undefined ){
+      this.setState({ open: false });
+    } else {
+      this.props.onClose();
+    }
+
 		this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 	},
 
 	handleClickOutside: function(){
-		if ( this.props.input && this.state.open && !this.props.open ){
-			this.setState({ open: false });
-			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+		if ( this.props.input && this.state.open ){
+      this.closeCalendar();
 		}
 	},
 
