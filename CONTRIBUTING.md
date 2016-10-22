@@ -23,4 +23,4 @@ This repository use tests and a linter as automatic tools to maintain the qualit
 * Write tests for your changes
 * Add to documentation if it is needed
 * End files with a newline
-
+* There's no need to run `npm build` for each pull request, we do this when we release a new version
