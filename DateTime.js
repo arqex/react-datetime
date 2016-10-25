@@ -52,8 +52,8 @@ var Datetime = React.createClass({
 			onFocus: nof,
 			onBlur: nof,
 			onChange: nof,
-      onOpen: nof,
-      onClose: nof,
+			onOpen: nof,
+			onClose: nof,
 			timeFormat: true,
 			timeConstraints: {},
 			dateFormat: true,
@@ -277,7 +277,7 @@ var Datetime = React.createClass({
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
 			date
-    ;
+		;
 
 		if (target.className.indexOf('rdtDay') !== -1){
 			if (target.className.indexOf('rdtNew') !== -1)
@@ -324,27 +324,27 @@ var Datetime = React.createClass({
 		if (!this.state.open) {
 			this.props.onFocus();
 
-      if (this.props.open === undefined) {
-        this.setState({ open: true });
-      } else {
-        this.props.onOpen();
-      }
+			if (this.props.open === undefined) {
+				this.setState({ open: true });
+			} else {
+				this.props.onOpen();
+			}
 		}
 	},
 
 	closeCalendar: function() {
-    if ( this.props.open === undefined ){
-      this.setState({ open: false });
-    } else {
-      this.props.onClose();
-    }
+		if ( this.props.open === undefined ){
+			this.setState({ open: false });
+		} else {
+			this.props.onClose();
+		}
 
 		this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 	},
 
 	handleClickOutside: function(){
 		if ( this.props.input && this.state.open ){
-      this.closeCalendar();
+			this.closeCalendar();
 		}
 	},
 
@@ -384,8 +384,8 @@ var Datetime = React.createClass({
 		var Component = this.viewComponents[ this.state.currentView ],
 			DOM = React.DOM,
 			className = 'rdt' + (this.props.className ?
-                  ( Array.isArray( this.props.className ) ?
-                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
+					( Array.isArray( this.props.className ) ?
+					' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 			children = []
 		;
 
