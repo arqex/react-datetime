@@ -9,11 +9,11 @@
   },
   "main": "./DateTime.js",
   "files": [
-    "./DateTime.js",
-    "./react-datetime.d.ts",
-    "./src",
-    "./css",
-    "./dist"
+    "DateTime.js",
+    "react-datetime.d.ts",
+    "src",
+    "css",
+    "dist"
   ],
   "types": "./react-datetime.d.ts",
   "scripts": {
