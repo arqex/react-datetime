@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.6.2
+* Update file references in `package.json`
+
 ## 2.6.1
 * Added a source-map file.
 * Fixed bug with invalid moment object.

@@ -1,5 +1,5 @@
 /*
-react-datetime v2.6.1
+react-datetime v2.6.2
 https://github.com/arqex/react-datetime
 MIT: https://github.com/arqex/react-datetime/raw/master/LICENSE
 */
