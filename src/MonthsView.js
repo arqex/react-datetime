@@ -23,20 +23,32 @@ var DateTimePickerMonths = React.createClass({
 			i = 0,
 			months = [],
 			renderer = this.props.renderMonth || this.renderMonth,
-			classes, props
-		;
+			isValid = this.props.isValidMonth || this.isValidMonth,
+			currentDate = this.props.viewDate.clone(),
+			classes, props, disabled
+			;
+
+		currentDate.startOf('year');
 
 		while (i < 12) {
 			classes = 'rdtMonth';
+
 			if ( date && i === month && year === date.year() )
 				classes += ' rdtActive';
+
+			disabled = !isValid( currentDate, date );
+
+			if ( disabled )
+				classes += ' rdtDisabled';
 
 			props = {
 				key: i,
 				'data-value': i,
-				className: classes,
-				onClick: this.props.updateOn === 'months'? this.updateSelectedMonth : this.props.setDate('month')
+				className: classes
 			};
+
+			if ( !disabled )
+				props.onClick = (this.props.updateOn === 'months'? this.updateSelectedMonth : this.props.setDate('month'));
 
 			months.push( renderer( props, i, year, date && date.clone() ));
 
@@ -44,7 +56,7 @@ var DateTimePickerMonths = React.createClass({
 				rows.push( DOM.tr({ key: month + '_' + rows.length }, months) );
 				months = [];
 			}
-
+			currentDate.add(1, 'month');
 			i++;
 		}
 
@@ -62,6 +74,9 @@ var DateTimePickerMonths = React.createClass({
 			: monthsShort[ month ]
 		);
 	}
+
+	,
+	isValidMonth: function(){ return 1; }
 });
 
 function capitalize(str) {
