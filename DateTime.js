@@ -325,15 +325,15 @@ var Datetime = React.createClass({
 	},
 
 	closeCalendar: function() {
-		this.setState({ open: false } , function () {
+		this.setState({ open: false }, function () {
 			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 		});
 	},
 
 	handleClickOutside: function(){
 		if ( this.props.input && this.state.open && !this.props.open ){
-			this.setState({ open: false },function() {
-				this.props.onBlur( this.state.selectedDate || this.state.inputValue )
+			this.setState({ open: false }, function() {
+				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 			});
 		}
 	},
