@@ -46,6 +46,10 @@ declare module ReactDatetime {
      */
     locale?: string;
     /*
+     Whether to interpret input times as UTC or the user's local timezone.
+     */
+    utc?: boolean;
+    /*
      Callback trigger when the date changes. The callback receives the selected `moment` object as
      only parameter, if the date in the input is valid. If the date in the input is not valid, the
      callback receives the value of the input (a string).
@@ -113,7 +117,7 @@ declare module ReactDatetime {
      it will change adding or subtracting 2 hours everytime the buttons are clicked. The constraints
      can be added to the hours, minutes, seconds and milliseconds.
     */
-    timeConstraints?: Object; 
+    timeConstraints?: Object;
     /*
      When true, keep the picker open when click event is triggered outside of component. When false,
      close it.
