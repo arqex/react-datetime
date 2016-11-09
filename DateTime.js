@@ -2,6 +2,7 @@
 
 var assign = require('object-assign'),
 	React = require('react'),
+  ReactDOM = require('react-dom'),
 	DaysView = require('./src/DaysView'),
 	MonthsView = require('./src/MonthsView'),
 	YearsView = require('./src/YearsView'),
@@ -37,7 +38,8 @@ var Datetime = React.createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+    direction: TYPES.oneOf(['down', 'up'])
 	},
 
 	getDefaultProps: function() {
@@ -55,7 +57,8 @@ var Datetime = React.createClass({
 			dateFormat: true,
 			strictParsing: true,
 			closeOnSelect: false,
-			closeOnTab: true
+			closeOnTab: true,
+      direction: 'down'
 		};
 	},
 
@@ -366,6 +369,22 @@ var Datetime = React.createClass({
 
 		return props;
 	},
+
+  componentDidUpdate: function() {
+    this.updatePickerPosition();
+  },
+
+  componentDidMount: function() {
+    this.updatePickerPosition();
+  },
+
+  updatePickerPosition: function () {
+    if (this.state.open && this.props.direction === 'up') {
+      var parent = ReactDOM.findDOMNode(this);
+      var picker = parent.querySelector('.rdtPicker');
+      picker.style.top = '-' + picker.offsetHeight + 'px';
+    }
+  },
 
 	render: function() {
 		var Component = this.viewComponents[ this.state.currentView ],

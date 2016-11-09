@@ -215,11 +215,11 @@ describe( 'Datetime', function(){
 		assert.notEqual( component.className.indexOf('custom'), -1 );
 	});
 
-    it( 'className of type string array', function(){
-        var component = createDatetime({ className: ['custom1', 'custom2'] });
-        assert.notEqual( component.className.indexOf('custom1'), -1 );
-        assert.notEqual( component.className.indexOf('custom2'), -1 );
-    });
+  it( 'className of type string array', function(){
+      var component = createDatetime({ className: ['custom1', 'custom2'] });
+      assert.notEqual( component.className.indexOf('custom1'), -1 );
+      assert.notEqual( component.className.indexOf('custom2'), -1 );
+  });
 
 	it( 'inputProps', function(){
 		var component = createDatetime({ inputProps: { className: 'myInput', type: 'email' } }),
