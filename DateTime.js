@@ -156,11 +156,8 @@ var Datetime = React.createClass({
 			update = {}
 		;
 
-		if ( nextProps.value !== this.props.value ){
+		if ( nextProps.value !== this.props.value || formats.datetime !== this.getFormats( this.props ).datetime ){
 			update = this.getStateFromProps( nextProps );
-		}
-		if ( formats.datetime !== this.getFormats( this.props ).datetime ) {
-			update.inputFormat = formats.datetime;
 		}
 
 		if ( update.open === undefined ){
