@@ -1,8 +1,7 @@
 var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	insert = require('gulp-insert'),
-	webpack = require('gulp-webpack'),
-	sourcemaps = require('gulp-sourcemaps')
+	webpack = require('gulp-webpack')
 ;
 
 var packageName = 'react-datetime';
@@ -35,27 +34,22 @@ var handleError = function( err ){
 };
 
 function wp( config, minify ){
-	var inputSrc = './Datetime.js';
-	var destSrc = 'dist/';
-
-	var stream = gulp.src( inputSrc )
+	var stream =  gulp.src('./Datetime.js')
 		.pipe( webpack( config ) )
-		.pipe( sourcemaps.init() )
 	;
 
 	if( minify ){
 		stream = stream.pipe( uglify() ).on( 'error', handleError );
 	}
 
-	return stream.pipe( sourcemaps.write() )
-		.pipe( insert.prepend( cr ) )
-		.pipe( gulp.dest( destSrc ) )
+	return stream.pipe( insert.prepend( cr ) )
+		.pipe( gulp.dest('dist/') )
 	;
 }
 
 gulp.task( 'build', function( callback ) {
 	var config = getWPConfig( 'react-datetime' );
-	config.devtool = 'cheap-module-source-map';
+	config.devtool = '#eval';
 	wp( config );
 
 	config = getWPConfig( 'react-datetime.min' );
