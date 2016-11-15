@@ -1,5 +1,11 @@
 Changelog
 =========
+## 2.7.0
+* `isValidDate` now supports months and years.
+* `utc` prop was added, by setting it to `true` input time values will be interpreted as UTC (Zulu time).
+* Bug fix: The input value now updates when `dateFormat` changes. 
+* Removed the source-map file because the commit it was introduced in was causing the minified file to be bigger than the non-minified. 
+
 ## 2.6.2
 * Update file references in `package.json`
 
