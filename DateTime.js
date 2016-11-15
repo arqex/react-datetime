@@ -7,7 +7,7 @@ var assign = require('object-assign'),
 	YearsView = require('./src/YearsView'),
 	TimeView = require('./src/TimeView'),
 	moment = require('moment')
-;
+	;
 
 var TYPES = React.PropTypes;
 var Datetime = React.createClass({
@@ -35,6 +35,7 @@ var Datetime = React.createClass({
 		timeConstraints: TYPES.object,
 		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
 		isValidDate: TYPES.func,
+		isValidMonth: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
@@ -76,7 +77,7 @@ var Datetime = React.createClass({
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
 			selectedDate, viewDate, updateOn, inputValue
-		;
+			;
 
 		if ( date && typeof date === 'string' )
 			selectedDate = this.localMoment( date, formats.datetime );
@@ -130,7 +131,7 @@ var Datetime = React.createClass({
 				time: props.timeFormat || ''
 			},
 			locale = this.localMoment( props.date ).localeData()
-		;
+			;
 
 		if ( formats.date === true ){
 			formats.date = locale.longDateFormat('L');
@@ -144,8 +145,8 @@ var Datetime = React.createClass({
 		}
 
 		formats.datetime = formats.date && formats.time ?
-			formats.date + ' ' + formats.time :
-			formats.date || formats.time
+		formats.date + ' ' + formats.time :
+		formats.date || formats.time
 		;
 
 		return formats;
@@ -154,7 +155,7 @@ var Datetime = React.createClass({
 	componentWillReceiveProps: function(nextProps) {
 		var formats = this.getFormats( nextProps ),
 			update = {}
-		;
+			;
 
 		if ( nextProps.value !== this.props.value ){
 			update = this.getStateFromProps( nextProps );
@@ -179,7 +180,7 @@ var Datetime = React.createClass({
 		var value = e.target === null ? e : e.target.value,
 			localMoment = this.localMoment( value, this.state.inputFormat ),
 			update = { inputValue: value }
-		;
+			;
 
 		if ( localMoment.isValid() && !this.props.value ) {
 			update.selectedDate = localMoment;
@@ -213,7 +214,7 @@ var Datetime = React.createClass({
 				month: 'days',
 				year: 'months'
 			}
-		;
+			;
 		return function( e ){
 			me.setState({
 				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
@@ -236,7 +237,7 @@ var Datetime = React.createClass({
 		return function(){
 			var update = {},
 				date = toSelected ? 'selectedDate' : 'viewDate'
-			;
+				;
 
 			update[ date ] = me.state[ date ].clone()[ op ]( amount, type );
 
@@ -250,7 +251,7 @@ var Datetime = React.createClass({
 			state = this.state,
 			date = (state.selectedDate || state.viewDate).clone(),
 			nextType
-		;
+			;
 
 		// It is needed to set all the time properties
 		// to not to reset the time
@@ -275,7 +276,7 @@ var Datetime = React.createClass({
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
 			date
-    ;
+			;
 
 		if (target.className.indexOf('rdtDay') !== -1){
 			if (target.className.indexOf('rdtNew') !== -1)
@@ -346,7 +347,7 @@ var Datetime = React.createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
+		fromProps: ['value', 'isValidDate', 'isValidMonth', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
 	},
@@ -355,7 +356,7 @@ var Datetime = React.createClass({
 		var me = this,
 			formats = this.getFormats( this.props ),
 			props = {dateFormat: formats.date, timeFormat: formats.time}
-		;
+			;
 
 		this.componentProps.fromProps.forEach( function( name ){
 			props[ name ] = me.props[ name ];
@@ -374,10 +375,10 @@ var Datetime = React.createClass({
 		var Component = this.viewComponents[ this.state.currentView ],
 			DOM = React.DOM,
 			className = 'rdt' + (this.props.className ?
-                  ( Array.isArray( this.props.className ) ?
-                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
+					( Array.isArray( this.props.className ) ?
+					' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 			children = []
-		;
+			;
 
 		if ( this.props.input ){
 			children = [ DOM.input( assign({
