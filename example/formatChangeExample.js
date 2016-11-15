@@ -22,7 +22,8 @@ var Wrapper = React.createClass({
 	},
 
 	render: function() {
-		return React.createElement(DateTime, { dateFormat: this.state.dateFormat, timeFormat: false, defaultValue: moment()	 });
+		return React.createElement(DateTime,
+            { dateFormat: this.state.dateFormat, timeFormat: false, defaultValue: moment()	 });
 	}
 });
 
