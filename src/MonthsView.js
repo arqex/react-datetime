@@ -27,10 +27,14 @@ var DateTimePickerMonths = React.createClass({
 			classes, props
 		;
 
+        var currentMonth, disabled,
+            // Date is irrelevant because we're really only interested in month
+            irrelevantDate = 1;
 		while (i < 12) {
 			classes = 'rdtMonth';
-			var currentMonth = this.props.viewDate.clone().set({ year: year, month: i, date: 1 });
-			var disabled = !isValid(currentMonth);
+			currentMonth =
+                this.props.viewDate.clone().set({ year: year, month: i, date: irrelevantDate });
+			disabled = !isValid(currentMonth);
 
 			if ( disabled )
 				classes += ' rdtDisabled';
@@ -45,7 +49,8 @@ var DateTimePickerMonths = React.createClass({
 			};
 
 			if ( !disabled )
-				props.onClick = this.props.updateOn === 'months'? this.updateSelectedMonth : this.props.setDate('month');
+				props.onClick = (this.props.updateOn === 'months' ?
+                    this.updateSelectedMonth : this.props.setDate('month'));
 
 			months.push( renderer( props, i, year, date && date.clone() ));
 
@@ -71,6 +76,7 @@ var DateTimePickerMonths = React.createClass({
 			: monthsShort[ month ]
 		);
 	},
+
 	isValidDate: function(){
 		return 1;
 	}
