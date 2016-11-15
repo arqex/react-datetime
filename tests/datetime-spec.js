@@ -86,7 +86,9 @@ var dt = {
 
 var date = new Date( 2000, 0, 15, 2, 2, 2, 2 ),
 	mDate = moment( date ),
-	strDate = mDate.format('L') + ' ' + mDate.format('LT')
+	strDate = mDate.format('L') + ' ' + mDate.format('LT'),
+	mDateUTC = moment.utc(date),
+	strDateUTC = mDateUTC.format('L') + ' ' + mDateUTC.format('LT')
 ;
 
 describe( 'Datetime', function(){
@@ -125,6 +127,33 @@ describe( 'Datetime', function(){
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
+	});
+
+	it( 'UTC Value from local moment.', function(){
+		var component = createDatetime({
+			value: mDate,
+			utc: true
+		});
+		var input = component.children[0];
+		assert.equal( input.value, strDateUTC );
+	});
+
+	it( 'UTC Value from UTC moment.', function(){
+		var component = createDatetime({
+			value: mDateUTC,
+			utc: true
+		});
+		var input = component.children[0];
+		assert.equal( input.value, strDateUTC );
+	});
+
+	it( 'UTC Value from utc string.', function(){
+		var component = createDatetime({
+			value: strDateUTC,
+			utc: true
+		});
+		var input = component.children[0];
+		assert.equal( input.value, strDateUTC );
 	});
 
 	it( 'Date defaultValue', function(){

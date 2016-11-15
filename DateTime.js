@@ -27,6 +27,7 @@ var Datetime = React.createClass({
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
 		locale: TYPES.string,
+		utc: TYPES.bool,
 		input: TYPES.bool,
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
@@ -55,7 +56,8 @@ var Datetime = React.createClass({
 			dateFormat: true,
 			strictParsing: true,
 			closeOnSelect: false,
-			closeOnTab: true
+			closeOnTab: true,
+			utc: false
 		};
 	},
 
@@ -336,7 +338,8 @@ var Datetime = React.createClass({
 	},
 
 	localMoment: function( date, format ){
-		var m = moment( date, format, this.props.strictParsing );
+		var momentFn = this.props.utc ? moment.utc : moment;
+		var m = momentFn( date, format, this.props.strictParsing );
 		if ( this.props.locale )
 			m.locale( this.props.locale );
 		return m;
