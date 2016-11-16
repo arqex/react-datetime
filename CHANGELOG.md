@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.7.1
+* Bug fix: `onFocus` and `onBlur` were being called in a way causing state to reset. This unwanted behavior is now adjusted.
+
 ## 2.7.0
 * `isValidDate` now supports months and years.
 * `utc` prop was added, by setting it to `true` input time values will be interpreted as UTC (Zulu time).
