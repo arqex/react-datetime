@@ -318,20 +318,23 @@ var Datetime = React.createClass({
 
 	openCalendar: function() {
 		if (!this.state.open) {
-			this.props.onFocus();
-			this.setState({ open: true });
+			this.setState({ open: true }, function() {
+				this.props.onFocus();
+			});
 		}
 	},
 
 	closeCalendar: function() {
-		this.setState({ open: false });
-		this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+		this.setState({ open: false }, function () {
+			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+		});
 	},
 
 	handleClickOutside: function(){
 		if ( this.props.input && this.state.open && !this.props.open ){
-			this.setState({ open: false });
-			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+			this.setState({ open: false }, function() {
+				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+			});
 		}
 	},
 
