@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.7.2
+* Bug fix: When setting `locale` and entering month view mode the component would sometimes freeze, depending on the locale. This has now been fixed.
+
 ## 2.7.1
 * Bug fix: `onFocus` and `onBlur` were being called in a way causing state to reset. This unwanted behavior is now adjusted.
 
