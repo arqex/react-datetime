@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.7.3
+* When updating `moment` to `2.16.0` something broke, hopefully by updating all `react` prefixed dependencies to `15.4.0` and changing the syntax in the dependency object a bit will resolve this issue.
+
 ## 2.7.2
 * Bug fix: When setting `locale` and entering month view mode the component would sometimes freeze, depending on the locale. This has now been fixed.
 
