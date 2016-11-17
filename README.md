@@ -73,7 +73,7 @@ If there are multiple locales loaded, you can use the prop `locale` to define wh
 <Datetime locale="fr-ca" />
 <Datetime locale="de" />
 ```
-[Here you can see the i18n example working](http://codepen.io/arqex/pen/PqJMQV).
+[Here you can see the i18n example working](http://codepen.io/simeg/pen/yVVjdJ).
 
 ## Appearance customization
 It is possible to customize the way that the datepicker display the days, months and years in the calendar. To adapt the calendar for every need it is possible to use the props `renderDay(props, currentDate, selectedDate)`, `renderMonth(props, month, year, selectedDate)` and `renderYear(props, year, selectedDate)` to customize the output of each rendering method.
@@ -98,7 +98,7 @@ var MyDTPicker = React.createClass({
     }
 });
 ```
-[You can see a customized calendar here.](http://codepen.io/arqex/pen/mJzRwM)
+[You can see a customized calendar here.](http://codepen.io/simeg/pen/YppLmO)
 
 #### Method parameters
 * `props` is the object that the datepicker has calculated for this object. It is convenient to use this object as the `props` for your custom component, since it knows how to handle the click event and its `className` attribute is used by the default styles.
@@ -118,7 +118,7 @@ var valid = function( current ){
 };
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled days here.](http://codepen.io/arqex/pen/jPeyGX)
+[Working example of disabled days here.](http://codepen.io/simeg/pen/XNNYJg)
 
 It's also possible to disable *the weekends*, as shown in the example below.
 ```js
@@ -127,7 +127,7 @@ var valid = function( current ){
 };
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled weekends here.](http://codepen.io/arqex/pen/VLEPXb)
+[Working example of disabled weekends here.](http://codepen.io/simeg/pen/jVVKWq)
 
 ## Contributions
 * For information about how to contribute, see the [CONTRIBUTING](CONTRIBUTING.md) file.
