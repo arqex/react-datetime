@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.7.4
+* Reverting updating `react` related dependencies. They were not the issue so they should not be set to the latest version of `react`.
+
 ## 2.7.3
 * When updating `moment` to `2.16.0` something broke, hopefully by updating all `react` prefixed dependencies to `15.4.0` and changing the syntax in the dependency object a bit will resolve this issue.
 
