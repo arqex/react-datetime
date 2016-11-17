@@ -135,16 +135,11 @@ This project includes typings for Typescript 2.0. Additional typings are not
 required.
 
 ```js
-import * as React from 'react';
 import Datetime = require('react-datetime');
 
 class MyDTPicker extends React.Component<MyDTPickerProps, MyDTPickerState> {
-    render():JSX.Element {
-        return <Datetime
-            renderDay={ this.renderDay }
-            renderMonth={ this.renderMonth }
-            renderYear={ this.renderYear }
-        />;
+    render(): JSX.Element {
+        return <Datetime />;
     }
 }
 ```
