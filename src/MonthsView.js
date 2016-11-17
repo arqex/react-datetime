@@ -70,11 +70,13 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	renderMonth: function( props, month ) {
-		var monthsShort = this.props.viewDate.localeData()._monthsShort;
-		return DOM.td( props, monthsShort.standalone
-			? capitalize( monthsShort.standalone[ month ] )
-			: monthsShort[ month ]
-		);
+		var localMoment = this.props.viewDate;
+		var monthStr = localMoment.localeData().monthsShort(localMoment.month(month));
+		var strLength = 3;
+		// Because some months are up to 5 characters long, we want to
+		// use a fixed string length for consistency
+		var monthStrFixedLength = monthStr.substring(0, strLength);
+		return DOM.td( props, capitalize( monthStrFixedLength ) );
 	},
 
 	isValidDate: function(){
