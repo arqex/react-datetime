@@ -10,19 +10,20 @@
   "main": "./DateTime.js",
   "files": [
     "DateTime.js",
-    "react-datetime.d.ts",
+    "typings/index.d.ts",
     "src",
     "css",
     "dist"
   ],
-  "types": "./react-datetime.d.ts",
+  "types": "./typings/index.d.ts",
   "scripts": {
     "build:win": "./node_modules/.bin/gulp.cmd",
     "build:mac": "./node_modules/.bin/gulp",
     "test": "node node_modules/mocha/bin/mocha tests",
     "test:watch": "node node_modules/mocha/bin/mocha --watch tests",
     "dev": "webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
-    "lint": "./node_modules/.bin/eslint src/ DateTime.js"
+    "lint": "./node_modules/.bin/eslint src/ DateTime.js",
+    "test:typings": "tsc -p ./typings"
   },
   "keywords": [
     "react",
@@ -40,6 +41,7 @@
     "moment": ">=2.16.0"
   },
   "devDependencies": {
+    "@types/react": "^0.14.49",
     "eslint": "^3.1.0",
     "gulp": "^3.9.0",
     "gulp-insert": "^0.4.0",
@@ -53,6 +55,7 @@
     "react-addons-test-utils": ">=0.13",
     "react-dom": ">=0.13",
     "react-tools": "^0.13.2",
+    "typescript": "^2.0.10",
     "webpack": "^1.5.1",
     "webpack-dev-server": "^1.7.0"
   },
