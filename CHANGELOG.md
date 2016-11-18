@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.7.5
+* Bumps the version to skip buggy deployment 2.7.4
+
 ## 2.7.4
 * Reverting updating `react` related dependencies. They were not the issue so they should not be set to the latest version of `react`.
 
@@ -15,8 +18,8 @@ Changelog
 ## 2.7.0
 * `isValidDate` now supports months and years.
 * `utc` prop was added, by setting it to `true` input time values will be interpreted as UTC (Zulu time).
-* Bug fix: The input value now updates when `dateFormat` changes. 
-* Removed the source-map file because the commit it was introduced in was causing the minified file to be bigger than the non-minified. 
+* Bug fix: The input value now updates when `dateFormat` changes.
+* Removed the source-map file because the commit it was introduced in was causing the minified file to be bigger than the non-minified.
 
 ## 2.6.2
 * Update file references in `package.json`
