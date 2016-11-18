@@ -25,8 +25,8 @@ const TEST_DATE_PROPS_FOR_DEFAULT_VALUE: JSX.Element = <ReactDatetime
  */
 
 const TEST_FORMAT_PROPS_AS_STRINGS: JSX.Element = <ReactDatetime
-		dateFormat="mm/dd/yyyy"
-		timeFormat="hh:mm:ss"
+		dateFormat='mm/dd/yyyy'
+		timeFormat='hh:mm:ss'
 	/>;
 
 const TEST_FORMAT_PROPS_AS_BOOLEANS: JSX.Element = <ReactDatetime
@@ -44,6 +44,7 @@ const TEST_BOOLEAN_PROPS: JSX.Element = <ReactDatetime
 		strictParsing={ false }
 		closeOnSelect={ false }
 		disableOnClickOutside={ false }
+		utc={ false }
 	/>;
 
 /*
@@ -51,7 +52,7 @@ const TEST_BOOLEAN_PROPS: JSX.Element = <ReactDatetime
  */
 
 const TEST_LOCALE_PROPS: JSX.Element = <ReactDatetime
-		locale="en-us"
+		locale='en-us'
 	/>;
 
 /*
@@ -96,8 +97,8 @@ const TEST_EVENT_HANDLERS_WITH_MOMENT: JSX.Element = <ReactDatetime
  */
 
 const TEST_VIEW_MODE_AND_CLASS_PROPS: JSX.Element = <ReactDatetime
-		viewMode="days"
-		className="rdt"
+		viewMode='days'
+		className='rdt'
 	/>;
 
 /*
@@ -121,7 +122,7 @@ const TEST_CUSTOMIZABLE_COMPONENT_PROPS: JSX.Element = <ReactDatetime
 		renderMonth={ (props, month, year, selectedDate) => {
 			return <td {...props}>{ month }</td>;
 		} }
-		renderYear={ ( props, year, selectedDate ) => {
+		renderYear={ (props, year, selectedDate) => {
 			return <td {...props}>{ year % 100 }</td>;
 		} }
 	/>;

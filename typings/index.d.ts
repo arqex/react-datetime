@@ -3,7 +3,7 @@
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
 //     Updates by: Aaron Spaulding <aaron@sachimp.com>
 
-declare module "react-datetime" {
+declare module 'react-datetime' {
 
   /*
    A stand-in type for Moment, this file currently has no way of guaranteeing
@@ -66,6 +66,10 @@ declare module "react-datetime" {
      Moment.js locale needs to be loaded to be used, see i18n docs.
      */
     locale?: string;
+    /*
+     Whether to interpret input times as UTC or the user's local timezone.
+     */
+    utc?: boolean;
     /*
      Callback trigger when the date changes. The callback receives the selected `moment` object as
      only parameter, if the date in the input is valid. If the date in the input is not valid, the
