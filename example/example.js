@@ -7,7 +7,8 @@ ReactDOM.render(
     viewMode: 'months',
     dateFormat: 'MMMM',
     isValidDate: function(current){
-      return current.isBefore(DateTime.moment().startOf('month'));
+      var yesterday = DateTime.moment().subtract(1, 'day');
+      return current.isAfter(yesterday);
     }
   }),
   document.getElementById('datetime')

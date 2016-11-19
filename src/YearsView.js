@@ -38,9 +38,6 @@ var DateTimePickerYears = React.createClass({
 			currentYear = this.props.viewDate.clone().set(
 				{ year: year, month: irrelevantMonth, date: irrelevantDate });
 
-			currentYear = this.props.viewDate.clone().set(
-				{ year: year, month: irrelevantMonth, date: irrelevantDate });
-
 			var days = Array.from({ length: currentYear.endOf('year').format('DDD') }, function(e, i) {
 				return i + 1;
 			});
