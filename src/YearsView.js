@@ -30,11 +30,20 @@ var DateTimePickerYears = React.createClass({
 		year--;
 		while (i < 11) {
 			classes = 'rdtYear';
-			var currentYear = this.props.viewDate.clone().set({ year: year, month: 1, date: 1 });
+			var currentYear = this.props.viewDate.clone().set({ year: year, month: 0, date: 1 });
+
+			var days = Array.from({ length: currentYear.endOf('year').format('DDD') }, function(e, i) {
+				return i + 1;
+			});
+			var validDay = days.find(function(d) {
+				var day = currentYear.clone().dayOfYear(d);
+				return isValid(day);
+			});
+			var disabled = validDay === undefined;
+
 			if ( i === -1 | i === 10 )
 				classes += ' rdtOld';
 
-			var disabled = !isValid(currentYear);
 			if ( disabled )
 				classes += ' rdtDisabled';
 
