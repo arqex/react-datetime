@@ -732,10 +732,10 @@ describe( 'Datetime', function(){
     });
 
     it( 'updates display format when dateFormat prop changes', function() {
-    	createDatetime({ dateFormat: 'YYYY-MM-DD', timeFormat: false, defaultValue: moment() });
-    	var displayedDate = document.querySelector('.rdt > input').value;
-    	var regexMatches = displayedDate.match(/\d{4}\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2]\d|3[0-1])/);
-    	assert(regexMatches && regexMatches[0] == displayedDate);
+		createDatetime({ dateFormat: 'YYYY-MM-DD', timeFormat: false, defaultValue: moment() });
+		var displayedDate = document.querySelector('.rdt > input').value;
+		var regexMatches = displayedDate.match(/\d{4}\-(0[1-9]|1[0-2])\-(0[1-9]|[1-2]\d|3[0-1])/);
+		assert(regexMatches && regexMatches[0] == displayedDate);
 
 		ReactDOM.render(
 			React.createElement( Datetime, { dateFormat: 'DD.MM.YYYY', timeFormat: false, defaultValue: moment() } ),
