@@ -1,6 +1,6 @@
 {
   "name": "react-datetime",
-  "version": "2.6.0",
+  "version": "2.7.5",
   "description": "A lightweight but complete datetime picker React.js component.",
   "homepage": "https://github.com/arqex/react-datetime",
   "repository": {
@@ -8,6 +8,13 @@
     "url": "https://github.com/arqex/react-datetime"
   },
   "main": "./DateTime.js",
+  "files": [
+    "DateTime.js",
+    "react-datetime.d.ts",
+    "src",
+    "css",
+    "dist"
+  ],
   "types": "./react-datetime.d.ts",
   "scripts": {
     "build:win": "./node_modules/.bin/gulp.cmd",
@@ -30,7 +37,7 @@
   "peerDependencies": {
     "react": ">=0.13",
     "react-dom": ">=0.13",
-    "moment": ">=2.8.1"
+    "moment": ">=2.16.0"
   },
   "devDependencies": {
     "eslint": "^3.1.0",
@@ -38,14 +45,13 @@
     "gulp-insert": "^0.4.0",
     "gulp-uglify": "^1.2.0",
     "gulp-webpack": "^1.5.0",
-    "gulp-sourcemaps": "^1.6.0",
     "jsdom": "^7.0.2",
     "mocha": "^2.2.5",
-    "moment": "2.14.1",
+    "moment": ">=2.16.0",
     "pre-commit": "^1.1.3",
     "react": ">=0.13",
     "react-addons-test-utils": ">=0.13",
-    "react-dom": "15.2.1",
+    "react-dom": ">=0.13",
     "react-tools": "^0.13.2",
     "webpack": "^1.5.1",
     "webpack-dev-server": "^1.7.0"

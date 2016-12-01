@@ -23,20 +23,34 @@ var DateTimePickerMonths = React.createClass({
 			i = 0,
 			months = [],
 			renderer = this.props.renderMonth || this.renderMonth,
+			isValid = this.props.isValidDate || this.isValidDate,
 			classes, props
 		;
 
+        var currentMonth, disabled,
+            // Date is irrelevant because we're really only interested in month
+            irrelevantDate = 1;
 		while (i < 12) {
 			classes = 'rdtMonth';
+			currentMonth =
+                this.props.viewDate.clone().set({ year: year, month: i, date: irrelevantDate });
+			disabled = !isValid(currentMonth);
+
+			if ( disabled )
+				classes += ' rdtDisabled';
+
 			if ( date && i === month && year === date.year() )
 				classes += ' rdtActive';
 
 			props = {
 				key: i,
 				'data-value': i,
-				className: classes,
-				onClick: this.props.updateOn === 'months'? this.updateSelectedMonth : this.props.setDate('month')
+				className: classes
 			};
+
+			if ( !disabled )
+				props.onClick = (this.props.updateOn === 'months' ?
+                    this.updateSelectedMonth : this.props.setDate('month'));
 
 			months.push( renderer( props, i, year, date && date.clone() ));
 
@@ -56,11 +70,17 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	renderMonth: function( props, month ) {
-		var monthsShort = this.props.viewDate.localeData()._monthsShort;
-		return DOM.td( props, monthsShort.standalone
-			? capitalize( monthsShort.standalone[ month ] )
-			: monthsShort[ month ]
-		);
+		var localMoment = this.props.viewDate;
+		var monthStr = localMoment.localeData().monthsShort(localMoment.month(month));
+		var strLength = 3;
+		// Because some months are up to 5 characters long, we want to
+		// use a fixed string length for consistency
+		var monthStrFixedLength = monthStr.substring(0, strLength);
+		return DOM.td( props, capitalize( monthStrFixedLength ) );
+	},
+
+	isValidDate: function(){
+		return 1;
 	}
 });
 

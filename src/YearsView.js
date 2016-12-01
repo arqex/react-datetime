@@ -23,23 +23,38 @@ var DateTimePickerYears = React.createClass({
 			rows = [],
 			renderer = this.props.renderYear || this.renderYear,
 			selectedDate = this.props.selectedDate,
+			isValid = this.props.isValidDate || this.isValidDate,
 			classes, props
 		;
 
 		year--;
+        var currentYear, disabled,
+            // Month and date are irrelevant here because
+            // we're only really interested in the year
+            irrelevantMonth = 1,
+            irrelevantDate = 1;
 		while (i < 11) {
 			classes = 'rdtYear';
+			currentYear = this.props.viewDate.clone().set(
+				{ year: year, month: irrelevantMonth, date: irrelevantDate });
 			if ( i === -1 | i === 10 )
 				classes += ' rdtOld';
+
+			disabled = !isValid(currentYear);
+			if ( disabled )
+				classes += ' rdtDisabled';
+
 			if ( selectedDate && selectedDate.year() === year )
 				classes += ' rdtActive';
 
 			props = {
 				key: year,
 				'data-value': year,
-				className: classes,
-				onClick: this.props.updateOn === 'years' ? this.updateSelectedYear : this.props.setDate('year')
+				className: classes
 			};
+
+			if ( !disabled )
+				props.onClick = this.props.updateOn === 'years' ? this.updateSelectedYear : this.props.setDate('year');
 
 			years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
 
@@ -61,6 +76,10 @@ var DateTimePickerYears = React.createClass({
 
 	renderYear: function( props, year ){
 		return DOM.td( props, year );
+	},
+
+	isValidDate: function(){
+		return 1;
 	}
 });
 

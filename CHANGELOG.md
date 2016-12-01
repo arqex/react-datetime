@@ -1,5 +1,34 @@
 Changelog
 =========
+## 2.7.5
+* Bumps the version to skip buggy deployment 2.7.4
+
+## 2.7.4
+* Reverting updating `react` related dependencies. They were not the issue so they should not be set to the latest version of `react`.
+
+## 2.7.3
+* When updating `moment` to `2.16.0` something broke, hopefully by updating all `react` prefixed dependencies to `15.4.0` and changing the syntax in the dependency object a bit will resolve this issue.
+
+## 2.7.2
+* Bug fix: When setting `locale` and entering month view mode the component would sometimes freeze, depending on the locale. This has now been fixed.
+
+## 2.7.1
+* Bug fix: `onFocus` and `onBlur` were being called in a way causing state to reset. This unwanted behavior is now adjusted.
+
+## 2.7.0
+* `isValidDate` now supports months and years.
+* `utc` prop was added, by setting it to `true` input time values will be interpreted as UTC (Zulu time).
+* Bug fix: The input value now updates when `dateFormat` changes.
+* Removed the source-map file because the commit it was introduced in was causing the minified file to be bigger than the non-minified.
+
+## 2.6.2
+* Update file references in `package.json`
+
+## 2.6.1
+* Added a source-map file.
+* Fixed bug with invalid moment object.
+* Decreased npm package size by ~29.3KB.
+
 ## 2.6.0
 * Fixed hover styles for days
 * Added multiple simultaneous datetime component support.

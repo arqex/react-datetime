@@ -3,6 +3,12 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 ReactDOM.render(
-  React.createElement(DateTime, { timeFormat: true }),
+  React.createElement(DateTime, {
+    viewMode: 'months',
+    dateFormat: 'MMMM',
+    isValidDate: function(current){
+      return current.isBefore(DateTime.moment().startOf('month'));
+    }
+  }),
   document.getElementById('datetime')
 );
