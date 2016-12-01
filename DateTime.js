@@ -106,7 +106,8 @@ var Datetime = React.createClass({
 			viewDate: viewDate,
 			selectedDate: selectedDate,
 			inputValue: inputValue,
-			open: props.open
+			open: props.open,
+			currentView: props.viewMode,
 		};
 	},
 
@@ -157,7 +158,8 @@ var Datetime = React.createClass({
 		;
 
 		if ( nextProps.value !== this.props.value ||
-            formats.datetime !== this.getFormats( this.props ).datetime ){
+            formats.datetime !== this.getFormats( this.props ).datetime ||
+            nextProps.viewMode !== this.props.viewMode ){
             update = this.getStateFromProps( nextProps );
 		}
 
