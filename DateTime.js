@@ -99,7 +99,7 @@ var Datetime = React.createClass({
 			inputValue = '';
 		else
 			inputValue = date || '';
-
+        
 		return {
 			updateOn: updateOn,
 			inputFormat: formats.datetime,
@@ -107,7 +107,6 @@ var Datetime = React.createClass({
 			selectedDate: selectedDate,
 			inputValue: inputValue,
 			open: props.open,
-			currentView: props.viewMode,
 		};
 	},
 
@@ -158,8 +157,7 @@ var Datetime = React.createClass({
 		;
 
 		if ( nextProps.value !== this.props.value ||
-            formats.datetime !== this.getFormats( this.props ).datetime ||
-            nextProps.viewMode !== this.props.viewMode ){
+            formats.datetime !== this.getFormats( this.props ).datetime ){
             update = this.getStateFromProps( nextProps );
 		}
 
@@ -171,6 +169,10 @@ var Datetime = React.createClass({
 				update.open = this.state.open;
 			}
 		}
+        
+        if ( nextProps.viewMode !== this.props.viewMode ) {
+            this.setState({ currentView: nextProps.viewMode });
+        }
 
 		this.setState( update );
 	},
