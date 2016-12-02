@@ -38,7 +38,8 @@ var Datetime = React.createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		initializeOpen: TYPES.bool
 	},
 
 	getDefaultProps: function() {
@@ -57,6 +58,7 @@ var Datetime = React.createClass({
 			strictParsing: true,
 			closeOnSelect: false,
 			closeOnTab: true,
+			initializeOpen: false,
 			utc: false
 		};
 	},
@@ -65,7 +67,7 @@ var Datetime = React.createClass({
 		var state = this.getStateFromProps( this.props );
 
 		if ( state.open === undefined )
-			state.open = !this.props.input;
+			state.open = this.props.initializeOpen || !this.props.input;
 
 		state.currentView = this.props.dateFormat ? (this.props.viewMode || state.updateOn || 'days') : 'time';
 
