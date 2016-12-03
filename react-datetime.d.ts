@@ -121,8 +121,12 @@ declare module ReactDatetime {
     /*
      When true, keep the picker open when click event is triggered outside of component. When false,
      close it.
-    */
+    */        
     disableOnClickOutside?: boolean;
+    /*
+     When true, initially renders the datetime with the calendar open.
+    */
+    initializeOpen?: boolean;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {
