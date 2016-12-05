@@ -38,7 +38,8 @@ var Datetime = React.createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		readOnly: TYPES.bool,
 	},
 
 	getDefaultProps: function() {
@@ -57,7 +58,8 @@ var Datetime = React.createClass({
 			strictParsing: true,
 			closeOnSelect: false,
 			closeOnTab: true,
-			utc: false
+			utc: false,
+			readOnly: false,
 		};
 	},
 
@@ -106,7 +108,8 @@ var Datetime = React.createClass({
 			viewDate: viewDate,
 			selectedDate: selectedDate,
 			inputValue: inputValue,
-			open: props.open
+			open: props.open,
+			readOnly: props.readOnly,
 		};
 	},
 
@@ -388,7 +391,8 @@ var Datetime = React.createClass({
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,
-				value: this.state.inputValue
+				value: this.state.inputValue,
+				readOnly: this.state.readOnly,
 			}, this.props.inputProps ))];
 		} else {
 			className += ' rdtStatic';
