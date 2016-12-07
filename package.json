@@ -10,6 +10,7 @@
   "main": "./DateTime.js",
   "files": [
     "DateTime.js",
+    "react-datetime.d.ts",
     "typings/index.d.ts",
     "src",
     "css",
