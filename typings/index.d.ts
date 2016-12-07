@@ -158,5 +158,11 @@ declare module 'react-datetime' {
   class ReactDatetime extends React.Component<DatetimepickerProps, DatetimepickerState> {
   }
 
+  /*
+   This is a hack for cleaner imports. It augments the ReactDatetime class to
+   make it a namespace which are importable using the 'import * as ...' syntax.
+   */
+  namespace ReactDatetime {}
+
   export = ReactDatetime;
 }

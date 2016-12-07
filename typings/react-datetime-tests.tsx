@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Moment } from 'moment';
-import ReactDatetime = require('react-datetime');
+import * as ReactDatetime from 'react-datetime';
 
 /*
  Test the datetime picker.

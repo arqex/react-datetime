@@ -2,6 +2,9 @@
 // Project: https://github.com/YouCanBookMe/react-datetime
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
 
+// These are the typings for Typescript 1.8
+// for Typescrip 2.0+ see typings/index.d.ts
+
 //// <reference path="../moment/moment-node.d.ts" />
 
 declare module ReactDatetime {
