@@ -156,14 +156,24 @@ var Datetime = React.createClass({
 			update = {}
 		;
 
-		if ( nextProps.value !== this.props.value ||
-            formats.datetime !== this.getFormats( this.props ).datetime ){
-            update = this.getStateFromProps( nextProps );
+		if ( nextProps.value !== this.props.value){
+      update = this.getStateFromProps( nextProps );
+      // Close on select only makes sense if we actually changed value.
+      if ( this.props.closeOnSelect && this.state.currentView !== 'time' ){
+        update.open = false;
+      }
 		}
 
+		// Separated format update
+		if ( formats.datetime !== this.getFormats( this.props ).datetime ){
+			update.inputFormat = formats.datetime;
+		}
+
+		// If open has not been set before this moment,
+		// then we must have programmatically changed open property from outside.
 		if ( update.open === undefined ){
-			if ( this.props.closeOnSelect && this.state.currentView !== 'time' ){
-				update.open = false;
+			if ( nextProps.open !== this.props.open ){
+				update.open = nextProps.open;
 			}
 			else {
 				update.open = this.state.open;
@@ -331,7 +341,7 @@ var Datetime = React.createClass({
 	},
 
 	handleClickOutside: function(){
-		if ( this.props.input && this.state.open && !this.props.open ){
+		if ( this.props.input && this.state.open ){
 			this.setState({ open: false }, function() {
 				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 			});

@@ -2,12 +2,12 @@
 var DOM = require( './testdom');
 DOM();
 
-
 // Needs to be global to work in Travis CI
-React = require('react');
-ReactDOM = require('react-dom');
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 var Datetime = require('../DateTime'),
+	DatepickerContainer = require('../example/DatepickerContainer'),
 	assert = require('assert'),
 	moment = require('moment'),
 	TestUtils = require('react-addons-test-utils')
@@ -24,8 +24,19 @@ var createDatetime = function( props ){
 	return document.getElementById('root').children[0];
 };
 
+var createDatepickerContainer = function( props ){
+	document.body.innerHTML = '<div id="root"></div>';
+
+	ReactDOM.render(
+		React.createElement( DatepickerContainer, props ),
+		document.getElementById('root')
+	);
+
+	return document.getElementById('root').children[0];
+};
+
 var trigger = function( name, element ){
-	var ev = document.createEvent("MouseEvents");
+	var ev = document.createEvent('MouseEvents');
    ev.initEvent(name, true, true);
    element.dispatchEvent( ev );
 };
@@ -455,6 +466,44 @@ describe( 'Datetime', function(){
 		assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
 		ev.focus( dt.input() );
 		assert.notEqual(dt.dt().className.indexOf('rdtOpen'), -1);
+	});
+
+	it( 'programmatically open picker', function(){
+		createDatepickerContainer({});
+		var container = document.querySelector('.datepicker-container');
+		assert.equal(container.children[0].className.indexOf('rdtOpen'), -1);
+
+		trigger( 'click', document.querySelector('.open-datepicker') );
+		assert.notEqual(container.children[0].className.indexOf('rdtOpen'), -1);
+
+		trigger( 'click', document.querySelector('.open-datepicker') );
+		assert.equal(container.children[0].className.indexOf('rdtOpen'), -1);
+	});
+
+	it( 'close picker on click outside of it, and open it again programmatically', function(){
+		createDatepickerContainer({});
+		var container = document.querySelector('.datepicker-container');
+		assert.equal(container.children[0].className.indexOf('rdtOpen'), -1);
+
+		trigger( 'click', document.querySelector('.open-datepicker') );
+		assert.notEqual(container.children[0].className.indexOf('rdtOpen'), -1);
+
+		trigger( 'mousedown', document.body );
+		assert.equal(container.children[0].className.indexOf('rdtOpen'), -1);
+
+		trigger( 'click', document.querySelector('.open-datepicker') );
+		assert.notEqual(container.children[0].className.indexOf('rdtOpen'), -1);
+	});
+
+	it( 'open picker on first render, then close it programmatically', function(){
+		createDatepickerContainer({
+			open: true
+		});
+		var container = document.querySelector('.datepicker-container');
+		assert.notEqual(container.children[0].className.indexOf('rdtOpen'), -1);
+
+		trigger( 'click', document.querySelector('.open-datepicker') );
+		assert.equal(container.children[0].className.indexOf('rdtOpen'), -1);
 	});
 
 	it( 'onSelect', function( done ){
