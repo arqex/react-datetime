@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.8.1
+* Fix timeFormat related bug where 'A' was being picked up but not 'a', for setting 12-hour clock.
+
 ## 2.8.0
 * Add typings for TypeScript 2.0. We now support TypeScript typings for versions 1.8 and 2.0.
 
