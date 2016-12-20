@@ -129,10 +129,12 @@ var valid = function( current ){
 ```
 [Working example of disabled weekends here.](http://codepen.io/simeg/pen/jVVKWq)
 
-## Usage with Typescript
+## Usage with TypeScript
 
-This project includes typings for Typescript 2.0. Additional typings are not
+This project includes typings for TypeScript versions 1.8 and 2.0. Additional typings are not
 required.
+
+Typings for 1.8 are found in `react-datetime.d.ts` and typings for 2.0 are found in `typings/index.d.ts`.
 
 ```js
 import * as Datetime  from 'react-datetime';
