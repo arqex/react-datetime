@@ -2,7 +2,6 @@
 var DOM = require( './testdom');
 DOM();
 
-
 // Needs to be global to work in Travis CI
 React = require('react');
 ReactDOM = require('react-dom');
@@ -214,6 +213,22 @@ describe( 'Datetime', function(){
 		assert.equal( view.className, 'rdtDays' );
 		// There must not be a time toggle
 		assert.equal( view.querySelectorAll('.timeToggle').length, 0);
+	});
+
+	it( 'timeFormat with lowercase am', function(){
+		var format = 'HH:mm:ss:SSS a',
+			component = createDatetime({ value: date, timeFormat: format }),
+			input = component.children[0]
+			;
+		assert.notEqual( input.value.indexOf('am'), -1 );
+	});
+
+	it( 'timeFormat with uppercase AM', function(){
+		var format = 'HH:mm:ss:SSS A',
+			component = createDatetime({ value: date, timeFormat: format }),
+			input = component.children[0]
+			;
+		assert.notEqual( input.value.indexOf('AM'), -1 );
 	});
 
 	it( 'viewMode=years', function(){
