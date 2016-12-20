@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.8.0
+* Add typings for TypeScript 2.0. We now support TypeScript typings for versions 1.8 and 2.0.
+
 ## 2.7.5
 * Bumps the version to skip buggy deployment 2.7.4
 
