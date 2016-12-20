@@ -129,6 +129,21 @@ var valid = function( current ){
 ```
 [Working example of disabled weekends here.](http://codepen.io/simeg/pen/jVVKWq)
 
+## Usage with Typescript
+
+This project includes typings for Typescript 2.0. Additional typings are not
+required.
+
+```js
+import * as Datetime  from 'react-datetime';
+
+class MyDTPicker extends React.Component<MyDTPickerProps, MyDTPickerState> {
+    render() JSX.Element {
+        return <Datetime />;
+    }
+}
+```
+
 ## Contributions
 * For information about how to contribute, see the [CONTRIBUTING](CONTRIBUTING.md) file.
 * For development we recommend that you use [react-datetime-playground](https://github.com/arqex/react-datetime-playground).
