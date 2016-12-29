@@ -22,9 +22,9 @@ var Wrapper = React.createClass({
 	},
 
 	render: function() {
-		console.log(this.state.viewMode);
+		console.log('Current viewmode: ' + this.state.viewMode);
 		return React.createElement(DateTime,
-            { viewMode: this.state.viewMode, defaultValue: moment()	 });
+            { viewMode: this.state.viewMode, defaultValue: moment()	});
 	}
 });
 

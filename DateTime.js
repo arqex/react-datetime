@@ -99,14 +99,14 @@ var Datetime = React.createClass({
 			inputValue = '';
 		else
 			inputValue = date || '';
-        
+
 		return {
 			updateOn: updateOn,
 			inputFormat: formats.datetime,
 			viewDate: viewDate,
 			selectedDate: selectedDate,
 			inputValue: inputValue,
-			open: props.open,
+			open: props.open
 		};
 	},
 
