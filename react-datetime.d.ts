@@ -8,7 +8,6 @@
 //// <reference path="../moment/moment-node.d.ts" />
 
 declare module ReactDatetime {
-  import React = __React;
   // import * as moment from 'moment';
 
   export interface DatetimepickerProps {
