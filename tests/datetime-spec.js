@@ -705,8 +705,10 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'disable months', function(){
+		var yearToday = new Date().getFullYear();
+		var dateBefore = yearToday + '-06-01';
 		createDatetime({ viewMode: 'months', isValidDate: function( current ){
-				return current.isBefore(moment('2016-06-01', 'YYYY-MM-DD'));
+				return current.isBefore(moment(dateBefore, 'YYYY-MM-DD'));
 		}});
 		assert.equal( dt.month(0).className, 'rdtMonth' );
 		assert.equal( dt.month(4).className, 'rdtMonth' );
