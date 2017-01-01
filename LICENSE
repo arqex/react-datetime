@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2014 Quri, Loïc CHOLLIER
+Copyright (c) 2017 Javier Marquez
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
