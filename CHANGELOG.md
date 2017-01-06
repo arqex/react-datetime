@@ -1,5 +1,9 @@
 Changelog
 =========
+## 2.8.2
+* Fix year related bug in tests where year was set to 2016
+* Add a yarnfile so yarn is now possible to use for installing dependencies
+
 ## 2.8.1
 * Fix timeFormat related bug where 'A' was being picked up but not 'a', for setting 12-hour clock.
 
