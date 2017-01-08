@@ -11,7 +11,7 @@ var Wrapper = React.createClass({
 	},
 
 	updateView: function(format) {
-		console.log('changing state');
+		console.log('changing viewMode to days');
 		this.setState({
 			viewMode: 'days'
 		});
