@@ -170,9 +170,9 @@ var Datetime = React.createClass({
 			}
 		}
         
-        	if ( nextProps.viewMode !== this.props.viewMode ) {
+		if ( nextProps.viewMode !== this.props.viewMode ) {
 			update.currentView = nextProps.viewMode;
-        	}
+		}
 
 		this.setState( update );
 	},
