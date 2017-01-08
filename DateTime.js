@@ -157,17 +157,21 @@ var Datetime = React.createClass({
 		;
 
 		if ( nextProps.value !== this.props.value ||
-            formats.datetime !== this.getFormats( this.props ).datetime ){
+            formats.datetime !== this.getFormats( this.props ).datetime ) {
             update = this.getStateFromProps( nextProps );
 		}
 
-		if ( update.open === undefined ){
-			if ( this.props.closeOnSelect && this.state.currentView !== 'time' ){
+		if ( update.open === undefined ) {
+			if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
 				update.open = false;
 			}
 			else {
 				update.open = this.state.open;
 			}
+		}
+        
+		if ( nextProps.viewMode !== this.props.viewMode ) {
+			update.currentView = nextProps.viewMode;
 		}
 
 		this.setState( update );
