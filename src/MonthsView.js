@@ -32,9 +32,15 @@ var DateTimePickerMonths = React.createClass({
             irrelevantDate = 1;
 		while (i < 12) {
 			classes = 'rdtMonth';
-			currentMonth =
-                this.props.viewDate.clone().set({ year: year, month: i, date: irrelevantDate });
-			disabled = !isValid(currentMonth);
+			currentMonth = this.props.viewDate.clone().set({ year: year, month: i, date: irrelevantDate });
+			var days = Array.from({ length: currentMonth.endOf('month').format('D') }, function(e, i) {
+				return i + 1;
+			});
+			var validDay = days.find(function(d) {
+				var day = currentMonth.clone().set('date', d);
+				return isValid(day);
+			});
+			disabled = validDay === undefined;
 
 			if ( disabled )
 				classes += ' rdtDisabled';

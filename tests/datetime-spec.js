@@ -724,27 +724,27 @@ describe( 'Datetime', function(){
 		assert.equal( dt.year(7).className, 'rdtYear rdtDisabled' );
 	});
 
-    it( 'locale', function(){
-        createDatetime({ locale: 'nl' });
-        view = dt.view();
-        var weekDays = [];
-        var weekDaysHtmlQuery = view.querySelectorAll('.rdtDays .dow');
-        Array.prototype.forEach.call(weekDaysHtmlQuery, function(el) {
-            weekDays.push(el.innerHTML);
-        });
-        weekDays = weekDays.splice(0, 7);
-        var weekDayNames = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
-        weekDays.map(function(weekDayHtml, index) {
-            assert.equal( weekDayHtml, weekDayNames[index] );
-        });
-    });
+  it( 'locale', function(){
+      createDatetime({ locale: 'nl' });
+      view = dt.view();
+      var weekDays = [];
+      var weekDaysHtmlQuery = view.querySelectorAll('.rdtDays .dow');
+      Array.prototype.forEach.call(weekDaysHtmlQuery, function(el) {
+          weekDays.push(el.innerHTML);
+      });
+      weekDays = weekDays.splice(0, 7);
+      var weekDayNames = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
+      weekDays.map(function(weekDayHtml, index) {
+          assert.equal( weekDayHtml, weekDayNames[index] );
+      });
+  });
 
-    it( 'locale in viewMode=months', function(){
-        createDatetime({ viewMode: 'months', locale: 'nl' });
-        view = dt.view();
-        var thirdMonth = view.querySelectorAll('.rdtMonth')[2].innerHTML;
-        var fifthMonth = view.querySelectorAll('.rdtMonth')[4].innerHTML;
-        assert.equal( thirdMonth, 'Mrt' );
-        assert.equal( fifthMonth, 'Mei' );
-    });
+  it( 'locale in viewMode=months', function(){
+      createDatetime({ viewMode: 'months', locale: 'nl' });
+      view = dt.view();
+      var thirdMonth = view.querySelectorAll('.rdtMonth')[2].innerHTML;
+      var fifthMonth = view.querySelectorAll('.rdtMonth')[4].innerHTML;
+      assert.equal( thirdMonth, 'Mrt' );
+      assert.equal( fifthMonth, 'Mei' );
+  });
 });
