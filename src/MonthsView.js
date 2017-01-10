@@ -24,12 +24,11 @@ var DateTimePickerMonths = React.createClass({
 			months = [],
 			renderer = this.props.renderMonth || this.renderMonth,
 			isValid = this.props.isValidDate || this.alwaysValidDate,
-			classes, props
+			classes, props, currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
+			// Date is irrelevant because we're only interested in month
+			irrelevantDate = 1
 		;
 
-		var currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
-			// Date is irrelevant because we're only interested in month
-			irrelevantDate = 1;
 		while (i < 12) {
 			classes = 'rdtMonth';
 			currentMonth =
@@ -61,9 +60,9 @@ var DateTimePickerMonths = React.createClass({
 
 			if ( !isDisabled )
 				props.onClick = ( this.props.updateOn === 'months' ?
-					this.updateSelectedMonth : this.props.setDate( 'month' ));
+					this.updateSelectedMonth : this.props.setDate( 'month' ) );
 
-			months.push( renderer( props, i, year, date && date.clone() ));
+			months.push( renderer( props, i, year, date && date.clone() ) );
 
 			if ( months.length === 4 ) {
 				rows.push( DOM.tr({ key: month + '_' + rows.length }, months ) );
@@ -77,16 +76,16 @@ var DateTimePickerMonths = React.createClass({
 	},
 
 	updateSelectedMonth: function( event ) {
-		this.props.updateSelectedDate(event, true);
+		this.props.updateSelectedDate( event, true );
 	},
 
 	renderMonth: function( props, month ) {
 		var localMoment = this.props.viewDate;
-		var monthStr = localMoment.localeData().monthsShort(localMoment.month(month));
+		var monthStr = localMoment.localeData().monthsShort( localMoment.month( month ) );
 		var strLength = 3;
 		// Because some months are up to 5 characters long, we want to
 		// use a fixed string length for consistency
-		var monthStrFixedLength = monthStr.substring(0, strLength);
+		var monthStrFixedLength = monthStr.substring( 0, strLength );
 		return DOM.td( props, capitalize( monthStrFixedLength ) );
 	},
 
@@ -95,8 +94,8 @@ var DateTimePickerMonths = React.createClass({
 	}
 });
 
-function capitalize(str) {
-	return str.charAt(0).toUpperCase() + str.slice(1);
+function capitalize( str ) {
+	return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
 }
 
 module.exports = DateTimePickerMonths;
