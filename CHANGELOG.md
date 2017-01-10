@@ -1,5 +1,10 @@
 Changelog
 =========
+## 2.8.3
+* Fix `isValidDate` related bug where current month would be invalid
+* Trigger re-render of component when `viewMode` changes
+* Never append `rdtOld` class in year view
+
 ## 2.8.2
 * Fix year related bug in tests where year was set to 2016
 * Add a yarnfile so yarn is now possible to use for installing dependencies
