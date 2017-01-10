@@ -6,7 +6,6 @@ var React = require('react'),
 
 var DOM = React.DOM;
 var DateTimePickerDays = React.createClass({
-
 	render: function() {
 		var footer = this.renderFooter(),
 			date = this.props.viewDate,
@@ -62,7 +61,7 @@ var DateTimePickerDays = React.createClass({
 			weeks = [],
 			days = [],
 			renderer = this.props.renderDay || this.renderDay,
-			isValid = this.props.isValidDate || this.isValidDate,
+			isValid = this.props.isValidDate || this.alwaysValidDate,
 			classes, disabled, dayProps, currentDate
 		;
 
@@ -130,7 +129,9 @@ var DateTimePickerDays = React.createClass({
 			)
 		);
 	},
-	isValidDate: function(){ return 1; }
+	alwaysValidDate: function(){
+		return 1;
+	}
 });
 
 module.exports = DateTimePickerDays;

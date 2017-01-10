@@ -87,7 +87,8 @@ var date = new Date( 2000, 0, 15, 2, 2, 2, 2 ),
 	mDate = moment( date ),
 	strDate = mDate.format('L') + ' ' + mDate.format('LT'),
 	mDateUTC = moment.utc(date),
-	strDateUTC = mDateUTC.format('L') + ' ' + mDateUTC.format('LT')
+	strDateUTC = mDateUTC.format('L') + ' ' + mDateUTC.format('LT'),
+	currentYear = new Date().getFullYear()
 ;
 
 describe( 'Datetime', function(){
@@ -705,9 +706,8 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'disable months', function(){
-		var yearToday = new Date().getFullYear();
-		var dateBefore = yearToday + '-06-01';
-		createDatetime({ viewMode: 'months', isValidDate: function( current ){
+		var dateBefore = currentYear + '-06-01';
+		createDatetime({ viewMode: 'months', isValidDate: function(current ){
 				return current.isBefore(moment(dateBefore, 'YYYY-MM-DD'));
 		}});
 		assert.equal( dt.month(0).className, 'rdtMonth' );
@@ -717,11 +717,29 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'disable years', function(){
-		createDatetime({ viewMode: 'years', isValidDate: function( current ){
+		createDatetime({ viewMode: 'years', isValidDate: function(current ){
 				return current.isBefore(moment('2016-01-01', 'YYYY-MM-DD'));
 		}});
+		assert.equal( dt.year(0).className, 'rdtYear rdtOld' );
 		assert.equal( dt.year(6).className, 'rdtYear' );
 		assert.equal( dt.year(7).className, 'rdtYear rdtDisabled' );
+	});
+
+	it( 'persistent valid months going monthView->yearView->monthView', function(){
+		var dateBefore = currentYear + '-06-01';
+		createDatetime({ viewMode: 'months', isValidDate: function(current ){
+				return current.isBefore(moment(dateBefore, 'YYYY-MM-DD'));
+		}});
+		assert.equal( dt.month(4).className, 'rdtMonth' );
+		assert.equal( dt.month(5).className, 'rdtMonth rdtDisabled' );
+		// Go to year view
+		ev.click( dt.switcher() );
+		assert.equal( dt.year(0).className, 'rdtYear rdtOld' );
+		assert.equal( dt.year(9).className, 'rdtYear rdtDisabled' );
+		// Go back initial month view, nothing should be changed
+		ev.click( dt.year(8) );
+		assert.equal( dt.month(4).className, 'rdtMonth' );
+		assert.equal( dt.month(5).className, 'rdtMonth rdtDisabled' );
 	});
 
     it( 'locale', function(){
