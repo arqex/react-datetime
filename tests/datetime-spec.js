@@ -720,7 +720,7 @@ describe( 'Datetime', function(){
 		createDatetime({ viewMode: 'years', isValidDate: function(current ){
 				return current.isBefore(moment('2016-01-01', 'YYYY-MM-DD'));
 		}});
-		assert.equal( dt.year(0).className, 'rdtYear rdtOld' );
+		assert.equal( dt.year(0).className, 'rdtYear' );
 		assert.equal( dt.year(6).className, 'rdtYear' );
 		assert.equal( dt.year(7).className, 'rdtYear rdtDisabled' );
 	});
@@ -734,7 +734,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.month(5).className, 'rdtMonth rdtDisabled' );
 		// Go to year view
 		ev.click( dt.switcher() );
-		assert.equal( dt.year(0).className, 'rdtYear rdtOld' );
+		assert.equal( dt.year(0).className, 'rdtYear' );
 		assert.equal( dt.year(9).className, 'rdtYear rdtDisabled' );
 		// Go back initial month view, nothing should be changed
 		ev.click( dt.year(8) );

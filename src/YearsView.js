@@ -36,8 +36,10 @@ var DateTimePickerYears = React.createClass({
 			classes = 'rdtYear';
 			currentYear = this.props.viewDate.clone().set(
 				{ year: year, month: irrelevantMonth, date: irrelevantDate } );
-			if ( i === -1 | i === 10 )
-				classes += ' rdtOld';
+
+			// Not sure what 'rdtOld' is for, commenting out for now as it's not working properly
+			// if ( i === -1 | i === 10 )
+				// classes += ' rdtOld';
 
 			noOfDaysInYear = currentYear.endOf( 'year' ).format( 'DDD' );
 			daysInYear = Array.from({ length: noOfDaysInYear }, function( e, i ) {
