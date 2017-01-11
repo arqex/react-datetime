@@ -6,14 +6,14 @@ var moment = require('moment');
 var Wrapper = React.createClass({
 	getInitialState: function() {
 		return {
-			dateFormat: 'YYYY-mm-DD'
+			dateFormat: 'YYYY-MM-DD'
 		};
 	},
 
 	updateFormat: function(format) {
 		console.log('changing state');
 		this.setState({
-			dateFormat: 'DD.mm.YYYY'
+			dateFormat: 'DD.MM.YYYY'
 		});
 	},
 
