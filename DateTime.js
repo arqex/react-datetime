@@ -129,7 +129,7 @@ var Datetime = React.createClass({
 				date: props.dateFormat || '',
 				time: props.timeFormat || ''
 			},
-			locale = this.localMoment( props.date ).localeData()
+			locale = this.localMoment( props.date, undefined, props ).localeData()
 		;
 
 		if ( formats.date === true ){
@@ -172,6 +172,18 @@ var Datetime = React.createClass({
         
 		if ( nextProps.viewMode !== this.props.viewMode ) {
 			update.currentView = nextProps.viewMode;
+		}
+
+		if ( nextProps.locale !== this.props.locale ) {
+			update.viewDate = this.state.viewDate.clone().locale(nextProps.locale);
+			update.selectedDate = this.state.selectedDate.clone().locale(nextProps.locale);
+			update.inputValue = update.selectedDate.format(formats.datetime);
+		}
+
+		if ( nextProps.utc !== this.props.utc ) {
+			update.viewDate = ( nextProps.utc ) ? this.state.viewDate.clone().utc() : this.state.viewDate.clone().local();
+			update.selectedDate = ( nextProps.utc ) ? this.state.selectedDate.clone().utc() : this.setState.selectedDate.clone().local();
+			update.inputValue = update.selectedDate.format(formats.datetime);
 		}
 
 		this.setState( update );
@@ -342,11 +354,12 @@ var Datetime = React.createClass({
 		}
 	},
 
-	localMoment: function( date, format ){
-		var momentFn = this.props.utc ? moment.utc : moment;
-		var m = momentFn( date, format, this.props.strictParsing );
-		if ( this.props.locale )
-			m.locale( this.props.locale );
+	localMoment: function( date, format, props ){
+		props = props ? props : this.props;  // For Fix #126 and #203
+		var momentFn = props.utc ? moment.utc : moment;
+		var m = momentFn( date, format, props.strictParsing );
+		if ( props.locale )
+			m.locale( props.locale );
 		return m;
 	},
 
