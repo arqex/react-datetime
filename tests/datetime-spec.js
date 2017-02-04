@@ -80,6 +80,9 @@ var dt = {
 	},
 	milli: function(){
 		return document.querySelector('.rdtMilli input');
+	},
+	isOpen: function(){
+		return !!document.querySelector('.rdt.rdtOpen');
 	}
 };
 
@@ -106,7 +109,6 @@ describe( 'Datetime', function(){
 		assert.equal( component.children.length, 1 );
 		assert.equal( component.children[0].tagName , 'DIV' );
 	});
-
 
 	it( 'Date value', function(){
 		var component = createDatetime({ value: date }),
@@ -261,11 +263,11 @@ describe( 'Datetime', function(){
 		assert.notEqual( component.className.indexOf('custom'), -1 );
 	});
 
-    it( 'className of type string array', function(){
-        var component = createDatetime({ className: ['custom1', 'custom2'] });
-        assert.notEqual( component.className.indexOf('custom1'), -1 );
-        assert.notEqual( component.className.indexOf('custom2'), -1 );
-    });
+	it( 'className of type string array', function(){
+		var component = createDatetime({ className: ['custom1', 'custom2'] });
+		assert.notEqual( component.className.indexOf('custom1'), -1 );
+		assert.notEqual( component.className.indexOf('custom2'), -1 );
+	});
 
 	it( 'inputProps', function(){
 		var component = createDatetime({ inputProps: { className: 'myInput', type: 'email' } }),
@@ -468,9 +470,9 @@ describe( 'Datetime', function(){
 
 	it( 'open picker', function(){
 		createDatetime({});
-		assert.equal(dt.dt().className.indexOf('rdtOpen'), -1);
+		assert.equal( dt.isOpen(), false );
 		ev.focus( dt.input() );
-		assert.notEqual(dt.dt().className.indexOf('rdtOpen'), -1);
+		assert.equal( dt.isOpen(), true );
 	});
 
 	it( 'onSelect', function( done ){
@@ -513,38 +515,41 @@ describe( 'Datetime', function(){
 
 	it( 'onBlur', function(){
 		createDatetime({ value: date, onBlur: function( selected ){
-			assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+			// TODO - These assertions are not being evaluated ?!
+			assert.equal(true, false);
+
+			assert.equal( dt.isOpen(), false );
 			assert.equal( selected.date(), mDate.date() );
 			assert.equal( selected.month(), mDate.month() );
 			assert.equal( selected.year(), mDate.year() );
 			done();
 		}});
 
-		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		assert.equal( dt.isOpen(), false );
 		ev.focus( dt.input() );
-		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		assert.equal(dt.isOpen(), true );
 		trigger( 'click', document.body );
 	});
 
 	it( 'closeOnTab:true', function(){
 		createDatetime({ value: date });
 
-		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		assert.equal( dt.isOpen(), false );
 		ev.focus( dt.input() );
-		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		assert.equal(dt.isOpen(), true );
 		TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
-		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		assert.equal( dt.isOpen(), false );
 		trigger( 'click', document.body );
 	});
 
 	it( 'closeOnTab:false', function(){
 		createDatetime({ value: date, closeOnTab: false });
 
-		assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		assert.equal( dt.isOpen(), false );
 		ev.focus( dt.input() );
-		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		assert.equal(dt.isOpen(), true );
 		TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
-		assert.notEqual( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
+		assert.equal(dt.isOpen(), true );
 		trigger( 'click', document.body );
 	});
 
@@ -742,27 +747,27 @@ describe( 'Datetime', function(){
 		assert.equal( dt.month(5).className, 'rdtMonth rdtDisabled' );
 	});
 
-    it( 'locale', function(){
-        createDatetime({ locale: 'nl' });
-        view = dt.view();
-        var weekDays = [];
-        var weekDaysHtmlQuery = view.querySelectorAll('.rdtDays .dow');
-        Array.prototype.forEach.call(weekDaysHtmlQuery, function(el) {
-            weekDays.push(el.innerHTML);
-        });
-        weekDays = weekDays.splice(0, 7);
-        var weekDayNames = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
-        weekDays.map(function(weekDayHtml, index) {
-            assert.equal( weekDayHtml, weekDayNames[index] );
-        });
-    });
+	it( 'locale', function(){
+		createDatetime({ locale: 'nl' });
+		view = dt.view();
+		var weekDays = [];
+		var weekDaysHtmlQuery = view.querySelectorAll('.rdtDays .dow');
+		Array.prototype.forEach.call(weekDaysHtmlQuery, function(el) {
+		    weekDays.push(el.innerHTML);
+		});
+		weekDays = weekDays.splice(0, 7);
+		var weekDayNames = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
+		weekDays.map(function(weekDayHtml, index) {
+		    assert.equal( weekDayHtml, weekDayNames[index] );
+		});
+	});
 
-    it( 'locale in viewMode=months', function(){
-        createDatetime({ viewMode: 'months', locale: 'nl' });
-        view = dt.view();
-        var thirdMonth = view.querySelectorAll('.rdtMonth')[2].innerHTML;
-        var fifthMonth = view.querySelectorAll('.rdtMonth')[4].innerHTML;
-        assert.equal( thirdMonth, 'Mrt' );
-        assert.equal( fifthMonth, 'Mei' );
-    });
+	it( 'locale in viewMode=months', function(){
+		createDatetime({ viewMode: 'months', locale: 'nl' });
+		view = dt.view();
+		var thirdMonth = view.querySelectorAll('.rdtMonth')[2].innerHTML;
+		var fifthMonth = view.querySelectorAll('.rdtMonth')[4].innerHTML;
+		assert.equal( thirdMonth, 'Mrt' );
+		assert.equal( fifthMonth, 'Mei' );
+	});
 });
