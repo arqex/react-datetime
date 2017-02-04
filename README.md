@@ -42,12 +42,13 @@ render: function() {
 | **input** | `boolean` | `true` | Whether to show an input field to edit the date manually. |
 | **open** | `boolean` | `null` | Whether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside. |
 | **locale** | `string` | `null` | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
+| **utc** | `boolean` | `false` | When true, input time values will be interpreted as UTC (Zulu time) by Moment.js. Otherwise they will default to the user's local timezone.
 | **onChange** | `function` | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback receives the value of the input (a string). |
 | **onFocus** | `function` | empty function | Callback trigger for when the user opens the datepicker. |
 | **onBlur** | `function` | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned. |
 | **viewMode** | `string` or `number` | `'days'` | The default view to display when the picker is shown (`'years'`, `'months'`, `'days'`, `'time'`). |
 | **className** | `string` or `string array` | `''` | Extra class name for the outermost markup element. |
-| **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `placeholder`, `disabled` and `required`. |
+| **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `placeholder`, `disabled`, `required` and `name`. |
 | **isValidDate** | `function` | `() => true` | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and should return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
 | **renderDay** | `function` | `DOM.td(day)` | Customize the way that the days are shown in the daypicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance-customization). |
 | **renderMonth** | `function` | `DOM.td(month)` | Customize the way that the months are shown in the monthpicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization). |
@@ -72,7 +73,7 @@ If there are multiple locales loaded, you can use the prop `locale` to define wh
 <Datetime locale="fr-ca" />
 <Datetime locale="de" />
 ```
-[Here you can see the i18n example working](http://codepen.io/arqex/pen/PqJMQV).
+[Here you can see the i18n example working](http://codepen.io/simeg/pen/yVVjdJ).
 
 ## Appearance customization
 It is possible to customize the way that the datepicker display the days, months and years in the calendar. To adapt the calendar for every need it is possible to use the props `renderDay(props, currentDate, selectedDate)`, `renderMonth(props, month, year, selectedDate)` and `renderYear(props, year, selectedDate)` to customize the output of each rendering method.
@@ -97,7 +98,7 @@ var MyDTPicker = React.createClass({
     }
 });
 ```
-[You can see a customized calendar here.](http://codepen.io/arqex/pen/mJzRwM)
+[You can see a customized calendar here.](http://codepen.io/simeg/pen/YppLmO)
 
 #### Method parameters
 * `props` is the object that the datepicker has calculated for this object. It is convenient to use this object as the `props` for your custom component, since it knows how to handle the click event and its `className` attribute is used by the default styles.
@@ -117,7 +118,7 @@ var valid = function( current ){
 };
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled days here.](http://codepen.io/arqex/pen/jPeyGX)
+[Working example of disabled days here.](http://codepen.io/simeg/pen/XNNYJg)
 
 It's also possible to disable *the weekends*, as shown in the example below.
 ```js
@@ -126,7 +127,24 @@ var valid = function( current ){
 };
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled weekends here.](http://codepen.io/arqex/pen/VLEPXb)
+[Working example of disabled weekends here.](http://codepen.io/simeg/pen/jVVKWq)
+
+## Usage with TypeScript
+
+This project includes typings for TypeScript versions 1.8 and 2.0. Additional typings are not
+required.
+
+Typings for 1.8 are found in `react-datetime.d.ts` and typings for 2.0 are found in `typings/index.d.ts`.
+
+```js
+import * as Datetime  from 'react-datetime';
+
+class MyDTPicker extends React.Component<MyDTPickerProps, MyDTPickerState> {
+    render() JSX.Element {
+        return <Datetime />;
+    }
+}
+```
 
 ## Contributions
 * For information about how to contribute, see the [CONTRIBUTING](CONTRIBUTING.md) file.

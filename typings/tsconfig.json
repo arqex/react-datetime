@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "strictNullChecks": false,
+        "types": [],
+        "noEmit": true,
+        "jsx": "react"
+    },
+    "files": [
+        "index.d.ts",
+        "react-datetime-tests.tsx"
+    ]
+}

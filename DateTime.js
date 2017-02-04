@@ -27,6 +27,7 @@ var Datetime = React.createClass({
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
 		locale: TYPES.string,
+		utc: TYPES.bool,
 		input: TYPES.bool,
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
@@ -55,7 +56,8 @@ var Datetime = React.createClass({
 			dateFormat: true,
 			strictParsing: true,
 			closeOnSelect: false,
-			closeOnTab: true
+			closeOnTab: true,
+			utc: false
 		};
 	},
 
@@ -154,15 +156,17 @@ var Datetime = React.createClass({
 			update = {}
 		;
 
-		if ( nextProps.value !== this.props.value ){
-			update = this.getStateFromProps( nextProps );
-		}
-		if ( formats.datetime !== this.getFormats( this.props ).datetime ) {
-			update.inputFormat = formats.datetime;
+		if ( nextProps.value !== this.props.value ||
+            formats.datetime !== this.getFormats( this.props ).datetime ) {
+            update = this.getStateFromProps( nextProps );
 		}
 
 		if ( update.open === undefined ){
 			update.open = this.state.open;
+		}
+        
+		if ( nextProps.viewMode !== this.props.viewMode ) {
+			update.currentView = nextProps.viewMode;
 		}
 
 		this.setState( update );
@@ -313,25 +317,29 @@ var Datetime = React.createClass({
 
 	openCalendar: function() {
 		if (!this.state.open) {
-			this.props.onFocus();
-			this.setState({ open: true });
+			this.setState({ open: true }, function() {
+				this.props.onFocus();
+			});
 		}
 	},
 
 	closeCalendar: function() {
-		this.setState({ open: false });
-		this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+		this.setState({ open: false }, function () {
+			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+		});
 	},
 
 	handleClickOutside: function(){
 		if ( this.props.input && this.state.open && !this.props.open ){
-			this.setState({ open: false });
-			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+			this.setState({ open: false }, function() {
+				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+			});
 		}
 	},
 
 	localMoment: function( date, format ){
-		var m = moment( date, format, this.props.strictParsing );
+		var momentFn = this.props.utc ? moment.utc : moment;
+		var m = momentFn( date, format, this.props.strictParsing );
 		if ( this.props.locale )
 			m.locale( this.props.locale );
 		return m;

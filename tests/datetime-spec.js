@@ -2,7 +2,6 @@
 var DOM = require( './testdom');
 DOM();
 
-
 // Needs to be global to work in Travis CI
 React = require('react');
 ReactDOM = require('react-dom');
@@ -86,7 +85,10 @@ var dt = {
 
 var date = new Date( 2000, 0, 15, 2, 2, 2, 2 ),
 	mDate = moment( date ),
-	strDate = mDate.format('L') + ' ' + mDate.format('LT')
+	strDate = mDate.format('L') + ' ' + mDate.format('LT'),
+	mDateUTC = moment.utc(date),
+	strDateUTC = mDateUTC.format('L') + ' ' + mDateUTC.format('LT'),
+	currentYear = new Date().getFullYear()
 ;
 
 describe( 'Datetime', function(){
@@ -125,6 +127,33 @@ describe( 'Datetime', function(){
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
+	});
+
+	it( 'UTC Value from local moment', function(){
+		var component = createDatetime({
+			value: mDate,
+			utc: true
+		});
+		var input = component.children[0];
+		assert.equal( input.value, strDateUTC );
+	});
+
+	it( 'UTC Value from UTC moment', function(){
+		var component = createDatetime({
+			value: mDateUTC,
+			utc: true
+		});
+		var input = component.children[0];
+		assert.equal( input.value, strDateUTC );
+	});
+
+	it( 'UTC Value from utc string', function(){
+		var component = createDatetime({
+			value: strDateUTC,
+			utc: true
+		});
+		var input = component.children[0];
+		assert.equal( input.value, strDateUTC );
 	});
 
 	it( 'Date defaultValue', function(){
@@ -166,6 +195,7 @@ describe( 'Datetime', function(){
 		// There must not be a date toggle
 		assert.equal( view.querySelectorAll('thead').length, 0);
 	});
+
 	it( 'timeFormat', function(){
 		var format = 'HH:mm:ss:SSS',
 			component = createDatetime({ value: date, timeFormat: format }),
@@ -184,6 +214,22 @@ describe( 'Datetime', function(){
 		assert.equal( view.className, 'rdtDays' );
 		// There must not be a time toggle
 		assert.equal( view.querySelectorAll('.timeToggle').length, 0);
+	});
+
+	it( 'timeFormat with lowercase am', function(){
+		var format = 'HH:mm:ss:SSS a',
+			component = createDatetime({ value: date, timeFormat: format }),
+			input = component.children[0]
+			;
+		assert.notEqual( input.value.indexOf('am'), -1 );
+	});
+
+	it( 'timeFormat with uppercase AM', function(){
+		var format = 'HH:mm:ss:SSS A',
+			component = createDatetime({ value: date, timeFormat: format }),
+			input = component.children[0]
+			;
+		assert.notEqual( input.value.indexOf('AM'), -1 );
 	});
 
 	it( 'viewMode=years', function(){
@@ -255,7 +301,6 @@ describe( 'Datetime', function(){
 		// The cell text should be 'day'
 		assert.equal( view.querySelector('.rdtDay').innerHTML, 'day' );
 	});
-
 
 	it( 'renderMonth', function(){
 		var props, month, year, selectedDate,
@@ -338,7 +383,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.view().className, 'rdtDays' );
 		ev.click( dt.timeSwitcher() );
 		assert.equal( dt.view().className, 'rdtTime' );
-	})
+	});
 
 	it( 'selectYear', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
@@ -360,7 +405,6 @@ describe( 'Datetime', function(){
 		ev.click( dt.next() );
 		assert.equal( dt.switcher().innerHTML, '2020-2029' );
 	});
-
 
 	it( 'decrease decade', function(){
 		createDatetime({ viewMode: 'years', defaultValue: date });
@@ -391,7 +435,6 @@ describe( 'Datetime', function(){
 		ev.click( dt.next() );
 		assert.equal( dt.switcher().getAttribute('data-value'), '2002' );
 	});
-
 
 	it( 'decrease year', function(){
 		createDatetime({ viewMode: 'months', defaultValue: date });
@@ -552,7 +595,6 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'long increase time', function( done ){
-		var i = 0;
 		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date});
 
 		trigger( 'mousedown', dt.timeUp( 0 ) );
@@ -565,7 +607,6 @@ describe( 'Datetime', function(){
 	});
 
 	it( 'long decrease time', function( done ){
-		var i = 0;
 		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date});
 
 		trigger( 'mousedown', dt.timeDown( 0 ) );
@@ -663,4 +704,65 @@ describe( 'Datetime', function(){
 		dt.input().value = invalidStrDate;
 		ev.change( dt.input() );
 	});
+
+	it( 'disable months', function(){
+		var dateBefore = currentYear + '-06-01';
+		createDatetime({ viewMode: 'months', isValidDate: function(current ){
+				return current.isBefore(moment(dateBefore, 'YYYY-MM-DD'));
+		}});
+		assert.equal( dt.month(0).className, 'rdtMonth' );
+		assert.equal( dt.month(4).className, 'rdtMonth' );
+		assert.equal( dt.month(5).className, 'rdtMonth rdtDisabled' );
+		assert.equal( dt.month(11).className, 'rdtMonth rdtDisabled' );
+	});
+
+	it( 'disable years', function(){
+		createDatetime({ viewMode: 'years', isValidDate: function(current ){
+				return current.isBefore(moment('2016-01-01', 'YYYY-MM-DD'));
+		}});
+		assert.equal( dt.year(0).className, 'rdtYear' );
+		assert.equal( dt.year(6).className, 'rdtYear' );
+		assert.equal( dt.year(7).className, 'rdtYear rdtDisabled' );
+	});
+
+	it( 'persistent valid months going monthView->yearView->monthView', function(){
+		var dateBefore = currentYear + '-06-01';
+		createDatetime({ viewMode: 'months', isValidDate: function(current ){
+				return current.isBefore(moment(dateBefore, 'YYYY-MM-DD'));
+		}});
+		assert.equal( dt.month(4).className, 'rdtMonth' );
+		assert.equal( dt.month(5).className, 'rdtMonth rdtDisabled' );
+		// Go to year view
+		ev.click( dt.switcher() );
+		assert.equal( dt.year(0).className, 'rdtYear' );
+		assert.equal( dt.year(9).className, 'rdtYear rdtDisabled' );
+		// Go back initial month view, nothing should be changed
+		ev.click( dt.year(8) );
+		assert.equal( dt.month(4).className, 'rdtMonth' );
+		assert.equal( dt.month(5).className, 'rdtMonth rdtDisabled' );
+	});
+
+    it( 'locale', function(){
+        createDatetime({ locale: 'nl' });
+        view = dt.view();
+        var weekDays = [];
+        var weekDaysHtmlQuery = view.querySelectorAll('.rdtDays .dow');
+        Array.prototype.forEach.call(weekDaysHtmlQuery, function(el) {
+            weekDays.push(el.innerHTML);
+        });
+        weekDays = weekDays.splice(0, 7);
+        var weekDayNames = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
+        weekDays.map(function(weekDayHtml, index) {
+            assert.equal( weekDayHtml, weekDayNames[index] );
+        });
+    });
+
+    it( 'locale in viewMode=months', function(){
+        createDatetime({ viewMode: 'months', locale: 'nl' });
+        view = dt.view();
+        var thirdMonth = view.querySelectorAll('.rdtMonth')[2].innerHTML;
+        var fifthMonth = view.querySelectorAll('.rdtMonth')[4].innerHTML;
+        assert.equal( thirdMonth, 'Mrt' );
+        assert.equal( fifthMonth, 'Mei' );
+    });
 });
