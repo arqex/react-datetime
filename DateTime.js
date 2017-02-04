@@ -161,13 +161,8 @@ var Datetime = React.createClass({
             update = this.getStateFromProps( nextProps );
 		}
 
-		if ( update.open === undefined ) {
-			if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
-				update.open = false;
-			}
-			else {
-				update.open = this.state.open;
-			}
+		if ( update.open === undefined ){
+			update.open = this.state.open;
 		}
         
 		if ( nextProps.viewMode !== this.props.viewMode ) {
