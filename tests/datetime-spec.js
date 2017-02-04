@@ -770,4 +770,22 @@ describe( 'Datetime', function(){
 		assert.equal( thirdMonth, 'Mrt' );
 		assert.equal( fifthMonth, 'Mei' );
 	});
+
+	it( 'closeOnSelect=false', function(){
+		createDatetime({ closeOnSelect: false });
+		view = dt.view();
+		ev.focus( dt.input() );
+		assert.equal( dt.isOpen(), true );
+		ev.click( dt.day( 2 ) );
+		assert.equal( dt.isOpen(), true );
+	});
+
+	it( 'closeOnSelect=true', function(){
+		createDatetime({ closeOnSelect: true });
+		view = dt.view();
+		ev.focus( dt.input() );
+		assert.equal( dt.isOpen(), true );
+		ev.click( dt.day( 2 ) );
+		assert.equal( dt.isOpen(), false );
+	});
 });
