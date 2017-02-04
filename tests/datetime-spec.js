@@ -12,7 +12,7 @@ var Datetime = require('../DateTime'),
 	TestUtils = require('react-addons-test-utils')
 ;
 
-var createDatetime = function( props ){
+var createDatetime = function( props ) {
 	document.body.innerHTML = '<div id="root"></div>';
 
 	ReactDOM.render(
@@ -23,7 +23,7 @@ var createDatetime = function( props ){
 	return document.getElementById('root').children[0];
 };
 
-var trigger = function( name, element ){
+var trigger = function( name, element ) {
 	var ev = document.createEvent("MouseEvents");
    ev.initEvent(name, true, true);
    element.dispatchEvent( ev );
@@ -31,57 +31,57 @@ var trigger = function( name, element ){
 
 var ev = TestUtils.Simulate;
 var dt = {
-	dt: function(){
+	dt: function() {
 		return document.getElementById('root').children[0];
 	},
-	view: function(){
+	view: function() {
 		return this.dt().children[1].children[0];
 	},
-	input: function(){
+	input: function() {
 		return this.dt().children[0];
 	},
-	switcher: function(){
+	switcher: function() {
 		return document.querySelector('.rdtSwitch');
 	},
-	timeSwitcher: function(){
+	timeSwitcher: function() {
 		return document.querySelector('.rdtTimeToggle');
 	},
-	year: function( n ){
+	year: function( n ) {
 		var years = document.querySelectorAll('.rdtYear');
 		return years[ n || 0 ];
 	},
-	month: function( n ){
+	month: function( n ) {
 		var months = document.querySelectorAll('.rdtMonth');
 		return months[ n || 0 ];
 	},
-	day: function( n ){
+	day: function( n ) {
 		return document.querySelector('.rdtDay[data-value="' + n + '"]');
 	},
-	next: function(){
+	next: function() {
 		return document.querySelector('.rdtNext span');
 	},
-	prev: function(){
+	prev: function() {
 		return document.querySelector('.rdtPrev span');
 	},
-	timeUp: function( n ){
+	timeUp: function( n ) {
 		return document.querySelectorAll('.rdtCounter')[ n ].children[0];
 	},
-	timeDown: function( n ){
+	timeDown: function( n ) {
 		return document.querySelectorAll('.rdtCounter')[ n ].children[2];
 	},
-	hour: function(){
+	hour: function() {
 		return document.querySelectorAll('.rdtCount')[0];
 	},
-	minute: function(){
+	minute: function() {
 		return document.querySelectorAll('.rdtCount')[1];
 	},
-	second: function(){
+	second: function() {
 		return document.querySelectorAll('.rdtCount')[2];
 	},
-	milli: function(){
+	milli: function() {
 		return document.querySelector('.rdtMilli input');
 	},
-	isOpen: function(){
+	isOpen: function() {
 		return !!document.querySelector('.rdt.rdtOpen');
 	}
 };
@@ -94,8 +94,8 @@ var date = new Date( 2000, 0, 15, 2, 2, 2, 2 ),
 	currentYear = new Date().getFullYear()
 ;
 
-describe( 'Datetime', function(){
-	it( 'Create Datetime', function(){
+describe( 'Datetime', function() {
+	it( 'Create Datetime', function() {
 		var component = createDatetime({});
 		assert( component );
 		assert.equal( component.children.length, 2 );
@@ -103,35 +103,35 @@ describe( 'Datetime', function(){
 		assert.equal( component.children[1].tagName , 'DIV' );
 	});
 
-	it( 'input=false', function(){
+	it( 'input=false', function() {
 		var component = createDatetime({ input: false });
 		assert( component );
 		assert.equal( component.children.length, 1 );
 		assert.equal( component.children[0].tagName , 'DIV' );
 	});
 
-	it( 'Date value', function(){
+	it( 'Date value', function() {
 		var component = createDatetime({ value: date }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
-	it( 'Moment value', function(){
+	it( 'Moment value', function() {
 		var component = createDatetime({ value: mDate }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
-	it( 'String value', function(){
+	it( 'String value', function() {
 		var component = createDatetime({ value: strDate }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
-	it( 'UTC Value from local moment', function(){
+	it( 'UTC Value from local moment', function() {
 		var component = createDatetime({
 			value: mDate,
 			utc: true
@@ -140,7 +140,7 @@ describe( 'Datetime', function(){
 		assert.equal( input.value, strDateUTC );
 	});
 
-	it( 'UTC Value from UTC moment', function(){
+	it( 'UTC Value from UTC moment', function() {
 		var component = createDatetime({
 			value: mDateUTC,
 			utc: true
@@ -149,7 +149,7 @@ describe( 'Datetime', function(){
 		assert.equal( input.value, strDateUTC );
 	});
 
-	it( 'UTC Value from utc string', function(){
+	it( 'UTC Value from utc string', function() {
 		var component = createDatetime({
 			value: strDateUTC,
 			utc: true
@@ -158,35 +158,35 @@ describe( 'Datetime', function(){
 		assert.equal( input.value, strDateUTC );
 	});
 
-	it( 'Date defaultValue', function(){
+	it( 'Date defaultValue', function() {
 		var component = createDatetime({ defaultValue: date }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
-	it( 'Moment defaultValue', function(){
+	it( 'Moment defaultValue', function() {
 		var component = createDatetime({ defaultValue: mDate }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
-	it( 'String defaultValue', function(){
+	it( 'String defaultValue', function() {
 		var component = createDatetime({ defaultValue: strDate }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, strDate );
 	});
 
-	it( 'dateFormat', function(){
+	it( 'dateFormat', function() {
 		var component = createDatetime({ value: date, dateFormat: 'M&D' }),
 			input = component.children[0]
 		;
 		assert.equal( input.value, mDate.format('M&D LT') );
 	});
 
-	it( 'dateFormat=false', function(){
+	it( 'dateFormat=false', function() {
 		var component = createDatetime({ value: date, dateFormat: false }),
 			input = component.children[0],
 			view = dt.view()
@@ -198,7 +198,7 @@ describe( 'Datetime', function(){
 		assert.equal( view.querySelectorAll('thead').length, 0);
 	});
 
-	it( 'timeFormat', function(){
+	it( 'timeFormat', function() {
 		var format = 'HH:mm:ss:SSS',
 			component = createDatetime({ value: date, timeFormat: format }),
 			input = component.children[0]
@@ -206,7 +206,7 @@ describe( 'Datetime', function(){
 		assert.equal( input.value, mDate.format('L ' + format) );
 	});
 
-	it( 'timeFormat=false', function(){
+	it( 'timeFormat=false', function() {
 		var component = createDatetime({ value: date, timeFormat: false }),
 			input = component.children[0],
 			view = dt.view()
@@ -218,7 +218,7 @@ describe( 'Datetime', function(){
 		assert.equal( view.querySelectorAll('.timeToggle').length, 0);
 	});
 
-	it( 'timeFormat with lowercase am', function(){
+	it( 'timeFormat with lowercase am', function() {
 		var format = 'HH:mm:ss:SSS a',
 			component = createDatetime({ value: date, timeFormat: format }),
 			input = component.children[0]
@@ -226,7 +226,7 @@ describe( 'Datetime', function(){
 		assert.notEqual( input.value.indexOf('am'), -1 );
 	});
 
-	it( 'timeFormat with uppercase AM', function(){
+	it( 'timeFormat with uppercase AM', function() {
 		var format = 'HH:mm:ss:SSS A',
 			component = createDatetime({ value: date, timeFormat: format }),
 			input = component.children[0]
@@ -234,7 +234,7 @@ describe( 'Datetime', function(){
 		assert.notEqual( input.value.indexOf('AM'), -1 );
 	});
 
-	it( 'viewMode=years', function(){
+	it( 'viewMode=years', function() {
 		var component = createDatetime({ viewMode: 'years' }),
 			view = dt.view()
 		;
@@ -242,7 +242,7 @@ describe( 'Datetime', function(){
 		assert.equal( view.className, 'rdtYears' );
 	});
 
-	it( 'viewMode=months', function(){
+	it( 'viewMode=months', function() {
 		var component = createDatetime({ viewMode: 'months' }),
 			view = dt.view()
 		;
@@ -250,7 +250,7 @@ describe( 'Datetime', function(){
 		assert.equal( view.className, 'rdtMonths' );
 	});
 
-	it( 'viewMode=time', function(){
+	it( 'viewMode=time', function() {
 		var component = createDatetime({ viewMode: 'time' }),
 			view = dt.view()
 		;
@@ -258,18 +258,18 @@ describe( 'Datetime', function(){
 		assert.equal( view.className, 'rdtTime' );
 	});
 
-	it( 'className of type string', function(){
+	it( 'className of type string', function() {
 		var component = createDatetime({ className: 'custom' });
 		assert.notEqual( component.className.indexOf('custom'), -1 );
 	});
 
-	it( 'className of type string array', function(){
+	it( 'className of type string array', function() {
 		var component = createDatetime({ className: ['custom1', 'custom2'] });
 		assert.notEqual( component.className.indexOf('custom1'), -1 );
 		assert.notEqual( component.className.indexOf('custom2'), -1 );
 	});
 
-	it( 'inputProps', function(){
+	it( 'inputProps', function() {
 		var component = createDatetime({ inputProps: { className: 'myInput', type: 'email' } }),
 			input = component.children[0]
 		;
@@ -278,9 +278,9 @@ describe( 'Datetime', function(){
 		assert.equal( input.type, 'email' );
 	});
 
-	it( 'renderDay', function(){
+	it( 'renderDay', function() {
 		var props, currentDate, selectedDate,
-			component = createDatetime({ value: mDate, renderDay: function( p, current, selected ){
+			component = createDatetime({ value: mDate, renderDay: function( p, current, selected ) {
 				props = p;
 				currentDate = current;
 				selectedDate = selected;
@@ -304,9 +304,9 @@ describe( 'Datetime', function(){
 		assert.equal( view.querySelector('.rdtDay').innerHTML, 'day' );
 	});
 
-	it( 'renderMonth', function(){
+	it( 'renderMonth', function() {
 		var props, month, year, selectedDate,
-			component = createDatetime({ value: mDate, viewMode: 'months', renderMonth: function( p, m, y, selected ){
+			component = createDatetime({ value: mDate, viewMode: 'months', renderMonth: function( p, m, y, selected ) {
 				props = p;
 				month = m;
 				year = y;
@@ -330,9 +330,9 @@ describe( 'Datetime', function(){
 		assert.equal( view.querySelector('.rdtMonth').innerHTML, 'month' );
 	});
 
-	it( 'renderYear', function(){
+	it( 'renderYear', function() {
 		var props, year, selectedDate,
-			component = createDatetime({ value: mDate, viewMode: 'years', renderYear: function( p, y, selected ){
+			component = createDatetime({ value: mDate, viewMode: 'years', renderYear: function( p, y, selected ) {
 				props = p;
 				year = y;
 				selectedDate = selected;
@@ -380,14 +380,14 @@ describe( 'Datetime', function(){
 		assert.equal( dt.view().className, 'rdtYears' );
 	});
 
-	it( 'switch to time', function(){
+	it( 'switch to time', function() {
 		createDatetime({});
 		assert.equal( dt.view().className, 'rdtDays' );
 		ev.click( dt.timeSwitcher() );
 		assert.equal( dt.view().className, 'rdtTime' );
 	});
 
-	it( 'selectYear', function(){
+	it( 'selectYear', function() {
 		createDatetime({ viewMode: 'years', defaultValue: date });
 		assert.equal( dt.view().className, 'rdtYears' );
 		assert.equal( dt.switcher().innerHTML, '2000-2009' );
@@ -398,7 +398,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.switcher().innerHTML, '1999' );
 	});
 
-	it( 'increase decade', function(){
+	it( 'increase decade', function() {
 		createDatetime({ viewMode: 'years', defaultValue: date });
 
 		assert.equal( dt.switcher().innerHTML, '2000-2009' );
@@ -408,7 +408,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.switcher().innerHTML, '2020-2029' );
 	});
 
-	it( 'decrease decade', function(){
+	it( 'decrease decade', function() {
 		createDatetime({ viewMode: 'years', defaultValue: date });
 
 		assert.equal( dt.switcher().innerHTML, '2000-2009' );
@@ -418,7 +418,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.switcher().innerHTML, '1980-1989' );
 	});
 
-	it( 'selectMonth', function(){
+	it( 'selectMonth', function() {
 		createDatetime({ viewMode: 'months', defaultValue: date });
 		assert.equal( dt.view().className, 'rdtMonths' );
 		assert.equal( dt.switcher().innerHTML, '2000' );
@@ -428,7 +428,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.switcher().getAttribute('data-value'), "1" );
 	});
 
-	it( 'increase year', function(){
+	it( 'increase year', function() {
 		createDatetime({ viewMode: 'months', defaultValue: date });
 
 		assert.equal( dt.switcher().getAttribute('data-value'), '2000' );
@@ -438,7 +438,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.switcher().getAttribute('data-value'), '2002' );
 	});
 
-	it( 'decrease year', function(){
+	it( 'decrease year', function() {
 		createDatetime({ viewMode: 'months', defaultValue: date });
 
 		assert.equal( dt.switcher().getAttribute('data-value'), '2000' );
@@ -448,7 +448,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.switcher().getAttribute('data-value'), '1998' );
 	});
 
-	it( 'increase month', function(){
+	it( 'increase month', function() {
 		createDatetime({ defaultValue: date });
 
 		assert.equal( dt.switcher().getAttribute('data-value'), '0' );
@@ -458,7 +458,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.switcher().getAttribute('data-value'), '2' );
 	});
 
-	it( 'decrease month', function(){
+	it( 'decrease month', function() {
 		createDatetime({ defaultValue: date });
 
 		assert.equal( dt.switcher().getAttribute('data-value'), '0' );
@@ -468,15 +468,15 @@ describe( 'Datetime', function(){
 		assert.equal( dt.switcher().getAttribute('data-value'), '10' );
 	});
 
-	it( 'open picker', function(){
+	it( 'open picker', function() {
 		createDatetime({});
 		assert.equal( dt.isOpen(), false );
 		ev.focus( dt.input() );
 		assert.equal( dt.isOpen(), true );
 	});
 
-	it( 'onSelect', function( done ){
-		createDatetime({ defaultValue: date, onChange: function( selected ){
+	it( 'onSelect', function( done ) {
+		createDatetime({ defaultValue: date, onChange: function( selected ) {
 			assert.equal( selected.date(), 2 );
 			assert.equal( selected.month(), mDate.month() );
 			assert.equal( selected.year(), mDate.year() );
@@ -486,11 +486,11 @@ describe( 'Datetime', function(){
 		ev.click( dt.day( 2 ) );
 	});
 
-	it( 'multiple onSelect', function( done ){
+	it( 'multiple onSelect', function( done ) {
 		var i = 0;
-		createDatetime({ defaultValue: date, onChange: function( selected ){
+		createDatetime({ defaultValue: date, onChange: function( selected ) {
 			i++;
-			if( i > 2 ){
+			if( i > 2 ) {
 				assert.equal( selected.date(), 4 );
 				assert.equal( selected.month(), mDate.month() );
 				assert.equal( selected.year(), mDate.year() );
@@ -503,9 +503,9 @@ describe( 'Datetime', function(){
 		ev.click( dt.day( 4 ) );
 	});
 
-	it( 'onFocus', function(){
+	it( 'onFocus', function() {
 		var focus = false;
-		createDatetime({ value: date, onFocus: function( selected ){
+		createDatetime({ value: date, onFocus: function( selected ) {
 			focus = true;
 		}});
 
@@ -513,12 +513,9 @@ describe( 'Datetime', function(){
 		assert.equal( focus, true );
 	});
 
-	it( 'onBlur', function(){
-		createDatetime({ value: date, onBlur: function( selected ){
-			// TODO - These assertions are not being evaluated ?!
-			assert.equal(true, false);
-
-			assert.equal( dt.isOpen(), false );
+	it( 'onBlur', function() {
+		createDatetime({ value: date, onBlur: function( selected ) {
+			assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
 			assert.equal( selected.date(), mDate.date() );
 			assert.equal( selected.month(), mDate.month() );
 			assert.equal( selected.year(), mDate.year() );
@@ -531,7 +528,7 @@ describe( 'Datetime', function(){
 		trigger( 'click', document.body );
 	});
 
-	it( 'closeOnTab:true', function(){
+	it( 'closeOnTab:true', function() {
 		createDatetime({ value: date });
 
 		assert.equal( dt.isOpen(), false );
@@ -542,7 +539,7 @@ describe( 'Datetime', function(){
 		trigger( 'click', document.body );
 	});
 
-	it( 'closeOnTab:false', function(){
+	it( 'closeOnTab:false', function() {
 		createDatetime({ value: date, closeOnTab: false });
 
 		assert.equal( dt.isOpen(), false );
@@ -553,11 +550,11 @@ describe( 'Datetime', function(){
 		trigger( 'click', document.body );
 	});
 
-	it( 'increase time', function( done ){
+	it( 'increase time', function( done ) {
 		var i = 0;
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ) {
 			i++;
-			if( i > 2 ){
+			if( i > 2 ) {
 				assert.equal( selected.hour(), 3 );
 				assert.equal( selected.minute(), 3 );
 				assert.equal( selected.second(), 3 );
@@ -576,11 +573,11 @@ describe( 'Datetime', function(){
 		assert.equal( dt.second().innerHTML, 3 );
 	});
 
-	it( 'decrease time', function( done ){
+	it( 'decrease time', function( done ) {
 		var i = 0;
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ) {
 			i++;
-			if( i > 2 ){
+			if( i > 2 ) {
 				assert.equal( selected.hour(), 1 );
 				assert.equal( selected.minute(), 1 );
 				assert.equal( selected.second(), 1 );
@@ -599,11 +596,11 @@ describe( 'Datetime', function(){
 		assert.equal( dt.second().innerHTML, 1 );
 	});
 
-	it( 'long increase time', function( done ){
+	it( 'long increase time', function( done ) {
 		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date});
 
 		trigger( 'mousedown', dt.timeUp( 0 ) );
-		setTimeout( function(){
+		setTimeout( function() {
 			trigger('mouseup', document.body );
 			assert.notEqual( dt.hour().innerHTML, 2 );
 			assert.notEqual( dt.hour().innerHTML, 3 );
@@ -611,11 +608,11 @@ describe( 'Datetime', function(){
 		}, 920 );
 	});
 
-	it( 'long decrease time', function( done ){
+	it( 'long decrease time', function( done ) {
 		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date});
 
 		trigger( 'mousedown', dt.timeDown( 0 ) );
-		setTimeout( function(){
+		setTimeout( function() {
 			trigger('mouseup', document.body );
 			assert.notEqual( dt.hour().innerHTML, 1 );
 			assert.notEqual( dt.hour().innerHTML, 0 );
@@ -623,11 +620,11 @@ describe( 'Datetime', function(){
 		}, 920 );
 	});
 
-	it( 'increase time with timeConstraints', function( done ){
+	it( 'increase time with timeConstraints', function( done ) {
 		var i = 0;
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ) {
 			i++;
-			if( i > 2 ){
+			if( i > 2 ) {
 				assert.equal( selected.minute(), 17 );
 				assert.equal( selected.second(), 3 );
 				done();
@@ -645,8 +642,8 @@ describe( 'Datetime', function(){
 		assert.equal( dt.second().innerHTML, 3 );
 	});
 
-	it( 'decrease time with timeConstraints', function( done ){
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ){
+	it( 'decrease time with timeConstraints', function( done ) {
+		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ) {
 			assert.equal( selected.minute(), 47 );
 			done();
 		}, timeConstraints: { minutes: { step: 15 }}});
@@ -656,8 +653,8 @@ describe( 'Datetime', function(){
 		assert.equal( dt.minute().innerHTML, 47 );
 	});
 
-	it( 'invalid input value', function( done ){
-		createDatetime({ defaultValue: 'luis', onChange: function( updated ){
+	it( 'invalid input value', function( done ) {
+		createDatetime({ defaultValue: 'luis', onChange: function( updated ) {
 			assert.equal( mDate.format('L LT'), updated.format('L LT') );
 			done();
 		}});
@@ -667,9 +664,9 @@ describe( 'Datetime', function(){
 		ev.change( dt.input() );
 	});
 
-	it( 'invalid moment object as input value', function( done ){
+	it( 'invalid moment object as input value', function( done ) {
 		var value = moment(null);
-		createDatetime({ value: value, onChange: function( updated ){
+		createDatetime({ value: value, onChange: function( updated ) {
 			assert.equal( mDate.format('L LT'), updated.format('L LT') );
 			done();
 		}});
@@ -679,8 +676,8 @@ describe( 'Datetime', function(){
 		ev.change( dt.input() );
 	});
 
-	it( 'delete input value', function( done ){
-		createDatetime({ defaultValue: date, onChange: function( date ){
+	it( 'delete input value', function( done ) {
+		createDatetime({ defaultValue: date, onChange: function( date ) {
 			assert.equal( date, '' );
 			done();
 		}});
@@ -688,9 +685,9 @@ describe( 'Datetime', function(){
 		ev.change( dt.input() );
 	});
 
-	it( 'strictParsing=true', function( done ){
+	it( 'strictParsing=true', function( done ) {
 		var invalidStrDate = strDate + 'x';
-		createDatetime({ defaultValue: '', strictParsing: true, onChange: function( updated ){
+		createDatetime({ defaultValue: '', strictParsing: true, onChange: function( updated ) {
 			assert.equal( updated, invalidStrDate);
 			done();
 		}});
@@ -699,9 +696,9 @@ describe( 'Datetime', function(){
 		ev.change( dt.input() );
 	});
 
-	it( 'strictParsing=false', function( done ){
+	it( 'strictParsing=false', function( done ) {
 		var invalidStrDate = strDate + 'x';
-		createDatetime({ defaultValue: '', strictParsing: false, onChange: function( updated ){
+		createDatetime({ defaultValue: '', strictParsing: false, onChange: function( updated ) {
 			assert.equal( mDate.format('L LT'), updated.format('L LT') );
 			done();
 		}});
@@ -710,9 +707,9 @@ describe( 'Datetime', function(){
 		ev.change( dt.input() );
 	});
 
-	it( 'disable months', function(){
+	it( 'disable months', function() {
 		var dateBefore = currentYear + '-06-01';
-		createDatetime({ viewMode: 'months', isValidDate: function(current ){
+		createDatetime({ viewMode: 'months', isValidDate: function(current ) {
 				return current.isBefore(moment(dateBefore, 'YYYY-MM-DD'));
 		}});
 		assert.equal( dt.month(0).className, 'rdtMonth' );
@@ -721,8 +718,8 @@ describe( 'Datetime', function(){
 		assert.equal( dt.month(11).className, 'rdtMonth rdtDisabled' );
 	});
 
-	it( 'disable years', function(){
-		createDatetime({ viewMode: 'years', isValidDate: function(current ){
+	it( 'disable years', function() {
+		createDatetime({ viewMode: 'years', isValidDate: function(current ) {
 				return current.isBefore(moment('2016-01-01', 'YYYY-MM-DD'));
 		}});
 		assert.equal( dt.year(0).className, 'rdtYear' );
@@ -730,9 +727,9 @@ describe( 'Datetime', function(){
 		assert.equal( dt.year(7).className, 'rdtYear rdtDisabled' );
 	});
 
-	it( 'persistent valid months going monthView->yearView->monthView', function(){
+	it( 'persistent valid months going monthView->yearView->monthView', function() {
 		var dateBefore = currentYear + '-06-01';
-		createDatetime({ viewMode: 'months', isValidDate: function(current ){
+		createDatetime({ viewMode: 'months', isValidDate: function(current ) {
 				return current.isBefore(moment(dateBefore, 'YYYY-MM-DD'));
 		}});
 		assert.equal( dt.month(4).className, 'rdtMonth' );
@@ -747,7 +744,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.month(5).className, 'rdtMonth rdtDisabled' );
 	});
 
-	it( 'locale', function(){
+	it( 'locale', function() {
 		createDatetime({ locale: 'nl' });
 		view = dt.view();
 		var weekDays = [];
@@ -762,7 +759,7 @@ describe( 'Datetime', function(){
 		});
 	});
 
-	it( 'locale in viewMode=months', function(){
+	it( 'locale in viewMode=months', function() {
 		createDatetime({ viewMode: 'months', locale: 'nl' });
 		view = dt.view();
 		var thirdMonth = view.querySelectorAll('.rdtMonth')[2].innerHTML;
@@ -771,7 +768,7 @@ describe( 'Datetime', function(){
 		assert.equal( fifthMonth, 'Mei' );
 	});
 
-	it( 'closeOnSelect=false', function(){
+	it( 'closeOnSelect=false', function() {
 		createDatetime({ closeOnSelect: false });
 		view = dt.view();
 		ev.focus( dt.input() );
@@ -780,7 +777,7 @@ describe( 'Datetime', function(){
 		assert.equal( dt.isOpen(), true );
 	});
 
-	it( 'closeOnSelect=true', function(){
+	it( 'closeOnSelect=true', function() {
 		createDatetime({ closeOnSelect: true });
 		view = dt.view();
 		ev.focus( dt.input() );

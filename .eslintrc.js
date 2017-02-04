@@ -30,6 +30,8 @@ module.exports = {
         "semi": 2,
         // Enforce consistent spacing before and after semicolons
         "semi-spacing": 2,
+        // Enforce consistent spacing before blocks
+        "space-before-blocks": 2,
         // Enforce consistent spacing inside parentheses
         // "space-in-parens": [2, "always"],
         // Enforce the consistent use of either backticks, double, or single quotes
