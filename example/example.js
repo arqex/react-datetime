@@ -6,7 +6,7 @@ ReactDOM.render(
   React.createElement(DateTime, {
     viewMode: 'months',
     dateFormat: 'MMMM',
-    isValidDate: function(current){
+    isValidDate: function(current) {
       return current.isBefore(DateTime.moment().startOf('month'));
     }
   }),
