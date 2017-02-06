@@ -526,7 +526,7 @@ describe( 'Datetime', function() {
 	});
 
 	it( 'onBlur', function() {
-		let onBlurCalled = false;
+		var onBlurCalled = false;
 		createDatetime({ value: date, onBlur: function( selected ) {
 			// TODO: This is never called
 			onBlurCalled = true;
