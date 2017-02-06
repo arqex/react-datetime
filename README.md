@@ -10,7 +10,7 @@ This project started as a fork of https://github.com/quri/react-bootstrap-dateti
 
 ## Usage
 
-Install using `npm`:
+Install using npm:
 ```
 npm install --save react-datetime
 ```
@@ -49,7 +49,7 @@ render: function() {
 | **viewMode** | `string` or `number` | `'days'` | The default view to display when the picker is shown (`'years'`, `'months'`, `'days'`, `'time'`). |
 | **className** | `string` or `string array` | `''` | Extra class name for the outermost markup element. |
 | **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `placeholder`, `disabled`, `required` and `name`. |
-| **isValidDate** | `function` | `() => true` | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and should return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
+| **isValidDate** | `function` | `() => true` | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and shall return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
 | **renderDay** | `function` | `DOM.td(day)` | Customize the way that the days are shown in the daypicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance-customization). |
 | **renderMonth** | `function` | `DOM.td(month)` | Customize the way that the months are shown in the monthpicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization). |
 | **renderYear** | `function` | `DOM.td(year)` | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization). |
@@ -68,7 +68,7 @@ require('moment/locale/fr');
 // Now react-datetime will be in french
 ```
 
-If there are multiple locales loaded, you can use the prop `locale` to define what language should be used by the instance.
+If there are multiple locales loaded, you can use the prop `locale` to define what language shall be used by the instance.
 ```js
 <Datetime locale="fr-ca" />
 <Datetime locale="de" />
@@ -106,7 +106,7 @@ var MyDTPicker = React.createClass({
 * `month` and `year` are the numeric representation of the current month and year to be displayed. Notice that the possible `month` values range from `0` to `11`.
 
 ## Selectable dates
-It is possible to disable dates in the calendar if the user are not allowed to select them. It is done using the prop `isValidDate`, which admits a function in the form `function(currentDate, selectedDate)` where both arguments are [moment objects](http://momentjs.com). The function should return `true` for selectable dates, and `false` for disabled ones.
+It is possible to disable dates in the calendar if the user are not allowed to select them, e.g. dates in the past. This is done using the prop `isValidDate`, which admits a function in the form `function(currentDate, selectedDate)` where both arguments are [moment objects](http://momentjs.com). The function shall return `true` for selectable dates, and `false` for disabled ones.
 
 In the example below are *all dates before today* disabled.
 

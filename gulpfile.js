@@ -1,13 +1,13 @@
 var gulp = require('gulp'),
-	uglify = require('gulp-uglify'),
 	insert = require('gulp-insert'),
+	uglify = require('gulp-uglify'),
 	webpack = require('gulp-webpack')
 ;
 
 var packageName = 'react-datetime';
 var pack = require( './package.json' );
 
-var getWPConfig = function( filename ){
+var getWPConfig = function( filename ) {
 	return {
 		externals: {
 			react: 'React',
@@ -22,28 +22,28 @@ var getWPConfig = function( filename ){
 	};
 };
 
-var cr = ('/*\n%%name%% v%%version%%\n%%homepage%%\n%%license%%: https://github.com/arqex/' + packageName + '/raw/master/LICENSE\n*/\n')
+var cr = ( '/*\n%%name%% v%%version%%\n%%homepage%%\n%%license%%: https://github.com/arqex/' + packageName + '/raw/master/LICENSE\n*/\n' )
 	.replace( '%%name%%', pack.name)
 	.replace( '%%version%%', pack.version)
 	.replace( '%%license%%', pack.license)
 	.replace( '%%homepage%%', pack.homepage)
 ;
 
-var handleError = function( err ){
-	console.log( 'Error: ', err );
+var handleError = function( err ) {
+	console.error( 'Error:', err );
 };
 
-function wp( config, minify ){
-	var stream =  gulp.src('./Datetime.js')
+function wp( config, minify ) {
+	var stream =  gulp.src( './Datetime.js' )
 		.pipe( webpack( config ) )
 	;
 
-	if( minify ){
+	if( minify ) {
 		stream = stream.pipe( uglify() ).on( 'error', handleError );
 	}
 
 	return stream.pipe( insert.prepend( cr ) )
-		.pipe( gulp.dest('dist/') )
+		.pipe( gulp.dest( 'dist/' ) )
 	;
 }
 

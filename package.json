@@ -1,6 +1,6 @@
 {
   "name": "react-datetime",
-  "version": "2.8.3",
+  "version": "2.8.4",
   "description": "A lightweight but complete datetime picker React.js component.",
   "homepage": "https://github.com/arqex/react-datetime",
   "repository": {
@@ -18,13 +18,14 @@
   ],
   "types": "./typings/index.d.ts",
   "scripts": {
-    "build:win": "./node_modules/.bin/gulp.cmd",
     "build:mac": "./node_modules/.bin/gulp",
-    "test": "node node_modules/mocha/bin/mocha tests",
-    "test:watch": "node node_modules/mocha/bin/mocha --watch tests",
-    "dev": "webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
+    "build:win": "./node_modules/.bin/gulp.cmd",
+    "dev": "./node_modules/.bin/webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
     "lint": "./node_modules/.bin/eslint src/ DateTime.js",
-    "test:typings": "tsc -p ./typings"
+    "test": "node node_modules/mocha/bin/mocha tests",
+    "test:all": "npm run test:typings && npm run test",
+    "test:typings": "./node_modules/.bin/tsc -p ./typings",
+    "test:watch": "node node_modules/mocha/bin/mocha --watch tests"
   },
   "keywords": [
     "react",
@@ -37,9 +38,9 @@
   "author": "Javier Marquez",
   "license": "MIT",
   "peerDependencies": {
+    "moment": ">=2.16.0",
     "react": ">=0.13",
-    "react-dom": ">=0.13",
-    "moment": ">=2.16.0"
+    "react-dom": ">=0.13"
   },
   "devDependencies": {
     "@types/react": "^0.14.49",
@@ -66,6 +67,6 @@
   },
   "pre-commit": [
     "lint",
-    "test"
+    "test:all"
   ]
 }

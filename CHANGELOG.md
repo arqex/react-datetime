@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.8.4
+* Fix bug where `closeOnSelect=true` would cause component to close on state change
+
 ## 2.8.3
 * Fix `isValidDate` related bug where current month would be invalid
 * Trigger re-render of component when `viewMode` changes
