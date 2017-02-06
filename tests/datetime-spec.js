@@ -1,5 +1,9 @@
+/*
+ * Setup
+ */
+
 // Create the dom before requiring react
-var DOM = require( './testdom');
+var DOM = require('./testDOM');
 DOM();
 
 // Needs to be global to work in Travis CI
@@ -11,6 +15,10 @@ var Datetime = require('../DateTime'),
 	moment = require('moment'),
 	TestUtils = require('react-addons-test-utils')
 ;
+
+/*
+ * Utility Functions
+ */
 
 var createDatetime = function( props ) {
 	document.body.innerHTML = '<div id="root"></div>';
@@ -93,6 +101,10 @@ var date = new Date( 2000, 0, 15, 2, 2, 2, 2 ),
 	strDateUTC = mDateUTC.format('L') + ' ' + mDateUTC.format('LT'),
 	currentYear = new Date().getFullYear()
 ;
+
+/*
+ * Tests
+ */
 
 describe( 'Datetime', function() {
 	it( 'Create Datetime', function() {
@@ -355,16 +367,16 @@ describe( 'Datetime', function() {
 	});
 
 	it( 'Time pickers depends on the time format', function() {
-		createDatetime({ viewMode: 'time', timeFormat: "HH:mm:ss:SSS"});
+		createDatetime({ viewMode: 'time', timeFormat: 'HH:mm:ss:SSS'});
 		assert.equal( document.querySelectorAll('.rdtCounter').length, 4 );
 
-		createDatetime({ viewMode: 'time', timeFormat: "HH:mm:ss"});
+		createDatetime({ viewMode: 'time', timeFormat: 'HH:mm:ss'});
 		assert.equal( document.querySelectorAll('.rdtCounter').length, 3 );
 
-		createDatetime({ viewMode: 'time', timeFormat: "HH:mm"});
+		createDatetime({ viewMode: 'time', timeFormat: 'HH:mm'});
 		assert.equal( document.querySelectorAll('.rdtCounter').length, 2 );
 
-		createDatetime({ viewMode: 'time', timeFormat: "HH"});
+		createDatetime({ viewMode: 'time', timeFormat: 'HH'});
 		assert.equal( document.querySelectorAll('.rdtCounter').length, 1 );
 	});
 
@@ -425,7 +437,7 @@ describe( 'Datetime', function() {
 
 		ev.click( dt.month(1) );
 		assert.equal( dt.view().className, 'rdtDays' );
-		assert.equal( dt.switcher().getAttribute('data-value'), "1" );
+		assert.equal( dt.switcher().getAttribute('data-value'), '1' );
 	});
 
 	it( 'increase year', function() {
@@ -475,7 +487,7 @@ describe( 'Datetime', function() {
 		assert.equal( dt.isOpen(), true );
 	});
 
-	it( 'onSelect', function( done ) {
+	it( 'onChange', function( done ) {
 		createDatetime({ defaultValue: date, onChange: function( selected ) {
 			assert.equal( selected.date(), 2 );
 			assert.equal( selected.month(), mDate.month() );
@@ -486,7 +498,7 @@ describe( 'Datetime', function() {
 		ev.click( dt.day( 2 ) );
 	});
 
-	it( 'multiple onSelect', function( done ) {
+	it( 'multiple onChange', function( done ) {
 		var i = 0;
 		createDatetime({ defaultValue: date, onChange: function( selected ) {
 			i++;
@@ -514,7 +526,11 @@ describe( 'Datetime', function() {
 	});
 
 	it( 'onBlur', function() {
+		let onBlurCalled = false;
 		createDatetime({ value: date, onBlur: function( selected ) {
+			// TODO: This is never called
+			onBlurCalled = true;
+			assert.equal( true, false ); // Just to prove that this code is not being run
 			assert.equal( dt.dt().className.indexOf( 'rdtOpen' ), -1 );
 			assert.equal( selected.date(), mDate.date() );
 			assert.equal( selected.month(), mDate.month() );
@@ -524,8 +540,9 @@ describe( 'Datetime', function() {
 
 		assert.equal( dt.isOpen(), false );
 		ev.focus( dt.input() );
-		assert.equal(dt.isOpen(), true );
+		assert.equal( dt.isOpen(), true );
 		trigger( 'click', document.body );
+		// assert.equal( onBlurCalled, true );
 	});
 
 	it( 'closeOnTab:true', function() {
@@ -534,9 +551,9 @@ describe( 'Datetime', function() {
 		assert.equal( dt.isOpen(), false );
 		ev.focus( dt.input() );
 		assert.equal(dt.isOpen(), true );
-		TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
+		TestUtils.Simulate.keyDown(dt.input(), {key: 'Tab', keyCode: 9, which: 9});
 		assert.equal( dt.isOpen(), false );
-		trigger( 'click', document.body );
+		// trigger( 'click', document.body ); // Does nothing ??
 	});
 
 	it( 'closeOnTab:false', function() {
@@ -545,14 +562,14 @@ describe( 'Datetime', function() {
 		assert.equal( dt.isOpen(), false );
 		ev.focus( dt.input() );
 		assert.equal(dt.isOpen(), true );
-		TestUtils.Simulate.keyDown(dt.input(), {key: "Tab", keyCode: 9, which: 9});
+		TestUtils.Simulate.keyDown(dt.input(), {key: 'Tab', keyCode: 9, which: 9});
 		assert.equal(dt.isOpen(), true );
-		trigger( 'click', document.body );
+		// trigger( 'click', document.body ); // Does nothing ??
 	});
 
 	it( 'increase time', function( done ) {
 		var i = 0;
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ) {
+		createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date, onChange: function( selected ) {
 			i++;
 			if( i > 2 ) {
 				assert.equal( selected.hour(), 3 );
@@ -575,7 +592,7 @@ describe( 'Datetime', function() {
 
 	it( 'decrease time', function( done ) {
 		var i = 0;
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ) {
+		createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date, onChange: function( selected ) {
 			i++;
 			if( i > 2 ) {
 				assert.equal( selected.hour(), 1 );
@@ -597,7 +614,7 @@ describe( 'Datetime', function() {
 	});
 
 	it( 'long increase time', function( done ) {
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date});
+		createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date});
 
 		trigger( 'mousedown', dt.timeUp( 0 ) );
 		setTimeout( function() {
@@ -609,7 +626,7 @@ describe( 'Datetime', function() {
 	});
 
 	it( 'long decrease time', function( done ) {
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date});
+		createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date});
 
 		trigger( 'mousedown', dt.timeDown( 0 ) );
 		setTimeout( function() {
@@ -622,7 +639,7 @@ describe( 'Datetime', function() {
 
 	it( 'increase time with timeConstraints', function( done ) {
 		var i = 0;
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ) {
+		createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date, onChange: function( selected ) {
 			i++;
 			if( i > 2 ) {
 				assert.equal( selected.minute(), 17 );
@@ -643,7 +660,7 @@ describe( 'Datetime', function() {
 	});
 
 	it( 'decrease time with timeConstraints', function( done ) {
-		createDatetime({ timeFormat: "HH:mm:ss:SSS", viewMode: 'time', defaultValue: date, onChange: function( selected ) {
+		createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date, onChange: function( selected ) {
 			assert.equal( selected.minute(), 47 );
 			done();
 		}, timeConstraints: { minutes: { step: 15 }}});
