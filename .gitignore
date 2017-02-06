@@ -1,10 +1,6 @@
 *~
 node_modules
+.idea
+tmp
 .DS_Store
 npm-debug.log
-test_bundle.js
-test-built/*
-.idea
-docs/*.html
-docs/assets/bundle.js
-lib/*
