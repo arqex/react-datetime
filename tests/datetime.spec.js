@@ -156,6 +156,19 @@ describe('Datetime', () => {
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 
+	it('dateFormat -> prop changes and value updates accordingly', () => {
+		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+			component = utils.createDatetime({
+				dateFormat: 'YYYY-MM-DD', timeFormat: false, defaultValue: date
+			});
+
+		const valueBefore = utils.getInputValue(component);
+		component.setProps({ dateFormat: 'DD.MM.YYYY'});
+		const valueAfter = utils.getInputValue(component);
+
+		expect(valueBefore).not.toEqual(valueAfter);
+	});
+
 	describe('with custom props', () => {
 		it('input=false', () => {
 			const component = utils.createDatetime({ input: false });
