@@ -13,3 +13,5 @@ script:
 cache:
   directories:
     - node_modules
+before_install:
+- export TZ=Europe/Stockholm
