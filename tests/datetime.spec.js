@@ -156,19 +156,6 @@ describe('Datetime', () => {
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 
-	it('dateFormat -> prop changes and value updates accordingly', () => {
-		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({
-				dateFormat: 'YYYY-MM-DD', timeFormat: false, defaultValue: date
-			});
-
-		const valueBefore = utils.getInputValue(component);
-		component.setProps({ dateFormat: 'DD.MM.YYYY'});
-		const valueAfter = utils.getInputValue(component);
-
-		expect(valueBefore).not.toEqual(valueAfter);
-	});
-
 	describe('with custom props', () => {
 		it('input=false', () => {
 			const component = utils.createDatetime({ input: false });
@@ -640,6 +627,71 @@ describe('Datetime', () => {
 			it('hours', () => {
 				const component = utils.createDatetime({ viewMode: 'time', timeFormat: 'HH' });
 				expect(component.find('.rdtCounter').length).toEqual(1);
+			});
+		});
+
+		describe('being updated and should trigger update', () => {
+			it('dateFormat -> value should change format', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					component = utils.createDatetime({
+						dateFormat: 'YYYY-MM-DD', timeFormat: false, defaultValue: date
+					});
+
+				const valueBefore = utils.getInputValue(component);
+				component.setProps({ dateFormat: 'DD.MM.YYYY'});
+				const valueAfter = utils.getInputValue(component);
+
+				expect(valueBefore).not.toEqual(valueAfter);
+			});
+
+			it('UTC -> value should change format (true->false)', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					momentDate = moment(date),
+					component = utils.createDatetime({ value: momentDate, utc: true });
+
+				const valueBefore = utils.getInputValue(component);
+				component.setProps({ utc: false }, () => {
+					const valueAfter = utils.getInputValue(component);
+
+					expect(valueBefore).not.toEqual(valueAfter);
+				});
+			});
+
+			it('UTC -> value should change format (false->true)', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					momentDate = moment(date),
+					component = utils.createDatetime({ value: momentDate, utc: false });
+
+				const valueBefore = utils.getInputValue(component);
+				component.setProps({ utc: true }, () => {
+					const valueAfter = utils.getInputValue(component);
+
+					expect(valueBefore).not.toEqual(valueAfter);
+				});
+			});
+
+			it('locale -> picker should change language (viewMode=days)', () => {
+				const component = utils.createDatetime({ viewMode: 'days', locale: 'nl' }),
+					weekdaysBefore = component.find('.rdtDays .dow').map((element) =>
+						element.text()
+					);
+
+				component.setProps({ locale: 'sv' });
+				const weekdaysAfter = component.find('.rdtDays .dow').map((element) =>
+					element.text()
+				);
+
+				expect(weekdaysBefore).not.toEqual(weekdaysAfter);
+			});
+
+			it('locale -> picker should change language (viewMode=months)', () => {
+				const component = utils.createDatetime({ viewMode: 'months', locale: 'nl' }),
+					monthsBefore = [utils.getNthMonth(component, 2).text(), utils.getNthMonth(component, 4).text()];
+
+				component.setProps({ locale: 'sv' });
+				const monthsAfter = [utils.getNthMonth(component, 2).text(), utils.getNthMonth(component, 4).text()];
+
+				expect(monthsBefore).not.toEqual(monthsAfter);
 			});
 		});
 	});
