@@ -1,5 +1,9 @@
 Changelog
 =========
+## 2.8.5
+* Fix bug where `closeOnSelect` was not closing when it was set to `true`
+* Fix bug where component would not immediately re-render when updating either `utc` or `locale` prop
+
 ## 2.8.4
 * Fix bug where `closeOnSelect=true` would cause component to close on state change
 
