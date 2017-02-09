@@ -129,7 +129,7 @@ var Datetime = React.createClass({
 				date: props.dateFormat || '',
 				time: props.timeFormat || ''
 			},
-			locale = this.localMoment( props.date ).localeData()
+			locale = this.localMoment( props.date, null, props ).localeData()
 		;
 
 		if ( formats.date === true ) {
@@ -153,23 +153,53 @@ var Datetime = React.createClass({
 
 	componentWillReceiveProps: function( nextProps ) {
 		var formats = this.getFormats( nextProps ),
-			update = {}
+			updatedState = {}
 		;
 
 		if ( nextProps.value !== this.props.value ||
-            formats.datetime !== this.getFormats( this.props ).datetime ) {
-            update = this.getStateFromProps( nextProps );
+			formats.datetime !== this.getFormats( this.props ).datetime ) {
+			updatedState = this.getStateFromProps( nextProps );
 		}
 
-		if ( update.open === undefined ) {
-			update.open = this.state.open;
+		if ( updatedState.open === undefined ) {
+			updatedState.open = this.state.open;
 		}
-        
+
 		if ( nextProps.viewMode !== this.props.viewMode ) {
-			update.currentView = nextProps.viewMode;
+			updatedState.currentView = nextProps.viewMode;
 		}
 
-		this.setState( update );
+		if ( nextProps.locale !== this.props.locale ) {
+			if ( this.state.viewDate ) {
+				var updatedViewDate = this.state.viewDate.clone().locale( nextProps.locale );
+				updatedState.viewDate = updatedViewDate;
+			}
+			if ( this.state.selectedDate ) {
+				var updatedSelectedDate = this.state.selectedDate.clone().locale( nextProps.locale );
+				updatedState.selectedDate = updatedSelectedDate;
+				updatedState.inputValue = updatedSelectedDate.format( formats.datetime );
+			}
+		}
+
+		if ( nextProps.utc !== this.props.utc ) {
+			if ( nextProps.utc ) {
+				if ( this.state.viewDate )
+					updatedState.viewDate = this.state.viewDate.clone().utc();
+				if ( this.state.selectedDate ) {
+					updatedState.selectedDate = this.state.selectedDate.clone().utc();
+					updatedState.inputValue = updatedState.selectedDate.format( formats.datetime );
+				}
+			} else {
+				if ( this.state.viewDate )
+					updatedState.viewDate = this.state.viewDate.clone().local();
+				if ( this.state.selectedDate ) {
+					updatedState.selectedDate = this.state.selectedDate.clone().local();
+					updatedState.inputValue = updatedState.selectedDate.format(formats.datetime);
+				}
+			}
+		}
+
+		this.setState( updatedState );
 	},
 
 	onInputChange: function( e ) {
@@ -337,11 +367,12 @@ var Datetime = React.createClass({
 		}
 	},
 
-	localMoment: function( date, format ) {
-		var momentFn = this.props.utc ? moment.utc : moment;
-		var m = momentFn( date, format, this.props.strictParsing );
-		if ( this.props.locale )
-			m.locale( this.props.locale );
+	localMoment: function( date, format, props ) {
+		props = props || this.props;
+		var momentFn = props.utc ? moment.utc : moment;
+		var m = momentFn( date, format, props.strictParsing );
+		if ( props.locale )
+			m.locale( props.locale );
 		return m;
 	},
 
