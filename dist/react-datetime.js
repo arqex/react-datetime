@@ -1,5 +1,5 @@
 /*
-react-datetime v2.8.5
+react-datetime v2.8.6
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -222,13 +222,13 @@ return /******/ (function(modules) { // webpackBootstrap
 				updatedState = this.getStateFromProps( nextProps );
 			}
 
-			// What is this for? Keeping for now, will remove later
 			if ( updatedState.open === undefined ) {
-				updatedState.open = this.state.open;
-			}
-
-			if ( this.props.closeOnSelect === false ) {
-				updatedState.open = true;
+				if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
+					updatedState.open = false;
+				}
+				else {
+					updatedState.open = this.state.open;
+				}
 			}
 
 			if ( nextProps.viewMode !== this.props.viewMode ) {

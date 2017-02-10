@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.8.6
+* Revert commits related to `closeOnSelect` that did not fix all issues they were meant to
+
 ## 2.8.5
 * Fix bug where `closeOnSelect` was not closing when it was set to `true`
 * Fix bug where component would not immediately re-render when updating either `utc` or `locale` prop
