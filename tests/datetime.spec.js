@@ -152,7 +152,7 @@ describe('Datetime', () => {
 	it('open picker', () => {
 		const component = utils.createDatetime();
 		expect(utils.isOpen(component)).toBeFalsy();
-		component.find('.form-control').simulate('focus');
+		utils.openDatepicker(component);
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 
@@ -343,7 +343,7 @@ describe('Datetime', () => {
 				component = utils.createDatetime({ value: date });
 
 			expect(utils.isOpen(component)).toBeFalsy();
-			component.find('.form-control').simulate('focus');
+			utils.openDatepicker(component);
 			expect(utils.isOpen(component)).toBeTruthy();
 			component.find('.form-control').simulate('keyDown', { key: 'Tab', keyCode: 9, which: 9 });
 			expect(utils.isOpen(component)).toBeFalsy();
@@ -354,7 +354,7 @@ describe('Datetime', () => {
 				component = utils.createDatetime({ value: date, closeOnTab: false });
 
 			expect(utils.isOpen(component)).toBeFalsy();
-			component.find('.form-control').simulate('focus');
+			utils.openDatepicker(component);
 			expect(utils.isOpen(component)).toBeTruthy();
 			component.find('.form-control').simulate('keyDown', { key: 'Tab', keyCode: 9, which: 9 });
 			expect(utils.isOpen(component)).toBeTruthy();
@@ -565,7 +565,7 @@ describe('Datetime', () => {
 			const component = utils.createDatetime({ closeOnSelect: false });
 
 			expect(utils.isOpen(component)).toBeFalsy();
-			component.find('.form-control').simulate('focus');
+			utils.openDatepicker(component);
 			expect(utils.isOpen(component)).toBeTruthy();
 			utils.clickNthDay(component, 2);
 			expect(utils.isOpen(component)).toBeTruthy();
@@ -575,7 +575,7 @@ describe('Datetime', () => {
 			const component = utils.createDatetime({ closeOnSelect: true });
 
 			expect(utils.isOpen(component)).toBeFalsy();
-			component.find('.form-control').simulate('focus');
+			utils.openDatepicker(component);
 			expect(utils.isOpen(component)).toBeTruthy();
 			utils.clickNthDay(component, 2);
 			expect(utils.isOpen(component)).toBeFalsy();
@@ -702,10 +702,30 @@ describe('Datetime', () => {
 				onBlurFn = jest.fn(),
 				component = utils.createDatetime({ value: date, onBlur: onBlurFn, closeOnSelect: true });
 
-			component.find('.form-control').simulate('focus');
+			utils.openDatepicker(component);
 			// Close component by selecting a date
 			utils.clickNthDay(component, 2);
 			expect(onBlurFn).toHaveBeenCalledTimes(1);
+		});
+
+		it('onBlur with value=null and closeOnSelect=true', () => {
+			const onBlurFn = jest.fn(),
+				component = utils.createDatetime({ value: null, onBlur: onBlurFn, closeOnSelect: true });
+
+			utils.openDatepicker(component);
+			// Close component by selecting a date
+			utils.clickNthDay(component, 2);
+			expect(onBlurFn).toHaveBeenCalledTimes(1);
+		});
+
+		it('onBlur with value=null and closeOnSelect=false', () => {
+			const onBlurFn = jest.fn(),
+				component = utils.createDatetime({ value: null, onBlur: onBlurFn, closeOnSelect: false });
+
+			utils.openDatepicker(component);
+			// Close component by selecting a date
+			utils.clickNthDay(component, 2);
+			expect(onBlurFn).not.toHaveBeenCalled();
 		});
 
 		it('onFocus', () => {
@@ -713,7 +733,7 @@ describe('Datetime', () => {
 				onFocusFn = jest.fn(),
 				component = utils.createDatetime({ value: date, onFocus: onFocusFn });
 
-			component.find('.form-control').simulate('focus');
+			utils.openDatepicker(component);
 			expect(onFocusFn).toHaveBeenCalledTimes(1);
 		});
 

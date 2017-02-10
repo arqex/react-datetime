@@ -334,14 +334,19 @@ var Datetime = React.createClass({
 			.milliseconds( currentDate.milliseconds() );
 
 		if ( !this.props.value ) {
+			var open = !( this.props.closeOnSelect && close );
+			if ( !open ) {
+				this.props.onBlur( date );
+			}
+
 			this.setState({
 				selectedDate: date,
 				viewDate: date.clone().startOf('month'),
 				inputValue: date.format( this.state.inputFormat ),
-				open: !(this.props.closeOnSelect && close )
+				open: open
 			});
 		} else {
-			if (this.props.closeOnSelect && close) {
+			if ( this.props.closeOnSelect && close ) {
 				this.closeCalendar();
 			}
 		}
