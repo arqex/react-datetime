@@ -37,8 +37,8 @@ render: function() {
 | ------------ | ------- | ------- | ----------- |
 | **value** | `Date` | `new Date()` | Represents the selected date by the component, in order to use it as a [controlled component](https://facebook.github.io/react/docs/forms.html#controlled-components). This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object. |
 | **defaultValue** | `Date` | `new Date()` | Represents the selected date for the component to use it as a [uncontrolled component](https://facebook.github.io/react/docs/forms.html#uncontrolled-components). This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object. |
-| **dateFormat**   | `boolean` or `string`  | `true` | Defines the format for the date. It accepts any [Moment.js date format](http://momentjs.com/docs/#/displaying/format/) (not in localized format). If `true` the date will be displayed using the defaults for the current locale. If `false` the datepicker is disabled and the component can be used as timepicker. |
-| **timeFormat**   | `boolean` or `string`  | `true` | Defines the format for the time. It accepts any [Moment.js time format](http://momentjs.com/docs/#/displaying/format/) (not in localized format). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker. |
+| **dateFormat**   | `boolean` or `string`  | `true` | Defines the format for the date. It accepts any [Moment.js date format](http://momentjs.com/docs/#/displaying/format/) (not in localized format). If `true` the date will be displayed using the defaults for the current locale. If `false` the datepicker is disabled and the component can be used as timepicker, see [available units docs](#specify-available-units). |
+| **timeFormat**   | `boolean` or `string`  | `true` | Defines the format for the time. It accepts any [Moment.js time format](http://momentjs.com/docs/#/displaying/format/) (not in localized format). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker, see [available units docs](#specify-available-units). |
 | **input** | `boolean` | `true` | Whether to show an input field to edit the date manually. |
 | **open** | `boolean` | `null` | Whether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside. |
 | **locale** | `string` | `null` | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
@@ -50,9 +50,9 @@ render: function() {
 | **className** | `string` or `string array` | `''` | Extra class name for the outermost markup element. |
 | **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `placeholder`, `disabled`, `required`, `name` and `className` (`className` *sets* the class attribute for the input element). |
 | **isValidDate** | `function` | `() => true` | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and shall return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
-| **renderDay** | `function` | `DOM.td(day)` | Customize the way that the days are shown in the daypicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#appearance-customization). |
-| **renderMonth** | `function` | `DOM.td(month)` | Customize the way that the months are shown in the monthpicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization). |
-| **renderYear** | `function` | `DOM.td(year)` | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [appearance customization](#appearance-customization). |
+| **renderDay** | `function` | `DOM.td(day)` | Customize the way that the days are shown in the daypicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [appearance customization](#customize-the-appearance). |
+| **renderMonth** | `function` | `DOM.td(month)` | Customize the way that the months are shown in the monthpicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [appearance customization](#customize-the-appearance). |
+| **renderYear** | `function` | `DOM.td(year)` | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [appearance customization](#customize-the-appearance). |
 | **strictParsing** | `boolean` | `false` | Whether to use Moment.js's [strict parsing](http://momentjs.com/docs/#/parsing/string-format/) when parsing input.
 | **closeOnSelect** | `boolean` | `false` | When `true`, once the day has been selected, the datepicker will be automatically closed.
 | **closeOnTab** | `boolean` | `true` | When `true` and the input is focused, pressing the `tab` key will close the datepicker.
@@ -90,7 +90,7 @@ var MyDTPicker = React.createClass({
     renderDay: function( props, currentDate, selectedDate ){
         return <td {...props}>{ '0' + currentDate.date() }</td>;
     },
-    renderMonth: function( props, month, year, selectedDate){
+    renderMonth: function( props, month, year, selectedDate ){
         return <td {...props}>{ month }</td>;
     },
     renderYear: function( props, year, selectedDate ){
@@ -105,6 +105,21 @@ var MyDTPicker = React.createClass({
 * `selectedDate` and `currentDate` are [moment objects](http://momentjs.com) and can be used to change the output depending on the selected date, or the date for the current day.
 * `month` and `year` are the numeric representation of the current month and year to be displayed. Notice that the possible `month` values range from `0` to `11`.
 
+## Specify Available Units
+You can filter out what you want the user to be able to pick by using `dateFormat` and `timeFormat`, e.g. to create a timepicker, yearpicker etc.
+ 
+In this example the component is being used as a *timepicker* and can *only be used for selecting a time*.
+```js
+<Datetime dateFormat={false} />
+```
+[Working example of a timepicker here.](http://codepen.io/simeg/pen/mRQBrp)
+
+In this example you can *only select a year and month*.
+```js
+<Datetime dateFormat="YYYY-MM" timeFormat={false} />
+```
+[Working example of only selecting year and month here.](http://codepen.io/simeg/pen/apQLdd)
+
 ## Selectable Dates
 It is possible to disable dates in the calendar if the user are not allowed to select them, e.g. dates in the past. This is done using the prop `isValidDate`, which admits a function in the form `function(currentDate, selectedDate)` where both arguments are [moment objects](http://momentjs.com). The function shall return `true` for selectable dates, and `false` for disabled ones.
 
@@ -112,7 +127,7 @@ In the example below are *all dates before today* disabled.
 
 ```js
 // Let's use the static moment reference in the Datetime component
-var yesterday = Datetime.moment().subtract(1, 'day');
+var yesterday = Datetime.moment().subtract( 1, 'day' );
 var valid = function( current ){
     return current.isAfter( yesterday );
 };
