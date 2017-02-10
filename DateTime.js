@@ -161,13 +161,8 @@ var Datetime = React.createClass({
 			updatedState = this.getStateFromProps( nextProps );
 		}
 
-		// What is this for? Keeping for now, will remove later
 		if ( updatedState.open === undefined ) {
 			updatedState.open = this.state.open;
-		}
-
-		if ( this.props.closeOnSelect === false ) {
-			updatedState.open = true;
 		}
 
 		if ( nextProps.viewMode !== this.props.viewMode ) {
