@@ -81,7 +81,7 @@ var DateTimePickerDays = React.createClass({
 			if ( selected && prevMonth.isSame( selected, 'day' ) )
 				classes += ' rdtActive';
 
-			if (prevMonth.isSame( moment(), 'day' ) )
+			if ( prevMonth.isSame( moment(), 'day' ) )
 				classes += ' rdtToday';
 
 			isDisabled = !isValid( currentDate, selected );

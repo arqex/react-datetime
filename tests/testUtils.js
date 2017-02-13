@@ -1,9 +1,10 @@
-import React from 'react';
+import React from 'react'; // eslint-disable-line no-unused-vars
 import { mount } from 'enzyme';
-import Datetime from '../DateTime';
+import Datetime from '../DateTime'; // eslint-disable-line no-unused-vars
 
 const simulateClickOnElement = (element) => {
 	if (element.length === 0) {
+		// eslint-disable-next-line no-console
 		console.warn('Element not clicked since it doesn\'t exist');
 		return;
 	}
