@@ -450,19 +450,19 @@ describe('Datetime', () => {
 					}});
 
 			// Check hour
-			expect(component.find('.rdtCount').at(0).text()).toEqual('2');
+			expect(utils.getHours(component)).toEqual('2');
 			utils.increaseHour(component);
-			expect(component.find('.rdtCount').at(0).text()).toEqual('3');
+			expect(utils.getHours(component)).toEqual('3');
 
 			// Check minute
-			expect(component.find('.rdtCount').at(1).text()).toEqual('02');
+			expect(utils.getMinutes(component)).toEqual('02');
 			utils.increaseMinute(component);
-			expect(component.find('.rdtCount').at(1).text()).toEqual('03');
+			expect(utils.getMinutes(component)).toEqual('03');
 
 			// Check second
-			expect(component.find('.rdtCount').at(2).text()).toEqual('02');
+			expect(utils.getSeconds(component)).toEqual('02');
 			utils.increaseSecond(component);
-			expect(component.find('.rdtCount').at(2).text()).toEqual('03');
+			expect(utils.getSeconds(component)).toEqual('03');
 		});
 
 		it('decrease time', () => {
@@ -482,19 +482,19 @@ describe('Datetime', () => {
 					}});
 
 			// Check hour
-			expect(component.find('.rdtCount').at(0).text()).toEqual('2');
+			expect(utils.getHours(component)).toEqual('2');
 			utils.decreaseHour(component);
-			expect(component.find('.rdtCount').at(0).text()).toEqual('1');
+			expect(utils.getHours(component)).toEqual('1');
 
 			// Check minute
-			expect(component.find('.rdtCount').at(1).text()).toEqual('02');
+			expect(utils.getMinutes(component)).toEqual('02');
 			utils.decreaseMinute(component);
-			expect(component.find('.rdtCount').at(1).text()).toEqual('01');
+			expect(utils.getMinutes(component)).toEqual('01');
 
 			// Check second
-			expect(component.find('.rdtCount').at(2).text()).toEqual('02');
+			expect(utils.getSeconds(component)).toEqual('02');
 			utils.decreaseSecond(component);
-			expect(component.find('.rdtCount').at(2).text()).toEqual('01');
+			expect(utils.getSeconds(component)).toEqual('01');
 		});
 
 		it('long increase time', (done) => {
@@ -503,8 +503,8 @@ describe('Datetime', () => {
 
 			utils.increaseHour(component);
 			setTimeout(() => {
-				expect(component.find('.rdtCount').at(0).text()).not.toEqual('2');
-				expect(component.find('.rdtCount').at(0).text()).not.toEqual('3');
+				expect(utils.getHours(component)).not.toEqual('2');
+				expect(utils.getHours(component)).not.toEqual('3');
 				done();
 			}, 920);
 		});
@@ -515,8 +515,8 @@ describe('Datetime', () => {
 
 			utils.decreaseHour(component);
 			setTimeout(() => {
-				expect(component.find('.rdtCount').at(0).text()).not.toEqual('1');
-				expect(component.find('.rdtCount').at(0).text()).not.toEqual('0');
+				expect(utils.getHours(component)).not.toEqual('1');
+				expect(utils.getHours(component)).not.toEqual('0');
 				done();
 			}, 920);
 		});
@@ -538,13 +538,13 @@ describe('Datetime', () => {
 				});
 
 			utils.increaseHour(component);
-			expect(component.find('.rdtCount').at(0).text()).toEqual('3');
+			expect(utils.getHours(component)).toEqual('3');
 
 			utils.increaseMinute(component);
-			expect(component.find('.rdtCount').at(1).text()).toEqual('17');
+			expect(utils.getMinutes(component)).toEqual('17');
 
 			utils.increaseSecond(component);
-			expect(component.find('.rdtCount').at(2).text()).toEqual('03');
+			expect(utils.getSeconds(component)).toEqual('03');
 		});
 
 		it('timeConstraints -> decrease time', () => {
@@ -563,7 +563,7 @@ describe('Datetime', () => {
 				});
 
 			utils.decreaseMinute(component);
-			expect(component.find('.rdtCount').at(1).text()).toEqual('47');
+			expect(utils.getMinutes(component)).toEqual('47');
 		});
 
 		it('strictParsing=true', (done) => {

@@ -105,6 +105,18 @@ module.exports = {
 		return datetime.find('.rdtYear').at(n);
 	},
 
+	getHours: (datetime) => {
+		return datetime.find('.rdtCount').at(0).text();
+	},
+
+	getMinutes: (datetime) => {
+		return datetime.find('.rdtCount').at(1).text();
+	},
+
+	getSeconds: (datetime) => {
+		return datetime.find('.rdtCount').at(2).text();
+	},
+
 	getInputValue: (datetime) => {
 		return datetime.find('.rdt > .form-control').getDOMNode().value;
 	}
