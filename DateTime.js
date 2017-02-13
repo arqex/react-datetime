@@ -39,6 +39,9 @@ var Datetime = React.createClass({
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
 		closeOnTab: TYPES.bool
+
+		// boundaryStart: TYPES.object | TYPES.string,
+		// boundaryEnd: TYPES.object | TYPES.string,
 	},
 
 	getDefaultProps: function() {
@@ -57,7 +60,10 @@ var Datetime = React.createClass({
 			strictParsing: true,
 			closeOnSelect: false,
 			closeOnTab: true,
-			utc: false
+			utc: false,
+
+			boundaryStart: '',
+			boundaryEnd: ''
 		};
 	},
 
@@ -75,7 +81,9 @@ var Datetime = React.createClass({
 	getStateFromProps: function( props ) {
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
-			selectedDate, viewDate, updateOn, inputValue
+			selectedDate, viewDate, updateOn, inputValue,
+			boundaryStart = moment(props.boundaryStart).isValid && moment(props.boundaryStart),
+			boundaryEnd = moment(props.boundaryEnd).isValid && moment(props.boundaryEnd)
 		;
 
 		if ( date && typeof date === 'string' )
@@ -106,7 +114,10 @@ var Datetime = React.createClass({
 			viewDate: viewDate,
 			selectedDate: selectedDate,
 			inputValue: inputValue,
-			open: props.open
+			open: props.open,
+
+			boundaryStart: boundaryStart,
+			boundaryEnd: boundaryEnd
 		};
 	},
 
@@ -387,7 +398,7 @@ var Datetime = React.createClass({
 
 	componentProps: {
 		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
-		fromState: ['viewDate', 'selectedDate', 'updateOn'],
+		fromState: ['viewDate', 'selectedDate', 'updateOn', 'boundaryStart', 'boundaryEnd'],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
 	},
 

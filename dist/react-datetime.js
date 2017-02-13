@@ -100,6 +100,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			strictParsing: TYPES.bool,
 			closeOnSelect: TYPES.bool,
 			closeOnTab: TYPES.bool
+
+			// boundaryStart: TYPES.object | TYPES.string,
+			// boundaryEnd: TYPES.object | TYPES.string,
 		},
 
 		getDefaultProps: function() {
@@ -118,7 +121,10 @@ return /******/ (function(modules) { // webpackBootstrap
 				strictParsing: true,
 				closeOnSelect: false,
 				closeOnTab: true,
-				utc: false
+				utc: false,
+
+				boundaryStart: '',
+				boundaryEnd: ''
 			};
 		},
 
@@ -136,7 +142,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		getStateFromProps: function( props ) {
 			var formats = this.getFormats( props ),
 				date = props.value || props.defaultValue,
-				selectedDate, viewDate, updateOn, inputValue
+				selectedDate, viewDate, updateOn, inputValue,
+				boundaryStart = moment(props.boundaryStart).isValid && moment(props.boundaryStart),
+				boundaryEnd = moment(props.boundaryEnd).isValid && moment(props.boundaryEnd)
 			;
 
 			if ( date && typeof date === 'string' )
@@ -167,7 +175,10 @@ return /******/ (function(modules) { // webpackBootstrap
 				viewDate: viewDate,
 				selectedDate: selectedDate,
 				inputValue: inputValue,
-				open: props.open
+				open: props.open,
+
+				boundaryStart: boundaryStart,
+				boundaryEnd: boundaryEnd
 			};
 		},
 
@@ -225,8 +236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( updatedState.open === undefined ) {
 				if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
 					updatedState.open = false;
-				}
-				else {
+				} else {
 					updatedState.open = this.state.open;
 				}
 			}
@@ -396,14 +406,19 @@ return /******/ (function(modules) { // webpackBootstrap
 				.milliseconds( currentDate.milliseconds() );
 
 			if ( !this.props.value ) {
+				var open = !( this.props.closeOnSelect && close );
+				if ( !open ) {
+					this.props.onBlur( date );
+				}
+
 				this.setState({
 					selectedDate: date,
 					viewDate: date.clone().startOf('month'),
 					inputValue: date.format( this.state.inputFormat ),
-					open: !(this.props.closeOnSelect && close )
+					open: open
 				});
 			} else {
-				if (this.props.closeOnSelect && close) {
+				if ( this.props.closeOnSelect && close ) {
 					this.closeCalendar();
 				}
 			}
@@ -444,7 +459,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		componentProps: {
 			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
-			fromState: ['viewDate', 'selectedDate', 'updateOn'],
+			fromState: ['viewDate', 'selectedDate', 'updateOn', 'boundaryStart', 'boundaryEnd'],
 			fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment']
 		},
 
@@ -1061,18 +1076,18 @@ return /******/ (function(modules) { // webpackBootstrap
 			['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
 				assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
 			});
-			this.setState( this.calculateState( this.props ) );
+			this.updateState( this.calculateState( this.props ) );
 		},
 
 		componentWillReceiveProps: function( nextProps ) {
-			this.setState( this.calculateState( nextProps ) );
+			this.updateState( this.calculateState( nextProps ) );
 		},
 
 		updateMilli: function( e ) {
 			var milli = parseInt( e.target.value, 10 );
 			if ( milli === e.target.value && milli >= 0 && milli < 1000 ) {
 				this.props.setTime( 'milliseconds', milli );
-				this.setState( { milliseconds: milli } );
+				this.updateState( { milliseconds: milli } );
 			}
 		},
 
@@ -1092,12 +1107,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			return function() {
 				var update = {};
 				update[ type ] = me[ action ]( type );
-				me.setState( update );
+				me.updateState( update );
 
 				me.timer = setTimeout( function() {
 					me.increaseTimer = setInterval( function() {
 						update[ type ] = me[ action ]( type );
-						me.setState( update );
+						me.updateState( update );
 					}, 70);
 				}, 500);
 
@@ -1145,6 +1160,142 @@ return /******/ (function(modules) { // webpackBootstrap
 			while ( str.length < this.padValues[ type ] )
 				str = '0' + str;
 			return str;
+		},
+
+		updateState: function( update ) {
+			var hours = parseInt(
+				update.hasOwnProperty('hours') ? update.hours : this.state.hours,
+				10
+			);
+			var minutes = parseInt(
+				update.hasOwnProperty('minutes') ? update.minutes : this.state.minutes, 
+				10
+			);
+			var seconds = parseInt(
+				update.hasOwnProperty('seconds') ? update.seconds : this.state.seconds,
+				10
+			);
+			var milliseconds = parseInt(
+				update.hasOwnProperty('milliseconds') ? update.milliseconds : this.state.milliseconds,
+				10
+			);
+			var isConstrained = false;
+
+			if ((!this.props.selectedDate) || (!this.props.boundaryStart && !this.props.boundaryEnd)) {
+				return this.setState( update );
+			} else if (this.props.boundaryStart
+				&& this.props.selectedDate.isSame(this.props.boundaryStart, 'days')
+			) {
+				// compare to boundaryStart
+				// hours
+				if (hours < this.props.boundaryStart.hours()) {
+					if (hours === this.timeConstraints.hours.min) {
+						update.hours = this.props.boundaryStart.hours();
+						isConstrained = true;
+					} else {
+						update.hours = this.timeConstraints.hours.max;
+						isConstrained = false;
+					}
+				} else {
+					isConstrained = hours === this.props.boundaryStart.hours();
+				}
+				
+				// minutes
+				if (isConstrained) {
+					if (minutes === this.timeConstraints.minutes.min) {
+						update.minutes = this.props.boundaryStart.minutes();
+						isConstrained = true;
+					} else if (minutes < this.props.boundaryStart.minutes()) {
+						update.minutes = this.timeConstraints.minutes.max;
+						isConstrained = false;
+					} else {
+						isConstrained = isConstrained && minutes === this.props.boundaryStart.minutes();
+					}
+				} else {
+					isConstrained = isConstrained && minutes === this.props.boundaryStart.minutes();
+				}
+
+				// seconds
+				if (isConstrained) {
+					if (seconds === this.timeConstraints.seconds.min) {
+						update.seconds = this.props.boundaryStart.seconds();
+						isConstrained = true;
+					} else if (seconds < this.props.boundaryStart.seconds()) {
+						update.seconds = this.timeConstraints.minutes.max;
+						isConstrained = false;
+					} else {
+						isConstrained = isConstrained && seconds === this.props.boundaryStart.seconds();
+					}
+				} else {
+					isConstrained = isConstrained && seconds === this.props.boundaryStart.seconds();
+				}
+
+				// milliseconds
+				if (isConstrained) {
+					if (milliseconds === this.timeConstraints.milliseconds.min) {
+						update.milliseconds = this.props.boundaryStart.millisecond();
+					} else if (milliseconds < this.props.boundaryStart.millisecond()) {
+						update.milliseconds = this.timeConstraints.minutes.max;
+					}
+				}
+			} else if (this.props.boundaryEnd
+				&& this.props.selectedDate.isSame(this.props.boundaryEnd, 'days')
+			) {
+				// compare to boundaryEnd
+				// hours
+				if (hours > this.props.boundaryEnd.hours()) {
+					if (hours === this.timeConstraints.hours.max) {
+						update.hours = this.props.boundaryEnd.hours();
+						isConstrained = true;
+					} else {
+						update.hours = this.timeConstraints.hours.min;
+						isConstrained = false;
+					}
+				} else {
+					isConstrained = hours === this.props.boundaryEnd.hours();
+				}
+				
+				// minutes
+				if (isConstrained) {
+					if (minutes === this.timeConstraints.minutes.max) {
+						update.minutes = this.props.boundaryEnd.minutes();
+						isConstrained = true;
+					} else if (minutes > this.props.boundaryEnd.minutes()) {
+						update.minutes = this.timeConstraints.minutes.min;
+						isConstrained = false;
+					} else {
+						isConstrained = isConstrained && minutes === this.props.boundaryEnd.minutes();
+					}
+				} else {
+					isConstrained = isConstrained && minutes === this.props.boundaryEnd.minutes();
+				}
+
+				// seconds
+				if (isConstrained) {
+					if (seconds === this.timeConstraints.seconds.max) {
+						update.seconds = this.props.boundaryEnd.seconds();
+						isConstrained = true;
+					} else if (seconds > this.props.boundaryEnd.seconds()) {
+						update.seconds = this.timeConstraints.minutes.min;
+						isConstrained = false;
+					} else {
+						isConstrained = isConstrained && seconds === this.props.boundaryEnd.seconds();
+					}
+				} else {
+					isConstrained = isConstrained && seconds === this.props.boundaryEnd.seconds();
+				}
+
+				// milliseconds
+				if (isConstrained) {
+					if (milliseconds === this.timeConstraints.milliseconds.max) {
+						update.milliseconds = this.props.boundaryEnd.millisecond();
+					} else if (milliseconds < this.props.boundaryEnd.millisecond()) {
+						update.milliseconds = this.timeConstraints.minutes.min;
+					}
+				}
+			}
+
+			return this.setState( update );
 		}
 	});
 
