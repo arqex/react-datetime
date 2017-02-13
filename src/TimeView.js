@@ -221,19 +221,21 @@ var DateTimePickerTime = React.createClass({
 
 	updateState: function( update ) {
 		var hours = parseInt(
-				update.hasOwnProperty('hours')
-					? update.hours
-					: this.state.hours
+			update.hasOwnProperty('hours') ? update.hours : this.state.hours,
+			10
 		);
-		var minutes = update.hasOwnProperty('minutes')
-				? parseInt(update.minutes)
-				: this.state.minutes;
-		var seconds = update.hasOwnProperty('seconds')
-				? parseInt(update.seconds)
-				: this.state.seconds;
-		var milliseconds = update.hasOwnProperty('milliseconds')
-				? parseInt(update.milliseconds)
-				: this.state.milliseconds;
+		var minutes = parseInt(
+			update.hasOwnProperty('minutes') ? update.minutes : this.state.minutes, 
+			10
+		);
+		var seconds = parseInt(
+			update.hasOwnProperty('seconds') ? update.seconds : this.state.seconds,
+			10
+		);
+		var milliseconds = parseInt(
+			update.hasOwnProperty('milliseconds') ? update.milliseconds : this.state.milliseconds,
+			10
+		);
 		var isConstrained = false;
 
 		if (!this.props.boundaryStart && !this.props.boundaryEnd) {
@@ -244,7 +246,7 @@ var DateTimePickerTime = React.createClass({
 			// compare to boundaryStart
 			// hours
 			if (hours < this.props.boundaryStart.hours()) {
-				if (hours == this.timeConstraints.hours.min) {
+				if (hours === this.timeConstraints.hours.min) {
 					update.hours = this.props.boundaryStart.hours();
 					isConstrained = true;
 				} else {
@@ -252,42 +254,42 @@ var DateTimePickerTime = React.createClass({
 					isConstrained = false;
 				}
 			} else {
-				isConstrained = hours == this.props.boundaryStart.hours();
+				isConstrained = hours === this.props.boundaryStart.hours();
 			}
 			
 			// minutes
 			if (isConstrained) {
-				if (minutes == this.timeConstraints.minutes.min) {
+				if (minutes === this.timeConstraints.minutes.min) {
 					update.minutes = this.props.boundaryStart.minutes();
 					isConstrained = true;
 				} else if (minutes < this.props.boundaryStart.minutes()) {
 					update.minutes = this.timeConstraints.minutes.max;
 					isConstrained = false;
 				} else {
-					isConstrained = isConstrained && minutes == this.props.boundaryStart.minutes();
+					isConstrained = isConstrained && minutes === this.props.boundaryStart.minutes();
 				}
 			} else {
-				isConstrained = isConstrained && minutes == this.props.boundaryStart.minutes();
+				isConstrained = isConstrained && minutes === this.props.boundaryStart.minutes();
 			}
 
 			// seconds
 			if (isConstrained) {
-				if (seconds == this.timeConstraints.seconds.min) {
+				if (seconds === this.timeConstraints.seconds.min) {
 					update.seconds = this.props.boundaryStart.seconds();
 					isConstrained = true;
 				} else if (seconds < this.props.boundaryStart.seconds()) {
 					update.seconds = this.timeConstraints.minutes.max;
 					isConstrained = false;
 				} else {
-					isConstrained = isConstrained && seconds == this.props.boundaryStart.seconds();
+					isConstrained = isConstrained && seconds === this.props.boundaryStart.seconds();
 				}
 			} else {
-				isConstrained = isConstrained && seconds == this.props.boundaryStart.seconds();
+				isConstrained = isConstrained && seconds === this.props.boundaryStart.seconds();
 			}
 
 			// milliseconds
 			if (isConstrained) {
-				if (milliseconds == this.timeConstraints.milliseconds.min) {
+				if (milliseconds === this.timeConstraints.milliseconds.min) {
 					update.milliseconds = this.props.boundaryStart.millisecond();
 				} else if (milliseconds < this.props.boundaryStart.millisecond()) {
 					update.milliseconds = this.timeConstraints.minutes.max;
@@ -299,7 +301,7 @@ var DateTimePickerTime = React.createClass({
 			// compare to boundaryEnd
 			// hours
 			if (hours > this.props.boundaryEnd.hours()) {
-				if (hours == this.timeConstraints.hours.max) {
+				if (hours === this.timeConstraints.hours.max) {
 					update.hours = this.props.boundaryEnd.hours();
 					isConstrained = true;
 				} else {
@@ -307,42 +309,42 @@ var DateTimePickerTime = React.createClass({
 					isConstrained = false;
 				}
 			} else {
-				isConstrained = hours == this.props.boundaryEnd.hours();
+				isConstrained = hours === this.props.boundaryEnd.hours();
 			}
 			
 			// minutes
 			if (isConstrained) {
-				if (minutes == this.timeConstraints.minutes.max) {
+				if (minutes === this.timeConstraints.minutes.max) {
 					update.minutes = this.props.boundaryEnd.minutes();
 					isConstrained = true;
 				} else if (minutes > this.props.boundaryEnd.minutes()) {
 					update.minutes = this.timeConstraints.minutes.min;
 					isConstrained = false;
 				} else {
-					isConstrained = isConstrained && minutes == this.props.boundaryEnd.minutes();
+					isConstrained = isConstrained && minutes === this.props.boundaryEnd.minutes();
 				}
 			} else {
-				isConstrained = isConstrained && minutes == this.props.boundaryEnd.minutes();
+				isConstrained = isConstrained && minutes === this.props.boundaryEnd.minutes();
 			}
 
 			// seconds
 			if (isConstrained) {
-				if (seconds == this.timeConstraints.seconds.max) {
+				if (seconds === this.timeConstraints.seconds.max) {
 					update.seconds = this.props.boundaryEnd.seconds();
 					isConstrained = true;
 				} else if (seconds > this.props.boundaryEnd.seconds()) {
 					update.seconds = this.timeConstraints.minutes.min;
 					isConstrained = false;
 				} else {
-					isConstrained = isConstrained && seconds == this.props.boundaryEnd.seconds();
+					isConstrained = isConstrained && seconds === this.props.boundaryEnd.seconds();
 				}
 			} else {
-				isConstrained = isConstrained && seconds == this.props.boundaryEnd.seconds();
+				isConstrained = isConstrained && seconds === this.props.boundaryEnd.seconds();
 			}
 
 			// milliseconds
 			if (isConstrained) {
-				if (milliseconds == this.timeConstraints.milliseconds.max) {
+				if (milliseconds === this.timeConstraints.milliseconds.max) {
 					update.milliseconds = this.props.boundaryEnd.millisecond();
 				} else if (milliseconds < this.props.boundaryEnd.millisecond()) {
 					update.milliseconds = this.timeConstraints.minutes.min;

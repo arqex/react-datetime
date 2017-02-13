@@ -419,16 +419,16 @@ var Datetime = React.createClass({
 		});
 
 		if (!props.isValidDate && (props.boundaryStart || props.boundaryEnd)) {
-			props.isValidDate = function isValidDate(currentDate, selectedDate) {
+			props.isValidDate = function isValidDate(currentDate) {
 				if (props.boundaryStart || props.boundaryEnd) {
 					return currentDate.isSameOrAfter(props.boundaryStart, 'day') 
 						&& currentDate.isSameOrBefore(props.boundaryEnd, 'day');
-				} else if (boundaryStart) {
+				} else if (props.boundaryStart) {
 					return currentDate.isSameOrAfter(props.boundaryStart, 'day');
 				} else {
 					return currentDate.isSameOrBefore(props.boundaryEnd, 'day');
 				}
-			}
+			};
 		}
 
 		return props;
