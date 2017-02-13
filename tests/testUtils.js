@@ -62,7 +62,9 @@ module.exports = {
 	},
 
 	/*
-	 * Change Values
+	 * Change Time Values
+	 *
+	 * These functions only work when the time view is open
 	 */
 	increaseHour: (datetime) => {
 		datetime.find('.rdtCounter .rdtBtn').at(0).simulate('mouseDown');
