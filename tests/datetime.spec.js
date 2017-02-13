@@ -497,7 +497,7 @@ describe('Datetime', () => {
 			expect(component.find('.rdtCount').at(2).text()).toEqual('01');
 		});
 
-		test.skip('long increase time', (done) => {
+		it('long increase time', (done) => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date });
 
@@ -509,7 +509,7 @@ describe('Datetime', () => {
 			}, 920);
 		});
 
-		test.skip('long decrease time', (done) => {
+		it('long decrease time', (done) => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date });
 
