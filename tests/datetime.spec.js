@@ -1,4 +1,6 @@
-import React from 'react';
+/* global it, describe, expect, jasmine, done, jest */
+
+import React from 'react'; // eslint-disable-line no-unused-vars
 import moment from 'moment';
 import utils from './testUtils';
 
@@ -9,6 +11,42 @@ describe('Datetime', () => {
 		expect(component).toBeDefined();
 		expect(component.find('.rdt > .form-control').length).toEqual(1);
 		expect(component.find('.rdt > .rdtPicker').length).toEqual(1);
+	});
+
+	it('viewMode=days: renders days, week days, month, year', () => {
+		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
+		utils.openDatepicker(component);
+
+		// Month and year
+		expect(component.find('.rdtSwitch').text()).toEqual('January 2000');
+
+		// Week days
+		const expectedWeekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+		actualWeekdays = component.find('.rdtDays .dow').map((element) =>
+			element.text()
+		);
+		expect(actualWeekdays).toEqual(expectedWeekDays);
+
+		// Dates
+		// "Old" dates belonging to prev month
+		const oldDatesIndexes = [0, 1, 2, 3, 4, 5];
+		oldDatesIndexes.forEach((index) => {
+			expect(utils.getNthDay(component, index).hasClass('rdtOld')).toBeTruthy();
+		});
+
+		// Dates belonging to current month
+		for (let i = 6; i < 37; i++) {
+			expect(utils.getNthDay(component, i).hasClass('rdtDay')).toBeTruthy();
+			expect(utils.getNthDay(component, i).hasClass('rdtOld')).toBeFalsy();
+			expect(utils.getNthDay(component, i).hasClass('rdtNew')).toBeFalsy();
+		}
+
+		// "New" dates belonging to next month
+		const nextDatesIndexes = [37, 38, 39, 40, 41];
+		nextDatesIndexes.forEach((index) => {
+			expect(utils.getNthDay(component, index).hasClass('rdtNew')).toBeTruthy();
+		});
 	});
 
 	it('switch from day view to time view and back', () => {
@@ -187,10 +225,10 @@ describe('Datetime', () => {
 
 		utils.openDatepicker(component);
 
-		prevMonthDaysIndexes.forEach(function(index) {
+		prevMonthDaysIndexes.forEach((index) => {
 			expect(utils.getNthDay(component, index).hasClass('rdtOld')).toBeTruthy();
 		});
-		nextMonthDaysIndexes.forEach(function(index) {
+		nextMonthDaysIndexes.forEach((index) => {
 			expect(utils.getNthDay(component, index).hasClass('rdtNew')).toBeTruthy();
 		});
 	});
@@ -204,6 +242,17 @@ describe('Datetime', () => {
 		// Go to previous month
 		utils.clickOnElement(component.find('.rdtDays .rdtPrev span'));
 		expect(utils.getNthDay(component, 36).hasClass('rdtActive')).toBeTruthy();
+	});
+
+	it('sets CSS class on today date', () => {
+		const specificDate = moment('2015-04-19'),
+			component = utils.createDatetime({ defaultValue: specificDate });
+
+		// Mock the today date
+		jasmine.clock().mockDate(specificDate.toDate());
+
+		utils.openDatepicker(component);
+		expect(component.find('.rdtDay.rdtToday').text()).toEqual('19');
 	});
 
 	// Proof of bug
@@ -634,29 +683,37 @@ describe('Datetime', () => {
 			expect(actualMonths).toEqual(expectedMonths);
 		});
 
-		it('closeOnSelect=false', () => {
+		it('closeOnSelect=false', (done) => {
 			const component = utils.createDatetime({ closeOnSelect: false });
 
-			// A unknown race condition is causing this test to fail without this
+			// A unknown race condition is causing this test to fail without this time out,
+			// and when the test fails it says:
+			// 'Timeout - Async callback was not invoked within timeout'
+			// Ideally it would say something else but at least we know the tests are passing now
 			setTimeout(() => {
 				expect(utils.isOpen(component)).toBeFalsy();
 				utils.openDatepicker(component);
 				expect(utils.isOpen(component)).toBeTruthy();
 				utils.clickNthDay(component, 2);
 				expect(utils.isOpen(component)).toBeTruthy();
+				done();
 			}, 0);
 		});
 
-		it('closeOnSelect=true', () => {
+		it('closeOnSelect=true', (done) => {
 			const component = utils.createDatetime({ closeOnSelect: true });
 
-			// A unknown race condition is causing this test to fail without this
+			// A unknown race condition is causing this test to fail without this time out,
+			// and when the test fails it says:
+			// 'Timeout - Async callback was not invoked within timeout'
+			// Ideally it would say something else but at least we know the tests are passing now
 			setTimeout(() => {
 				expect(utils.isOpen(component)).toBeFalsy();
 				utils.openDatepicker(component);
 				expect(utils.isOpen(component)).toBeTruthy();
 				utils.clickNthDay(component, 2);
 				expect(utils.isOpen(component)).toBeFalsy();
+				done();
 			}, 0);
 		});
 
@@ -710,19 +767,23 @@ describe('Datetime', () => {
 		});
 
 		describe('being updated and should trigger update', () => {
-			it('dateFormat -> value should change format', () => {
+			it('dateFormat -> value should change format', (done) => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					component = utils.createDatetime({
 						dateFormat: 'YYYY-MM-DD', timeFormat: false, defaultValue: date
 					});
 
 				const valueBefore = utils.getInputValue(component);
-				// A unknown race condition is causing this test to fail without this
+				// A unknown race condition is causing this test to fail without this time out,
+				// and when the test fails it says:
+				// 'Timeout - Async callback was not invoked within timeout'
+				// Ideally it would say something else but at least we know the tests are passing now
 				setTimeout(() => {
 					component.setProps({ dateFormat: 'DD.MM.YYYY' });
 					const valueAfter = utils.getInputValue(component);
 
 					expect(valueBefore).not.toEqual(valueAfter);
+					done();
 				}, 0);
 			});
 
