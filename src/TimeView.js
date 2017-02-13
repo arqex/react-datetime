@@ -133,18 +133,18 @@ var DateTimePickerTime = React.createClass({
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
 			assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
 		});
-		this.setState( this.calculateState( this.props ) );
+		this.updateState( this.calculateState( this.props ) );
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
-		this.setState( this.calculateState( nextProps ) );
+		this.updateState( this.calculateState( nextProps ) );
 	},
 
 	updateMilli: function( e ) {
 		var milli = parseInt( e.target.value, 10 );
 		if ( milli === e.target.value && milli >= 0 && milli < 1000 ) {
 			this.props.setTime( 'milliseconds', milli );
-			this.setState( { milliseconds: milli } );
+			this.updateState( { milliseconds: milli } );
 		}
 	},
 
@@ -164,12 +164,12 @@ var DateTimePickerTime = React.createClass({
 		return function() {
 			var update = {};
 			update[ type ] = me[ action ]( type );
-			me.setState( update );
+			me.updateState( update );
 
 			me.timer = setTimeout( function() {
 				me.increaseTimer = setInterval( function() {
 					update[ type ] = me[ action ]( type );
-					me.setState( update );
+					me.updateState( update );
 				}, 70);
 			}, 500);
 
@@ -217,6 +217,142 @@ var DateTimePickerTime = React.createClass({
 		while ( str.length < this.padValues[ type ] )
 			str = '0' + str;
 		return str;
+	},
+
+	updateState: function( update ) {
+		var hours = parseInt(
+			update.hasOwnProperty('hours') ? update.hours : this.state.hours,
+			10
+		);
+		var minutes = parseInt(
+			update.hasOwnProperty('minutes') ? update.minutes : this.state.minutes, 
+			10
+		);
+		var seconds = parseInt(
+			update.hasOwnProperty('seconds') ? update.seconds : this.state.seconds,
+			10
+		);
+		var milliseconds = parseInt(
+			update.hasOwnProperty('milliseconds') ? update.milliseconds : this.state.milliseconds,
+			10
+		);
+		var isConstrained = false;
+
+		if ((!this.props.selectedDate) || (!this.props.boundaryStart && !this.props.boundaryEnd)) {
+			return this.setState( update );
+		} else if (this.props.boundaryStart
+			&& this.props.selectedDate.isSame(this.props.boundaryStart, 'days')
+		) {
+			// compare to boundaryStart
+			// hours
+			if (hours < this.props.boundaryStart.hours()) {
+				if (hours === this.timeConstraints.hours.min) {
+					update.hours = this.props.boundaryStart.hours();
+					isConstrained = true;
+				} else {
+					update.hours = this.timeConstraints.hours.max;
+					isConstrained = false;
+				}
+			} else {
+				isConstrained = hours === this.props.boundaryStart.hours();
+			}
+			
+			// minutes
+			if (isConstrained) {
+				if (minutes === this.timeConstraints.minutes.min) {
+					update.minutes = this.props.boundaryStart.minutes();
+					isConstrained = true;
+				} else if (minutes < this.props.boundaryStart.minutes()) {
+					update.minutes = this.timeConstraints.minutes.max;
+					isConstrained = false;
+				} else {
+					isConstrained = isConstrained && minutes === this.props.boundaryStart.minutes();
+				}
+			} else {
+				isConstrained = isConstrained && minutes === this.props.boundaryStart.minutes();
+			}
+
+			// seconds
+			if (isConstrained) {
+				if (seconds === this.timeConstraints.seconds.min) {
+					update.seconds = this.props.boundaryStart.seconds();
+					isConstrained = true;
+				} else if (seconds < this.props.boundaryStart.seconds()) {
+					update.seconds = this.timeConstraints.minutes.max;
+					isConstrained = false;
+				} else {
+					isConstrained = isConstrained && seconds === this.props.boundaryStart.seconds();
+				}
+			} else {
+				isConstrained = isConstrained && seconds === this.props.boundaryStart.seconds();
+			}
+
+			// milliseconds
+			if (isConstrained) {
+				if (milliseconds === this.timeConstraints.milliseconds.min) {
+					update.milliseconds = this.props.boundaryStart.millisecond();
+				} else if (milliseconds < this.props.boundaryStart.millisecond()) {
+					update.milliseconds = this.timeConstraints.minutes.max;
+				}
+			}
+		} else if (this.props.boundaryEnd
+			&& this.props.selectedDate.isSame(this.props.boundaryEnd, 'days')
+		) {
+			// compare to boundaryEnd
+			// hours
+			if (hours > this.props.boundaryEnd.hours()) {
+				if (hours === this.timeConstraints.hours.max) {
+					update.hours = this.props.boundaryEnd.hours();
+					isConstrained = true;
+				} else {
+					update.hours = this.timeConstraints.hours.min;
+					isConstrained = false;
+				}
+			} else {
+				isConstrained = hours === this.props.boundaryEnd.hours();
+			}
+			
+			// minutes
+			if (isConstrained) {
+				if (minutes === this.timeConstraints.minutes.max) {
+					update.minutes = this.props.boundaryEnd.minutes();
+					isConstrained = true;
+				} else if (minutes > this.props.boundaryEnd.minutes()) {
+					update.minutes = this.timeConstraints.minutes.min;
+					isConstrained = false;
+				} else {
+					isConstrained = isConstrained && minutes === this.props.boundaryEnd.minutes();
+				}
+			} else {
+				isConstrained = isConstrained && minutes === this.props.boundaryEnd.minutes();
+			}
+
+			// seconds
+			if (isConstrained) {
+				if (seconds === this.timeConstraints.seconds.max) {
+					update.seconds = this.props.boundaryEnd.seconds();
+					isConstrained = true;
+				} else if (seconds > this.props.boundaryEnd.seconds()) {
+					update.seconds = this.timeConstraints.minutes.min;
+					isConstrained = false;
+				} else {
+					isConstrained = isConstrained && seconds === this.props.boundaryEnd.seconds();
+				}
+			} else {
+				isConstrained = isConstrained && seconds === this.props.boundaryEnd.seconds();
+			}
+
+			// milliseconds
+			if (isConstrained) {
+				if (milliseconds === this.timeConstraints.milliseconds.max) {
+					update.milliseconds = this.props.boundaryEnd.millisecond();
+				} else if (milliseconds < this.props.boundaryEnd.millisecond()) {
+					update.milliseconds = this.timeConstraints.minutes.min;
+				}
+			}
+		}
+
+		return this.setState( update );
 	}
 });
 
