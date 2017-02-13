@@ -238,7 +238,7 @@ var DateTimePickerTime = React.createClass({
 		);
 		var isConstrained = false;
 
-		if (!this.props.boundaryStart && !this.props.boundaryEnd) {
+		if ((!this.props.selectedDate) || (!this.props.boundaryStart && !this.props.boundaryEnd)) {
 			return this.setState( update );
 		} else if (this.props.boundaryStart
 			&& this.props.selectedDate.isSame(this.props.boundaryStart, 'days')
