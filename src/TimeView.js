@@ -1,7 +1,8 @@
 'use strict';
 
 var React = require('react'),
-	assign = require('object-assign')
+	assign = require('object-assign'),
+	moment = require('moment')
 ;
 
 var DOM = React.DOM;
@@ -133,18 +134,18 @@ var DateTimePickerTime = React.createClass({
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
 			assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
 		});
-		this.setState( this.calculateState( this.props ) );
+		this.updateState( this.calculateState( this.props ) );
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
-		this.setState( this.calculateState( nextProps ) );
+		this.updateState( this.calculateState( nextProps ) );
 	},
 
 	updateMilli: function( e ) {
 		var milli = parseInt( e.target.value, 10 );
 		if ( milli === e.target.value && milli >= 0 && milli < 1000 ) {
 			this.props.setTime( 'milliseconds', milli );
-			this.setState( { milliseconds: milli } );
+			this.updateState( { milliseconds: milli } );
 		}
 	},
 
@@ -164,21 +165,21 @@ var DateTimePickerTime = React.createClass({
 		return function() {
 			var update = {};
 			update[ type ] = me[ action ]( type );
-			me.setState( update );
+			me.updateState( update );
 
-			me.timer = setTimeout( function() {
-				me.increaseTimer = setInterval( function() {
-					update[ type ] = me[ action ]( type );
-					me.setState( update );
-				}, 70);
-			}, 500);
+			// me.timer = setTimeout( function() {
+			// 	me.increaseTimer = setInterval( function() {
+			// 		update[ type ] = me[ action ]( type );
+			// 		me.updateState( update );
+			// 	}, 70);
+			// }, 500);
 
-			me.mouseUpListener = function() {
-				clearTimeout( me.timer );
-				clearInterval( me.increaseTimer );
-				me.props.setTime( type, me.state[ type ] );
-				document.body.removeEventListener( 'mouseup', me.mouseUpListener );
-			};
+			// me.mouseUpListener = function() {
+			// 	clearTimeout( me.timer );
+			// 	clearInterval( me.increaseTimer );
+			// 	me.props.setTime( type, me.state[ type ] );
+			// 	document.body.removeEventListener( 'mouseup', me.mouseUpListener );
+			// };
 
 			document.body.addEventListener( 'mouseup', me.mouseUpListener );
 		};
@@ -217,6 +218,114 @@ var DateTimePickerTime = React.createClass({
 		while ( str.length < this.padValues[ type ] )
 			str = '0' + str;
 		return str;
+	},
+
+	updateState: function( update ) {
+		var isConstrained = false;
+		var timeProps = [ 'hours', 'minutes', 'seconds', 'milliseconds' ];
+
+		if (this.props.selectedDate.isAfter(this.props.boundaryStart, 'days')
+			&& this.props.selectedDate.isBefore(this.props.boundaryEnd, 'days')
+		) {
+			console.log( 'time is NOT restricted' );
+
+			return this.setState( update );
+		} else if (this.props.selectedDate.isSame(this.props.boundaryStart, 'days')) {
+			// compare to boundaryStart
+			// hours
+			if (update.hours < this.props.boundaryStart.hours()) {
+				if (this.timeConstraints.hours.max == this.state.hours) {
+					update.hours = this.props.boundaryStart.hours();
+					isConstrained = true;
+				} else {
+					update.hours = this.timeConstraints.hours.max;
+				}
+			} else {
+				isConstrained = this.state.hours == this.props.boundaryStart.hours();
+			}
+			
+			// minutes
+			// if (isConstrained && update.minutes < this.props.boundaryStart.minutes()) {
+			// 	if (update.minutes > this.state.minutes) {
+			if (isConstrained) {
+				var minutes = update.hasOwnProperty('minutes')
+					? parseInt(update.minutes)
+					: this.state.minutes;
+				if (minutes == 0) {
+					update.minutes = this.props.boundaryStart.minutes();
+					isConstrained = true;
+				} else if (update.minutes < this.props.boundaryStart.minutes()) {
+					update.minutes = this.timeConstraints.minutes.max;
+					isConstrained = false;
+				}
+			} else {
+				isConstrained = this.state.minutes == this.props.boundaryStart.minutes();
+			}
+
+			// seconds
+			if (isConstrained) {
+				var seconds = update.hasOwnProperty('seconds')
+					? parseInt(update.seconds)
+					: this.state.seconds;
+				if (seconds == 0) {
+					update.seconds = this.props.boundaryStart.seconds();
+					isConstrained = true;
+				} else if (update.seconds < this.props.boundaryStart.seconds()) {
+					update.seconds = this.timeConstraints.minutes.max;
+					isConstrained = false;
+				}
+			} else {
+				isConstrained = this.state.seconds == this.props.boundaryStart.seconds();
+			}
+
+			// milliseconds
+			if (isConstrained) {
+				var milliseconds = update.hasOwnProperty('milliseconds')
+					? parseInt(update.milliseconds)
+					: this.state.milliseconds;
+				if (milliseconds == 0) {
+					update.milliseconds = this.props.boundaryStart.millisecond();
+				} else if (update.milliseconds < this.props.boundaryStart.millisecond()) {
+					update.milliseconds = this.timeConstraints.minutes.max;
+				}
+			}
+
+			// if (parseInt(update.minutes, 10) < this.props.boundaryStart.minutes()) {
+			// 	if (this.timeConstraints.minutes.max == this.props.boundaryStart.minutes()) {
+
+			// 	} else {
+
+			// 	}
+			// 	update.minutes = this.timeConstraints.minutes.max;
+			// } else if (parseInt(update.seconds, 10) < this.props.boundaryStart.seconds()) {
+			// 	update.seconds = this.timeConstraints.seconds.max;
+			// } else if (parseInt(update.milliseconds, 10) < this.props.boundaryStart.millisecond()) {
+			// 	update.milliseconds = this.timeConstraints.semillisecondsconds.max;
+			// }
+		} else {
+			// compare to boundaryEnd
+			// var selectedTime = this.props.boundaryEnd
+			// 	.clone()
+			// 	.hours(update.hours)
+			// 	.minutes(update.minutes)
+			// 	.seconds(update.seconds)
+			// 	.milliseconds(update.milliseconds);
+
+			// if (parseInt(update.hours, 10) > this.props.boundaryEnd.hours()) {
+			// 	update.hours = this.timeConstraints.hours.min;
+			// } else if (parseInt(update.minutes, 10) > this.props.boundaryEnd.minutes()) {
+			// 	update.minutes = this.timeConstraints.minutes.min;
+			// } else if (parseInt(update.seconds, 10) > this.props.boundaryEnd.seconds()) {
+			// 	update.seconds = this.timeConstraints.seconds.min;
+			// } else if (parseInt(update.milliseconds, 10) > this.props.boundaryEnd.millisecond()) {
+			// 	update.milliseconds = this.timeConstraints.semillisecondsconds.min;
+			// }
+		}
+
+		console.log( 'time is restricted' )
+		console.log( update );
+
+		return this.setState( update );
 	}
 });
 
