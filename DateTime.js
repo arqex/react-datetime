@@ -82,8 +82,8 @@ var Datetime = React.createClass({
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
 			selectedDate, viewDate, updateOn, inputValue,
-			boundaryStart = moment.isDate(props.boundaryStart) && moment(props.boundaryStart),
-			boundaryEnd = moment.isDate(props.boundaryEnd) && moment(props.boundaryEnd)
+			boundaryStart = moment(props.boundaryStart).isValid && moment(props.boundaryStart),
+			boundaryEnd = moment(props.boundaryEnd).isValid && moment(props.boundaryEnd)
 		;
 
 		if ( date && typeof date === 'string' )
@@ -417,6 +417,19 @@ var Datetime = React.createClass({
 		this.componentProps.fromThis.forEach( function( name ) {
 			props[ name ] = me[ name ];
 		});
+
+		if (!props.isValidDate && (props.boundaryStart || props.boundaryEnd)) {
+			props.isValidDate = function isValidDate(currentDate, selectedDate) {
+				if (props.boundaryStart || props.boundaryEnd) {
+					return currentDate.isSameOrAfter(props.boundaryStart, 'day') 
+						&& currentDate.isSameOrBefore(props.boundaryEnd, 'day');
+				} else if (boundaryStart) {
+					return currentDate.isSameOrAfter(props.boundaryStart, 'day');
+				} else {
+					return currentDate.isSameOrBefore(props.boundaryEnd, 'day');
+				}
+			}
+		}
 
 		return props;
 	},
