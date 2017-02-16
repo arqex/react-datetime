@@ -63,11 +63,8 @@
     "jest-cli": "^18.1.0",
     "jsdom": "^7.0.2",
     "mocha": "^3.2.0",
-    "moment": ">=2.16.0",
     "pre-commit": "^1.1.3",
-    "react": ">=0.13",
     "react-addons-test-utils": ">=0.13",
-    "react-dom": ">=0.13",
     "react-test-renderer": "^15.4.2",
     "through2": "^2.0.3",
     "typescript": "^2.0.10",
@@ -76,6 +73,9 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
+    "moment": ">=2.16.0",
+    "react": ">=0.13",
+    "react-dom": ">=0.13",
     "object-assign": "^3.0.0",
     "react-onclickoutside": "^4.1.0"
   },
