@@ -69,6 +69,12 @@ var Datetime = React.createClass({
 		}
 	},
 
+	componentProps: {
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear'],
+		fromState: ['viewDate', 'selectedDate', 'updateOn', 'boundaryStart', 'boundaryEnd'],
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'isValidTime', 'getNextValidTime', 'timeConstraints', 'pad']
+	},
+
 	getDefaultProps: function() {
 		var nof = function() {};
 		return {
@@ -87,8 +93,8 @@ var Datetime = React.createClass({
 			closeOnTab: true,
 			utc: false,
 
-			boundaryStart: '',
-			boundaryEnd: ''
+			boundaryStart: undefined,
+			boundaryEnd: undefined
 		};
 	},
 
@@ -107,8 +113,12 @@ var Datetime = React.createClass({
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
 			selectedDate, viewDate, updateOn, inputValue,
-			boundaryStart = moment(props.boundaryStart).isValid && moment(props.boundaryStart),
-			boundaryEnd = moment(props.boundaryEnd).isValid && moment(props.boundaryEnd)
+			boundaryStart = moment(props.boundaryStart).isValid 
+				? moment(props.boundaryStart)
+				: this.getDefaultProps().boundaryStart,
+			boundaryEnd = moment(props.boundaryEnd).isValid
+				? moment(props.boundaryEnd)
+				: this.getDefaultProps().boundaryEnd
 		;
 
 		if ( date && typeof date === 'string' )
@@ -274,6 +284,22 @@ var Datetime = React.createClass({
 		});
 	},
 
+	onInputBlur: function() {
+		var selectedDate = (this.state.selectedDate || this.state.viewDate).clone();
+
+		if ( !this.isValidTime( selectedDate, this.state.boundaryStart, this.state.boundaryEnd )) {
+			selectedDate = this.getNextValidDate( selectedDate, this.state.boundaryStart, this.state.boundaryEnd );
+			selectedDate = this.getNextValidTime( selectedDate, this.state.boundaryStart, this.state.boundaryEnd );
+
+			this.setState({
+				selectedDate: selectedDate,
+				inputValue: selectedDate.format( this.state.inputFormat )
+			});
+		}
+
+		this.props.onChange( selectedDate );
+	},
+
 	onInputKey: function( e ) {
 		if ( e.which === 9 && this.props.closeOnTab ) {
 			this.closeCalendar();
@@ -400,162 +426,168 @@ var Datetime = React.createClass({
 	},
 
 	updateTimeOfSelectedDate: function ( date, currentDate ) {
-		var selectedTime = {
-			hours: currentDate.hours(),
-			minutes: currentDate.minutes(),
-			seconds: currentDate.seconds(),
-			milliseconds: currentDate.milliseconds()
-		};
-		var validTime = this.getValidTime( selectedTime, this.props, this.state, date );
+		var validDateTime = date.clone()
+			.hours( currentDate.hours() )
+			.minutes( currentDate.minutes() )
+			.seconds( currentDate.seconds() )
+			.milliseconds( currentDate.milliseconds() )
+			;
 
-		date.hours( validTime.hours )
-			.minutes( validTime.minutes )
-			.seconds( validTime.seconds )
-			.milliseconds( validTime.milliseconds )
+		if ( !this.isValidTime( validDateTime, this.state.boundaryStart, this.state.boundaryEnd ) ) {
+			validDateTime = this.getNextValidTime( validDateTime, this.state.boundaryStart, this.state.boundaryEnd );
+		}
+
+		date.hours( validDateTime.hours() )
+			.minutes( validDateTime.minutes() )
+			.seconds( validDateTime.seconds() )
+			.milliseconds( validDateTime.milliseconds() )
 			;
 	},
 
-	getValidTime: function ( update, props, state, currentDate ) {
-		props = props || {};
-		state = state || {};
+	isValidTime: function ( updateDateTime, minDateTime, maxDateTime ) {
+		var isValid = true;
 
-		currentDate = currentDate || this.state.selectedDate || this.state.viewDate;
-		var hours = parseInt(
-			update.hasOwnProperty('hours') ? update.hours : state.hours,
-			10
-		);
-		var minutes = parseInt(
-			update.hasOwnProperty('minutes') ? update.minutes : state.minutes, 
-			10
-		);
-		var seconds = parseInt(
-			update.hasOwnProperty('seconds') ? update.seconds : state.seconds,
-			10
-		);
-		var milliseconds = parseInt(
-			update.hasOwnProperty('milliseconds') ? update.milliseconds : state.milliseconds,
-			10
-		);
+		if ( typeof minDateTime === 'undefined' && typeof maxDateTime === 'undefined' ) {
+			return isValid;
+		}
+
+		if ( typeof minDateTime !== 'undefined' ) {
+			isValid = updateDateTime.isSameOrAfter( minDateTime );
+		} 
+		
+		if ( typeof minDateTime !== 'undefined' ) {
+			isValid = isValid && updateDateTime.isSameOrBefore( maxDateTime );
+		}
+
+		return isValid;
+	},
+
+	getNextValidDate: function ( updateDateTime, minDateTime, maxDateTime ) {
+		if ( typeof minDateTime === 'undefined' && typeof maxDateTime === 'undefined' ) {
+			return updateDateTime;
+		} else if ( typeof minDateTime !== 'undefined' && updateDateTime.isBefore( minDateTime, 'days' )) {
+			return updateDateTime
+				.year( minDateTime.year() )
+				.month( minDateTime.month() )
+				.date( minDateTime.date() )
+				;
+		} else if ( typeof minDateTime !== 'undefined' && updateDateTime.isAfter( maxDateTime, 'days' )) {
+			return updateDateTime
+				.year( maxDateTime.year() )
+				.month( maxDateTime.month() )
+				.date( maxDateTime.date() )
+				;
+		} else {
+			return updateDateTime;
+		}
+	},
+
+	getNextValidTime: function ( updateDateTime, minDateTime, maxDateTime ) {
 		var isConstrained = false;
 
-		if ((!currentDate) || (!props.boundaryStart && !props.boundaryEnd)) {
-			return update;
-		} else if (props.boundaryStart 
-			&& currentDate.isSame(props.boundaryStart, 'days')
-		) {
-			var boundaryStart = moment(props.boundaryStart);
-			// compare to boundaryStart
+		if ( typeof minDateTime !== 'undefined' && minDateTime.isSame( updateDateTime, 'days' )) {
 			// hours
-			if (hours < boundaryStart.hours()) {
-				if (hours === this.timeConstraints.hours.min) {
-					update.hours = boundaryStart.hours();
-					isConstrained = true;
-				} else {
-					update.hours = this.timeConstraints.hours.max;
+			if ( updateDateTime.hours() < minDateTime.hours() ) {
+				if ( updateDateTime.hours() + this.timeConstraints.hours.step === minDateTime.hours() ) {
+					updateDateTime.hours( this.timeConstraints.hours.max );
 					isConstrained = false;
+				} else {
+					updateDateTime.hours( minDateTime.hours() );
+					isConstrained = true;
 				}
 			} else {
-				isConstrained = hours === boundaryStart.hours();
+				isConstrained = updateDateTime.hours() === minDateTime.hours();
 			}
-			
+
 			// minutes
-			if (isConstrained) {
-				if (minutes === this.timeConstraints.minutes.min) {
-					update.minutes = boundaryStart.minutes();
-					isConstrained = true;
-				} else if (minutes < boundaryStart.minutes()) {
-					update.minutes = this.timeConstraints.minutes.max;
+			if ( isConstrained && updateDateTime.minutes() < minDateTime.minutes() ) {
+				if ( updateDateTime.minutes() + this.timeConstraints.minutes.step === minDateTime.minutes() ) {
+					updateDateTime.minutes( this.timeConstraints.minutes.max );
 					isConstrained = false;
 				} else {
-					isConstrained = isConstrained && minutes === boundaryStart.minutes();
+					updateDateTime.minutes( minDateTime.minutes() );
+					isConstrained = true;
 				}
 			} else {
-				isConstrained = isConstrained && minutes === boundaryStart.minutes();
+				isConstrained = isConstrained && updateDateTime.minutes() === minDateTime.minutes();
 			}
 
 			// seconds
-			if (isConstrained) {
-				if (seconds === this.timeConstraints.seconds.min) {
-					update.seconds = boundaryStart.seconds();
-					isConstrained = true;
-				} else if (seconds < boundaryStart.seconds()) {
-					update.seconds = this.timeConstraints.minutes.max;
+			if (isConstrained && updateDateTime.seconds() < minDateTime.seconds() ) {
+				if ( updateDateTime.seconds() + this.timeConstraints.seconds.step === minDateTime.seconds() ) {
+					updateDateTime.seconds( this.timeConstraints.seconds.max );
 					isConstrained = false;
 				} else {
-					isConstrained = isConstrained && seconds === boundaryStart.seconds();
+					updateDateTime.seconds( minDateTime.seconds() );
+					isConstrained = true;
 				}
 			} else {
-				isConstrained = isConstrained && seconds === boundaryStart.seconds();
+				isConstrained = isConstrained && updateDateTime.seconds() === minDateTime.seconds();
 			}
 
 			// milliseconds
-			if (isConstrained) {
-				if (milliseconds === this.timeConstraints.milliseconds.min) {
-					update.milliseconds = boundaryStart.millisecond();
-				} else if (milliseconds < boundaryStart.millisecond()) {
-					update.milliseconds = this.timeConstraints.minutes.max;
-				}
-			}
-		} else if (props.boundaryEnd 
-			&& currentDate.isSame(props.boundaryEnd, 'days')
-		) {
-			var boundaryEnd = moment(props.boundaryEnd);
-
-			// compare to boundaryEnd
-			// hours
-			if (hours > boundaryEnd.hours()) {
-				if (hours === this.timeConstraints.hours.max) {
-					update.hours = boundaryEnd.hours();
-					isConstrained = true;
+			if (isConstrained && updateDateTime.milliseconds() < minDateTime.milliseconds() ) {
+				if ( updateDateTime.milliseconds() + this.timeConstraints.seconds.step === minDateTime.milliseconds() ) {
+					updateDateTime.milliseconds( this.timeConstraints.milliseconds.max );
 				} else {
-					update.hours = this.timeConstraints.hours.min;
-					isConstrained = false;
-				}
-			} else {
-				isConstrained = hours === boundaryEnd.hours();
-			}
-			
-			// minutes
-			if (isConstrained) {
-				if (minutes === this.timeConstraints.minutes.max) {
-					update.minutes = boundaryEnd.minutes();
-					isConstrained = true;
-				} else if (minutes > boundaryEnd.minutes()) {
-					update.minutes = this.timeConstraints.minutes.min;
-					isConstrained = false;
-				} else {
-					isConstrained = isConstrained && minutes === boundaryEnd.minutes();
-				}
-			} else {
-				isConstrained = isConstrained && minutes === boundaryEnd.minutes();
-			}
-
-			// seconds
-			if (isConstrained) {
-				if (seconds === this.timeConstraints.seconds.max) {
-					update.seconds = boundaryEnd.seconds();
-					isConstrained = true;
-				} else if (seconds > boundaryEnd.seconds()) {
-					update.seconds = this.timeConstraints.minutes.min;
-					isConstrained = false;
-				} else {
-					isConstrained = isConstrained && seconds === boundaryEnd.seconds();
-				}
-			} else {
-				isConstrained = isConstrained && seconds === boundaryEnd.seconds();
-			}
-
-			// milliseconds
-			if (isConstrained) {
-				if (milliseconds === this.timeConstraints.milliseconds.max) {
-					update.milliseconds = boundaryEnd.millisecond();
-				} else if (milliseconds < boundaryEnd.millisecond()) {
-					update.milliseconds = this.timeConstraints.minutes.min;
+					updateDateTime.milliseconds( minDateTime.milliseconds() );
 				}
 			}
 		}
 
-		return update;
+		if (typeof maxDateTime !== 'undefined' && maxDateTime.isSame( updateDateTime, 'days' )) {
+			isConstrained = false;
+
+			// hours
+			if ( updateDateTime.hours() > maxDateTime.hours() ) {
+				if ( updateDateTime.hours() - this.timeConstraints.hours.step === maxDateTime.hours() ) {
+					updateDateTime.hours( this.timeConstraints.hours.min );
+					isConstrained = false;
+				} else {
+					updateDateTime.hours( maxDateTime.hours() );
+					isConstrained = true;
+				}
+			} else {
+				isConstrained = updateDateTime.hours() === maxDateTime.hours();
+			}
+
+			// minutes
+			if ( isConstrained && updateDateTime.minutes() > maxDateTime.minutes() ) {
+				if ( updateDateTime.minutes() - this.timeConstraints.minutes.step === maxDateTime.minutes() ) {
+					updateDateTime.minutes( this.timeConstraints.minutes.min );
+					isConstrained = false;
+				} else {
+					updateDateTime.minutes( maxDateTime.minutes() );
+					isConstrained = true;
+				}
+			} else {
+				isConstrained = isConstrained && updateDateTime.minutes() === maxDateTime.minutes();
+			}
+
+			// seconds
+			if ( isConstrained && updateDateTime.seconds() > maxDateTime.seconds() ) {
+				if ( updateDateTime.seconds() - this.timeConstraints.seconds.step === maxDateTime.seconds() ) {
+					updateDateTime.seconds( this.timeConstraints.seconds.min );
+					isConstrained = false;
+				} else {
+					updateDateTime.seconds( maxDateTime.seconds() );
+					isConstrained = true;
+				}
+			} else {
+				isConstrained = isConstrained && updateDateTime.seconds() === maxDateTime.seconds();
+			}
+
+			// milliseconds
+			if ( isConstrained && updateDateTime.milliseconds() > maxDateTime.milliseconds() ) {
+				if ( updateDateTime.milliseconds() - this.timeConstraints.seconds.step === maxDateTime.milliseconds() ) {
+					updateDateTime.milliseconds( this.timeConstraints.milliseconds.min );
+				} else {
+					updateDateTime.milliseconds( maxDateTime.milliseconds() );
+				}
+			}
+		}
+
+		return updateDateTime;
 	},
 
 	openCalendar: function() {
@@ -587,12 +619,6 @@ var Datetime = React.createClass({
 		if ( props.locale )
 			m.locale( props.locale );
 		return m;
-	},
-
-	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear'],
-		fromState: ['viewDate', 'selectedDate', 'updateOn', 'boundaryStart', 'boundaryEnd'],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'getValidTime', 'timeConstraints']
 	},
 
 	getComponentProps: function() {
@@ -629,6 +655,7 @@ var Datetime = React.createClass({
 				type: 'text',
 				className: 'form-control',
 				onFocus: this.openCalendar,
+				onBlur: this.onInputBlur,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,
 				value: this.state.inputValue

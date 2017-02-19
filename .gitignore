@@ -1,6 +1,7 @@
 *~
 node_modules
 .idea
+.vscode
 tmp
 .DS_Store
 npm-debug.log
