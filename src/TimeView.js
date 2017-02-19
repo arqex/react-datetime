@@ -192,7 +192,24 @@ var DateTimePickerTime = React.createClass({
 	},
 
 	updateState: function( update ) {
-		update = this.props.getValidTime( update, this.props, this.state );
+		var currentDate = this.props.selectedDate || this.props.viewDate;
+		var validDateTime = currentDate.clone()
+			.hours( update.hours || currentDate.hours() )
+			.minutes( update.minutes || currentDate.minutes() )
+			.seconds( update.seconds || currentDate.seconds() )
+			.milliseconds( update.milliseconds || currentDate.milliseconds() )
+			;
+
+		if ( !this.props.isValidTime( validDateTime, this.props.boundaryStart, this.props.boundaryEnd )) {
+			validDateTime = this.props.getNextValidTime( validDateTime, this.props.boundaryStart, this.props.boundaryEnd );
+		}
+
+		update = {
+			hours: this.pad( 'hours', validDateTime.hours() ),
+			minutes: this.pad( 'minutes', validDateTime.minutes() ),
+			seconds: this.pad( 'seconds', validDateTime.seconds() ),
+			milliseconds: this.pad( 'milliseconds', validDateTime.milliseconds() )
+		};
 
 		return this.setState( update );
 	}
