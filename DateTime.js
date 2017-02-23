@@ -287,7 +287,7 @@ var Datetime = React.createClass({
 	onInputBlur: function() {
 		var selectedDate = (this.state.selectedDate || this.state.viewDate).clone();
 
-		if ( !this.isValidTime( selectedDate, this.state.boundaryStart, this.state.boundaryEnd )) {
+		if ( !this.state.open && !this.isValidTime( selectedDate, this.state.boundaryStart, this.state.boundaryEnd )) {
 			selectedDate = this.getNextValidDate( selectedDate, this.state.boundaryStart, this.state.boundaryEnd );
 			selectedDate = this.getNextValidTime( selectedDate, this.state.boundaryStart, this.state.boundaryEnd );
 
