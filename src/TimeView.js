@@ -1,8 +1,6 @@
 'use strict';
 
-var React = require('react'),
-	assign = require('object-assign')
-;
+var React = require('react');
 
 var DOM = React.DOM;
 var DateTimePickerTime = React.createClass({
@@ -107,44 +105,18 @@ var DateTimePickerTime = React.createClass({
 	},
 
 	componentWillMount: function() {
-		var me = this;
-		me.timeConstraints = {
-			hours: {
-				min: 0,
-				max: 23,
-				step: 1
-			},
-			minutes: {
-				min: 0,
-				max: 59,
-				step: 1
-			},
-			seconds: {
-				min: 0,
-				max: 59,
-				step: 1
-			},
-			milliseconds: {
-				min: 0,
-				max: 999,
-				step: 1
-			}
-		};
-		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
-			assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
-		});
-		this.setState( this.calculateState( this.props ) );
+		this.updateState( this.calculateState( this.props ) );
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
-		this.setState( this.calculateState( nextProps ) );
+		this.updateState( this.calculateState( nextProps ) );
 	},
 
 	updateMilli: function( e ) {
 		var milli = parseInt( e.target.value, 10 );
 		if ( milli === e.target.value && milli >= 0 && milli < 1000 ) {
 			this.props.setTime( 'milliseconds', milli );
-			this.setState( { milliseconds: milli } );
+			this.updateState( { milliseconds: milli } );
 		}
 	},
 
@@ -164,12 +136,12 @@ var DateTimePickerTime = React.createClass({
 		return function() {
 			var update = {};
 			update[ type ] = me[ action ]( type );
-			me.setState( update );
+			me.updateState( update );
 
 			me.timer = setTimeout( function() {
 				me.increaseTimer = setInterval( function() {
 					update[ type ] = me[ action ]( type );
-					me.setState( update );
+					me.updateState( update );
 				}, 70);
 			}, 500);
 
@@ -193,22 +165,22 @@ var DateTimePickerTime = React.createClass({
 
 	toggleDayPart: function( type ) { // type is always 'hours'
 		var value = parseInt( this.state[ type ], 10) + 12;
-		if ( value > this.timeConstraints[ type ].max )
-			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
+		if ( value > this.props.timeConstraints[ type ].max )
+			value = this.props.timeConstraints[ type ].min + ( value - ( this.props.timeConstraints[ type ].max + 1 ) );
 		return this.pad( type, value );
 	},
 
 	increase: function( type ) {
-		var value = parseInt( this.state[ type ], 10) + this.timeConstraints[ type ].step;
-		if ( value > this.timeConstraints[ type ].max )
-			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
+		var value = parseInt( this.state[ type ], 10) + this.props.timeConstraints[ type ].step;
+		if ( value > this.props.timeConstraints[ type ].max )
+			value = this.props.timeConstraints[ type ].min + ( value - ( this.props.timeConstraints[ type ].max + 1 ) );
 		return this.pad( type, value );
 	},
 
 	decrease: function( type ) {
-		var value = parseInt( this.state[ type ], 10) - this.timeConstraints[ type ].step;
-		if ( value < this.timeConstraints[ type ].min )
-			value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
+		var value = parseInt( this.state[ type ], 10) - this.props.timeConstraints[ type ].step;
+		if ( value < this.props.timeConstraints[ type ].min )
+			value = this.props.timeConstraints[ type ].max + 1 - ( this.props.timeConstraints[ type ].min - value );
 		return this.pad( type, value );
 	},
 
@@ -217,6 +189,29 @@ var DateTimePickerTime = React.createClass({
 		while ( str.length < this.padValues[ type ] )
 			str = '0' + str;
 		return str;
+	},
+
+	updateState: function( update ) {
+		var currentDate = this.props.selectedDate || this.props.viewDate;
+		var validDateTime = currentDate.clone()
+			.hours( update.hours || currentDate.hours() )
+			.minutes( update.minutes || currentDate.minutes() )
+			.seconds( update.seconds || currentDate.seconds() )
+			.milliseconds( update.milliseconds || currentDate.milliseconds() )
+			;
+
+		if ( !this.props.isValidTime( validDateTime, this.props.boundaryStart, this.props.boundaryEnd )) {
+			validDateTime = this.props.getNextValidTime( validDateTime, this.props.boundaryStart, this.props.boundaryEnd );
+		}
+
+		update = {
+			hours: this.pad( 'hours', validDateTime.hours() ),
+			minutes: this.pad( 'minutes', validDateTime.minutes() ),
+			seconds: this.pad( 'seconds', validDateTime.seconds() ),
+			milliseconds: this.pad( 'milliseconds', validDateTime.milliseconds() )
+		};
+
+		return this.setState( update );
 	}
 });
 
