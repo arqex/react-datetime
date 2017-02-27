@@ -3,23 +3,11 @@
 var assign = require('object-assign'),
 	moment = require('moment'),
 	React = require('react'),
-	DaysView = require('./src/DaysView'),
-	MonthsView = require('./src/MonthsView'),
-	YearsView = require('./src/YearsView'),
-	TimeView = require('./src/TimeView')
+	CalendarContainer = require('./src/CalendarContainer')
 ;
 
 var TYPES = React.PropTypes;
 var Datetime = React.createClass({
-	mixins: [
-		require('./src/onClickOutside')
-	],
-	viewComponents: {
-		days: DaysView,
-		months: MonthsView,
-		years: YearsView,
-		time: TimeView
-	},
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
@@ -411,8 +399,7 @@ var Datetime = React.createClass({
 	},
 
 	render: function() {
-		var Component = this.viewComponents[ this.state.currentView ],
-			DOM = React.DOM,
+		var DOM = React.DOM,
 			className = 'rdt' + (this.props.className ?
                   ( Array.isArray( this.props.className ) ?
                   ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
@@ -439,7 +426,7 @@ var Datetime = React.createClass({
 		return DOM.div({className: className}, children.concat(
 			DOM.div(
 				{ key: 'dt', className: 'rdtPicker' },
-				React.createElement( Component, this.getComponentProps())
+				React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
 			)
 		));
 	}
