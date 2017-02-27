@@ -14,14 +14,13 @@ var CalendarContainer = onClickOutside( React.createClass({
 		time: TimeView
 	},
 
-  render: function(){
+  render: function() {
     return React.createElement( this.viewComponents[ this.props.view ], this.props.viewProps );
   },
 
-  handleClickOutside: function(){
+  handleClickOutside: function() {
     this.props.onClickOutside();
   }
 }));
-
 
 module.exports = CalendarContainer;
