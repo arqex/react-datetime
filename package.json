@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "object-assign": "^3.0.0",
-    "react-onclickoutside": "^4.1.0"
+    "react-onclickoutside": "^5.9.0"
   },
   "pre-commit": [
     "lint",
