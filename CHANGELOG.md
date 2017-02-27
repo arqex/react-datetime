@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.8.7
+* Update react-onclickoutside dependency. That should fix most of the problems about closeOnSelect.
+
 ## 2.8.6
 * Revert commits related to `closeOnSelect` that did not fix all issues they were meant to
 
