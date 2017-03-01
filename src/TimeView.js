@@ -1,11 +1,12 @@
 'use strict';
 
 var React = require('react'),
-	assign = require('object-assign')
+	assign = require('object-assign'),
+  onClickOutside = require('react-onclickoutside')
 ;
 
 var DOM = React.DOM;
-var DateTimePickerTime = React.createClass({
+var DateTimePickerTime = onClickOutside( React.createClass({
 	getInitialState: function() {
 		return this.calculateState( this.props );
 	},
@@ -217,7 +218,11 @@ var DateTimePickerTime = React.createClass({
 		while ( str.length < this.padValues[ type ] )
 			str = '0' + str;
 		return str;
-	}
-});
+	},
+
+  handleClickOutside: function() {
+    this.props.handleClickOutside();
+  }
+}));
 
 module.exports = DateTimePickerTime;

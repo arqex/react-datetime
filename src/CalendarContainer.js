@@ -2,11 +2,10 @@ var React = require('react'),
   DaysView = require('./DaysView'),
   MonthsView = require('./MonthsView'),
   YearsView = require('./YearsView'),
-  TimeView = require('./TimeView'),
-  onClickOutside = require('react-onclickoutside')
+  TimeView = require('./TimeView')
 ;
 
-var CalendarContainer = onClickOutside( React.createClass({
+var CalendarContainer = React.createClass({
 	viewComponents: {
 		days: DaysView,
 		months: MonthsView,
@@ -16,11 +15,7 @@ var CalendarContainer = onClickOutside( React.createClass({
 
   render: function() {
     return React.createElement( this.viewComponents[ this.props.view ], this.props.viewProps );
-  },
-
-  handleClickOutside: function() {
-    this.props.onClickOutside();
   }
-}));
+});
 
 module.exports = CalendarContainer;

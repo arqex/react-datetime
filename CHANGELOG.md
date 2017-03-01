@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.8.8
+* Fixes issues introduced in v2.8.7 recognizing any calendar view as clickingOutside trigger
+
 ## 2.8.7
 * Update react-onclickoutside dependency. That should fix most of the problems about closeOnSelect.
 

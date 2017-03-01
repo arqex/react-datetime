@@ -1,11 +1,12 @@
 'use strict';
 
 var React = require('react'),
-	moment = require('moment')
+	moment = require('moment'),
+  onClickOutside = require('react-onclickoutside')
 ;
 
 var DOM = React.DOM;
-var DateTimePickerDays = React.createClass({
+var DateTimePickerDays = onClickOutside( React.createClass({
 	render: function() {
 		var footer = this.renderFooter(),
 			date = this.props.viewDate,
@@ -133,7 +134,11 @@ var DateTimePickerDays = React.createClass({
 
 	alwaysValidDate: function() {
 		return 1;
-	}
-});
+	},
+
+  handleClickOutside: function() {
+    this.props.handleClickOutside();
+  }
+}));
 
 module.exports = DateTimePickerDays;

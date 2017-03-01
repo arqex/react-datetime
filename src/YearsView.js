@@ -1,9 +1,11 @@
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+	onClickOutside = require('react-onclickoutside')
+;
 
 var DOM = React.DOM;
-var DateTimePickerYears = React.createClass({
+var DateTimePickerYears = onClickOutside( React.createClass({
 	render: function() {
 		var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
 
@@ -84,7 +86,7 @@ var DateTimePickerYears = React.createClass({
 	},
 
 	updateSelectedYear: function( event ) {
-		this.props.updateSelectedDate( event, true );
+		this.props.updateSelectedDate( event );
 	},
 
 	renderYear: function( props, year ) {
@@ -93,7 +95,11 @@ var DateTimePickerYears = React.createClass({
 
 	alwaysValidDate: function() {
 		return 1;
-	}
-});
+	},
+
+  handleClickOutside: function() {
+    this.props.handleClickOutside();
+  }
+}));
 
 module.exports = DateTimePickerYears;
