@@ -416,16 +416,27 @@ var Datetime = createClass({
 			children = [];
 
 		if ( this.props.input ) {
-			children = [ React.createElement( 'input', assign({
-				key: 'i',
-				type: 'text',
-				className: 'form-control',
-				onClick: this.openCalendar,
-				onFocus: this.openCalendar,
-				onChange: this.onInputChange,
-				onKeyDown: this.onInputKey,
-				value: this.state.inputValue
-			}, this.props.inputProps ))];
+			if ( this.props.renderInput ) {
+				children = children.concat( this.props.renderInput({
+					onClick: this.openCalendar,
+					onFocus: this.openCalendar,
+					onChange: this.onInputChange,
+					onKeyDown: this.onInputKey,
+					value: this.state.inputValue,
+					openCalendar: this.openCalendar,
+				}) );
+			} else {
+				children = [ DOM.input( assign({
+					key: 'i',
+					type: 'text',
+					className: 'form-control',
+					onClick: this.openCalendar,
+					onFocus: this.openCalendar,
+					onChange: this.onInputChange,
+					onKeyDown: this.onInputKey,
+					value: this.state.inputValue
+				}, this.props.inputProps ))];
+			}
 		} else {
 			className += ' rdtStatic';
 		}
