@@ -51,7 +51,7 @@ var DateTimePickerMonths = onClickOutside( React.createClass({
 			if ( isDisabled )
 				classes += ' rdtDisabled';
 
-			if ( date && i === month && year === date.year() )
+			if ( date && i === date.month() && year === date.year() )
 				classes += ' rdtActive';
 
 			props = {
