@@ -255,7 +255,7 @@ describe('Datetime', () => {
 		expect(component.find('.rdtDay.rdtToday').text()).toEqual('19');
 	});
 
-	// Proof of bug
+	// Proof of bug [FIXED]
 	it('should show correct selected month when traversing view modes', () => {
 		const date = new Date(2000, 4, 3, 2, 2, 2, 2),
 			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
@@ -275,7 +275,7 @@ describe('Datetime', () => {
 		utils.clickNthYear(component, 1);
 
 		// The selected month is now _January_
-		expect(component.find('.rdtMonth .rdtActive').text()).toEqual('Jan');
+		expect(component.find('.rdtMonth .rdtActive').text()).toEqual('May');
 	});
 
 	describe('with custom props', () => {
