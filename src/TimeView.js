@@ -143,7 +143,7 @@ var DateTimePickerTime = onClickOutside( React.createClass({
 
 	updateMilli: function( e ) {
 		var milli = parseInt( e.target.value, 10 );
-		if ( milli === e.target.value && milli >= 0 && milli < 1000 ) {
+		if ( milli === milli && milli >= 0 && milli < 1000 ) {
 			this.props.setTime( 'milliseconds', milli );
 			this.setState( { milliseconds: milli } );
 		}
