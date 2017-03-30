@@ -34,12 +34,12 @@ declare module 'react-datetime' {
      Represents the selected date by the component, in order to use it as a controlled component.
      This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
      */
-    value?: Date;
+    value?: Date | string | Moment;
     /*
      Represents the selected date for the component to use it as a uncontrolled component.
      This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
      */
-    defaultValue?: Date;
+    defaultValue?: Date | string | Moment;
     /*
      Defines the format for the date. It accepts any moment.js date format.
      If true the date will be displayed using the defaults for the current locale.
