@@ -191,10 +191,10 @@ var Datetime = React.createClass({
 			}
 		}
 		//we should only show a valid date if we are provided a isValidDate function.
-		if(this.props.isValidDate){
+		if (this.props.isValidDate) {
 			updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
-			while(!this.props.isValidDate(updatedState.viewDate)){
-				updatedState.viewDate = updatedState.viewDate.add(1, "day");
+			while (!this.props.isValidDate(updatedState.viewDate)) {
+				updatedState.viewDate = updatedState.viewDate.add(1, 'day');
 			}
 		}
 		this.setState( updatedState );
