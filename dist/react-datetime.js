@@ -75,6 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			onFocus: TYPES.func,
 			onBlur: TYPES.func,
 			onChange: TYPES.func,
+			onViewModeChange: TYPES.func,
 			locale: TYPES.string,
 			utc: TYPES.bool,
 			input: TYPES.bool,
@@ -100,6 +101,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				onFocus: nof,
 				onBlur: nof,
 				onChange: nof,
+				onViewModeChange: nof,
 				timeFormat: true,
 				timeConstraints: {},
 				dateFormat: true,
@@ -283,6 +285,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		showView: function( view ) {
 			var me = this;
 			return function() {
+				me.state.currentView !== view && me.props.onViewModeChange( view );
 				me.setState({ currentView: view });
 			};
 		},
@@ -299,6 +302,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
 					currentView: nextViews[ type ]
 				});
+				me.props.onViewModeChange( nextViews[ type ] );
 			};
 		},
 
@@ -794,7 +798,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Check if the browser scrollbar was clicked
 	   */
 	  var clickedScrollbar = function(evt) {
-	    return document.documentElement.clientWidth <= evt.clientX;
+	    return document.documentElement.clientWidth <= evt.clientX || document.documentElement.clientHeight <= evt.clientY;
 	  };
 
 	  /**
@@ -850,6 +854,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // this is given meaning in componentDidMount
 	        __outsideClickHandler: function() {},
+
+	        getDefaultProps: function() {
+	          return {
+	            excludeScrollbar: config && config.excludeScrollbar
+	          };
+	        },
 
 	        /**
 	         * Add click listeners to the current document,
@@ -907,7 +917,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            instance,
 	            clickOutsideHandler,
 	            this.props.outsideClickIgnoreClass || IGNORE_CLASS,
-	            this.props.excludeScrollbar || false,
+	            this.props.excludeScrollbar, // fallback not needed, prop always exists because of getDefaultProps
 	            this.props.preventDefault || false,
 	            this.props.stopPropagation || false
 	          );
