@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.8.9
+* Fixes issue where incorrect current month is shown
+
 ## 2.8.8
 * Fixes issues introduced in v2.8.7 recognizing any calendar view as clickingOutside trigger
 
