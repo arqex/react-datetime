@@ -14,7 +14,7 @@ const pack = require( './package.json' );
 gulp.task( 'sub', () => {
 	// Reason behind having sub as separate task:
 	// https://github.com/shama/webpack-stream/issues/114
-	return gulp.src( './Datetime.js' )
+	return gulp.src( './DateTime.js' )
 		.pipe( webpack( getWebpackConfig() ) )
 		.pipe( gulp.dest( 'tmp/' ) );
 });
