@@ -1,5 +1,5 @@
 /*
-react-datetime v2.8.8
+react-datetime v2.8.9
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -794,7 +794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Check if the browser scrollbar was clicked
 	   */
 	  var clickedScrollbar = function(evt) {
-	    return document.documentElement.clientWidth <= evt.clientX;
+	    return document.documentElement.clientWidth <= evt.clientX || document.documentElement.clientHeight <= evt.clientY;
 	  };
 
 	  /**
@@ -850,6 +850,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // this is given meaning in componentDidMount
 	        __outsideClickHandler: function() {},
+
+	        getDefaultProps: function() {
+	          return {
+	            excludeScrollbar: config && config.excludeScrollbar
+	          };
+	        },
 
 	        /**
 	         * Add click listeners to the current document,
@@ -907,7 +913,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            instance,
 	            clickOutsideHandler,
 	            this.props.outsideClickIgnoreClass || IGNORE_CLASS,
-	            this.props.excludeScrollbar || false,
+	            this.props.excludeScrollbar, // fallback not needed, prop always exists because of getDefaultProps
 	            this.props.preventDefault || false,
 	            this.props.stopPropagation || false
 	          );
@@ -1103,7 +1109,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				if ( isDisabled )
 					classes += ' rdtDisabled';
 
-				if ( date && i === month && year === date.year() )
+				if ( date && i === date.month() && year === date.year() )
 					classes += ' rdtActive';
 
 				props = {
