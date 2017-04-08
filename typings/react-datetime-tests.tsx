@@ -81,6 +81,9 @@ const TEST_INPUT_PROPS: JSX.Element = <ReactDatetime
 		onBlur={
 			(momentOrInputString:string) => {}
 		}
+		onViewModeChange={
+ 			(viewMode:string) => {}
+ 		}
  	/>;
 
 const TEST_EVENT_HANDLERS_WITH_MOMENT: JSX.Element = <ReactDatetime
