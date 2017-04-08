@@ -162,7 +162,7 @@ class MyDTPicker extends React.Component<MyDTPickerProps, MyDTPickerState> {
 ```
 
 ## Contributions
-* For information about how to contribute, see the [CONTRIBUTING](.github/CONTRIBUTING.md) file.
+For information about how to contribute, see the [CONTRIBUTING](.github/CONTRIBUTING.md) file.
 
 ## Development
 ```sh
@@ -174,4 +174,4 @@ If you want to develop using the component inside a React application, we recomm
 
 ### [Changelog](CHANGELOG.md)
 
-### [MIT Licensed](LICENSE)
+### [MIT Licensed](LICENSE.md)
