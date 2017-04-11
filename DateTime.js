@@ -1,13 +1,14 @@
 'use strict';
 
 var assign = require('object-assign'),
+        PropTypes = require('prop-types'),
         createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
 	CalendarContainer = require('./src/CalendarContainer')
 ;
 
-var TYPES = React.PropTypes;
+var TYPES = PropTypes;
 var Datetime = createClass({
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
