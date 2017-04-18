@@ -934,23 +934,23 @@ describe('Datetime', () => {
 			});
 
 			it('when selecting month', () => {
-				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2),
 					onChangeFn = jest.fn(),
 					component = utils.createDatetime({ defaultValue: date, dateFormat: 'YYYY-MM', onChange: onChangeFn });
 
 				utils.clickNthMonth(component, 2);
 				expect(onChangeFn).toHaveBeenCalledTimes(1);
-				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual('2000-03-15T01:02:02.002Z');
+				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual('2000-03-15T02:02:02.002Z');
 			});
 
 			it('when selecting year', () => {
-				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2),
 					onChangeFn = jest.fn(),
 					component = utils.createDatetime({ defaultValue: date, dateFormat: 'YYYY', onChange: onChangeFn });
 
 				utils.clickNthYear(component, 2);
 				expect(onChangeFn).toHaveBeenCalledTimes(1);
-				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual('2001-01-15T01:02:02.002Z');
+				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual('2001-01-15T02:02:02.002Z');
 			});
 
 			it('when selecting time', () => {
