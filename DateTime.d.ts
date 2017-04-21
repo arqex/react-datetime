@@ -4,7 +4,7 @@
 //     Updates by: Aaron Spaulding <aaron@sachimp.com>,
 //                 Karol Janyst <http://github.com/LKay>
 
-import { Component } from "react";
+import { Component, ChangeEvent, FocusEvent, FocusEventHandler } from "react";
 import { Moment } from "moment";
 
 export = ReactDatetimeClass;
@@ -27,6 +27,8 @@ declare namespace ReactDatetimeClass {
         seconds?: TimeConstraint;
         milliseconds?: TimeConstraint;
     }
+
+    type EventOrValueHandler<Event> = ((event: Event) => void) | ((value: string | Moment) => void);
 
     export interface DatetimepickerProps {
         /*
@@ -74,18 +76,18 @@ declare namespace ReactDatetimeClass {
          only parameter, if the date in the input is valid. If the date in the input is not valid, the
          callback receives the value of the input (a string).
          */
-        onChange?: (momentOrInputString: string | Moment) => void;
+        onChange?: EventOrValueHandler<ChangeEvent<any>>;
         /*
          Callback trigger for when the user opens the datepicker.
          */
-        onFocus?: () => void;
+        onFocus?: FocusEventHandler<any>;
         /*
          Callback trigger for when the user clicks outside of the input, simulating a regular onBlur.
          The callback receives the selected `moment` object as only parameter, if the date in the input
          is valid. If the date in the input is not valid, the callback receives the value of the
          input (a string).
          */
-        onBlur?: (momentOrInputString : string | Moment) => void;
+        onBlur?: EventOrValueHandler<FocusEvent<any>>;
         /*
          The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
          */
