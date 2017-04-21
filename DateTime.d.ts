@@ -28,7 +28,7 @@ declare namespace ReactDatetimeClass {
         milliseconds?: TimeConstraint;
     }
 
-    type EventOrValueHandler<Event> = ((event: Event) => void) | ((value: string | Moment) => void);
+    type EventOrValueHandler<Event> = (event: Event | Moment | string) => void;
 
     export interface DatetimepickerProps {
         /*
