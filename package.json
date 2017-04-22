@@ -38,8 +38,8 @@
   "license": "MIT",
   "peerDependencies": {
     "moment": ">=2.16.0",
-    "react": ">=0.13",
-    "react-dom": ">=0.13"
+    "react": ">=0.13 <16",
+    "react-dom": ">=0.13 <16"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
@@ -73,9 +73,10 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
-    "@types/react": ">=15 <16",
-    "moment": "2.16.x",
+    "@types/react": ">=0.13 <16",
+    "create-react-class": "^15.5.2",
     "object-assign": "^3.0.0",
+    "prop-types": "^15.5.7",
     "react-onclickoutside": "^5.9.0"
   },
   "pre-commit": [
