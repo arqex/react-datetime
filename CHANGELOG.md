@@ -1,5 +1,11 @@
 Changelog
 =========
+## 2.8.10
+* Increase click area of arrows for changing day/month/year
+* Update code according to React 15.5.0
+  * Remove usage of React.createClass
+  * Use separate module for PropTypes  
+
 ## 2.8.9
 * Fixes issue where incorrect current month is shown
 
