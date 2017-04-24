@@ -1,5 +1,5 @@
 /*
-react-datetime v2.8.9
+react-datetime v2.8.10
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -57,7 +57,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -501,9 +501,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Datetime;
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
@@ -546,9 +546,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Copyright 2013-present, Facebook, Inc.
@@ -583,9 +583,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// shim for using process in browser
 	var process = module.exports = {};
@@ -769,9 +769,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	process.umask = function() { return 0; };
 
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Copyright 2013-present, Facebook, Inc.
@@ -923,6 +923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function createChainableTypeChecker(validate) {
 	    if (process.env.NODE_ENV !== 'production') {
 	      var manualPropTypeCallCache = {};
+	      var manualPropTypeWarningCount = 0;
 	    }
 	    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
 	      componentName = componentName || ANONYMOUS;
@@ -940,7 +941,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else if (process.env.NODE_ENV !== 'production' && typeof console !== 'undefined') {
 	          // Old behavior for people using React.PropTypes
 	          var cacheKey = componentName + ':' + propName;
-	          if (!manualPropTypeCallCache[cacheKey]) {
+	          if (
+	            !manualPropTypeCallCache[cacheKey] &&
+	            // Avoid spamming the console because they are often not actionable except for lib authors
+	            manualPropTypeWarningCount < 3
+	          ) {
 	            warning(
 	              false,
 	              'You are manually calling a React.PropTypes validation ' +
@@ -952,6 +957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              componentName
 	            );
 	            manualPropTypeCallCache[cacheKey] = true;
+	            manualPropTypeWarningCount++;
 	          }
 	        }
 	      }
@@ -1248,9 +1254,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1291,9 +1297,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = emptyFunction;
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -1352,9 +1358,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = invariant;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Copyright 2014-2015, Facebook, Inc.
@@ -1424,9 +1430,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = warning;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * Copyright 2013-present, Facebook, Inc.
@@ -1444,9 +1450,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ReactPropTypesSecret;
 
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Copyright 2013-present, Facebook, Inc.
@@ -1512,9 +1518,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2013-present, Facebook, Inc.
@@ -1572,9 +1578,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Copyright 2013-present, Facebook, Inc.
@@ -1601,15 +1607,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	);
 
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_12__;
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Copyright 2013-present, Facebook, Inc.
@@ -2338,9 +2344,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	object-assign
@@ -2434,9 +2440,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2459,15 +2465,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = emptyObject;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_16__;
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(12),
 	  createClass = __webpack_require__(11),
@@ -2493,9 +2499,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CalendarContainer;
 
 
-/***/ },
+/***/ }),
 /* 18 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -2517,9 +2523,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			tableChildren = [
 				DOM.thead({ key: 'th' }, [
 					DOM.tr({ key: 'h' }, [
-						DOM.th({ key: 'p', className: 'rdtPrev' }, DOM.span({ onClick: this.props.subtractTime( 1, 'months' )}, '‹' )),
+						DOM.th({ key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, DOM.span({}, '‹' )),
 						DOM.th({ key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-						DOM.th({ key: 'n', className: 'rdtNext' }, DOM.span({ onClick: this.props.addTime( 1, 'months' )}, '›' ))
+						DOM.th({ key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, DOM.span({}, '›' ))
 					]),
 					DOM.tr({ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return DOM.th({ key: day + index, className: 'dow'}, day ); }) )
 				]),
@@ -2644,9 +2650,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DateTimePickerDays;
 
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 	 * A higher-order-component for handling onClickOutside for React components.
@@ -2959,15 +2965,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(this));
 
 
-/***/ },
+/***/ }),
 /* 20 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_20__;
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -2981,9 +2987,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		render: function() {
 			return DOM.div({ className: 'rdtMonths' }, [
 				DOM.table({ key: 'a' }, DOM.thead( {}, DOM.tr( {}, [
-					DOM.th({ key: 'prev', className: 'rdtPrev' }, DOM.span({ onClick: this.props.subtractTime( 1, 'years' )}, '‹' )),
+					DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, DOM.span({}, '‹' )),
 					DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-					DOM.th({ key: 'next', className: 'rdtNext' }, DOM.span({ onClick: this.props.addTime( 1, 'years' )}, '›' ))
+					DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, DOM.span({}, '›' ))
 				]))),
 				DOM.table({ key: 'months' }, DOM.tbody({ key: 'b' }, this.renderMonths()))
 			]);
@@ -3079,9 +3085,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DateTimePickerMonths;
 
 
-/***/ },
+/***/ }),
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -3097,9 +3103,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			return DOM.div({ className: 'rdtYears' }, [
 				DOM.table({ key: 'a' }, DOM.thead({}, DOM.tr({}, [
-					DOM.th({ key: 'prev', className: 'rdtPrev' }, DOM.span({ onClick: this.props.subtractTime( 10, 'years' )}, '‹' )),
+					DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, DOM.span({}, '‹' )),
 					DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-					DOM.th({ key: 'next', className: 'rdtNext' }, DOM.span({ onClick: this.props.addTime( 10, 'years' )}, '›' ))
+					DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, DOM.span({}, '›' ))
 					]))),
 				DOM.table({ key: 'years' }, DOM.tbody( {}, this.renderYears( year )))
 			]);
@@ -3191,9 +3197,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DateTimePickerYears;
 
 
-/***/ },
+/***/ }),
 /* 23 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -3426,7 +3432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DateTimePickerTime;
 
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
