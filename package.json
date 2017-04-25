@@ -74,7 +74,7 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
-    "@types/react": ">=0.13",
+    "@types/react": ">=15",
     "object-assign": "^3.0.0",
     "prop-types": "^15.5.7",
     "react-onclickoutside": "^5.9.0"
