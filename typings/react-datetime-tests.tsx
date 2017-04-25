@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { Moment } from 'moment';
-import * as ReactDatetime from 'react-datetime';
+import * as React from "react";
+import { Moment } from "moment";
+import * as ReactDatetime from "react-datetime";
 
 /*
  Test the datetime picker.
@@ -116,13 +116,13 @@ const TEST_DATE_VALIDATOR_PROP: JSX.Element = <ReactDatetime
  */
 
 const TEST_CUSTOMIZABLE_COMPONENT_PROPS: JSX.Element = <ReactDatetime
-		renderDay={ (props, currentDate, selectedDate) => {
+		renderDay={ (props: any, currentDate: any, selectedDate: any) => {
 			return <td {...props}>{ '0' + currentDate.date() }</td>;
 		} }
-		renderMonth={ (props, month, year, selectedDate) => {
+		renderMonth={ (props: any, month: any, year: any, selectedDate: any) => {
 			return <td {...props}>{ month }</td>;
 		} }
-		renderYear={ (props, year, selectedDate) => {
+		renderYear={ (props: any, year: any, selectedDate: any) => {
 			return <td {...props}>{ year % 100 }</td>;
 		} }
 	/>;
