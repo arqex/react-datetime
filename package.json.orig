@@ -38,8 +38,8 @@
   "license": "MIT",
   "peerDependencies": {
     "moment": ">=2.16.0",
-    "react": ">=0.13",
-    "react-dom": ">=0.13"
+    "react": ">=0.13 <16",
+    "react-dom": ">=0.13 <16"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
@@ -62,9 +62,15 @@
     "jsdom": "^7.0.2",
     "mocha": "^3.2.0",
     "pre-commit": "^1.1.3",
+<<<<<<< HEAD
     "react": ">=0.13",
     "react-addons-test-utils": ">=0.13",
     "react-dom": ">=0.13",
+=======
+    "react": ">=0.13 <16",
+    "react-addons-test-utils": ">=15",
+    "react-dom": ">=0.13 <16",
+>>>>>>> bb5a9336d59938ea8ae4d90a5efcda987f7e6ae9
     "react-test-renderer": "^15.4.2",
     "through2": "^2.0.3",
     "typescript": "^2.0.10",
@@ -73,8 +79,13 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@types/react": ">=0.13",
     "moment": "2.16.x",
+=======
+    "@types/react": ">=0.13 <16",
+    "create-react-class": "^15.5.2",
+>>>>>>> bb5a9336d59938ea8ae4d90a5efcda987f7e6ae9
     "object-assign": "^3.0.0",
     "prop-types": "^15.5.7",
     "react-onclickoutside": "^5.9.0"
