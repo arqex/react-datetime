@@ -5,6 +5,8 @@
 
 declare module 'react-datetime' {
 
+  import React = __React;
+
   /*
    A stand-in type for Moment, this file currently has no way of guaranteeing
    the existence of those typings.
