@@ -998,7 +998,7 @@ describe('Datetime', () => {
 
 				utils.clickNthMonth(component, 2);
 				expect(onChangeFn).toHaveBeenCalledTimes(1);
-				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual(new Date(2000, 2, 15, 2, 2, 2, 2).toISOString());
+				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual('2000-03-15T01:02:02.002Z');
 			});
 
 			it('when selecting year', () => {
@@ -1008,7 +1008,7 @@ describe('Datetime', () => {
 
 				utils.clickNthYear(component, 2);
 				expect(onChangeFn).toHaveBeenCalledTimes(1);
-				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual(new Date(2001, 0, 15, 2, 2, 2, 2).toISOString());
+				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual('2001-01-15T01:02:02.002Z');
 			});
 
 			it('when selecting time', () => {
