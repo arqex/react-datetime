@@ -43,6 +43,7 @@ render: function() {
 | **open** | `boolean` | `null` | Whether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside. |
 | **locale** | `string` | `null` | Manually set the locale for the react-datetime instance. Moment.js locale needs to be loaded to be used, see [i18n docs](#i18n).
 | **utc** | `boolean` | `false` | When true, input time values will be interpreted as UTC (Zulu time) by Moment.js. Otherwise they will default to the user's local timezone.
+| **displayTImeZone** | `string` | `null` | When specified, input time values will be displayed in the given time zone. Otherwise they will default to the user's local timezone (unless `utc` specified).
 | **onChange** | `function` | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback receives the value of the input (a string). |
 | **onFocus** | `function` | empty function | Callback trigger for when the user opens the datepicker. |
 | **onBlur** | `function` | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned. |
@@ -107,7 +108,7 @@ var MyDTPicker = React.createClass({
 
 ## Specify Available Units
 You can filter out what you want the user to be able to pick by using `dateFormat` and `timeFormat`, e.g. to create a timepicker, yearpicker etc.
- 
+
 In this example the component is being used as a *timepicker* and can *only be used for selecting a time*.
 ```js
 <Datetime dateFormat={false} />

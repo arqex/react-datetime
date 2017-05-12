@@ -38,6 +38,7 @@
   "license": "MIT",
   "peerDependencies": {
     "moment": ">=2.16.0",
+    "moment-timezone": "^0.5.13",
     "react": ">=0.13",
     "react-dom": ">=0.13"
   },
