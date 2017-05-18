@@ -158,8 +158,8 @@ var Datetime = createClass({
 				updatedState.open = this.state.open;
 			}
 		} else {
-      updatedState.open = nextProps.open;
-    }
+			updatedState.open = nextProps.open;
+		}
 
 		if ( nextProps.viewMode !== this.props.viewMode ) {
 			updatedState.currentView = nextProps.viewMode;
