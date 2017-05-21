@@ -7,7 +7,7 @@ import utils from './testUtils';
 describe('Datetime', () => {
 	it('create component', () => {
 		const component = utils.createDatetime({});
-
+    expect(component.name()).toEqual('DateTime');
 		expect(component).toBeDefined();
 		expect(component.find('.rdt > .form-control').length).toEqual(1);
 		expect(component.find('.rdt > .rdtPicker').length).toEqual(1);
