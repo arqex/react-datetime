@@ -25,11 +25,13 @@ const TEST_DATE_PROPS_FOR_DEFAULT_VALUE: JSX.Element = <ReactDatetime
  */
 
 const TEST_FORMAT_PROPS_AS_STRINGS: JSX.Element = <ReactDatetime
+		datetimeFormat='mm/dd/yyyy ha'
 		dateFormat='mm/dd/yyyy'
 		timeFormat='hh:mm:ss'
 	/>;
 
 const TEST_FORMAT_PROPS_AS_BOOLEANS: JSX.Element = <ReactDatetime
+		datetimeFormat={ true }
 		dateFormat={ false }
 		timeFormat={ false }
 	/>;
