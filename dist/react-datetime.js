@@ -90,7 +90,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			strictParsing: TYPES.bool,
 			closeOnSelect: TYPES.bool,
 			closeOnTab: TYPES.bool,
-			tableProps: TYPES.object
+			timeTableProps: TYPES.object,
+			daysTableProps: TYPES.object,
+			monthsTableProps: TYPES.object,
+			yearsTableProps: TYPES.object,
+			headerTableProps: TYPES.object,
 		},
 
 		getDefaultProps: function() {
@@ -109,7 +113,11 @@ return /******/ (function(modules) { // webpackBootstrap
 				strictParsing: true,
 				closeOnSelect: false,
 				closeOnTab: true,
-				tableProps: {},
+				timeTableProps: {},
+				daysTableProps: {},
+				monthsTableProps: {},
+				yearsTableProps: {},
+				headerTableProps: {},
 				utc: false
 			};
 		},
@@ -439,7 +447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		componentProps: {
-			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'tableProps'],
+			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'daysTableProps', 'monthsTableProps', 'yearsTableProps', 'headerTableProps', 'timeTableProps'],
 			fromState: ['viewDate', 'selectedDate', 'updateOn'],
 			fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
 		},
@@ -2581,7 +2589,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				tableChildren.push( footer );
 
 			return DOM.div({ className: 'rdtDays' },
-				DOM.table(this.props.tableProps, tableChildren )
+				DOM.table(this.props.daysTableProps, tableChildren )
 			);
 		},
 
@@ -3023,6 +3031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(12),
+		assign = __webpack_require__(1),
 	    createClass = __webpack_require__(11),
 		onClickOutside = __webpack_require__(19)
 	;
@@ -3031,12 +3040,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DateTimePickerMonths = onClickOutside( createClass({
 		render: function() {
 			return DOM.div({ className: 'rdtMonths' }, [
-				DOM.table({ key: 'a' }, DOM.thead( {}, DOM.tr( {}, [
+				DOM.table(assign({ key: 'a' },this.props.headerTableProps), DOM.thead( {}, DOM.tr( {}, [
 					DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, DOM.span({}, '‹' )),
 					DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
 					DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, DOM.span({}, '›' ))
 				]))),
-				DOM.table({ key: 'months' }, DOM.tbody({ key: 'b' }, this.renderMonths()))
+				DOM.table(assign({ key: 'months' },this.props.monthsTableProps), DOM.tbody({ key: 'b' }, this.renderMonths()))
 			]);
 		},
 
@@ -3137,6 +3146,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(12),
+		assign = __webpack_require__(1),
 	    createClass = __webpack_require__(11),
 		onClickOutside = __webpack_require__(19)
 	;
@@ -3147,12 +3157,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
 
 			return DOM.div({ className: 'rdtYears' }, [
-				DOM.table({ key: 'a' }, DOM.thead({}, DOM.tr({}, [
+				DOM.table(assign({ key: 'a' },this.props.headerTableProps), DOM.thead({}, DOM.tr({}, [
 					DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, DOM.span({}, '‹' )),
 					DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
 					DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, DOM.span({}, '›' ))
 					]))),
-				DOM.table({ key: 'years' }, DOM.tbody( {}, this.renderYears( year )))
+				DOM.table(assign({ key: 'years' },this.props.yearsTableProps), DOM.tbody( {}, this.renderYears( year )))
 			]);
 		},
 
@@ -3347,7 +3357,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			return DOM.div({ className: 'rdtTime' },
-				DOM.table({}, [
+				DOM.table(this.props.timeTableProps, [
 					this.renderHeader(),
 					DOM.tbody({ key: 'b'}, DOM.tr({}, DOM.td({},
 						DOM.div({ className: 'rdtCounters' }, counters )
