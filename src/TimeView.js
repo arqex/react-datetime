@@ -6,7 +6,6 @@ var React = require('react'),
   onClickOutside = require('react-onclickoutside')
 ;
 
-var DOM = React.DOM;
 var DateTimePickerTime = onClickOutside( createClass({
 	getInitialState: function() {
 		return this.calculateState( this.props );
@@ -57,20 +56,20 @@ var DateTimePickerTime = onClickOutside( createClass({
 					value = 12;
 				}
 			}
-			return DOM.div({ key: type, className: 'rdtCounter' }, [
-				DOM.span({ key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
-				DOM.div({ key: 'c', className: 'rdtCount' }, value ),
-				DOM.span({ key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
+			return React.createElement('div', { key: type, className: 'rdtCounter' }, [
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
+				React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
 			]);
 		}
 		return '';
 	},
 
 	renderDayPart: function() {
-		return DOM.div({ key: 'dayPart', className: 'rdtCounter' }, [
-			DOM.span({ key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
-			DOM.div({ key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-			DOM.span({ key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
+		return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
+			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
+			React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
+			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
 		]);
 	},
 
@@ -81,7 +80,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 
 		this.state.counters.forEach( function( c ) {
 			if ( counters.length )
-				counters.push( DOM.div({ key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
+				counters.push( React.createElement('div', { key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
 			counters.push( me.renderCounter( c ) );
 		});
 
@@ -90,19 +89,19 @@ var DateTimePickerTime = onClickOutside( createClass({
 		}
 
 		if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf( 'S' ) !== -1 ) {
-			counters.push( DOM.div({ className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
+			counters.push( React.createElement('div', { className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
 			counters.push(
-				DOM.div({ className: 'rdtCounter rdtMilli', key: 'm' },
-					DOM.input({ value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
+				React.createElement('div', { className: 'rdtCounter rdtMilli', key: 'm' },
+					React.createElement('input', { value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
 					)
 				);
 		}
 
-		return DOM.div({ className: 'rdtTime' },
-			DOM.table({}, [
+		return React.createElement('div', { className: 'rdtTime' },
+			React.createElement('table', {}, [
 				this.renderHeader(),
-				DOM.tbody({ key: 'b'}, DOM.tr({}, DOM.td({},
-					DOM.div({ className: 'rdtCounters' }, counters )
+				React.createElement('tbody', { key: 'b'}, React.createElement('tr', {}, React.createElement('td', {},
+					React.createElement('div', { className: 'rdtCounters' }, counters )
 				)))
 			])
 		);
@@ -155,8 +154,8 @@ var DateTimePickerTime = onClickOutside( createClass({
 			return null;
 
 		var date = this.props.selectedDate || this.props.viewDate;
-		return DOM.thead({ key: 'h' }, DOM.tr({},
-			DOM.th({ className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
+		return React.createElement('thead', { key: 'h' }, React.createElement('tr', {},
+			React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
 		));
 	},
 
