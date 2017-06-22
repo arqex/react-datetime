@@ -104,7 +104,7 @@ var Datetime = createClass({
 		if ( formats.date.match(/[lLD]/) ) {
 			return 'days';
 		}
-		else if ( formats.date.indexOf('M') !== -1 ) {
+		else if ( formats.date.match(/[MQ]/) ) {
 			return 'months';
 		}
 		else if ( formats.date.indexOf('Y') !== -1 ) {
