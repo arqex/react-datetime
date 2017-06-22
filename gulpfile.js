@@ -1,59 +1,71 @@
-var gulp = require('gulp'),
-	uglify = require('gulp-uglify'),
+const babel = require('gulp-babel'),
+	gulp = require('gulp'),
 	insert = require('gulp-insert'),
-	webpack = require('gulp-webpack')
-;
+	plumber = require('gulp-plumber'),
+	rename = require('gulp-rename'),
+	sourcemaps = require('gulp-sourcemaps'),
+	through = require('through2'),
+	uglify = require('gulp-uglify'),
+	webpack = require('webpack-stream')
+	;
 
-var packageName = 'react-datetime';
-var pack = require( './package.json' );
+const pack = require( './package.json' );
 
-var getWPConfig = function( filename ){
+gulp.task( 'sub', () => {
+	// Reason behind having sub as separate task:
+	// https://github.com/shama/webpack-stream/issues/114
+	return gulp.src( './DateTime.js' )
+		.pipe( webpack( getWebpackConfig() ) )
+		.pipe( gulp.dest( 'tmp/' ) );
+});
+
+gulp.task( 'build', ['sub'], () => {
+	return gulp.src( ['tmp/react-datetime.js'] )
+		.pipe( sourcemaps.init( { loadMaps: true } ) )
+			.pipe( through.obj( function( file, enc, cb ) {
+				// Dont pipe through any source map files as
+				// it will be handled by gulp-sourcemaps
+				const isSourceMap = /\.map$/.test( file.path );
+				if ( !isSourceMap ) this.push( file );
+				cb();
+			}))
+			.pipe( plumber() )
+			// .pipe( babel( { presets: [ 'es2015'] } ) )
+			.pipe( insert.prepend( setHeader ) )
+			.pipe( gulp.dest( 'dist/' ) ) // Save .js
+			.pipe( uglify() )
+			.pipe( insert.prepend( setHeader ) )
+			.pipe( rename( { extname: '.min.js' } ) )
+		.pipe( sourcemaps.write( '.' ) )
+		.pipe( gulp.dest( 'dist/' ) ); // Save .min.js
+	// TODO: Remove tmp folder
+});
+
+gulp.task( 'default', ['build'] );
+
+/*
+ * Utility functions
+ */
+
+const getWebpackConfig = () => {
 	return {
+		devtool: '#cheap-module-source-map',
 		externals: {
 			react: 'React',
 			'react-dom': 'ReactDOM',
 			moment: 'moment'
 		},
 		output: {
-			libraryTarget: 'umd',
 			library: 'Datetime',
-			filename: filename + '.js'
+			libraryTarget: 'umd',
+			filename: 'react-datetime.js'
 		}
 	};
 };
 
-var cr = ('/*\n%%name%% v%%version%%\n%%homepage%%\n%%license%%: https://github.com/arqex/' + packageName + '/raw/master/LICENSE\n*/\n')
-	.replace( '%%name%%', pack.name)
-	.replace( '%%version%%', pack.version)
-	.replace( '%%license%%', pack.license)
-	.replace( '%%homepage%%', pack.homepage)
-;
-
-var handleError = function( err ){
-	console.log( 'Error: ', err );
-};
-
-function wp( config, minify ){
-	var stream =  gulp.src('./Datetime.js')
-		.pipe( webpack( config ) )
+const setHeader = ( '/*\n%%name%% v%%version%%\n%%homepage%%\n%%license%%: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE\n*/\n' )
+		.replace( '%%name%%', pack.name)
+		.replace( '%%version%%', pack.version)
+		.replace( '%%license%%', pack.license)
+		.replace( '%%homepage%%', pack.homepage)
 	;
-
-	if( minify ){
-		stream = stream.pipe( uglify() ).on( 'error', handleError );
-	}
-
-	return stream.pipe( insert.prepend( cr ) )
-		.pipe( gulp.dest('dist/') )
-	;
-}
-
-gulp.task( 'build', function( callback ) {
-	var config = getWPConfig( 'react-datetime' );
-	config.devtool = '#eval';
-	wp( config );
-
-	config = getWPConfig( 'react-datetime.min' );
-	return wp( config, true );
-});
-
-gulp.task( 'default', ['build'] );

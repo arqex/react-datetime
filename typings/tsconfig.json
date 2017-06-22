@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "strictNullChecks": false,
+        "types": [],
+        "noEmit": true,
+        "jsx": "react",
+        "baseUrl": "../",
+        "paths": {
+            "react-datetime": ["./"]
+        }
+    },
+    "files": [
+        "../DateTime.d.ts",
+        "react-datetime-tests.tsx"
+    ]
+}

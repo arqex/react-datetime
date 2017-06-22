@@ -1,5 +1,45 @@
 Changelog
 =========
+## 2.8.10
+* Increase click area of arrows for changing day/month/year
+* Update code according to React 15.5.0
+  * Remove usage of React.createClass
+  * Use separate module for PropTypes  
+
+## 2.8.9
+* Fixes issue where incorrect current month is shown
+
+## 2.8.8
+* Fixes issues introduced in v2.8.7 recognizing any calendar view as clickingOutside trigger
+
+## 2.8.7
+* Update react-onclickoutside dependency. That should fix most of the problems about closeOnSelect.
+
+## 2.8.6
+* Revert commits related to `closeOnSelect` that did not fix all issues they were meant to
+
+## 2.8.5
+* Fix bug where `closeOnSelect` was not closing when it was set to `true`
+* Fix bug where component would not immediately re-render when updating either `utc` or `locale` prop
+
+## 2.8.4
+* Fix bug where `closeOnSelect=true` would cause component to close on state change
+
+## 2.8.3
+* Fix `isValidDate` related bug where current month would be invalid
+* Trigger re-render of component when `viewMode` changes
+* Never append `rdtOld` class in year view
+
+## 2.8.2
+* Fix year related bug in tests where year was set to 2016
+* Add a yarnfile so yarn is now possible to use for installing dependencies
+
+## 2.8.1
+* Fix timeFormat related bug where 'A' was being picked up but not 'a', for setting 12-hour clock.
+
+## 2.8.0
+* Add typings for TypeScript 2.0. We now support TypeScript typings for versions 1.8 and 2.0.
+
 ## 2.7.5
 * Bumps the version to skip buggy deployment 2.7.4
 

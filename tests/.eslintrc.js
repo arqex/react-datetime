@@ -1,4 +1,11 @@
 module.exports = {
+		"parserOptions": {
+				"ecmaVersion": 6,
+				"sourceType": "module",
+				"ecmaFeatures": {
+						"jsx": true
+				}
+		},
     "env": {
         "browser": true
     },
@@ -9,7 +16,7 @@ module.exports = {
     // Enables rules that report common problems,
     // see http://eslint.org/docs/rules/ for list
     "extends": "eslint:recommended",
-    "rules": {
+    "rules": { //TODO: Extend rules in root folder
         // Enforce the use of variables within the scope they are defined
         "block-scoped-var": 2,
         // Enforce camelcase naming convention

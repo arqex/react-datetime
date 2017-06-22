@@ -7,28 +7,29 @@ var moment = require('moment');
 var Wrapper = createClass({
 	getInitialState: function() {
 		return {
-			dateFormat: 'YYYY-MM-DD'
+			viewMode: 'time'
 		};
 	},
 
-	updateFormat: function(format) {
-		console.log('changing state');
+	updateView: function(format) {
+		console.log('changing viewMode to days');
 		this.setState({
-			dateFormat: 'DD.MM.YYYY'
+			viewMode: 'days'
 		});
 	},
 
 	componentDidMount: function() {
-		setTimeout(this.updateFormat, 2000);
+		setTimeout(this.updateView, 3000);
 	},
 
 	render: function() {
+		console.log('Current viewmode: ' + this.state.viewMode);
 		return React.createElement(DateTime,
-			{ dateFormat: this.state.dateFormat, timeFormat: false, defaultValue: moment() });
+            { viewMode: this.state.viewMode, defaultValue: moment() });
 	}
 });
 
 ReactDOM.render(
-	React.createElement(Wrapper),
-	document.getElementById('datetime')
+  React.createElement(Wrapper),
+  document.getElementById('datetime')
 );
