@@ -1,12 +1,11 @@
 'use strict';
 
 var React = require('react'),
-    createClass = require('create-react-class'),
-	onClickOutside = require('react-onclickoutside')
+    createClass = require('create-react-class')
 ;
 
 var DOM = React.DOM;
-var DateTimePickerMonths = onClickOutside( createClass({
+var DateTimePickerMonths = createClass({
 	render: function() {
 		return DOM.div({ className: 'rdtMonths' }, [
 			DOM.table({ key: 'a' }, DOM.thead( {}, DOM.tr( {}, [
@@ -94,12 +93,9 @@ var DateTimePickerMonths = onClickOutside( createClass({
 
 	alwaysValidDate: function() {
 		return 1;
-	},
+	}
 
-  handleClickOutside: function() {
-    this.props.handleClickOutside();
-  }
-}));
+});
 
 function capitalize( str ) {
 	return str.charAt( 0 ).toUpperCase() + str.slice( 1 );

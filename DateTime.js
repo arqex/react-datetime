@@ -5,11 +5,12 @@ var assign = require('object-assign'),
         createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
+        onClickOutside = require('react-onclickoutside'),
 	CalendarContainer = require('./src/CalendarContainer')
 ;
 
 var TYPES = PropTypes;
-var Datetime = createClass({
+var Datetime = onClickOutside( createClass({
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
@@ -433,11 +434,11 @@ var Datetime = createClass({
 		return DOM.div({className: className}, children.concat(
 			DOM.div(
 				{ key: 'dt', className: 'rdtPicker' },
-				React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
+				React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps() })
 			)
 		));
 	}
-});
+}));
 
 // Make moment accessible through the Datetime class
 Datetime.moment = moment;
