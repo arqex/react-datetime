@@ -1,9 +1,9 @@
 'use strict';
 
 var React = require('react'),
-    createClass = require('create-react-class'),
+		createClass = require('create-react-class'),
 	moment = require('moment'),
-  onClickOutside = require('react-onclickoutside')
+	onClickOutside = require('react-onclickoutside')
 ;
 
 var DateTimePickerDays = onClickOutside( createClass({
@@ -67,8 +67,23 @@ var DateTimePickerDays = onClickOutside( createClass({
 		;
 
 		// Go to the last week of the previous month
-		prevMonth.date( prevMonth.daysInMonth() ).startOf( 'week' );
-		var lastDay = prevMonth.clone().add( 42, 'd' );
+		prevMonth.date( prevMonth.daysInMonth() );
+		// Prepend one calendar week if the month doesn't start at week start (Monday/Sunday)
+		if (prevMonth.weekday() === moment().endOf('week').weekday()) {
+			prevMonth.endOf( 'week' );
+			// Needed to account for the whole last day of the previous month
+			prevMonth.add( 1, 'd' );
+		} else {
+			prevMonth.startOf( 'week' );
+		}
+
+		var lastDay = date.clone().date( date.daysInMonth() );
+		// Append one extra calendar week only if the month doesn't end at week end (Sunday/Saturday)
+		if (lastDay.weekday() !== moment().endOf('week').weekday()) {
+			lastDay.add( 1, 'weeks' );
+		}
+		// Needed to account for the whole last day of the current month
+		lastDay.add( 1, 'd' );
 
 		while ( prevMonth.isBefore( lastDay ) ) {
 			classes = 'rdtDay';
@@ -136,9 +151,9 @@ var DateTimePickerDays = onClickOutside( createClass({
 		return 1;
 	},
 
-  handleClickOutside: function() {
-    this.props.handleClickOutside();
-  }
+	handleClickOutside: function() {
+		this.props.handleClickOutside();
+	}
 }));
 
 module.exports = DateTimePickerDays;
