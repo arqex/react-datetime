@@ -155,7 +155,7 @@ var Datetime = createClass({
 			if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
 				updatedState.open = false;
 			} else {
-				updatedState.open = this.state.open;
+				updatedState.open = nextProps.open;
 			}
 		}
 
