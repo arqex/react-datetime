@@ -5,11 +5,12 @@ var assign = require('object-assign'),
         createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
+        onClickOutside = require('react-onclickoutside'),
 	CalendarContainer = require('./src/CalendarContainer')
 ;
 
 var TYPES = PropTypes;
-var Datetime = createClass({
+var Datetime = onClickOutside( createClass({
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
@@ -19,6 +20,7 @@ var Datetime = createClass({
 		locale: TYPES.string,
 		utc: TYPES.bool,
 		input: TYPES.bool,
+		// datetimeFormat: TYPES.string | TYPES.bool,
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
@@ -41,6 +43,7 @@ var Datetime = createClass({
 			onFocus: nof,
 			onBlur: nof,
 			onChange: nof,
+                        datetimeFormat: false,
 			timeFormat: true,
 			timeConstraints: {},
 			dateFormat: true,
@@ -116,6 +119,7 @@ var Datetime = createClass({
 
 	getFormats: function( props ) {
 		var formats = {
+                                datetime: props.datetimeFormat || false,
 				date: props.dateFormat || '',
 				time: props.timeFormat || ''
 			},
@@ -133,10 +137,12 @@ var Datetime = createClass({
 			formats.time = locale.longDateFormat('LT');
 		}
 
-		formats.datetime = formats.date && formats.time ?
-			formats.date + ' ' + formats.time :
-			formats.date || formats.time
-		;
+                if ( !formats.datetime  || formats.datetime === true ) {
+                        formats.datetime = formats.date && formats.time ?
+                                formats.date + ' ' + formats.time :
+                                formats.date || formats.time
+                        ;
+                }
 
 		return formats;
 	},
@@ -359,7 +365,7 @@ var Datetime = createClass({
 	},
 
 	handleClickOutside: function() {
-		if ( this.props.input && this.state.open && !this.props.open ) {
+		if ( this.props.input && this.state.open ) {
 			this.setState({ open: false }, function() {
 				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 			});
@@ -428,11 +434,11 @@ var Datetime = createClass({
 		return DOM.div({className: className}, children.concat(
 			DOM.div(
 				{ key: 'dt', className: 'rdtPicker' },
-				React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
+				React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps() })
 			)
 		));
 	}
-});
+}));
 
 // Make moment accessible through the Datetime class
 Datetime.moment = moment;

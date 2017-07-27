@@ -285,6 +285,22 @@ describe('Datetime', () => {
 			expect(component.find('.rdt > .rdtPicker').length).toEqual(1);
 		});
 
+		it('datetimeFormat', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				mDate = moment(date),
+				component = utils.createDatetime({ value: date, datetimeFormat: 'M&D&h' });
+			expect(utils.getInputValue(component)).toEqual(mDate.format('M&D&h'));
+		});
+
+		it('datetimeFormat=true', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				mDate = moment(date),
+				component = utils.createDatetime({ value: date, datetimeFormat: true });
+			expect(utils.getInputValue(component)).toEqual(mDate.format('L LT'));
+			// Make sure time view is active
+			expect(utils.isTimeView(component)).toBeFalsy();
+		});
+
 		it('dateFormat', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				mDate = moment(date),
