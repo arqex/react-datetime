@@ -2,7 +2,7 @@
 
 var React = require('react'),
     createClass = require('create-react-class'),
-	onClickOutside = require('react-onclickoutside')
+	onClickOutside = require('react-onclickoutside').default
 ;
 
 var DateTimePickerMonths = onClickOutside( createClass({
