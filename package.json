@@ -1,6 +1,6 @@
 {
   "name": "react-datetime",
-  "version": "2.8.8",
+  "version": "2.8.11",
   "description": "A lightweight but complete datetime picker React.js component.",
   "homepage": "https://github.com/YouCanBookMe/react-datetime",
   "repository": {
@@ -8,15 +8,14 @@
     "url": "https://github.com/YouCanBookMe/react-datetime"
   },
   "main": "./DateTime.js",
+  "typings": "./DateTime.d.ts",
   "files": [
     "DateTime.js",
-    "react-datetime.d.ts",
-    "typings/index.d.ts",
+    "DateTime.d.ts",
     "src",
     "css",
     "dist"
   ],
-  "types": "./typings/index.d.ts",
   "scripts": {
     "build:mac": "./node_modules/.bin/gulp",
     "build:win": "./node_modules/.bin/gulp.cmd",
@@ -43,7 +42,6 @@
     "react-dom": ">=0.13"
   },
   "devDependencies": {
-    "@types/react": "^0.14.49",
     "babel-core": "^6.22.1",
     "babel-jest": "^18.0.0",
     "babel-loader": "^6.2.1",
@@ -76,7 +74,9 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
+    "@types/react": ">=15",
     "object-assign": "^3.0.0",
+    "prop-types": "^15.5.7",
     "react-onclickoutside": "^5.9.0"
   },
   "pre-commit": [

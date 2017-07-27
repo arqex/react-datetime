@@ -1,13 +1,15 @@
 'use strict';
 
 var assign = require('object-assign'),
+        PropTypes = require('prop-types'),
+        createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
 	CalendarContainer = require('./src/CalendarContainer')
 ;
 
-var TYPES = React.PropTypes;
-var Datetime = React.createClass({
+var TYPES = PropTypes;
+var Datetime = createClass({
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
@@ -399,8 +401,7 @@ var Datetime = React.createClass({
 	},
 
 	render: function() {
-		var DOM = React.DOM,
-			className = 'rdt' + (this.props.className ?
+		var className = 'rdt' + (this.props.className ?
                   ( Array.isArray( this.props.className ) ?
                   ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 			children = []
@@ -416,9 +417,9 @@ var Datetime = React.createClass({
 				value: this.state.inputValue,
 			}, this.props.inputProps);
 			if ( this.props.renderInput ) {
-				children = [ DOM.div({key: 'i'}, this.props.renderInput( finalInputProps, this.openCalendar )) ];
+				children = [ React.createElement('div', {key: 'i'}, this.props.renderInput( finalInputProps, this.openCalendar )) ];
 			} else {
-				children = [ DOM.input( assign({key: 'i'}, finalInputProps ))];
+				children = [ React.createElement('input', assign({key: 'i'}, finalInputProps ))];
 			}
 		} else {
 			className += ' rdtStatic';
@@ -427,8 +428,8 @@ var Datetime = React.createClass({
 		if ( this.state.open )
 			className += ' rdtOpen';
 
-		return DOM.div({className: className}, children.concat(
-			DOM.div(
+		return React.createElement('div', {className: className}, children.concat(
+			React.createElement('div',
 				{ key: 'dt', className: 'rdtPicker' },
 				React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
 			)

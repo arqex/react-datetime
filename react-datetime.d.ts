@@ -3,7 +3,7 @@
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
 
 // These are the typings for Typescript 1.8
-// for Typescrip 2.0+ see typings/index.d.ts
+// for Typescript 2.0+ see DateTime.d.ts
 
 //// <reference path="../moment/moment-node.d.ts" />
 
@@ -86,7 +86,7 @@ declare module ReactDatetime {
      (a function which opens the calendar) and the default calculated props for the input. 
      Must return a React component or null.
      */
-    renderInput?: (props: Object, openCalendar: Function) => React.Component<any, any>;
+    renderInput?: (props: any, openCalendar: Function) => React.Component<any, any>|null;
     /*
      Define the dates that can be selected. The function receives (currentDate, selectedDate)
      and should return a true or false whether the currentDate is valid or not. See selectable dates.
