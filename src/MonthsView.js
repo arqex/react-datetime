@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react'),
+	assign = require('object-assign'),
     createClass = require('create-react-class'),
 	onClickOutside = require('react-onclickoutside')
 ;
@@ -9,12 +10,12 @@ var DOM = React.DOM;
 var DateTimePickerMonths = onClickOutside( createClass({
 	render: function() {
 		return DOM.div({ className: 'rdtMonths' }, [
-			DOM.table({ key: 'a' }, DOM.thead( {}, DOM.tr( {}, [
+			DOM.table(assign({ key: 'a' }, this.props.headerTableProps), DOM.thead( {}, DOM.tr( {}, [
 				DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, DOM.span({}, '‹' )),
 				DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
 				DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, DOM.span({}, '›' ))
 			]))),
-			DOM.table({ key: 'months' }, DOM.tbody({ key: 'b' }, this.renderMonths()))
+			DOM.table(assign({ key: 'months' }, this.props.monthsTableProps), DOM.tbody({ key: 'b' }, this.renderMonths()))
 		]);
 	},
 

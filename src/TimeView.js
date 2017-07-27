@@ -99,7 +99,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 		}
 
 		return DOM.div({ className: 'rdtTime' },
-			DOM.table({}, [
+			DOM.table(this.props.timeTableProps, [
 				this.renderHeader(),
 				DOM.tbody({ key: 'b'}, DOM.tr({}, DOM.td({},
 					DOM.div({ className: 'rdtCounters' }, counters )

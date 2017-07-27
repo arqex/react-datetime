@@ -28,7 +28,12 @@ var Datetime = createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		timeTableProps: TYPES.object,
+		daysTableProps: TYPES.object,
+		monthsTableProps: TYPES.object,
+		yearsTableProps: TYPES.object,
+		headerTableProps: TYPES.object,
 	},
 
 	getDefaultProps: function() {
@@ -47,6 +52,11 @@ var Datetime = createClass({
 			strictParsing: true,
 			closeOnSelect: false,
 			closeOnTab: true,
+			timeTableProps: {},
+			daysTableProps: {},
+			monthsTableProps: {},
+			yearsTableProps: {},
+			headerTableProps: {},
 			utc: false
 		};
 	},
@@ -376,7 +386,7 @@ var Datetime = createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'daysTableProps', 'monthsTableProps', 'yearsTableProps', 'headerTableProps', 'timeTableProps'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
 	},

@@ -31,7 +31,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 			tableChildren.push( footer );
 
 		return DOM.div({ className: 'rdtDays' },
-			DOM.table({}, tableChildren )
+			DOM.table(this.props.daysTableProps, tableChildren )
 		);
 	},
 
