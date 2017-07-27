@@ -1,9 +1,3 @@
-# :rotating_light: MAINTAINER WANTED :rotating_light:
-
-Hi, this project is looking for a maintainer to join the team. We are looking for someone with experience working with open-source software as well as Javascript/React. Maintaining a project like this takes time, so a very important requirement is that you're actually willing to put down the hours into working on it. It's also a lot of fun :)
-
-If you think this sounds interesting, send me an e-mail (`simeg@rdt.33mail.com`) where you tell me a bit about yourself and why you think you would be a good fit. Feel free to contact me for any questions.
-
 # react-datetime
 
 [![Build Status](https://secure.travis-ci.org/YouCanBookMe/react-datetime.svg)](https://travis-ci.org/YouCanBookMe/react-datetime)
