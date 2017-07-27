@@ -413,6 +413,7 @@ var Datetime = createClass({
 				type: 'text',
 				className: 'form-control',
 				onFocus: this.openCalendar,
+				onClick: this.openCalendar,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,
 				value: this.state.inputValue
