@@ -382,6 +382,23 @@ describe('Datetime', () => {
 			expect(component.find('input').getDOMNode().placeholder).toEqual('custom-placeholder');
 		});
 
+		it('renderInput', () => {
+			const renderInput = (props, openCalendar) => {
+				return (
+					<div>
+						<input {...props} />
+						<button className="custom-open" onClick={openCalendar}>open calendar</button>
+					</div>
+				);
+			};
+			const component = utils.createDatetime({ renderInput });
+
+			expect(component.find('button.custom-open').length).toEqual(1);
+            expect(utils.isOpen(component)).toBeFalsy();
+			utils.clickOnElement(component.find('button.custom-open'));
+			expect(utils.isOpen(component)).toBeTruthy();
+		});
+
 		it('renderDay', () => {
 			let props = {},
 				currentDate = '',
