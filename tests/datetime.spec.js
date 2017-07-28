@@ -336,6 +336,13 @@ describe('Datetime', () => {
 			expect(utils.getInputValue(component)).toEqual(expect.stringMatching('.*AM$'));
 		});
 
+		it('timeFormat with no space between the time string and A', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				format = 'HH:mm:ss:SSSA',
+				component = utils.createDatetime({ value: date, timeFormat: format });
+			expect(utils.getInputValue(component)).toEqual(expect.stringMatching('.*AM$'));
+		});
+
 		it('viewMode=years', () => {
 			const component = utils.createDatetime({ viewMode: 'years' });
 			expect(utils.isYearView(component)).toBeTruthy();
