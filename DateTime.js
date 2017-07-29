@@ -2,11 +2,11 @@
 
 var assign = require('object-assign'),
 	PropTypes = require('prop-types'),
-    createClass = require('create-react-class'),
+	createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
 	CalendarContainer = require('./src/CalendarContainer')
-;
+	;
 
 var TYPES = PropTypes;
 var Datetime = createClass({
@@ -66,7 +66,7 @@ var Datetime = createClass({
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
 			selectedDate, viewDate, updateOn, inputValue
-		;
+			;
 
 		if ( date && typeof date === 'string' )
 			selectedDate = this.localMoment( date, formats.datetime );
@@ -101,7 +101,7 @@ var Datetime = createClass({
 	},
 
 	getUpdateOn: function( formats ) {
-        if ( formats.date.match(/[lLD]/) ) {
+		if ( formats.date.match(/[lLD]/) ) {
 			return 'days';
 		} else if ( formats.date.indexOf('M') !== -1 ) {
 			return 'months';
@@ -118,7 +118,7 @@ var Datetime = createClass({
 				time: props.timeFormat || ''
 			},
 			locale = this.localMoment( props.date, null, props ).localeData()
-		;
+			;
 
 		if ( formats.date === true ) {
 			formats.date = locale.longDateFormat('L');
@@ -198,7 +198,7 @@ var Datetime = createClass({
 		var value = e.target === null ? e : e.target.value,
 			localMoment = this.localMoment( value, this.state.inputFormat ),
 			update = { inputValue: value }
-		;
+			;
 
 		if ( localMoment.isValid() && !this.props.value ) {
 			update.selectedDate = localMoment;
@@ -268,7 +268,7 @@ var Datetime = createClass({
 			state = this.state,
 			date = (state.selectedDate || state.viewDate).clone(),
 			nextType
-		;
+			;
 
 		// It is needed to set all the time properties
 		// to not to reset the time
@@ -293,7 +293,7 @@ var Datetime = createClass({
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
 			date
-		;
+			;
 
 		if (target.className.indexOf('rdtDay') !== -1) {
 			if (target.className.indexOf('rdtNew') !== -1)
@@ -382,7 +382,7 @@ var Datetime = createClass({
 		var me = this,
 			formats = this.getFormats( this.props ),
 			props = {dateFormat: formats.date, timeFormat: formats.time}
-		;
+			;
 
 		this.componentProps.fromProps.forEach( function( name ) {
 			props[ name ] = me.props[ name ];
@@ -403,8 +403,7 @@ var Datetime = createClass({
 		var className = 'rdt' + (this.props.className ?
                   ( Array.isArray( this.props.className ) ?
                   ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
-			children = []
-		;
+			children = [];
 
 		if ( this.props.input ) {
 			children = [ React.createElement('input', assign({
