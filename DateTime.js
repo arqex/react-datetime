@@ -1,8 +1,8 @@
 'use strict';
 
 var assign = require('object-assign'),
-        PropTypes = require('prop-types'),
-        createClass = require('create-react-class'),
+	PropTypes = require('prop-types'),
+    createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
 	CalendarContainer = require('./src/CalendarContainer')
@@ -101,13 +101,11 @@ var Datetime = createClass({
 	},
 
 	getUpdateOn: function( formats ) {
-		if ( formats.date.match(/[lLD]/) ) {
+        if ( formats.date.match(/[lLD]/) ) {
 			return 'days';
-		}
-		else if ( formats.date.indexOf('M') !== -1 ) {
+		} else if ( formats.date.indexOf('M') !== -1 ) {
 			return 'months';
-		}
-		else if ( formats.date.indexOf('Y') !== -1 ) {
+		} else if ( formats.date.indexOf('Y') !== -1 ) {
 			return 'years';
 		}
 
@@ -205,8 +203,7 @@ var Datetime = createClass({
 		if ( localMoment.isValid() && !this.props.value ) {
 			update.selectedDate = localMoment;
 			update.viewDate = localMoment.clone().startOf('month');
-		}
-		else {
+		} else {
 			update.selectedDate = null;
 		}
 
@@ -296,7 +293,7 @@ var Datetime = createClass({
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
 			date
-    ;
+		;
 
 		if (target.className.indexOf('rdtDay') !== -1) {
 			if (target.className.indexOf('rdtNew') !== -1)
