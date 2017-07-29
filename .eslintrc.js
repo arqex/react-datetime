@@ -35,6 +35,8 @@ module.exports = {
         // Enforce consistent spacing inside parentheses
         // "space-in-parens": [2, "always"],
         // Enforce the consistent use of either backticks, double, or single quotes
-        "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }]
+        "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+        // Enforce using tabs for indentation
+        "indent": [2, "tab", { "SwitchCase": 1 }]
     }
 };
