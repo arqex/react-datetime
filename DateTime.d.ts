@@ -89,6 +89,11 @@ declare namespace ReactDatetimeClass {
          */
         onBlur?: EventOrValueHandler<FocusEvent<any>>;
         /*
+         Callback trigger when the view mode changes. The callback receives the selected view mode
+         string ('years', 'months', 'days', 'time') as only parameter.
+         */
+        onViewModeChange?: (viewMode: string) => void;
+        /*
          The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
          */
         viewMode?: ViewMode|number;
