@@ -1,3 +1,5 @@
+'use strict';
+
 var React = require('react'),
   createClass = require('create-react-class'),
   DaysView = require('./DaysView'),
