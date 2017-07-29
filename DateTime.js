@@ -16,6 +16,7 @@ var Datetime = createClass({
 		onFocus: TYPES.func,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
+		onViewModeChange: TYPES.func,
 		locale: TYPES.string,
 		utc: TYPES.bool,
 		input: TYPES.bool,
@@ -41,6 +42,7 @@ var Datetime = createClass({
 			onFocus: nof,
 			onBlur: nof,
 			onChange: nof,
+			onViewModeChange: nof,
 			timeFormat: true,
 			timeConstraints: {},
 			dateFormat: true,
@@ -221,6 +223,7 @@ var Datetime = createClass({
 	showView: function( view ) {
 		var me = this;
 		return function() {
+			me.state.currentView !== view && me.props.onViewModeChange( view );
 			me.setState({ currentView: view });
 		};
 	},
@@ -237,6 +240,7 @@ var Datetime = createClass({
 				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
 				currentView: nextViews[ type ]
 			});
+			me.props.onViewModeChange( nextViews[ type ] );
 		};
 	},
 
