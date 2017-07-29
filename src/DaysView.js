@@ -1,10 +1,10 @@
 'use strict';
 
 var React = require('react'),
-    createClass = require('create-react-class'),
+	createClass = require('create-react-class'),
 	moment = require('moment'),
 	onClickOutside = require('react-onclickoutside')
-;
+	;
 
 var DateTimePickerDays = onClickOutside( createClass({
 	render: function() {
@@ -12,7 +12,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 			date = this.props.viewDate,
 			locale = date.localeData(),
 			tableChildren
-		;
+			;
 
 		tableChildren = [
 			React.createElement('thead', { key: 'th' }, [
@@ -44,7 +44,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 			first = locale.firstDayOfWeek(),
 			dow = [],
 			i = 0
-		;
+			;
 
 		days.forEach( function( day ) {
 			dow[ (7 + ( i++ ) - first) % 7 ] = day;
@@ -64,7 +64,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 			renderer = this.props.renderDay || this.renderDay,
 			isValid = this.props.isValidDate || this.alwaysValidDate,
 			classes, isDisabled, dayProps, currentDate
-		;
+			;
 
 		// Go to the last week of the previous month
 		prevMonth.date( prevMonth.daysInMonth() ).startOf( 'week' );
@@ -136,9 +136,9 @@ var DateTimePickerDays = onClickOutside( createClass({
 		return 1;
 	},
 
-  handleClickOutside: function() {
-    this.props.handleClickOutside();
-  }
+	handleClickOutside: function() {
+		this.props.handleClickOutside();
+	}
 }));
 
 module.exports = DateTimePickerDays;

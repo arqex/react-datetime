@@ -1,9 +1,9 @@
 'use strict';
 
 var React = require('react'),
-    createClass = require('create-react-class'),
+	createClass = require('create-react-class'),
 	onClickOutside = require('react-onclickoutside')
-;
+	;
 
 var DateTimePickerYears = onClickOutside( createClass({
 	render: function() {
@@ -14,7 +14,7 @@ var DateTimePickerYears = onClickOutside( createClass({
 				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
 				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
 				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
-				]))),
+			]))),
 			React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
 		]);
 	},
@@ -31,7 +31,7 @@ var DateTimePickerYears = onClickOutside( createClass({
 			// we're only interested in the year
 			irrelevantMonth = 0,
 			irrelevantDate = 1
-		;
+			;
 
 		year--;
 		while (i < 11) {
@@ -97,9 +97,9 @@ var DateTimePickerYears = onClickOutside( createClass({
 		return 1;
 	},
 
-  handleClickOutside: function() {
-    this.props.handleClickOutside();
-  }
+	handleClickOutside: function() {
+		this.props.handleClickOutside();
+	}
 }));
 
 module.exports = DateTimePickerYears;

@@ -1,9 +1,9 @@
 'use strict';
 
 var React = require('react'),
-    createClass = require('create-react-class'),
+	createClass = require('create-react-class'),
 	onClickOutside = require('react-onclickoutside')
-;
+	;
 
 var DateTimePickerMonths = onClickOutside( createClass({
 	render: function() {
@@ -29,7 +29,7 @@ var DateTimePickerMonths = onClickOutside( createClass({
 			classes, props, currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
 			// Date is irrelevant because we're only interested in month
 			irrelevantDate = 1
-		;
+			;
 
 		while (i < 12) {
 			classes = 'rdtMonth';
@@ -95,9 +95,9 @@ var DateTimePickerMonths = onClickOutside( createClass({
 		return 1;
 	},
 
-  handleClickOutside: function() {
-    this.props.handleClickOutside();
-  }
+	handleClickOutside: function() {
+		this.props.handleClickOutside();
+	}
 }));
 
 function capitalize( str ) {
