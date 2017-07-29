@@ -20,7 +20,7 @@
     "build:mac": "./node_modules/.bin/gulp",
     "build:win": "./node_modules/.bin/gulp.cmd",
     "dev": "./node_modules/.bin/webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
-    "lint": "./node_modules/.bin/eslint src/ DateTime.js tests/",
+    "lint": "./node_modules/.bin/eslint src/ DateTime.js test/",
     "test": "./node_modules/.bin/jest",
     "test:all": "npm run test:typings && npm run test",
     "test:typings": "./node_modules/.bin/tsc -p ./typings",
