@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.9.0
+* Trigger callback method on view mode changes
+
 ## 2.8.11
 * Update TypeScript definitions
 * Replace deprecated React method with non-deprecated method
