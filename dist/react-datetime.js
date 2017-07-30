@@ -62,8 +62,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var assign = __webpack_require__(1),
-	        PropTypes = __webpack_require__(2),
-	        createClass = __webpack_require__(11),
+		PropTypes = __webpack_require__(2),
+	    createClass = __webpack_require__(11),
 		moment = __webpack_require__(16),
 		React = __webpack_require__(12),
 		CalendarContainer = __webpack_require__(17)
@@ -77,6 +77,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			onFocus: TYPES.func,
 			onBlur: TYPES.func,
 			onChange: TYPES.func,
+			onViewModeChange: TYPES.func,
 			locale: TYPES.string,
 			utc: TYPES.bool,
 			input: TYPES.bool,
@@ -102,6 +103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				onFocus: nof,
 				onBlur: nof,
 				onChange: nof,
+				onViewModeChange: nof,
 				timeFormat: true,
 				timeConstraints: {},
 				dateFormat: true,
@@ -162,13 +164,11 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		getUpdateOn: function( formats ) {
-			if ( formats.date.match(/[lLD]/) ) {
+	        if ( formats.date.match(/[lLD]/) ) {
 				return 'days';
-			}
-			else if ( formats.date.indexOf('M') !== -1 ) {
+			} else if ( formats.date.indexOf('M') !== -1 ) {
 				return 'months';
-			}
-			else if ( formats.date.indexOf('Y') !== -1 ) {
+			} else if ( formats.date.indexOf('Y') !== -1 ) {
 				return 'years';
 			}
 
@@ -266,8 +266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( localMoment.isValid() && !this.props.value ) {
 				update.selectedDate = localMoment;
 				update.viewDate = localMoment.clone().startOf('month');
-			}
-			else {
+			} else {
 				update.selectedDate = null;
 			}
 
@@ -285,6 +284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		showView: function( view ) {
 			var me = this;
 			return function() {
+				me.state.currentView !== view && me.props.onViewModeChange( view );
 				me.setState({ currentView: view });
 			};
 		},
@@ -301,6 +301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
 					currentView: nextViews[ type ]
 				});
+				me.props.onViewModeChange( nextViews[ type ] );
 			};
 		},
 
@@ -357,7 +358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				viewDate = this.state.viewDate,
 				currentDate = this.state.selectedDate || viewDate,
 				date
-	    ;
+			;
 
 			if (target.className.indexOf('rdtDay') !== -1) {
 				if (target.className.indexOf('rdtNew') !== -1)
@@ -2670,6 +2671,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+
 	var React = __webpack_require__(12),
 	  createClass = __webpack_require__(11),
 	  DaysView = __webpack_require__(18),
@@ -2703,7 +2706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__(12),
 	    createClass = __webpack_require__(11),
 		moment = __webpack_require__(16),
-	  onClickOutside = __webpack_require__(19)
+		onClickOutside = __webpack_require__(19)
 	;
 
 	var DateTimePickerDays = onClickOutside( createClass({
