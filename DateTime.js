@@ -29,7 +29,8 @@ var Datetime = createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		disabled: TYPES.bool
 	},
 
 	getDefaultProps: function() {
@@ -49,7 +50,8 @@ var Datetime = createClass({
 			strictParsing: true,
 			closeOnSelect: false,
 			closeOnTab: true,
-			utc: false
+			utc: false,
+			disabled: false
 		};
 	},
 
@@ -416,7 +418,8 @@ var Datetime = createClass({
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,
-				value: this.state.inputValue
+				value: this.state.inputValue,
+				disabled: this.props.disabled
 			}, this.props.inputProps ))];
 		} else {
 			className += ' rdtStatic';
