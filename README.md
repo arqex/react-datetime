@@ -7,12 +7,19 @@ A date and time picker in the same React.js component. It can be used as a datep
 
 This project started as a fork of https://github.com/quri/react-bootstrap-datetimepicker but the code and the API has changed a lot.
 
-## Usage
+## Installation
 
 Install using npm:
 ```sh
 npm install --save react-datetime
 ```
+
+Install using yarn:
+```sh
+yarn add react-datetime
+```
+
+## Usage
 
 [React.js](http://facebook.github.io/react/) and [Moment.js](http://momentjs.com/) are peer dependencies for react-datetime. These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datepicker work. You can then use the datepicker like in the example below.
 
