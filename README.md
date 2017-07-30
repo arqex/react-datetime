@@ -30,7 +30,7 @@ require('react-datetime');
 ...
 
 render: function() {
-  return <Datetime />;
+    return <Datetime />;
 }
 ```
 [See this example working](http://codepen.io/simeg/pen/mEmQmP).
