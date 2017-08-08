@@ -284,6 +284,12 @@ describe('Datetime', () => {
 			expect(component.find('.rdt > .form-control').length).toEqual(0);
 			expect(component.find('.rdt > .rdtPicker').length).toEqual(1);
 		});
+		it('manualEditable=false', () => {
+			const component = utils.createDatetime({manualEditable: false});
+			const inputElement = component.find('.rdt > .form-control');
+			expect(inputElement.length).toEqual(1);
+			expect(inputElement.at(0).props().readOnly).toBeTruthy();
+		});
 
 		it('dateFormat', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),

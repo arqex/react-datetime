@@ -415,7 +415,7 @@ var Datetime = createClass({
 				key: 'i',
 				type: 'text',
 				className: 'form-control',
-				readOnly: this.props.manualEditable,
+				readOnly: !this.props.manualEditable,
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,
