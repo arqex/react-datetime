@@ -940,6 +940,72 @@ describe('Datetime', () => {
 			});
 		});
 
+		describe('onViewDateChange', () => {
+			it('when increase month', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					mDate = moment(date),
+					onViewDateChangeFn = jest.fn(),
+					component = utils.createDatetime({ defaultValue: date, onViewDateChange: onViewDateChangeFn });
+
+				utils.clickOnElement(component.find('.rdtNext span').at(0));
+				expect(onViewDateChangeFn).toHaveBeenCalledTimes(1);
+				expect(onViewDateChangeFn.mock.calls[0][0].isSame(mDate.startOf('month').add(1, 'month'))).toBeTruthy();
+			});
+
+			it('when decrease month', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					mDate = moment(date),
+					onViewDateChangeFn = jest.fn(),
+					component = utils.createDatetime({ defaultValue: date, onViewDateChange: onViewDateChangeFn });
+
+				utils.clickOnElement(component.find('.rdtPrev span').at(0));
+				expect(onViewDateChangeFn).toHaveBeenCalledTimes(1);
+				expect(onViewDateChangeFn.mock.calls[0][0].isSame(mDate.startOf('month').subtract(1, 'month'))).toBeTruthy();
+			});
+
+			it('when pick month in picker', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					mDate = moment(date),
+					onViewDateChangeFn = jest.fn(),
+					component = utils.createDatetime({ defaultValue: date, viewMode: 'months', onViewDateChange: onViewDateChangeFn });
+
+				utils.clickNthMonth(component, 5);
+				expect(onViewDateChangeFn).toHaveBeenCalledTimes(1);
+				expect(onViewDateChangeFn.mock.calls[0][0].isSame(mDate.startOf('month').add(5, 'month'))).toBeTruthy();
+			});
+
+			it('when pick same month in picker', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					onViewDateChangeFn = jest.fn(),
+					component = utils.createDatetime({ defaultValue: date, viewMode: 'months', onViewDateChange: onViewDateChangeFn });
+
+				utils.clickNthMonth(component, 0);
+				expect(onViewDateChangeFn).not.toHaveBeenCalled();
+			});
+
+			it('when next is clicked in month view', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					mDate = moment(date),
+					onViewDateChangeFn = jest.fn(),
+					component = utils.createDatetime({ defaultValue: date, viewMode: 'months', onViewDateChange: onViewDateChangeFn });
+
+				utils.clickOnElement(component.find('.rdtNext span').at(0));
+				expect(onViewDateChangeFn).toHaveBeenCalledTimes(1);
+				expect(onViewDateChangeFn.mock.calls[0][0].isSame(mDate.startOf('year').add(1, 'year'))).toBeTruthy();
+			});
+
+			it('when prev is clicked in month view', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					mDate = moment(date),
+					onViewDateChangeFn = jest.fn(),
+					component = utils.createDatetime({ defaultValue: date, viewMode: 'months', onViewDateChange: onViewDateChangeFn });
+
+				utils.clickOnElement(component.find('.rdtPrev span').at(0));
+				expect(onViewDateChangeFn).toHaveBeenCalledTimes(1);
+				expect(onViewDateChangeFn.mock.calls[0][0].isSame(mDate.startOf('year').subtract(1, 'year'))).toBeTruthy();
+			});
+		});
+			
 		describe('onChange', () => {
 			it('trigger only when last selection type is selected', () => {
 				// By selection type I mean if you CAN select day, then selecting a month

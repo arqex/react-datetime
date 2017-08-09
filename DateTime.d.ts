@@ -94,6 +94,11 @@ declare namespace ReactDatetimeClass {
          */
         onViewModeChange?: (viewMode: string) => void;
         /*
+         Callback trigger when the view date changes. The callback receives the current view date 
+         moment as only parameter.
+         */
+        onViewDateChange?: (viewDate: Moment) => void;
+        /*
          The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
          */
         viewMode?: ViewMode|number;
