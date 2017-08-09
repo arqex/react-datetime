@@ -82,7 +82,7 @@ var DateTimePickerMonths = onClickOutside( createClass({
 	},
 
 	renderMonth: function( props, month ) {
-		var localMoment = this.props.viewDate;
+		var localMoment = this.props.viewDate.clone();
 		var monthStr = localMoment.localeData().monthsShort( localMoment.month( month ) );
 		var strLength = 3;
 		// Because some months are up to 5 characters long, we want to
