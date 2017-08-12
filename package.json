@@ -76,6 +76,7 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
+    "create-react-class": "^15.5.2",
     "@types/react": ">=15",
     "object-assign": "^3.0.0",
     "prop-types": "^15.5.7",
