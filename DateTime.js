@@ -192,6 +192,10 @@ var Datetime = createClass({
 				}
 			}
 		}
+		
+		if ( nextProps.open !== this.props.open ) {
+			updatedState.open = nextProps.open;
+		}
 
 		this.setState( updatedState );
 	},
