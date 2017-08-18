@@ -13,6 +13,7 @@ var Datetime = createClass({
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
+		// defaultTime: TYPES.string,
 		onFocus: TYPES.func,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
@@ -37,6 +38,7 @@ var Datetime = createClass({
 		return {
 			className: '',
 			defaultValue: '',
+			defaultTime: '',
 			inputProps: {},
 			input: true,
 			onFocus: nof,
@@ -319,10 +321,21 @@ var Datetime = createClass({
 				.year( parseInt( target.getAttribute('data-value'), 10 ) );
 		}
 
-		date.hours( currentDate.hours() )
-			.minutes( currentDate.minutes() )
-			.seconds( currentDate.seconds() )
-			.milliseconds( currentDate.milliseconds() );
+		var hours = currentDate.hours();
+		var minutes = currentDate.minutes();
+		var seconds = currentDate.seconds();
+		var milliseconds = currentDate.milliseconds();
+		if (this.props.defaultTime && !this.state.selectedDate) {
+			var defaultTimeParts = this.props.defaultTime.split(':');
+			hours = defaultTimeParts[0] || hours;
+			minutes = defaultTimeParts[1] || minutes;
+			seconds = defaultTimeParts[2] || seconds;
+			milliseconds = defaultTimeParts[3] || milliseconds;
+		}
+		date.hours( hours )
+			.minutes( minutes )
+			.seconds( seconds )
+			.milliseconds( milliseconds );
 
 		if ( !this.props.value ) {
 			var open = !( this.props.closeOnSelect && close );
@@ -405,8 +418,8 @@ var Datetime = createClass({
 		// TODO: Make a function or clean up this code,
 		// logic right now is really hard to follow
 		var className = 'rdt' + (this.props.className ?
-                  ( Array.isArray( this.props.className ) ?
-                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
+									( Array.isArray( this.props.className ) ?
+									' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 			children = [];
 
 		if ( this.props.input ) {
