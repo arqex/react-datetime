@@ -19,7 +19,7 @@
   "scripts": {
     "build:mac": "./node_modules/.bin/gulp",
     "build:win": "./node_modules/.bin/gulp.cmd",
-    "dev": "./node_modules/.bin/webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
+    "dev": "./node_modules/.bin/webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example --port 8889",
     "lint": "./node_modules/.bin/eslint src/ DateTime.js test/",
     "test": "./node_modules/.bin/jest",
     "test:typings": "./node_modules/.bin/tsc -p ./typings",
