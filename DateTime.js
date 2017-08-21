@@ -372,6 +372,10 @@ var Datetime = createClass({
 		});
 	},
 
+	handleClick: function() {
+		this.openCalendar();
+	},
+
 	handleClickOutside: function() {
 		if ( this.props.input && this.state.open && !this.props.open ) {
 			this.setState({ open: false }, function() {
@@ -427,6 +431,7 @@ var Datetime = createClass({
 				key: 'i',
 				type: 'text',
 				className: 'form-control',
+				onClick: this.handleClick,
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,

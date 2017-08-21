@@ -196,6 +196,12 @@ describe('Datetime', () => {
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 
+	it('open picker on click', () => {
+		const component = utils.createDatetime();
+		component.find('.form-control').simulate('click');
+		expect(utils.isOpen(component)).toBeTruthy();
+	});
+
 	it('sets CSS class on selected item (day)', () => {
 		const component = utils.createDatetime({ viewMode: 'days' });
 		utils.openDatepicker(component);
