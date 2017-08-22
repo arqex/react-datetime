@@ -347,7 +347,7 @@ var Datetime = createClass({
 	},
 
 	handleClickOutside: function() {
-		if ( this.props.input && this.state.open && !this.props.open ) {
+		if ( this.props.input && this.state.open && !this.props.open && !this.props.disableOnClickOutside ) {
 			this.setState({ open: false }, function() {
 				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 			});

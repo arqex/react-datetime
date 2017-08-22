@@ -522,6 +522,28 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
+		it('disableOnClickOutside=true', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				component = utils.createDatetime({ value: date, disableOnClickOutside: true });
+
+			expect(utils.isOpen(component)).toBeFalsy();
+			utils.openDatepicker(component);
+			expect(utils.isOpen(component)).toBeTruthy();
+			document.dispatchEvent(new Event('mousedown'));
+			expect(utils.isOpen(component)).toBeTruthy();
+		});
+
+    it('disableOnClickOutside=false', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				component = utils.createDatetime({ value: date, disableOnClickOutside: false });
+
+			expect(utils.isOpen(component)).toBeFalsy();
+			utils.openDatepicker(component);
+			expect(utils.isOpen(component)).toBeTruthy();
+			document.dispatchEvent(new Event('mousedown'));
+			expect(utils.isOpen(component)).toBeFalsy();
+		});
+
 		it('increase time', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
