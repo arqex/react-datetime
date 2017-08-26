@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.10.0
+* Add isValidDate check before rendering so it doesn't render with an invalid date.
+
 ## 2.9.0
 * Trigger callback method on view mode changes
 

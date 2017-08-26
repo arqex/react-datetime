@@ -306,13 +306,13 @@ exports[`dateFormat set to true 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -651,13 +651,13 @@ exports[`input input: set to false 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -1003,13 +1003,13 @@ exports[`input input: set to true 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -1355,13 +1355,13 @@ exports[`inputProps with className specified 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -1708,13 +1708,13 @@ exports[`inputProps with disabled specified 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -2061,13 +2061,13 @@ exports[`inputProps with name specified 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -2414,13 +2414,13 @@ exports[`inputProps with placeholder specified 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -2767,13 +2767,13 @@ exports[`inputProps with required specified 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -3119,13 +3119,13 @@ exports[`open set to false 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -3471,13 +3471,13 @@ exports[`open set to true 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -3823,13 +3823,13 @@ exports[`test className: set to arbitraty value 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -3961,7 +3961,7 @@ exports[`test defaultValue: set to arbitrary value 1`] = `
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
-    value="12/22/2016 12:36 AM" />
+    value="12/21/2016 3:36 PM" />
   <div
     className="rdtPicker">
     <div
@@ -4175,13 +4175,13 @@ exports[`test defaultValue: set to arbitrary value 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtActive rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtActive rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -4294,7 +4294,7 @@ exports[`test defaultValue: set to arbitrary value 1`] = `
               className="rdtTimeToggle"
               colSpan={7}
               onClick={[Function]}>
-              12:36 AM
+              3:36 PM
             </td>
           </tr>
         </tfoot>
@@ -4527,13 +4527,13 @@ exports[`test everything default: renders correctly 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -4855,12 +4855,13 @@ exports[`test isValidDate: only valid if after yesterday 1`] = `
               20
             </td>
             <td
-              className="rdtDay rdtDisabled"
-              data-value={21}>
+              className="rdtDay rdtToday"
+              data-value={21}
+              onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -5206,13 +5207,13 @@ exports[`test renderDay: specified 1`] = `
               020
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               021
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               022
@@ -5558,13 +5559,13 @@ exports[`test renderMonth: specified 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -5910,13 +5911,13 @@ exports[`test renderYear: specified 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -6048,7 +6049,7 @@ exports[`test value: set to arbitrary value 1`] = `
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
-    value="12/22/2016 12:36 AM" />
+    value="12/21/2016 3:36 PM" />
   <div
     className="rdtPicker">
     <div
@@ -6262,13 +6263,13 @@ exports[`test value: set to arbitrary value 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtActive rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtActive rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -6381,7 +6382,7 @@ exports[`test value: set to arbitrary value 1`] = `
               className="rdtTimeToggle"
               colSpan={7}
               onClick={[Function]}>
-              12:36 AM
+              3:36 PM
             </td>
           </tr>
         </tfoot>
@@ -6614,13 +6615,13 @@ exports[`timeFormat set to false 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -6956,13 +6957,13 @@ exports[`timeFormat set to true 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
@@ -7308,13 +7309,13 @@ exports[`viewMode set to days 1`] = `
               20
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-value={21}
               onClick={[Function]}>
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-value={22}
               onClick={[Function]}>
               22
