@@ -1,5 +1,5 @@
 /*
-react-datetime v2.8.11
+react-datetime v2.10.0
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -63,11 +63,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var assign = __webpack_require__(1),
 		PropTypes = __webpack_require__(2),
-	    createClass = __webpack_require__(11),
+		createClass = __webpack_require__(11),
 		moment = __webpack_require__(16),
 		React = __webpack_require__(12),
 		CalendarContainer = __webpack_require__(17)
-	;
+		;
 
 	var TYPES = PropTypes;
 	var Datetime = createClass({
@@ -129,7 +129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var formats = this.getFormats( props ),
 				date = props.value || props.defaultValue,
 				selectedDate, viewDate, updateOn, inputValue
-			;
+				;
 
 			if ( date && typeof date === 'string' )
 				selectedDate = this.localMoment( date, formats.datetime );
@@ -164,7 +164,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		getUpdateOn: function( formats ) {
-	        if ( formats.date.match(/[lLD]/) ) {
+			if ( formats.date.match(/[lLD]/) ) {
 				return 'days';
 			} else if ( formats.date.indexOf('M') !== -1 ) {
 				return 'months';
@@ -181,7 +181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					time: props.timeFormat || ''
 				},
 				locale = this.localMoment( props.date, null, props ).localeData()
-			;
+				;
 
 			if ( formats.date === true ) {
 				formats.date = locale.longDateFormat('L');
@@ -253,7 +253,13 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 				}
 			}
-
+			//we should only show a valid date if we are provided a isValidDate function.
+			if (this.props.isValidDate) {
+				updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
+				while (!this.props.isValidDate(updatedState.viewDate)) {
+					updatedState.viewDate = updatedState.viewDate.add(1, 'day');
+				}
+			}
 			this.setState( updatedState );
 		},
 
@@ -261,7 +267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var value = e.target === null ? e : e.target.value,
 				localMoment = this.localMoment( value, this.state.inputFormat ),
 				update = { inputValue: value }
-			;
+				;
 
 			if ( localMoment.isValid() && !this.props.value ) {
 				update.selectedDate = localMoment;
@@ -333,7 +339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				state = this.state,
 				date = (state.selectedDate || state.viewDate).clone(),
 				nextType
-			;
+				;
 
 			// It is needed to set all the time properties
 			// to not to reset the time
@@ -358,7 +364,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				viewDate = this.state.viewDate,
 				currentDate = this.state.selectedDate || viewDate,
 				date
-			;
+				;
 
 			if (target.className.indexOf('rdtDay') !== -1) {
 				if (target.className.indexOf('rdtNew') !== -1)
@@ -447,7 +453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var me = this,
 				formats = this.getFormats( this.props ),
 				props = {dateFormat: formats.date, timeFormat: formats.time}
-			;
+				;
 
 			this.componentProps.fromProps.forEach( function( name ) {
 				props[ name ] = me.props[ name ];
@@ -463,11 +469,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		render: function() {
+			// TODO: Make a function or clean up this code,
+			// logic right now is really hard to follow
 			var className = 'rdt' + (this.props.className ?
 	                  ( Array.isArray( this.props.className ) ?
 	                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
-				children = []
-			;
+				children = [];
 
 			if ( this.props.input ) {
 				children = [ React.createElement('input', assign({
@@ -2674,12 +2681,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(12),
-	  createClass = __webpack_require__(11),
-	  DaysView = __webpack_require__(18),
-	  MonthsView = __webpack_require__(21),
-	  YearsView = __webpack_require__(22),
-	  TimeView = __webpack_require__(23)
-	;
+		createClass = __webpack_require__(11),
+		DaysView = __webpack_require__(18),
+		MonthsView = __webpack_require__(21),
+		YearsView = __webpack_require__(22),
+		TimeView = __webpack_require__(23)
+		;
 
 	var CalendarContainer = createClass({
 		viewComponents: {
@@ -2689,9 +2696,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			time: TimeView
 		},
 
-	  render: function() {
-	    return React.createElement( this.viewComponents[ this.props.view ], this.props.viewProps );
-	  }
+		render: function() {
+			return React.createElement( this.viewComponents[ this.props.view ], this.props.viewProps );
+		}
 	});
 
 	module.exports = CalendarContainer;
@@ -2704,10 +2711,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
+		createClass = __webpack_require__(11),
 		moment = __webpack_require__(16),
 		onClickOutside = __webpack_require__(19)
-	;
+		;
 
 	var DateTimePickerDays = onClickOutside( createClass({
 		render: function() {
@@ -2715,7 +2722,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				date = this.props.viewDate,
 				locale = date.localeData(),
 				tableChildren
-			;
+				;
 
 			tableChildren = [
 				React.createElement('thead', { key: 'th' }, [
@@ -2747,7 +2754,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				first = locale.firstDayOfWeek(),
 				dow = [],
 				i = 0
-			;
+				;
 
 			days.forEach( function( day ) {
 				dow[ (7 + ( i++ ) - first) % 7 ] = day;
@@ -2767,7 +2774,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				renderer = this.props.renderDay || this.renderDay,
 				isValid = this.props.isValidDate || this.alwaysValidDate,
 				classes, isDisabled, dayProps, currentDate
-			;
+				;
 
 			// Go to the last week of the previous month
 			prevMonth.date( prevMonth.daysInMonth() ).startOf( 'week' );
@@ -2839,9 +2846,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			return 1;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	module.exports = DateTimePickerDays;
@@ -3175,9 +3182,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
+		createClass = __webpack_require__(11),
 		onClickOutside = __webpack_require__(19)
-	;
+		;
 
 	var DateTimePickerMonths = onClickOutside( createClass({
 		render: function() {
@@ -3203,7 +3210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				classes, props, currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
 				// Date is irrelevant because we're only interested in month
 				irrelevantDate = 1
-			;
+				;
 
 			while (i < 12) {
 				classes = 'rdtMonth';
@@ -3269,9 +3276,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			return 1;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	function capitalize( str ) {
@@ -3288,9 +3295,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
+		createClass = __webpack_require__(11),
 		onClickOutside = __webpack_require__(19)
-	;
+		;
 
 	var DateTimePickerYears = onClickOutside( createClass({
 		render: function() {
@@ -3301,7 +3308,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
 					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
 					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
-					]))),
+				]))),
 				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
 			]);
 		},
@@ -3318,7 +3325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				// we're only interested in the year
 				irrelevantMonth = 0,
 				irrelevantDate = 1
-			;
+				;
 
 			year--;
 			while (i < 11) {
@@ -3384,9 +3391,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			return 1;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	module.exports = DateTimePickerYears;
@@ -3399,10 +3406,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
+		createClass = __webpack_require__(11),
 		assign = __webpack_require__(1),
-	  onClickOutside = __webpack_require__(19)
-	;
+		onClickOutside = __webpack_require__(19)
+		;
 
 	var DateTimePickerTime = onClickOutside( createClass({
 		getInitialState: function() {
@@ -3413,7 +3420,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var date = props.selectedDate || props.viewDate,
 				format = props.timeFormat,
 				counters = []
-			;
+				;
 
 			if ( format.toLowerCase().indexOf('h') !== -1 ) {
 				counters.push('hours');
@@ -3618,9 +3625,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			return str;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	module.exports = DateTimePickerTime;
