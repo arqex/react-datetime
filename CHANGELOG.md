@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.10.1
+* Fix build files.
+
 ## 2.10.0
 * Add isValidDate check before rendering so it doesn't render with an invalid date.
 
