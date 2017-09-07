@@ -26,7 +26,9 @@
     "test:snapshot": "./node_modules/.bin/jest snapshot",
     "test:snapshot:update": "./node_modules/.bin/jest snapshot --updateSnapshot",
     "test:all": "npm run test:typings && npm run test",
-    "test:watch": "./node_modules/.bin/jest --watch"
+    "test:watch": "./node_modules/.bin/jest --watch",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "keywords": [
     "react",
@@ -74,7 +76,10 @@
     "typescript": "^2.0.10",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^1.7.0",
-    "webpack-stream": "^3.2.0"
+    "webpack-stream": "^3.2.0",
+    "@storybook/react": "^3.2.8",
+    "@storybook/addon-actions": "^3.2.6",
+    "@storybook/addon-links": "^3.2.6"
   },
   "dependencies": {
     "create-react-class": "^15.5.2",
