@@ -6,11 +6,6 @@ export default styled.div`
   .rdt {
     position: relative;
   }
-
-  .rdt > input {
-    border: 1px solid #000;
-  }
-
   .rdtPicker {
     display: none;
     position: absolute;
@@ -46,7 +41,7 @@ export default styled.div`
   .rdtPicker td {
     cursor: pointer;
   }
-  .rdtPicker td.rdtToday:hover,
+  .rdtPicker td.rdtDay:hover,
   .rdtPicker td.rdtHour:hover,
   .rdtPicker td.rdtMinute:hover,
   .rdtPicker td.rdtSecond:hover,
@@ -216,9 +211,5 @@ export default styled.div`
     width: 100%;
     font-size: 1.2em;
     margin-top: 37px;
-  }
-
-  .rdtDayPart {
-    margin-top: 43px;
   }
 `
