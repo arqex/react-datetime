@@ -85,18 +85,19 @@
   },
   "dependencies": {
     "@storybook/addon-actions": "^3.2.6",
-    "@storybook/addon-links": "^3.2.6",
-    "@storybook/react": "^3.2.8",
-    "@types/react": ">=15",
     "@storybook/addon-info": "^3.2.9",
     "@storybook/addon-knobs": "^3.2.8",
+    "@storybook/addon-links": "^3.2.6",
     "@storybook/addon-options": "^3.2.6",
+    "@storybook/react": "^3.2.8",
+    "@types/react": ">=15",
     "babel-eslint": "^7.2.3",
     "create-react-class": "^15.5.2",
     "object-assign": "^3.0.0",
     "prop-types": "^15.5.7",
     "react-onclickoutside": "^5.9.0",
-    "storybook-readme": "^3.0.6"
+    "storybook-readme": "^3.0.6",
+    "styled-components": "^2.1.2"
   },
   "pre-commit": [
     "lint",
