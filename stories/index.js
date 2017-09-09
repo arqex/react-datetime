@@ -1,13 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
+import { storiesOf } from '@storybook/react'
+import withReadme from 'storybook-readme/with-readme'
+import { withInfo } from '@storybook/addon-info'
 
-import { Button, Welcome } from '@storybook/react/demo';
+import dateTimeReadMe from '../README.md'
+import DateTime from '../DateTime'
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
-
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-  .add('with some emoji', () => <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>);
+storiesOf('Datetime', module)
+  .addDecorator(withReadme(dateTimeReadMe))
+  .add('main', withInfo('Main Component Preview')(() => (
+    <DateTime
+      viewMode={'months'}
+      dateFormat={'MMMM'}
+      isValidDate={current => current.isBefore(DateTime.moment().startOf('month'))}
+    />
+  )))
