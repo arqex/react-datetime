@@ -34,9 +34,45 @@
     react-inspector "^2.1.1"
     uuid "^3.1.0"
 
+"@storybook/addon-info@^3.2.9":
+  version "3.2.9"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-3.2.9.tgz#50daca12d216f8338843023f13030cd92ab9789e"
+  dependencies:
+    "@storybook/addons" "^3.2.6"
+    "@storybook/components" "^3.2.7"
+    babel-runtime "^6.23.0"
+    global "^4.3.2"
+    marksy "^2.0.0"
+    prop-types "^15.5.10"
+    react-addons-create-fragment "^15.5.3"
+    util-deprecate "^1.0.2"
+
+"@storybook/addon-knobs@^3.2.8":
+  version "3.2.8"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-3.2.8.tgz#eb4821409e62f2f886d7ae9333bcc95e4b0714eb"
+  dependencies:
+    "@storybook/addons" "^3.2.6"
+    babel-runtime "^6.23.0"
+    deep-equal "^1.0.1"
+    global "^4.3.2"
+    insert-css "^1.0.0"
+    lodash.debounce "^4.0.8"
+    moment "^2.18.1"
+    prop-types "^15.5.10"
+    react-color "^2.11.4"
+    react-datetime "^2.8.10"
+    react-textarea-autosize "^4.3.0"
+    util-deprecate "^1.0.2"
+
 "@storybook/addon-links@^3.2.6":
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-3.2.6.tgz#93029ecee8a1a1939f01381c06ed19327acd746b"
+  dependencies:
+    "@storybook/addons" "^3.2.6"
+
+"@storybook/addon-options@^3.2.6":
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-options/-/addon-options-3.2.6.tgz#8fbcd7858ff4ab8a047ce0ac6e275b866d1bef84"
   dependencies:
     "@storybook/addons" "^3.2.6"
 
@@ -333,6 +369,13 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+argparse@~0.1.15:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-0.1.16.tgz#cfd01e0fbba3d6caed049fbd758d40f65196f57c"
+  dependencies:
+    underscore "~1.7.0"
+    underscore.string "~2.4.0"
+
 arr-diff@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-2.0.0.tgz#8f3b827f955a8bd669697e4a4256ac3ceae356cf"
@@ -455,6 +498,10 @@ asynckit@^0.4.0:
 atob@~1.1.0:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/atob/-/atob-1.1.3.tgz#95f13629b12c3a51a5d215abdce2aa9f32f80773"
+
+autolinker@~0.15.0:
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/autolinker/-/autolinker-0.15.3.tgz#342417d8f2f3461b14cf09088d5edf8791dc9832"
 
 autoprefixer@^6.3.1:
   version "6.7.7"
@@ -1464,6 +1511,10 @@ babel-runtime@6.x.x, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime
   dependencies:
     core-js "^2.4.0"
     regenerator-runtime "^0.11.0"
+
+babel-standalone@^6.24.0:
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/babel-standalone/-/babel-standalone-6.26.0.tgz#15fb3d35f2c456695815ebf1ed96fe7f015b6886"
 
 babel-template@^6.16.0, babel-template@^6.24.1, babel-template@^6.26.0:
   version "6.26.0"
@@ -2965,6 +3016,18 @@ fbjs@^0.8.12, fbjs@^0.8.9:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
 
+fbjs@^0.8.4:
+  version "0.8.15"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.15.tgz#4f0695fdfcc16c37c0b07facec8cb4c4091685b9"
+  dependencies:
+    core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.9"
+
 figures@^1.3.5:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"
@@ -3589,6 +3652,10 @@ hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
+he@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
+
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
@@ -3792,6 +3859,10 @@ inquirer@^0.12.0:
     string-width "^1.0.1"
     strip-ansi "^3.0.0"
     through "^2.3.6"
+
+insert-css@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/insert-css/-/insert-css-1.1.0.tgz#4a3f7a3e783877381bb8471a6452d1d27315db9e"
 
 interpret@^0.6.4:
   version "0.6.6"
@@ -4776,7 +4847,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@4.x.x, lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0:
+lodash@4.x.x, lodash@^4.0.0, lodash@^4.0.1, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.1, lodash@^4.3.0:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -4856,6 +4927,18 @@ marked-terminal@^1.6.2:
 marked@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.6.tgz#b2c6c618fccece4ef86c4fc6cb8a7cbf5aeda8d7"
+
+marksy@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/marksy/-/marksy-2.0.1.tgz#019eb9c13ff37120ce4dddeb7774aba152b5d7e0"
+  dependencies:
+    babel-standalone "^6.24.0"
+    he "^1.1.1"
+    marked "^0.3.6"
+
+material-colors@^1.2.1:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/material-colors/-/material-colors-1.2.5.tgz#5292593e6754cb1bcc2b98030e4e0d6a3afc9ea1"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
@@ -5043,7 +5126,7 @@ mocha@^3.2.0:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
-moment@>=2.16.0:
+moment@>=2.16.0, moment@^2.18.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
@@ -6076,6 +6159,10 @@ range-parser@^1.0.3, range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
 
+raw-loader@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
+
 rc@^1.1.7:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.1.tgz#2e03e8e42ee450b8cb3dce65be1bf8974e1dfd95"
@@ -6085,9 +6172,37 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-addons-create-fragment@^15.5.3:
+  version "15.6.0"
+  resolved "https://registry.yarnpkg.com/react-addons-create-fragment/-/react-addons-create-fragment-15.6.0.tgz#af91a22b1fb095dd01f1afba43bfd0ef589d8b20"
+  dependencies:
+    fbjs "^0.8.4"
+    loose-envify "^1.3.1"
+    object-assign "^4.1.0"
+
 react-addons-test-utils@>=0.13:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.6.0.tgz#062d36117fe8d18f3ba5e06eb33383b0b85ea5b9"
+
+react-color@^2.11.4:
+  version "2.13.8"
+  resolved "https://registry.yarnpkg.com/react-color/-/react-color-2.13.8.tgz#bcc58f79a722b9bfc37c402e68cd18f26970aee4"
+  dependencies:
+    lodash "^4.0.1"
+    material-colors "^1.2.1"
+    prop-types "^15.5.10"
+    reactcss "^1.2.0"
+    tinycolor2 "^1.4.1"
+
+react-datetime@^2.8.10:
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/react-datetime/-/react-datetime-2.10.1.tgz#25ba863551ae6e5ae80d8a7f99d359ea063c4a38"
+  dependencies:
+    "@types/react" ">=15"
+    create-react-class "^15.5.2"
+    object-assign "^3.0.0"
+    prop-types "^15.5.7"
+    react-onclickoutside "^5.9.0"
 
 react-docgen@^2.15.0:
   version "2.18.0"
@@ -6173,6 +6288,12 @@ react-onclickoutside@^5.9.0:
   dependencies:
     create-react-class "^15.5.x"
 
+react-remarkable@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-remarkable/-/react-remarkable-1.1.1.tgz#37908ac95894576d0d39187bd289bc2cbb5ac6de"
+  dependencies:
+    remarkable "^1.4.1"
+
 react-simple-di@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-simple-di/-/react-simple-di-1.2.0.tgz#dde0e5bf689f391ef2ab02c9043b213fe239c6d0"
@@ -6207,6 +6328,12 @@ react-test-renderer@^15.4.2:
     fbjs "^0.8.9"
     object-assign "^4.1.0"
 
+react-textarea-autosize@^4.3.0:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-4.3.2.tgz#962a52c68caceae408c18acecec29049b81e42fa"
+  dependencies:
+    prop-types "^15.5.8"
+
 react-transition-group@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-1.2.0.tgz#b51fc921b0c3835a7ef7c571c79fc82c73e9204f"
@@ -6237,6 +6364,12 @@ react@>=0.13:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "^15.5.10"
+
+reactcss@^1.2.0:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/reactcss/-/reactcss-1.2.3.tgz#c00013875e557b1cf0dfd9a368a1c3dab3b548dd"
+  dependencies:
+    lodash "^4.0.1"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -6415,6 +6548,13 @@ regjsparser@^0.1.4:
   resolved "https://registry.yarnpkg.com/regjsparser/-/regjsparser-0.1.5.tgz#7ee8f84dc6fa792d3fd0ae228d24bd949ead205c"
   dependencies:
     jsesc "~0.5.0"
+
+remarkable@^1.4.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/remarkable/-/remarkable-1.7.1.tgz#aaca4972100b66a642a63a1021ca4bac1be3bff6"
+  dependencies:
+    argparse "~0.1.15"
+    autolinker "~0.15.0"
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
@@ -6845,6 +6985,14 @@ sshpk@^1.7.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
 
+storybook-readme@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/storybook-readme/-/storybook-readme-3.0.6.tgz#475a14a5b39dc7a85c423431253a2bf1f5b1c786"
+  dependencies:
+    prop-types "^15.5.10"
+    react-remarkable "^1.1.1"
+    string-raw "^1.0.1"
+
 stream-browserify@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-2.0.1.tgz#66266ee5f9bdb9940a4e4514cafb43bb71e5c9db"
@@ -6879,6 +7027,10 @@ streamqueue@0.0.6:
 strict-uri-encode@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
+
+string-raw@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/string-raw/-/string-raw-1.0.1.tgz#01be2665a1cfa2c57520c910698f6ca276a4c726"
 
 string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"
@@ -7147,6 +7299,10 @@ timers-ext@^0.1.2:
     es5-ext "~0.10.14"
     next-tick "1"
 
+tinycolor2@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
+
 tmpl@1.0.x:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/tmpl/-/tmpl-1.0.4.tgz#23640dd7b42d00433911140820e5cf440e521dd1"
@@ -7266,6 +7422,14 @@ uid-number@^0.0.6:
 unc-path-regex@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
+
+underscore.string@~2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/underscore.string/-/underscore.string-2.4.0.tgz#8cdd8fbac4e2d2ea1e7e2e8097c42f442280f85b"
+
+underscore@~1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.7.0.tgz#6bbaf0877500d36be34ecaa584e0db9fef035209"
 
 uniq@^1.0.1:
   version "1.0.1"

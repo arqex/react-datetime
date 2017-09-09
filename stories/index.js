@@ -1,13 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
+import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
+import { linkTo } from '@storybook/addon-links'
+import withReadme from 'storybook-readme/with-readme'
+import { withInfo } from '@storybook/addon-info'
 
-import { Button, Welcome } from '@storybook/react/demo';
+import { Button, Welcome } from '@storybook/react/demo'
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
+import dateTimeReadMe from '../README.md'
 
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-  .add('with some emoji', () => <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>);
+storiesOf('Datetime', module)
+  .addDecorator(withReadme(dateTimeReadMe))
+  .add('main', withInfo('Main Component Preview')(() => <div>Here there lies Datepicker</div>))

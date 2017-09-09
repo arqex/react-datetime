@@ -11,8 +11,9 @@ module.exports = {
     // your custom plugins
   ],
   module: {
-    rules: [
-      // add your custom rules.
-    ],
-  },
+    rules: [{
+      test: /\.md$/,
+      use: "raw-loader"
+    }]
+  }
 };
