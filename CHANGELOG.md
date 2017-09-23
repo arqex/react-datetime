@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.10.2
+* Move @types/react back to devDependencies
+
 ## 2.10.1
 * Fix build files.
 
