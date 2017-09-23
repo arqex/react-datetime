@@ -13,8 +13,8 @@ npm start
 Run "deploy" from the demo directory:
 
 ```bash
-  cd ~/react-datetime/demo
-  npm run deploy
+cd ~/react-datetime/demo
+npm run deploy
 ```
 
 #### How to Run the demo with your local changes
@@ -22,11 +22,11 @@ Run "deploy" from the demo directory:
 If you are working on some change and you want to use the demo to test them out, you have to link your local "react-datetime" directory to the demo:
 
 ```bash
-  cd ~/react-datetime
-  npm link
+cd ~/react-datetime
+npm link
 
-  cd demo
-  npm link react-datetime
+cd demo
+npm link react-datetime
 
-  npm start
+npm start
 ```
