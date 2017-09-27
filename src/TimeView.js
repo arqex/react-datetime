@@ -3,7 +3,7 @@
 var React = require('react'),
 	createClass = require('create-react-class'),
 	assign = require('object-assign'),
-	onClickOutside = require('react-onclickoutside')
+	onClickOutside = require('react-onclickoutside').default
 	;
 
 var DateTimePickerTime = onClickOutside( createClass({
