@@ -1,7 +1,12 @@
 Changelog
 =========
+## 2.10.3
+* Update react-onclickoutside dependancy
+* Remove isValidDate check before rendering as implementation was causing crashes in some ednge cases.
+
 ## 2.10.2
 * Move @types/react back to devDependencies
+* Add [demo](https://youcanbookme.github.io/react-datetime) app.
 
 ## 2.10.1
 * Fix build files.

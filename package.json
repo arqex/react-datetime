@@ -1,6 +1,6 @@
 {
   "name": "react-datetime",
-  "version": "2.10.2",
+  "version": "2.10.3",
   "description": "A lightweight but complete datetime picker React.js component.",
   "homepage": "https://github.com/YouCanBookMe/react-datetime",
   "repository": {
@@ -80,7 +80,7 @@
     "create-react-class": "^15.5.2",
     "object-assign": "^3.0.0",
     "prop-types": "^15.5.7",
-    "react-onclickoutside": "^5.9.0"
+    "react-onclickoutside": "^6.5.0"
   },
   "pre-commit": [
     "lint",
