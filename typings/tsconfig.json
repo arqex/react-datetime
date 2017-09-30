@@ -4,10 +4,14 @@
         "strictNullChecks": false,
         "types": [],
         "noEmit": true,
-        "jsx": "react"
+        "jsx": "react",
+        "baseUrl": "../",
+        "paths": {
+            "react-datetime": ["./"]
+        }
     },
     "files": [
-        "index.d.ts",
+        "../DateTime.d.ts",
         "react-datetime-tests.tsx"
     ]
 }

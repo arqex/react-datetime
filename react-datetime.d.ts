@@ -3,7 +3,7 @@
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
 
 // These are the typings for Typescript 1.8
-// for Typescrip 2.0+ see typings/index.d.ts
+// for Typescript 2.0+ see DateTime.d.ts
 
 //// <reference path="../moment/moment-node.d.ts" />
 
@@ -69,6 +69,11 @@ declare module ReactDatetime {
      input (a string).
      */
     onBlur?: (momentOrInputString : string|any) => void;
+    /*
+     Callback trigger when the view mode changes. The callback receives the selected view mode
+     string ('years', 'months', 'days', 'time') as only parameter.
+    */
+    onViewModeChange?: (viewMode: string) => void;
     /*
      The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
      */

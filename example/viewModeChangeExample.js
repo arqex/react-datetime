@@ -1,9 +1,10 @@
 var DateTime = require('../DateTime.js');
 var React = require('react');
 var ReactDOM = require('react-dom');
+var createClass = require('create-react-class');
 var moment = require('moment');
 
-var Wrapper = React.createClass({
+var Wrapper = createClass({
 	getInitialState: function() {
 		return {
 			viewMode: 'time'
