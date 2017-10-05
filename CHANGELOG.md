@@ -1,7 +1,14 @@
 Changelog
 =========
+## 3.0.0
+* Refactor source DateTime component as ES6
+
+## 2.10.3
+* Remove isValidDate check before rendering as implementation was causing crashes in some edge cases.
+
 ## 2.10.2
 * Move @types/react back to devDependencies
+* Add [demo](https://youcanbookme.github.io/react-datetime) app.
 
 ## 2.10.1
 * Fix build files.

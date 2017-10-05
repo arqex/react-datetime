@@ -1,24 +1,18 @@
 var webpack = require('webpack');
 
-var plugins = [
-  new webpack.DefinePlugin({
-  	'process.env': { NODE_ENV: '"production"'}
-  })
-];
-
 module.exports = {
-
-  entry: ['./DateTime.js'],
+  entry: [
+    './src/DateTime.js'
+  ],
 
   output: {
     path: __dirname + '/dist/',
+    filename: 'react-datetime.min.js',
     library: 'Datetime',
     libraryTarget: 'umd'
   },
 
-  resolve: {
-    extensions: ['', '.js']
-  },
+  devtool: '#cheap-module-source-map',
 
   externals: {
     'react': 'React',
@@ -26,5 +20,13 @@ module.exports = {
     'moment': 'moment'
   },
 
-  plugins: plugins
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: /node_modules/,
+      }
+    ]
+  }
 };

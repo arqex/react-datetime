@@ -3,5 +3,8 @@
     "es2015",
     "react"
   ],
-  "plugins": ["transform-remove-strict-mode"]
+  "plugins": [
+    "add-module-exports",
+    "transform-remove-strict-mode"
+  ]
 }
