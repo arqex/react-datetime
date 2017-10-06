@@ -2,18 +2,24 @@
 
 [![Build Status](https://secure.travis-ci.org/YouCanBookMe/react-datetime.svg)](https://travis-ci.org/YouCanBookMe/react-datetime)
 [![npm version](https://badge.fury.io/js/react-datetime.svg)](http://badge.fury.io/js/react-datetime)
-[![npm](http://img.shields.io/npm/dm/react-datetime.svg)](https://npmjs.org/package/react-datetime)
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable** and it even allows to edit date's milliseconds.
 
 This project started as a fork of https://github.com/quri/react-bootstrap-datetimepicker but the code and the API has changed a lot.
 
-## Usage
+## Installation
 
 Install using npm:
 ```sh
 npm install --save react-datetime
 ```
+
+Install using yarn:
+```sh
+yarn add react-datetime
+```
+
+## Usage
 
 [React.js](http://facebook.github.io/react/) and [Moment.js](http://momentjs.com/) are peer dependencies for react-datetime. These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datepicker work. You can then use the datepicker like in the example below.
 
@@ -24,7 +30,7 @@ require('react-datetime');
 ...
 
 render: function() {
-  return <Datetime />;
+    return <Datetime />;
 }
 ```
 [See this example working](http://codepen.io/simeg/pen/mEmQmP).
@@ -36,7 +42,7 @@ render: function() {
 | Name         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
 | **value** | `Date` | `new Date()` | Represents the selected date by the component, in order to use it as a [controlled component](https://facebook.github.io/react/docs/forms.html#controlled-components). This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object. |
-| **defaultValue** | `Date` | `new Date()` | Represents the selected date for the component to use it as a [uncontrolled component](https://facebook.github.io/react/docs/forms.html#uncontrolled-components). This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object. |
+| **defaultValue** | `Date` | `new Date()` | Represents the selected date for the component to use it as a [uncontrolled component](https://facebook.github.io/react/docs/uncontrolled-components.html). This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object. |
 | **dateFormat**   | `boolean` or `string`  | `true` | Defines the format for the date. It accepts any [Moment.js date format](http://momentjs.com/docs/#/displaying/format/) (not in localized format). If `true` the date will be displayed using the defaults for the current locale. If `false` the datepicker is disabled and the component can be used as timepicker, see [available units docs](#specify-available-units). |
 | **timeFormat**   | `boolean` or `string`  | `true` | Defines the format for the time. It accepts any [Moment.js time format](http://momentjs.com/docs/#/displaying/format/) (not in localized format). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker, see [available units docs](#specify-available-units). |
 | **input** | `boolean` | `true` | Whether to show an input field to edit the date manually. |
@@ -47,6 +53,7 @@ render: function() {
 | **onChange** | `function` | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback receives the value of the input (a string). |
 | **onFocus** | `function` | empty function | Callback trigger for when the user opens the datepicker. |
 | **onBlur** | `function` | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned. |
+| **onViewModeChange** | `function` | empty function | Callback trigger when the view mode changes. The callback receives the selected view mode string (`years`, `months`, `days` or `time`) as only parameter.|
 | **viewMode** | `string` or `number` | `'days'` | The default view to display when the picker is shown (`'years'`, `'months'`, `'days'`, `'time'`). |
 | **className** | `string` or `string array` | `''` | Extra class name for the outermost markup element. |
 | **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `placeholder`, `disabled`, `required`, `name` and `className` (`className` *sets* the class attribute for the input element). |

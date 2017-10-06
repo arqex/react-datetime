@@ -1,12 +1,12 @@
 'use strict';
 
 var assign = require('object-assign'),
-        PropTypes = require('prop-types'),
-        createClass = require('create-react-class'),
+	PropTypes = require('prop-types'),
+	createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
 	CalendarContainer = require('./src/CalendarContainer')
-;
+	;
 
 var TYPES = PropTypes;
 var Datetime = createClass({
@@ -16,6 +16,7 @@ var Datetime = createClass({
 		onFocus: TYPES.func,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
+		onViewModeChange: TYPES.func,
 		locale: TYPES.string,
 		utc: TYPES.bool,
 		displayTimeZone: TYPES.string,
@@ -42,6 +43,7 @@ var Datetime = createClass({
 			onFocus: nof,
 			onBlur: nof,
 			onChange: nof,
+			onViewModeChange: nof,
 			timeFormat: true,
 			timeConstraints: {},
 			dateFormat: true,
@@ -67,7 +69,7 @@ var Datetime = createClass({
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
 			selectedDate, viewDate, updateOn, inputValue
-		;
+			;
 
 		if ( date && typeof date === 'string' )
 			selectedDate = this.localMoment( date, formats.datetime );
@@ -104,11 +106,9 @@ var Datetime = createClass({
 	getUpdateOn: function( formats ) {
 		if ( formats.date.match(/[lLD]/) ) {
 			return 'days';
-		}
-		else if ( formats.date.indexOf('M') !== -1 ) {
+		} else if ( formats.date.indexOf('M') !== -1 ) {
 			return 'months';
-		}
-		else if ( formats.date.indexOf('Y') !== -1 ) {
+		} else if ( formats.date.indexOf('Y') !== -1 ) {
 			return 'years';
 		}
 
@@ -121,7 +121,7 @@ var Datetime = createClass({
 				time: props.timeFormat || ''
 			},
 			locale = this.localMoment( props.date, null, props ).localeData()
-		;
+			;
 
 		if ( formats.date === true ) {
 			formats.date = locale.longDateFormat('L');
@@ -200,7 +200,13 @@ var Datetime = createClass({
 				}
 			}
 		}
-
+		//we should only show a valid date if we are provided a isValidDate function. Removed in 2.10.3
+		/*if (this.props.isValidDate) {
+			updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
+			while (!this.props.isValidDate(updatedState.viewDate)) {
+				updatedState.viewDate = updatedState.viewDate.add(1, 'day');
+			}
+		}*/
 		this.setState( updatedState );
 	},
 
@@ -208,13 +214,12 @@ var Datetime = createClass({
 		var value = e.target === null ? e : e.target.value,
 			localMoment = this.localMoment( value, this.state.inputFormat ),
 			update = { inputValue: value }
-		;
+			;
 
 		if ( localMoment.isValid() && !this.props.value ) {
 			update.selectedDate = localMoment;
 			update.viewDate = localMoment.clone().startOf('month');
-		}
-		else {
+		} else {
 			update.selectedDate = null;
 		}
 
@@ -232,6 +237,7 @@ var Datetime = createClass({
 	showView: function( view ) {
 		var me = this;
 		return function() {
+			me.state.currentView !== view && me.props.onViewModeChange( view );
 			me.setState({ currentView: view });
 		};
 	},
@@ -248,6 +254,7 @@ var Datetime = createClass({
 				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
 				currentView: nextViews[ type ]
 			});
+			me.props.onViewModeChange( nextViews[ type ] );
 		};
 	},
 
@@ -279,7 +286,7 @@ var Datetime = createClass({
 			state = this.state,
 			date = (state.selectedDate || state.viewDate).clone(),
 			nextType
-		;
+			;
 
 		// It is needed to set all the time properties
 		// to not to reset the time
@@ -304,7 +311,7 @@ var Datetime = createClass({
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
 			date
-    ;
+			;
 
 		if (target.className.indexOf('rdtDay') !== -1) {
 			if (target.className.indexOf('rdtNew') !== -1)
@@ -401,7 +408,7 @@ var Datetime = createClass({
 		var me = this,
 			formats = this.getFormats( this.props ),
 			props = {dateFormat: formats.date, timeFormat: formats.time}
-		;
+			;
 
 		this.componentProps.fromProps.forEach( function( name ) {
 			props[ name ] = me.props[ name ];
@@ -417,15 +424,15 @@ var Datetime = createClass({
 	},
 
 	render: function() {
-		var DOM = React.DOM,
-			className = 'rdt' + (this.props.className ?
+		// TODO: Make a function or clean up this code,
+		// logic right now is really hard to follow
+		var className = 'rdt' + (this.props.className ?
                   ( Array.isArray( this.props.className ) ?
                   ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
-			children = []
-		;
+			children = [];
 
 		if ( this.props.input ) {
-			children = [ DOM.input( assign({
+			children = [ React.createElement('input', assign({
 				key: 'i',
 				type: 'text',
 				className: 'form-control',
@@ -441,8 +448,8 @@ var Datetime = createClass({
 		if ( this.state.open )
 			className += ' rdtOpen';
 
-		return DOM.div({className: className}, children.concat(
-			DOM.div(
+		return React.createElement('div', {className: className}, children.concat(
+			React.createElement('div',
 				{ key: 'dt', className: 'rdtPicker' },
 				React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
 			)

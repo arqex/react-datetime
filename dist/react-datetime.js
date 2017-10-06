@@ -1,5 +1,5 @@
 /*
-react-datetime v2.8.10
+react-datetime v2.10.3
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -62,12 +62,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var assign = __webpack_require__(1),
-	        PropTypes = __webpack_require__(2),
-	        createClass = __webpack_require__(11),
+		PropTypes = __webpack_require__(2),
+		createClass = __webpack_require__(11),
 		moment = __webpack_require__(16),
 		React = __webpack_require__(12),
 		CalendarContainer = __webpack_require__(17)
-	;
+		;
 
 	var TYPES = PropTypes;
 	var Datetime = createClass({
@@ -77,6 +77,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			onFocus: TYPES.func,
 			onBlur: TYPES.func,
 			onChange: TYPES.func,
+			onViewModeChange: TYPES.func,
 			locale: TYPES.string,
 			utc: TYPES.bool,
 			input: TYPES.bool,
@@ -102,6 +103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				onFocus: nof,
 				onBlur: nof,
 				onChange: nof,
+				onViewModeChange: nof,
 				timeFormat: true,
 				timeConstraints: {},
 				dateFormat: true,
@@ -127,7 +129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var formats = this.getFormats( props ),
 				date = props.value || props.defaultValue,
 				selectedDate, viewDate, updateOn, inputValue
-			;
+				;
 
 			if ( date && typeof date === 'string' )
 				selectedDate = this.localMoment( date, formats.datetime );
@@ -164,11 +166,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		getUpdateOn: function( formats ) {
 			if ( formats.date.match(/[lLD]/) ) {
 				return 'days';
-			}
-			else if ( formats.date.indexOf('M') !== -1 ) {
+			} else if ( formats.date.indexOf('M') !== -1 ) {
 				return 'months';
-			}
-			else if ( formats.date.indexOf('Y') !== -1 ) {
+			} else if ( formats.date.indexOf('Y') !== -1 ) {
 				return 'years';
 			}
 
@@ -181,7 +181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					time: props.timeFormat || ''
 				},
 				locale = this.localMoment( props.date, null, props ).localeData()
-			;
+				;
 
 			if ( formats.date === true ) {
 				formats.date = locale.longDateFormat('L');
@@ -253,7 +253,13 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 				}
 			}
-
+			//we should only show a valid date if we are provided a isValidDate function. Removed in 2.10.3
+			/*if (this.props.isValidDate) {
+				updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
+				while (!this.props.isValidDate(updatedState.viewDate)) {
+					updatedState.viewDate = updatedState.viewDate.add(1, 'day');
+				}
+			}*/
 			this.setState( updatedState );
 		},
 
@@ -261,13 +267,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			var value = e.target === null ? e : e.target.value,
 				localMoment = this.localMoment( value, this.state.inputFormat ),
 				update = { inputValue: value }
-			;
+				;
 
 			if ( localMoment.isValid() && !this.props.value ) {
 				update.selectedDate = localMoment;
 				update.viewDate = localMoment.clone().startOf('month');
-			}
-			else {
+			} else {
 				update.selectedDate = null;
 			}
 
@@ -285,6 +290,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		showView: function( view ) {
 			var me = this;
 			return function() {
+				me.state.currentView !== view && me.props.onViewModeChange( view );
 				me.setState({ currentView: view });
 			};
 		},
@@ -301,6 +307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
 					currentView: nextViews[ type ]
 				});
+				me.props.onViewModeChange( nextViews[ type ] );
 			};
 		},
 
@@ -332,7 +339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				state = this.state,
 				date = (state.selectedDate || state.viewDate).clone(),
 				nextType
-			;
+				;
 
 			// It is needed to set all the time properties
 			// to not to reset the time
@@ -357,7 +364,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				viewDate = this.state.viewDate,
 				currentDate = this.state.selectedDate || viewDate,
 				date
-	    ;
+				;
 
 			if (target.className.indexOf('rdtDay') !== -1) {
 				if (target.className.indexOf('rdtNew') !== -1)
@@ -446,7 +453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var me = this,
 				formats = this.getFormats( this.props ),
 				props = {dateFormat: formats.date, timeFormat: formats.time}
-			;
+				;
 
 			this.componentProps.fromProps.forEach( function( name ) {
 				props[ name ] = me.props[ name ];
@@ -462,15 +469,15 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		render: function() {
-			var DOM = React.DOM,
-				className = 'rdt' + (this.props.className ?
+			// TODO: Make a function or clean up this code,
+			// logic right now is really hard to follow
+			var className = 'rdt' + (this.props.className ?
 	                  ( Array.isArray( this.props.className ) ?
 	                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
-				children = []
-			;
+				children = [];
 
 			if ( this.props.input ) {
-				children = [ DOM.input( assign({
+				children = [ React.createElement('input', assign({
 					key: 'i',
 					type: 'text',
 					className: 'form-control',
@@ -486,8 +493,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( this.state.open )
 				className += ' rdtOpen';
 
-			return DOM.div({className: className}, children.concat(
-				DOM.div(
+			return React.createElement('div', {className: className}, children.concat(
+				React.createElement('div',
 					{ key: 'dt', className: 'rdtPicker' },
 					React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
 				)
@@ -757,6 +764,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
+	process.prependListener = noop;
+	process.prependOnceListener = noop;
+
+	process.listeners = function (name) { return [] }
 
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
@@ -1095,6 +1106,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return emptyFunction.thatReturnsNull;
 	    }
 
+	    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+	      var checker = arrayOfTypeCheckers[i];
+	      if (typeof checker !== 'function') {
+	        warning(
+	          false,
+	          'Invalid argument supplid to oneOfType. Expected an array of check functions, but ' +
+	          'received %s at index %s.',
+	          getPostfixForTypeWarning(checker),
+	          i
+	        );
+	        return emptyFunction.thatReturnsNull;
+	      }
+	    }
+
 	    function validate(props, propName, componentName, location, propFullName) {
 	      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
 	        var checker = arrayOfTypeCheckers[i];
@@ -1227,6 +1252,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // This handles more types than `getPropType`. Only used for error messages.
 	  // See `createPrimitiveTypeChecker`.
 	  function getPreciseType(propValue) {
+	    if (typeof propValue === 'undefined' || propValue === null) {
+	      return '' + propValue;
+	    }
 	    var propType = getPropType(propValue);
 	    if (propType === 'object') {
 	      if (propValue instanceof Date) {
@@ -1236,6 +1264,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	    return propType;
+	  }
+
+	  // Returns a string that is postfixed to a warning about an invalid type.
+	  // For example, "undefined" or "of type array"
+	  function getPostfixForTypeWarning(value) {
+	    var type = getPreciseType(value);
+	    switch (type) {
+	      case 'array':
+	      case 'object':
+	        return 'an ' + type;
+	      case 'boolean':
+	      case 'date':
+	      case 'regexp':
+	        return 'a ' + type;
+	      default:
+	        return type;
+	    }
 	  }
 
 	  // Returns class name of the object, if any.
@@ -1535,11 +1580,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var emptyFunction = __webpack_require__(5);
 	var invariant = __webpack_require__(6);
+	var ReactPropTypesSecret = __webpack_require__(8);
 
 	module.exports = function() {
-	  // Important!
-	  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
-	  function shim() {
+	  function shim(props, propName, componentName, location, propFullName, secret) {
+	    if (secret === ReactPropTypesSecret) {
+	      // It is still safe when called from React.
+	      return;
+	    }
 	    invariant(
 	      false,
 	      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
@@ -1551,6 +1599,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function getShim() {
 	    return shim;
 	  };
+	  // Important!
+	  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
 	  var ReactPropTypes = {
 	    array: shim,
 	    bool: shim,
@@ -1596,6 +1646,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React = __webpack_require__(12);
 	var factory = __webpack_require__(13);
+
+	if (typeof React === 'undefined') {
+	  throw Error(
+	    'create-react-class could not find the React object. If you are using script tags, ' +
+	      'make sure that React is being loaded before create-react-class.'
+	  );
+	}
 
 	// Hack to grab NoopUpdateQueue from isomorphic React
 	var ReactNoopUpdateQueue = new React.Component().updater;
@@ -1651,7 +1708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ReactPropTypeLocationNames = {
 	    prop: 'prop',
 	    context: 'context',
-	    childContext: 'child context',
+	    childContext: 'child context'
 	  };
 	} else {
 	  ReactPropTypeLocationNames = {};
@@ -1661,7 +1718,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Policies that describe methods in `ReactClassInterface`.
 	   */
-
 
 	  var injectedMixins = [];
 
@@ -1688,7 +1744,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @internal
 	   */
 	  var ReactClassInterface = {
-
 	    /**
 	     * An array of Mixin objects to include when defining your component.
 	     *
@@ -1779,7 +1834,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *   }
 	     *
 	     * @return {ReactComponent}
-	     * @nosideeffects
 	     * @required
 	     */
 	    render: 'DEFINE_ONCE',
@@ -1907,7 +1961,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @overridable
 	     */
 	    updateComponent: 'OVERRIDE_BASE'
-
 	  };
 
 	  /**
@@ -1920,71 +1973,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * which all other static methods are defined.
 	   */
 	  var RESERVED_SPEC_KEYS = {
-	    displayName: function (Constructor, displayName) {
+	    displayName: function(Constructor, displayName) {
 	      Constructor.displayName = displayName;
 	    },
-	    mixins: function (Constructor, mixins) {
+	    mixins: function(Constructor, mixins) {
 	      if (mixins) {
 	        for (var i = 0; i < mixins.length; i++) {
 	          mixSpecIntoComponent(Constructor, mixins[i]);
 	        }
 	      }
 	    },
-	    childContextTypes: function (Constructor, childContextTypes) {
+	    childContextTypes: function(Constructor, childContextTypes) {
 	      if (process.env.NODE_ENV !== 'production') {
 	        validateTypeDef(Constructor, childContextTypes, 'childContext');
 	      }
-	      Constructor.childContextTypes = _assign({}, Constructor.childContextTypes, childContextTypes);
+	      Constructor.childContextTypes = _assign(
+	        {},
+	        Constructor.childContextTypes,
+	        childContextTypes
+	      );
 	    },
-	    contextTypes: function (Constructor, contextTypes) {
+	    contextTypes: function(Constructor, contextTypes) {
 	      if (process.env.NODE_ENV !== 'production') {
 	        validateTypeDef(Constructor, contextTypes, 'context');
 	      }
-	      Constructor.contextTypes = _assign({}, Constructor.contextTypes, contextTypes);
+	      Constructor.contextTypes = _assign(
+	        {},
+	        Constructor.contextTypes,
+	        contextTypes
+	      );
 	    },
 	    /**
 	     * Special case getDefaultProps which should move into statics but requires
 	     * automatic merging.
 	     */
-	    getDefaultProps: function (Constructor, getDefaultProps) {
+	    getDefaultProps: function(Constructor, getDefaultProps) {
 	      if (Constructor.getDefaultProps) {
-	        Constructor.getDefaultProps = createMergedResultFunction(Constructor.getDefaultProps, getDefaultProps);
+	        Constructor.getDefaultProps = createMergedResultFunction(
+	          Constructor.getDefaultProps,
+	          getDefaultProps
+	        );
 	      } else {
 	        Constructor.getDefaultProps = getDefaultProps;
 	      }
 	    },
-	    propTypes: function (Constructor, propTypes) {
+	    propTypes: function(Constructor, propTypes) {
 	      if (process.env.NODE_ENV !== 'production') {
 	        validateTypeDef(Constructor, propTypes, 'prop');
 	      }
 	      Constructor.propTypes = _assign({}, Constructor.propTypes, propTypes);
 	    },
-	    statics: function (Constructor, statics) {
+	    statics: function(Constructor, statics) {
 	      mixStaticSpecIntoComponent(Constructor, statics);
 	    },
-	    autobind: function () {} };
+	    autobind: function() {}
+	  };
 
 	  function validateTypeDef(Constructor, typeDef, location) {
 	    for (var propName in typeDef) {
 	      if (typeDef.hasOwnProperty(propName)) {
 	        // use a warning instead of an _invariant so components
 	        // don't show up in prod but only in __DEV__
-	        process.env.NODE_ENV !== 'production' ? warning(typeof typeDef[propName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'React.PropTypes.', Constructor.displayName || 'ReactClass', ReactPropTypeLocationNames[location], propName) : void 0;
+	        if (process.env.NODE_ENV !== 'production') {
+	          warning(
+	            typeof typeDef[propName] === 'function',
+	            '%s: %s type `%s` is invalid; it must be a function, usually from ' +
+	              'React.PropTypes.',
+	            Constructor.displayName || 'ReactClass',
+	            ReactPropTypeLocationNames[location],
+	            propName
+	          );
+	        }
 	      }
 	    }
 	  }
 
 	  function validateMethodOverride(isAlreadyDefined, name) {
-	    var specPolicy = ReactClassInterface.hasOwnProperty(name) ? ReactClassInterface[name] : null;
+	    var specPolicy = ReactClassInterface.hasOwnProperty(name)
+	      ? ReactClassInterface[name]
+	      : null;
 
 	    // Disallow overriding of base class methods unless explicitly allowed.
 	    if (ReactClassMixin.hasOwnProperty(name)) {
-	      _invariant(specPolicy === 'OVERRIDE_BASE', 'ReactClassInterface: You are attempting to override ' + '`%s` from your class specification. Ensure that your method names ' + 'do not overlap with React methods.', name);
+	      _invariant(
+	        specPolicy === 'OVERRIDE_BASE',
+	        'ReactClassInterface: You are attempting to override ' +
+	          '`%s` from your class specification. Ensure that your method names ' +
+	          'do not overlap with React methods.',
+	        name
+	      );
 	    }
 
 	    // Disallow defining methods more than once unless explicitly allowed.
 	    if (isAlreadyDefined) {
-	      _invariant(specPolicy === 'DEFINE_MANY' || specPolicy === 'DEFINE_MANY_MERGED', 'ReactClassInterface: You are attempting to define ' + '`%s` on your component more than once. This conflict may be due ' + 'to a mixin.', name);
+	      _invariant(
+	        specPolicy === 'DEFINE_MANY' || specPolicy === 'DEFINE_MANY_MERGED',
+	        'ReactClassInterface: You are attempting to define ' +
+	          '`%s` on your component more than once. This conflict may be due ' +
+	          'to a mixin.',
+	        name
+	      );
 	    }
 	  }
 
@@ -1998,14 +2086,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var typeofSpec = typeof spec;
 	        var isMixinValid = typeofSpec === 'object' && spec !== null;
 
-	        process.env.NODE_ENV !== 'production' ? warning(isMixinValid, '%s: You\'re attempting to include a mixin that is either null ' + 'or not an object. Check the mixins included by the component, ' + 'as well as any mixins they include themselves. ' + 'Expected object but got %s.', Constructor.displayName || 'ReactClass', spec === null ? null : typeofSpec) : void 0;
+	        if (process.env.NODE_ENV !== 'production') {
+	          warning(
+	            isMixinValid,
+	            "%s: You're attempting to include a mixin that is either null " +
+	              'or not an object. Check the mixins included by the component, ' +
+	              'as well as any mixins they include themselves. ' +
+	              'Expected object but got %s.',
+	            Constructor.displayName || 'ReactClass',
+	            spec === null ? null : typeofSpec
+	          );
+	        }
 	      }
 
 	      return;
 	    }
 
-	    _invariant(typeof spec !== 'function', 'ReactClass: You\'re attempting to ' + 'use a component class or function as a mixin. Instead, just use a ' + 'regular object.');
-	    _invariant(!isValidElement(spec), 'ReactClass: You\'re attempting to ' + 'use a component as a mixin. Instead, just use a regular object.');
+	    _invariant(
+	      typeof spec !== 'function',
+	      "ReactClass: You're attempting to " +
+	        'use a component class or function as a mixin. Instead, just use a ' +
+	        'regular object.'
+	    );
+	    _invariant(
+	      !isValidElement(spec),
+	      "ReactClass: You're attempting to " +
+	        'use a component as a mixin. Instead, just use a regular object.'
+	    );
 
 	    var proto = Constructor.prototype;
 	    var autoBindPairs = proto.__reactAutoBindPairs;
@@ -2040,7 +2147,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // 2. Overridden methods (that were mixed in).
 	        var isReactClassMethod = ReactClassInterface.hasOwnProperty(name);
 	        var isFunction = typeof property === 'function';
-	        var shouldAutoBind = isFunction && !isReactClassMethod && !isAlreadyDefined && spec.autobind !== false;
+	        var shouldAutoBind =
+	          isFunction &&
+	          !isReactClassMethod &&
+	          !isAlreadyDefined &&
+	          spec.autobind !== false;
 
 	        if (shouldAutoBind) {
 	          autoBindPairs.push(name, property);
@@ -2050,7 +2161,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var specPolicy = ReactClassInterface[name];
 
 	            // These cases should already be caught by validateMethodOverride.
-	            _invariant(isReactClassMethod && (specPolicy === 'DEFINE_MANY_MERGED' || specPolicy === 'DEFINE_MANY'), 'ReactClass: Unexpected spec policy %s for key %s ' + 'when mixing in component specs.', specPolicy, name);
+	            _invariant(
+	              isReactClassMethod &&
+	                (specPolicy === 'DEFINE_MANY_MERGED' ||
+	                  specPolicy === 'DEFINE_MANY'),
+	              'ReactClass: Unexpected spec policy %s for key %s ' +
+	                'when mixing in component specs.',
+	              specPolicy,
+	              name
+	            );
 
 	            // For methods which are defined more than once, call the existing
 	            // methods before calling the new property, merging if appropriate.
@@ -2085,10 +2204,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      var isReserved = name in RESERVED_SPEC_KEYS;
-	      _invariant(!isReserved, 'ReactClass: You are attempting to define a reserved ' + 'property, `%s`, that shouldn\'t be on the "statics" key. Define it ' + 'as an instance property instead; it will still be accessible on the ' + 'constructor.', name);
+	      _invariant(
+	        !isReserved,
+	        'ReactClass: You are attempting to define a reserved ' +
+	          'property, `%s`, that shouldn\'t be on the "statics" key. Define it ' +
+	          'as an instance property instead; it will still be accessible on the ' +
+	          'constructor.',
+	        name
+	      );
 
 	      var isInherited = name in Constructor;
-	      _invariant(!isInherited, 'ReactClass: You are attempting to define ' + '`%s` on your component more than once. This conflict may be ' + 'due to a mixin.', name);
+	      _invariant(
+	        !isInherited,
+	        'ReactClass: You are attempting to define ' +
+	          '`%s` on your component more than once. This conflict may be ' +
+	          'due to a mixin.',
+	        name
+	      );
 	      Constructor[name] = property;
 	    }
 	  }
@@ -2101,11 +2233,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {object} one after it has been mutated to contain everything in two.
 	   */
 	  function mergeIntoWithNoDuplicateKeys(one, two) {
-	    _invariant(one && two && typeof one === 'object' && typeof two === 'object', 'mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects.');
+	    _invariant(
+	      one && two && typeof one === 'object' && typeof two === 'object',
+	      'mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects.'
+	    );
 
 	    for (var key in two) {
 	      if (two.hasOwnProperty(key)) {
-	        _invariant(one[key] === undefined, 'mergeIntoWithNoDuplicateKeys(): ' + 'Tried to merge two objects with the same key: `%s`. This conflict ' + 'may be due to a mixin; in particular, this may be caused by two ' + 'getInitialState() or getDefaultProps() methods returning objects ' + 'with clashing keys.', key);
+	        _invariant(
+	          one[key] === undefined,
+	          'mergeIntoWithNoDuplicateKeys(): ' +
+	            'Tried to merge two objects with the same key: `%s`. This conflict ' +
+	            'may be due to a mixin; in particular, this may be caused by two ' +
+	            'getInitialState() or getDefaultProps() methods returning objects ' +
+	            'with clashing keys.',
+	          key
+	        );
 	        one[key] = two[key];
 	      }
 	    }
@@ -2166,8 +2309,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      boundMethod.__reactBoundArguments = null;
 	      var componentName = component.constructor.displayName;
 	      var _bind = boundMethod.bind;
-	      boundMethod.bind = function (newThis) {
-	        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      boundMethod.bind = function(newThis) {
+	        for (
+	          var _len = arguments.length,
+	            args = Array(_len > 1 ? _len - 1 : 0),
+	            _key = 1;
+	          _key < _len;
+	          _key++
+	        ) {
 	          args[_key - 1] = arguments[_key];
 	        }
 
@@ -2175,9 +2324,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // ignore the value of "this" that the user is trying to use, so
 	        // let's warn.
 	        if (newThis !== component && newThis !== null) {
-	          process.env.NODE_ENV !== 'production' ? warning(false, 'bind(): React component methods may only be bound to the ' + 'component instance. See %s', componentName) : void 0;
+	          if (process.env.NODE_ENV !== 'production') {
+	            warning(
+	              false,
+	              'bind(): React component methods may only be bound to the ' +
+	                'component instance. See %s',
+	              componentName
+	            );
+	          }
 	        } else if (!args.length) {
-	          process.env.NODE_ENV !== 'production' ? warning(false, 'bind(): You are binding a component method to the component. ' + 'React does this for you automatically in a high-performance ' + 'way, so you can safely remove this call. See %s', componentName) : void 0;
+	          if (process.env.NODE_ENV !== 'production') {
+	            warning(
+	              false,
+	              'bind(): You are binding a component method to the component. ' +
+	                'React does this for you automatically in a high-performance ' +
+	                'way, so you can safely remove this call. See %s',
+	              componentName
+	            );
+	          }
 	          return boundMethod;
 	        }
 	        var reboundMethod = _bind.apply(boundMethod, arguments);
@@ -2204,11 +2368,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  var IsMountedMixin = {
-	    componentDidMount: function () {
+	  var IsMountedPreMixin = {
+	    componentDidMount: function() {
 	      this.__isMounted = true;
-	    },
-	    componentWillUnmount: function () {
+	    }
+	  };
+
+	  var IsMountedPostMixin = {
+	    componentWillUnmount: function() {
 	      this.__isMounted = false;
 	    }
 	  };
@@ -2218,12 +2385,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * therefore not already part of the modern ReactComponent.
 	   */
 	  var ReactClassMixin = {
-
 	    /**
 	     * TODO: This will be deprecated because state should always keep a consistent
 	     * type signature and the only use case for this, is to avoid that.
 	     */
-	    replaceState: function (newState, callback) {
+	    replaceState: function(newState, callback) {
 	      this.updater.enqueueReplaceState(this, newState, callback);
 	    },
 
@@ -2233,17 +2399,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @protected
 	     * @final
 	     */
-	    isMounted: function () {
+	    isMounted: function() {
 	      if (process.env.NODE_ENV !== 'production') {
-	        process.env.NODE_ENV !== 'production' ? warning(this.__didWarnIsMounted, '%s: isMounted is deprecated. Instead, make sure to clean up ' + 'subscriptions and pending requests in componentWillUnmount to ' + 'prevent memory leaks.', this.constructor && this.constructor.displayName || this.name || 'Component') : void 0;
+	        warning(
+	          this.__didWarnIsMounted,
+	          '%s: isMounted is deprecated. Instead, make sure to clean up ' +
+	            'subscriptions and pending requests in componentWillUnmount to ' +
+	            'prevent memory leaks.',
+	          (this.constructor && this.constructor.displayName) ||
+	            this.name ||
+	            'Component'
+	        );
 	        this.__didWarnIsMounted = true;
 	      }
 	      return !!this.__isMounted;
 	    }
 	  };
 
-	  var ReactClassComponent = function () {};
-	  _assign(ReactClassComponent.prototype, ReactComponent.prototype, ReactClassMixin);
+	  var ReactClassComponent = function() {};
+	  _assign(
+	    ReactClassComponent.prototype,
+	    ReactComponent.prototype,
+	    ReactClassMixin
+	  );
 
 	  /**
 	   * Creates a composite component class given a class specification.
@@ -2257,12 +2435,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // To keep our warnings more understandable, we'll use a little hack here to
 	    // ensure that Constructor.name !== 'Constructor'. This makes sure we don't
 	    // unnecessarily identify a class without displayName as 'Constructor'.
-	    var Constructor = identity(function (props, context, updater) {
+	    var Constructor = identity(function(props, context, updater) {
 	      // This constructor gets overridden by mocks. The argument is used
 	      // by mocks to assert on what gets mounted.
 
 	      if (process.env.NODE_ENV !== 'production') {
-	        process.env.NODE_ENV !== 'production' ? warning(this instanceof Constructor, 'Something is calling a React component directly. Use a factory or ' + 'JSX instead. See: https://fb.me/react-legacyfactory') : void 0;
+	        warning(
+	          this instanceof Constructor,
+	          'Something is calling a React component directly. Use a factory or ' +
+	            'JSX instead. See: https://fb.me/react-legacyfactory'
+	        );
 	      }
 
 	      // Wire up auto-binding
@@ -2283,13 +2465,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var initialState = this.getInitialState ? this.getInitialState() : null;
 	      if (process.env.NODE_ENV !== 'production') {
 	        // We allow auto-mocks to proceed as if they're returning null.
-	        if (initialState === undefined && this.getInitialState._isMockFunction) {
+	        if (
+	          initialState === undefined &&
+	          this.getInitialState._isMockFunction
+	        ) {
 	          // This is probably bad practice. Consider warning here and
 	          // deprecating this convenience.
 	          initialState = null;
 	        }
 	      }
-	      _invariant(typeof initialState === 'object' && !Array.isArray(initialState), '%s.getInitialState(): must return an object or null', Constructor.displayName || 'ReactCompositeComponent');
+	      _invariant(
+	        typeof initialState === 'object' && !Array.isArray(initialState),
+	        '%s.getInitialState(): must return an object or null',
+	        Constructor.displayName || 'ReactCompositeComponent'
+	      );
 
 	      this.state = initialState;
 	    });
@@ -2299,8 +2488,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    injectedMixins.forEach(mixSpecIntoComponent.bind(null, Constructor));
 
-	    mixSpecIntoComponent(Constructor, IsMountedMixin);
+	    mixSpecIntoComponent(Constructor, IsMountedPreMixin);
 	    mixSpecIntoComponent(Constructor, spec);
+	    mixSpecIntoComponent(Constructor, IsMountedPostMixin);
 
 	    // Initialize the defaultProps property after all mixins have been merged.
 	    if (Constructor.getDefaultProps) {
@@ -2320,11 +2510,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    _invariant(Constructor.prototype.render, 'createClass(...): Class specification must implement a `render` method.');
+	    _invariant(
+	      Constructor.prototype.render,
+	      'createClass(...): Class specification must implement a `render` method.'
+	    );
 
 	    if (process.env.NODE_ENV !== 'production') {
-	      process.env.NODE_ENV !== 'production' ? warning(!Constructor.prototype.componentShouldUpdate, '%s has a method called ' + 'componentShouldUpdate(). Did you mean shouldComponentUpdate()? ' + 'The name is phrased as a question because the function is ' + 'expected to return a value.', spec.displayName || 'A component') : void 0;
-	      process.env.NODE_ENV !== 'production' ? warning(!Constructor.prototype.componentWillRecieveProps, '%s has a method called ' + 'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?', spec.displayName || 'A component') : void 0;
+	      warning(
+	        !Constructor.prototype.componentShouldUpdate,
+	        '%s has a method called ' +
+	          'componentShouldUpdate(). Did you mean shouldComponentUpdate()? ' +
+	          'The name is phrased as a question because the function is ' +
+	          'expected to return a value.',
+	        spec.displayName || 'A component'
+	      );
+	      warning(
+	        !Constructor.prototype.componentWillRecieveProps,
+	        '%s has a method called ' +
+	          'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?',
+	        spec.displayName || 'A component'
+	      );
 	    }
 
 	    // Reduce time spent doing lookups by setting these on the prototype.
@@ -2475,13 +2680,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+
 	var React = __webpack_require__(12),
-	  createClass = __webpack_require__(11),
-	  DaysView = __webpack_require__(18),
-	  MonthsView = __webpack_require__(21),
-	  YearsView = __webpack_require__(22),
-	  TimeView = __webpack_require__(23)
-	;
+		createClass = __webpack_require__(11),
+		DaysView = __webpack_require__(18),
+		MonthsView = __webpack_require__(22),
+		YearsView = __webpack_require__(23),
+		TimeView = __webpack_require__(24)
+		;
 
 	var CalendarContainer = createClass({
 		viewComponents: {
@@ -2491,9 +2698,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			time: TimeView
 		},
 
-	  render: function() {
-	    return React.createElement( this.viewComponents[ this.props.view ], this.props.viewProps );
-	  }
+		render: function() {
+			return React.createElement( this.viewComponents[ this.props.view ], this.props.viewProps );
+		}
 	});
 
 	module.exports = CalendarContainer;
@@ -2506,37 +2713,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
+		createClass = __webpack_require__(11),
 		moment = __webpack_require__(16),
-	  onClickOutside = __webpack_require__(19)
-	;
+		onClickOutside = __webpack_require__(19).default
+		;
 
-	var DOM = React.DOM;
 	var DateTimePickerDays = onClickOutside( createClass({
 		render: function() {
 			var footer = this.renderFooter(),
 				date = this.props.viewDate,
 				locale = date.localeData(),
 				tableChildren
-			;
+				;
 
 			tableChildren = [
-				DOM.thead({ key: 'th' }, [
-					DOM.tr({ key: 'h' }, [
-						DOM.th({ key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, DOM.span({}, '‹' )),
-						DOM.th({ key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-						DOM.th({ key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, DOM.span({}, '›' ))
+				React.createElement('thead', { key: 'th' }, [
+					React.createElement('tr', { key: 'h' }, [
+						React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span', {}, '‹' )),
+						React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
+						React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span', {}, '›' ))
 					]),
-					DOM.tr({ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return DOM.th({ key: day + index, className: 'dow'}, day ); }) )
+					React.createElement('tr', { key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th', { key: day + index, className: 'dow'}, day ); }) )
 				]),
-				DOM.tbody({ key: 'tb' }, this.renderDays())
+				React.createElement('tbody', { key: 'tb' }, this.renderDays())
 			];
 
 			if ( footer )
 				tableChildren.push( footer );
 
-			return DOM.div({ className: 'rdtDays' },
-				DOM.table({}, tableChildren )
+			return React.createElement('div', { className: 'rdtDays' },
+				React.createElement('table', {}, tableChildren )
 			);
 		},
 
@@ -2550,7 +2756,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				first = locale.firstDayOfWeek(),
 				dow = [],
 				i = 0
-			;
+				;
 
 			days.forEach( function( day ) {
 				dow[ (7 + ( i++ ) - first) % 7 ] = day;
@@ -2570,7 +2776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				renderer = this.props.renderDay || this.renderDay,
 				isValid = this.props.isValidDate || this.alwaysValidDate,
 				classes, isDisabled, dayProps, currentDate
-			;
+				;
 
 			// Go to the last week of the previous month
 			prevMonth.date( prevMonth.daysInMonth() ).startOf( 'week' );
@@ -2607,7 +2813,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				days.push( renderer( dayProps, currentDate, selected ) );
 
 				if ( days.length === 7 ) {
-					weeks.push( DOM.tr({ key: prevMonth.format( 'M_D' )}, days ) );
+					weeks.push( React.createElement('tr', { key: prevMonth.format( 'M_D' )}, days ) );
 					days = [];
 				}
 
@@ -2622,7 +2828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		renderDay: function( props, currentDate ) {
-			return DOM.td( props, currentDate.date() );
+			return React.createElement('td',  props, currentDate.date() );
 		},
 
 		renderFooter: function() {
@@ -2631,9 +2837,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			var date = this.props.selectedDate || this.props.viewDate;
 
-			return DOM.tfoot({ key: 'tf'},
-				DOM.tr({},
-					DOM.td({ onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
+			return React.createElement('tfoot', { key: 'tf'},
+				React.createElement('tr', {},
+					React.createElement('td', { onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
 				)
 			);
 		},
@@ -2642,9 +2848,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			return 1;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	module.exports = DateTimePickerDays;
@@ -2654,316 +2860,260 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+	'use strict';
+
+	exports.__esModule = true;
+	exports.IGNORE_CLASS_NAME = undefined;
+	exports.default = onClickOutsideHOC;
+
+	var _react = __webpack_require__(12);
+
+	var _reactDom = __webpack_require__(20);
+
+	var _generateOutsideCheck = __webpack_require__(21);
+
+	var _generateOutsideCheck2 = _interopRequireDefault(_generateOutsideCheck);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
 	 * A higher-order-component for handling onClickOutside for React components.
 	 */
-	(function(root) {
+	var registeredComponents = [];
+	var handlers = [];
 
-	  // administrative
-	  var registeredComponents = [];
-	  var handlers = [];
-	  var IGNORE_CLASS = 'ignore-react-onclickoutside';
-	  var DEFAULT_EVENTS = ['mousedown', 'touchstart'];
+	var touchEvents = ['touchstart', 'touchmove'];
+	var IGNORE_CLASS_NAME = exports.IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
 
-	  /**
-	   * Check whether some DOM node is our Component's node.
-	   */
-	  var isNodeFound = function(current, componentNode, ignoreClass) {
-	    if (current === componentNode) {
-	      return true;
-	    }
-	    // SVG <use/> elements do not technically reside in the rendered DOM, so
-	    // they do not have classList directly, but they offer a link to their
-	    // corresponding element, which can have classList. This extra check is for
-	    // that case.
-	    // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
-	    // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
-	    if (current.correspondingElement) {
-	      return current.correspondingElement.classList.contains(ignoreClass);
-	    }
-	    return current.classList.contains(ignoreClass);
-	  };
+	/**
+	 * This function generates the HOC function that you'll use
+	 * in order to impart onOutsideClick listening to an
+	 * arbitrary component. It gets called at the end of the
+	 * bootstrapping code to yield an instance of the
+	 * onClickOutsideHOC function defined inside setupHOC().
+	 */
+	function onClickOutsideHOC(WrappedComponent, config) {
+	  var _class, _temp2;
 
-	  /**
-	   * Try to find our node in a hierarchy of nodes, returning the document
-	   * node as highest noode if our node is not found in the path up.
-	   */
-	  var findHighest = function(current, componentNode, ignoreClass) {
-	    if (current === componentNode) {
-	      return true;
-	    }
+	  return _temp2 = _class = function (_Component) {
+	    _inherits(onClickOutside, _Component);
 
-	    // If source=local then this event came from 'somewhere'
-	    // inside and should be ignored. We could handle this with
-	    // a layered approach, too, but that requires going back to
-	    // thinking in terms of Dom node nesting, running counter
-	    // to React's 'you shouldn't care about the DOM' philosophy.
-	    while(current.parentNode) {
-	      if (isNodeFound(current, componentNode, ignoreClass)) {
-	        return true;
+	    function onClickOutside() {
+	      var _temp, _this, _ret;
+
+	      _classCallCheck(this, onClickOutside);
+
+	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	        args[_key] = arguments[_key];
 	      }
-	      current = current.parentNode;
+
+	      return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.__outsideClickHandler = null, _this.enableOnClickOutside = function () {
+	        var fn = _this.__outsideClickHandler;
+	        if (fn && typeof document !== 'undefined') {
+	          var events = _this.props.eventTypes;
+	          if (!events.forEach) {
+	            events = [events];
+	          }
+
+	          events.forEach(function (eventName) {
+	            var handlerOptions = null;
+	            var isTouchEvent = touchEvents.indexOf(eventName) !== -1;
+
+	            if (isTouchEvent) {
+	              handlerOptions = { passive: !_this.props.preventDefault };
+	            }
+
+	            document.addEventListener(eventName, fn, handlerOptions);
+	          });
+	        }
+	      }, _this.disableOnClickOutside = function () {
+	        var fn = _this.__outsideClickHandler;
+	        if (fn && typeof document !== 'undefined') {
+	          var events = _this.props.eventTypes;
+	          if (!events.forEach) {
+	            events = [events];
+	          }
+	          events.forEach(function (eventName) {
+	            return document.removeEventListener(eventName, fn);
+	          });
+	        }
+	      }, _this.getRef = function (ref) {
+	        return _this.instanceRef = ref;
+	      }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
-	    return current;
-	  };
 
-	  /**
-	   * Check if the browser scrollbar was clicked
-	   */
-	  var clickedScrollbar = function(evt) {
-	    return document.documentElement.clientWidth <= evt.clientX || document.documentElement.clientHeight <= evt.clientY;
-	  };
+	    /**
+	     * Access the WrappedComponent's instance.
+	     */
+	    onClickOutside.prototype.getInstance = function getInstance() {
+	      if (!WrappedComponent.prototype.isReactComponent) {
+	        return this;
+	      }
+	      var ref = this.instanceRef;
+	      return ref.getInstance ? ref.getInstance() : ref;
+	    };
 
-	  /**
-	   * Generate the event handler that checks whether a clicked DOM node
-	   * is inside of, or lives outside of, our Component's node tree.
-	   */
-	  var generateOutsideCheck = function(componentNode, componentInstance, eventHandler, ignoreClass, excludeScrollbar, preventDefault, stopPropagation) {
-	    return function(evt) {
-	      if (preventDefault) {
-	        evt.preventDefault();
-	      }
-	      if (stopPropagation) {
-	        evt.stopPropagation();
-	      }
-	      var current = evt.target;
-	      if((excludeScrollbar && clickedScrollbar(evt)) || (findHighest(current, componentNode, ignoreClass) !== document)) {
+	    // this is given meaning in componentDidMount/componentDidUpdate
+
+
+	    /**
+	     * Add click listeners to the current document,
+	     * linked to this component's state.
+	     */
+	    onClickOutside.prototype.componentDidMount = function componentDidMount() {
+	      // If we are in an environment without a DOM such
+	      // as shallow rendering or snapshots then we exit
+	      // early to prevent any unhandled errors being thrown.
+	      if (typeof document === 'undefined' || !document.createElement) {
 	        return;
 	      }
-	      eventHandler(evt);
-	    };
-	  };
 
-	  /**
-	   * This function generates the HOC function that you'll use
-	   * in order to impart onOutsideClick listening to an
-	   * arbitrary component. It gets called at the end of the
-	   * bootstrapping code to yield an instance of the
-	   * onClickOutsideHOC function defined inside setupHOC().
-	   */
-	  function setupHOC(root, React, ReactDOM, createReactClass) {
+	      var instance = this.getInstance();
 
-	    // The actual Component-wrapping HOC:
-	    return function onClickOutsideHOC(Component, config) {
-	      var wrapComponentWithOnClickOutsideHandling = createReactClass({
-	        statics: {
-	          /**
-	           * Access the wrapped Component's class.
-	           */
-	          getClass: function() {
-	            if (Component.getClass) {
-	              return Component.getClass();
-	            }
-	            return Component;
-	          }
-	        },
-
-	        /**
-	         * Access the wrapped Component's instance.
-	         */
-	        getInstance: function() {
-	          return Component.prototype.isReactComponent ? this.refs.instance : this;
-	        },
-
-	        // this is given meaning in componentDidMount
-	        __outsideClickHandler: function() {},
-
-	        getDefaultProps: function() {
-	          return {
-	            excludeScrollbar: config && config.excludeScrollbar
-	          };
-	        },
-
-	        /**
-	         * Add click listeners to the current document,
-	         * linked to this component's state.
-	         */
-	        componentDidMount: function() {
-	          // If we are in an environment without a DOM such
-	          // as shallow rendering or snapshots then we exit
-	          // early to prevent any unhandled errors being thrown.
-	          if (typeof document === 'undefined' || !document.createElement){
-	            return;
-	          }
-
-	          var instance = this.getInstance();
-	          var clickOutsideHandler;
-
-	          if(config && typeof config.handleClickOutside === 'function') {
-	            clickOutsideHandler = config.handleClickOutside(instance);
-	            if(typeof clickOutsideHandler !== 'function') {
-	              throw new Error('Component lacks a function for processing outside click events specified by the handleClickOutside config option.');
-	            }
-	          } else if(typeof instance.handleClickOutside === 'function') {
-	            if (React.Component.prototype.isPrototypeOf(instance)) {
-	              clickOutsideHandler = instance.handleClickOutside.bind(instance);
-	            } else {
-	              clickOutsideHandler = instance.handleClickOutside;
-	            }
-	          } else if(typeof instance.props.handleClickOutside === 'function') {
-	            clickOutsideHandler = instance.props.handleClickOutside;
-	          } else {
-	            throw new Error('Component lacks a handleClickOutside(event) function for processing outside click events.');
-	          }
-
-	          var componentNode = ReactDOM.findDOMNode(instance);
-	          if (componentNode === null) {
-	            console.warn('Antipattern warning: there was no DOM node associated with the component that is being wrapped by outsideClick.');
-	            console.warn([
-	              'This is typically caused by having a component that starts life with a render function that',
-	              'returns `null` (due to a state or props value), so that the component \'exist\' in the React',
-	              'chain of components, but not in the DOM.\n\nInstead, you need to refactor your code so that the',
-	              'decision of whether or not to show your component is handled by the parent, in their render()',
-	              'function.\n\nIn code, rather than:\n\n  A{render(){return check? <.../> : null;}\n  B{render(){<A check=... />}\n\nmake sure that you',
-	              'use:\n\n  A{render(){return <.../>}\n  B{render(){return <...>{ check ? <A/> : null }<...>}}\n\nThat is:',
-	              'the parent is always responsible for deciding whether or not to render any of its children.',
-	              'It is not the child\'s responsibility to decide whether a render instruction from above should',
-	              'get ignored or not by returning `null`.\n\nWhen any component gets its render() function called,',
-	              'that is the signal that it should be rendering its part of the UI. It may in turn decide not to',
-	              'render all of *its* children, but it should never return `null` for itself. It is not responsible',
-	              'for that decision.'
-	            ].join(' '));
-	          }
-
-	          var fn = this.__outsideClickHandler = generateOutsideCheck(
-	            componentNode,
-	            instance,
-	            clickOutsideHandler,
-	            this.props.outsideClickIgnoreClass || IGNORE_CLASS,
-	            this.props.excludeScrollbar, // fallback not needed, prop always exists because of getDefaultProps
-	            this.props.preventDefault || false,
-	            this.props.stopPropagation || false
-	          );
-
-	          var pos = registeredComponents.length;
-	          registeredComponents.push(this);
-	          handlers[pos] = fn;
-
-	          // If there is a truthy disableOnClickOutside property for this
-	          // component, don't immediately start listening for outside events.
-	          if (!this.props.disableOnClickOutside) {
-	            this.enableOnClickOutside();
-	          }
-	        },
-
-	        /**
-	        * Track for disableOnClickOutside props changes and enable/disable click outside
-	        */
-	        componentWillReceiveProps: function(nextProps) {
-	          if (this.props.disableOnClickOutside && !nextProps.disableOnClickOutside) {
-	            this.enableOnClickOutside();
-	          } else if (!this.props.disableOnClickOutside && nextProps.disableOnClickOutside) {
-	            this.disableOnClickOutside();
-	          }
-	        },
-
-	        /**
-	         * Remove the document's event listeners
-	         */
-	        componentWillUnmount: function() {
-	          this.disableOnClickOutside();
-	          this.__outsideClickHandler = false;
-	          var pos = registeredComponents.indexOf(this);
-	          if( pos>-1) {
-	            // clean up so we don't leak memory
-	            if (handlers[pos]) { handlers.splice(pos, 1); }
-	            registeredComponents.splice(pos, 1);
-	          }
-	        },
-
-	        /**
-	         * Can be called to explicitly enable event listening
-	         * for clicks and touches outside of this element.
-	         */
-	        enableOnClickOutside: function() {
-	          var fn = this.__outsideClickHandler;
-	          if (typeof document !== 'undefined') {
-	            var events = this.props.eventTypes || DEFAULT_EVENTS;
-	            if (!events.forEach) {
-	              events = [events];
-	            }
-	            events.forEach(function (eventName) {
-	              document.addEventListener(eventName, fn);
-	            });
-	          }
-	        },
-
-	        /**
-	         * Can be called to explicitly disable event listening
-	         * for clicks and touches outside of this element.
-	         */
-	        disableOnClickOutside: function() {
-	          var fn = this.__outsideClickHandler;
-	          if (typeof document !== 'undefined') {
-	            var events = this.props.eventTypes || DEFAULT_EVENTS;
-	            if (!events.forEach) {
-	              events = [events];
-	            }
-	            events.forEach(function (eventName) {
-	              document.removeEventListener(eventName, fn);
-	            });
-	          }
-	        },
-
-	        /**
-	         * Pass-through render
-	         */
-	        render: function() {
-	          var passedProps = this.props;
-	          var props = {};
-	          Object.keys(this.props).forEach(function(key) {
-	            if (key !== 'excludeScrollbar') {
-	              props[key] = passedProps[key];
-	            }
-	          });
-	          if (Component.prototype.isReactComponent) {
-	            props.ref = 'instance';
-	          }
-	          props.disableOnClickOutside = this.disableOnClickOutside;
-	          props.enableOnClickOutside = this.enableOnClickOutside;
-	          return React.createElement(Component, props);
+	      if (config && typeof config.handleClickOutside === 'function') {
+	        this.__clickOutsideHandlerProp = config.handleClickOutside(instance);
+	        if (typeof this.__clickOutsideHandlerProp !== 'function') {
+	          throw new Error('WrappedComponent lacks a function for processing outside click events specified by the handleClickOutside config option.');
 	        }
-	      });
+	      } else if (typeof instance.handleClickOutside === 'function') {
+	        if (_react.Component.prototype.isPrototypeOf(instance)) {
+	          this.__clickOutsideHandlerProp = instance.handleClickOutside.bind(instance);
+	        } else {
+	          this.__clickOutsideHandlerProp = instance.handleClickOutside;
+	        }
+	      } else if (typeof instance.props.handleClickOutside === 'function') {
+	        this.__clickOutsideHandlerProp = instance.props.handleClickOutside;
+	      } else {
+	        throw new Error('WrappedComponent lacks a handleClickOutside(event) function for processing outside click events.');
+	      }
 
-	      // Add display name for React devtools
-	      (function bindWrappedComponentName(c, wrapper) {
-	        var componentName = c.displayName || c.name || 'Component';
-	        wrapper.displayName = 'OnClickOutside(' + componentName + ')';
-	      }(Component, wrapComponentWithOnClickOutsideHandling));
+	      // TODO: try to get rid of this, could be done with function ref, might be problematic for SFC though, they do not expose refs
+	      if ((0, _reactDom.findDOMNode)(instance) === null) {
+	        return;
+	      }
 
-	      return wrapComponentWithOnClickOutsideHandling;
+	      this.addOutsideClickHandler();
 	    };
-	  }
 
-	  /**
-	   * This function sets up the library in ways that
-	   * work with the various modulde loading solutions
-	   * used in JavaScript land today.
-	   */
-	  function setupBinding(root, factory) {
-	    if (true) {
-	      // AMD. Register as an anonymous module.
-	      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(12),__webpack_require__(20),__webpack_require__(11)], __WEBPACK_AMD_DEFINE_RESULT__ = function(React, ReactDom, createReactClass) {
-	        if (!createReactClass) createReactClass = React.createClass;
-	        return factory(root, React, ReactDom, createReactClass);
-	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	    } else if (typeof exports === 'object') {
-	      // Node. Note that this does not work with strict
-	      // CommonJS, but only CommonJS-like environments
-	      // that support module.exports
-	      module.exports = factory(root, require('react'), require('react-dom'), require('create-react-class'));
-	    } else {
-	      // Browser globals (root is window)
-	      var createReactClass = React.createClass ? React.createClass : window.createReactClass;
-	      root.onClickOutside = factory(root, React, ReactDOM, createReactClass);
-	    }
-	  }
+	    /**
+	    * Track for disableOnClickOutside props changes and enable/disable click outside
+	    */
 
-	  // Make it all happen
-	  setupBinding(root, setupHOC);
 
-	}(this));
+	    onClickOutside.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	      if (this.props.disableOnClickOutside && !nextProps.disableOnClickOutside) {
+	        this.enableOnClickOutside();
+	      } else if (!this.props.disableOnClickOutside && nextProps.disableOnClickOutside) {
+	        this.disableOnClickOutside();
+	      }
+	    };
 
+	    onClickOutside.prototype.componentDidUpdate = function componentDidUpdate() {
+	      var componentNode = (0, _reactDom.findDOMNode)(this.getInstance());
+
+	      if (componentNode === null && this.__outsideClickHandler) {
+	        this.removeOutsideClickHandler();
+	        return;
+	      }
+
+	      if (componentNode !== null && !this.__outsideClickHandler) {
+	        this.addOutsideClickHandler();
+	        return;
+	      }
+	    };
+
+	    /**
+	     * Remove all document's event listeners for this component
+	     */
+
+
+	    onClickOutside.prototype.componentWillUnmount = function componentWillUnmount() {
+	      this.removeOutsideClickHandler();
+	    };
+
+	    /**
+	     * Can be called to explicitly enable event listening
+	     * for clicks and touches outside of this element.
+	     */
+
+
+	    /**
+	     * Can be called to explicitly disable event listening
+	     * for clicks and touches outside of this element.
+	     */
+
+
+	    onClickOutside.prototype.addOutsideClickHandler = function addOutsideClickHandler() {
+	      var fn = this.__outsideClickHandler = (0, _generateOutsideCheck2.default)((0, _reactDom.findDOMNode)(this.getInstance()), this.__clickOutsideHandlerProp, this.props.outsideClickIgnoreClass, this.props.excludeScrollbar, this.props.preventDefault, this.props.stopPropagation);
+
+	      var pos = registeredComponents.length;
+	      registeredComponents.push(this);
+	      handlers[pos] = fn;
+
+	      // If there is a truthy disableOnClickOutside property for this
+	      // component, don't immediately start listening for outside events.
+	      if (!this.props.disableOnClickOutside) {
+	        this.enableOnClickOutside();
+	      }
+	    };
+
+	    onClickOutside.prototype.removeOutsideClickHandler = function removeOutsideClickHandler() {
+	      this.disableOnClickOutside();
+	      this.__outsideClickHandler = false;
+
+	      var pos = registeredComponents.indexOf(this);
+
+	      if (pos > -1) {
+	        // clean up so we don't leak memory
+	        if (handlers[pos]) {
+	          handlers.splice(pos, 1);
+	        }
+	        registeredComponents.splice(pos, 1);
+	      }
+	    };
+
+	    /**
+	     * Pass-through render
+	     */
+	    onClickOutside.prototype.render = function render() {
+	      var _this2 = this;
+
+	      var props = Object.keys(this.props).filter(function (prop) {
+	        return prop !== 'excludeScrollbar';
+	      }).reduce(function (props, prop) {
+	        props[prop] = _this2.props[prop];
+	        return props;
+	      }, {});
+
+	      if (WrappedComponent.prototype.isReactComponent) {
+	        props.ref = this.getRef;
+	      } else {
+	        props.wrappedRef = this.getRef;
+	      }
+
+	      props.disableOnClickOutside = this.disableOnClickOutside;
+	      props.enableOnClickOutside = this.enableOnClickOutside;
+
+	      return (0, _react.createElement)(WrappedComponent, props);
+	    };
+
+	    return onClickOutside;
+	  }(_react.Component), _class.displayName = 'OnClickOutside(' + (WrappedComponent.displayName || WrappedComponent.name || 'Component') + ')', _class.defaultProps = {
+	    eventTypes: ['mousedown', 'touchstart'],
+	    excludeScrollbar: config && config.excludeScrollbar || false,
+	    outsideClickIgnoreClass: IGNORE_CLASS_NAME,
+	    preventDefault: false,
+	    stopPropagation: false
+	  }, _class.getClass = function () {
+	    return WrappedComponent.getClass ? WrappedComponent.getClass() : WrappedComponent;
+	  }, _temp2;
+	}
 
 /***/ }),
 /* 20 */
@@ -2973,25 +3123,101 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 21 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+	exports.default = generateOutsideCheck;
+	/**
+	 * Check whether some DOM node is our Component's node.
+	 */
+	function isNodeFound(current, componentNode, ignoreClass) {
+	  if (current === componentNode) {
+	    return true;
+	  }
+	  // SVG <use/> elements do not technically reside in the rendered DOM, so
+	  // they do not have classList directly, but they offer a link to their
+	  // corresponding element, which can have classList. This extra check is for
+	  // that case.
+	  // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
+	  // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
+	  if (current.correspondingElement) {
+	    return current.correspondingElement.classList.contains(ignoreClass);
+	  }
+	  return current.classList.contains(ignoreClass);
+	}
+
+	/**
+	 * Try to find our node in a hierarchy of nodes, returning the document
+	 * node as highest node if our node is not found in the path up.
+	 */
+	function findHighest(current, componentNode, ignoreClass) {
+	  if (current === componentNode) {
+	    return true;
+	  }
+
+	  // If source=local then this event came from 'somewhere'
+	  // inside and should be ignored. We could handle this with
+	  // a layered approach, too, but that requires going back to
+	  // thinking in terms of Dom node nesting, running counter
+	  // to React's 'you shouldn't care about the DOM' philosophy.
+	  while (current.parentNode) {
+	    if (isNodeFound(current, componentNode, ignoreClass)) {
+	      return true;
+	    }
+	    current = current.parentNode;
+	  }
+	  return current;
+	}
+
+	/**
+	 * Check if the browser scrollbar was clicked
+	 */
+	function clickedScrollbar(evt) {
+	  return document.documentElement.clientWidth <= evt.clientX || document.documentElement.clientHeight <= evt.clientY;
+	}
+
+	/**
+	 * Generate the event handler that checks whether a clicked DOM node
+	 * is inside of, or lives outside of, our Component's node tree.
+	 */
+	function generateOutsideCheck(componentNode, eventHandler, ignoreClass, excludeScrollbar, preventDefault, stopPropagation) {
+	  return function (evt) {
+	    if (preventDefault) {
+	      evt.preventDefault();
+	    }
+	    if (stopPropagation) {
+	      evt.stopPropagation();
+	    }
+	    var current = evt.target;
+	    if (excludeScrollbar && clickedScrollbar(evt) || findHighest(current, componentNode, ignoreClass) !== document) {
+	      return;
+	    }
+	    eventHandler(evt);
+	  };
+	}
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
-		onClickOutside = __webpack_require__(19)
-	;
+		createClass = __webpack_require__(11),
+		onClickOutside = __webpack_require__(19).default
+		;
 
-	var DOM = React.DOM;
 	var DateTimePickerMonths = onClickOutside( createClass({
 		render: function() {
-			return DOM.div({ className: 'rdtMonths' }, [
-				DOM.table({ key: 'a' }, DOM.thead( {}, DOM.tr( {}, [
-					DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, DOM.span({}, '‹' )),
-					DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-					DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, DOM.span({}, '›' ))
+			return React.createElement('div', { className: 'rdtMonths' }, [
+				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
 				]))),
-				DOM.table({ key: 'months' }, DOM.tbody({ key: 'b' }, this.renderMonths()))
+				React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
 			]);
 		},
 
@@ -3007,7 +3233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				classes, props, currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
 				// Date is irrelevant because we're only interested in month
 				irrelevantDate = 1
-			;
+				;
 
 			while (i < 12) {
 				classes = 'rdtMonth';
@@ -3045,7 +3271,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				months.push( renderer( props, i, year, date && date.clone() ) );
 
 				if ( months.length === 4 ) {
-					rows.push( DOM.tr({ key: month + '_' + rows.length }, months ) );
+					rows.push( React.createElement('tr', { key: month + '_' + rows.length }, months ) );
 					months = [];
 				}
 
@@ -3066,16 +3292,16 @@ return /******/ (function(modules) { // webpackBootstrap
 			// Because some months are up to 5 characters long, we want to
 			// use a fixed string length for consistency
 			var monthStrFixedLength = monthStr.substring( 0, strLength );
-			return DOM.td( props, capitalize( monthStrFixedLength ) );
+			return React.createElement('td', props, capitalize( monthStrFixedLength ) );
 		},
 
 		alwaysValidDate: function() {
 			return 1;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	function capitalize( str ) {
@@ -3086,28 +3312,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
-		onClickOutside = __webpack_require__(19)
-	;
+		createClass = __webpack_require__(11),
+		onClickOutside = __webpack_require__(19).default
+		;
 
-	var DOM = React.DOM;
 	var DateTimePickerYears = onClickOutside( createClass({
 		render: function() {
 			var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
 
-			return DOM.div({ className: 'rdtYears' }, [
-				DOM.table({ key: 'a' }, DOM.thead({}, DOM.tr({}, [
-					DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, DOM.span({}, '‹' )),
-					DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-					DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, DOM.span({}, '›' ))
-					]))),
-				DOM.table({ key: 'years' }, DOM.tbody( {}, this.renderYears( year )))
+			return React.createElement('div', { className: 'rdtYears' }, [
+				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
+				]))),
+				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
 			]);
 		},
 
@@ -3123,7 +3348,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				// we're only interested in the year
 				irrelevantMonth = 0,
 				irrelevantDate = 1
-			;
+				;
 
 			year--;
 			while (i < 11) {
@@ -3166,7 +3391,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
 
 				if ( years.length === 4 ) {
-					rows.push( DOM.tr({ key: i }, years ) );
+					rows.push( React.createElement('tr', { key: i }, years ) );
 					years = [];
 				}
 
@@ -3182,34 +3407,33 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		renderYear: function( props, year ) {
-			return DOM.td( props, year );
+			return React.createElement('td',  props, year );
 		},
 
 		alwaysValidDate: function() {
 			return 1;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	module.exports = DateTimePickerYears;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
+		createClass = __webpack_require__(11),
 		assign = __webpack_require__(1),
-	  onClickOutside = __webpack_require__(19)
-	;
+		onClickOutside = __webpack_require__(19).default
+		;
 
-	var DOM = React.DOM;
 	var DateTimePickerTime = onClickOutside( createClass({
 		getInitialState: function() {
 			return this.calculateState( this.props );
@@ -3219,7 +3443,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var date = props.selectedDate || props.viewDate,
 				format = props.timeFormat,
 				counters = []
-			;
+				;
 
 			if ( format.toLowerCase().indexOf('h') !== -1 ) {
 				counters.push('hours');
@@ -3260,20 +3484,20 @@ return /******/ (function(modules) { // webpackBootstrap
 						value = 12;
 					}
 				}
-				return DOM.div({ key: type, className: 'rdtCounter' }, [
-					DOM.span({ key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
-					DOM.div({ key: 'c', className: 'rdtCount' }, value ),
-					DOM.span({ key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
+				return React.createElement('div', { key: type, className: 'rdtCounter' }, [
+					React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
+					React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
+					React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
 				]);
 			}
 			return '';
 		},
 
 		renderDayPart: function() {
-			return DOM.div({ key: 'dayPart', className: 'rdtCounter' }, [
-				DOM.span({ key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
-				DOM.div({ key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-				DOM.span({ key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
+			return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
+				React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
 			]);
 		},
 
@@ -3284,7 +3508,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			this.state.counters.forEach( function( c ) {
 				if ( counters.length )
-					counters.push( DOM.div({ key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
+					counters.push( React.createElement('div', { key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
 				counters.push( me.renderCounter( c ) );
 			});
 
@@ -3293,19 +3517,19 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf( 'S' ) !== -1 ) {
-				counters.push( DOM.div({ className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
+				counters.push( React.createElement('div', { className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
 				counters.push(
-					DOM.div({ className: 'rdtCounter rdtMilli', key: 'm' },
-						DOM.input({ value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
+					React.createElement('div', { className: 'rdtCounter rdtMilli', key: 'm' },
+						React.createElement('input', { value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
 						)
 					);
 			}
 
-			return DOM.div({ className: 'rdtTime' },
-				DOM.table({}, [
+			return React.createElement('div', { className: 'rdtTime' },
+				React.createElement('table', {}, [
 					this.renderHeader(),
-					DOM.tbody({ key: 'b'}, DOM.tr({}, DOM.td({},
-						DOM.div({ className: 'rdtCounters' }, counters )
+					React.createElement('tbody', { key: 'b'}, React.createElement('tr', {}, React.createElement('td', {},
+						React.createElement('div', { className: 'rdtCounters' }, counters )
 					)))
 				])
 			);
@@ -3358,8 +3582,8 @@ return /******/ (function(modules) { // webpackBootstrap
 				return null;
 
 			var date = this.props.selectedDate || this.props.viewDate;
-			return DOM.thead({ key: 'h' }, DOM.tr({},
-				DOM.th({ className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
+			return React.createElement('thead', { key: 'h' }, React.createElement('tr', {},
+				React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
 			));
 		},
 
@@ -3424,9 +3648,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			return str;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	module.exports = DateTimePickerTime;
