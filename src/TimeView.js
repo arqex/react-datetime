@@ -27,17 +27,19 @@ var DateTimePickerTime = onClickOutside( createClass({
 			}
 		}
 
+		var hours = date.format( 'H' );
+		
 		var daypart = false;
 		if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
 			if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
-				daypart = ( this.state.hours >= 12 ) ? 'PM' : 'AM';
+				daypart = ( hours >= 12 ) ? 'PM' : 'AM';
 			} else {
-				daypart = ( this.state.hours >= 12 ) ? 'pm' : 'am';
+				daypart = ( hours >= 12 ) ? 'pm' : 'am';
 			}
 		}
 
 		return {
-			hours: date.format( 'H' ),
+			hours: hours,
 			minutes: date.format( 'mm' ),
 			seconds: date.format( 'ss' ),
 			milliseconds: date.format( 'SSS' ),
