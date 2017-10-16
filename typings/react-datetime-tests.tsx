@@ -119,6 +119,14 @@ const TEST_DATE_VALIDATOR_PROP: JSX.Element = <ReactDatetime
  */
 
 const TEST_CUSTOMIZABLE_COMPONENT_PROPS: JSX.Element = <ReactDatetime
+		renderInput={ (props: any, openCalendar: Function) => {
+			return (
+				<div>
+					<input {...props} />
+					<button onClick={() => openCalendar()}>open</button>
+				</div>
+			);
+		} }
 		renderDay={ (props: any, currentDate: any, selectedDate: any) => {
 			return <td {...props}>{ '0' + currentDate.date() }</td>;
 		} }

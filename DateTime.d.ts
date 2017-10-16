@@ -106,6 +106,12 @@ declare namespace ReactDatetimeClass {
          */
         inputProps?: React.HTMLProps<HTMLInputElement>;
         /*
+        Replace the rendering of the input element. The accepted function has openCalendar 
+        (a function which opens the calendar) and the default calculated props for the input. 
+        Must return a React component or null.
+        */
+        renderInput?: (props: any, openCalendar: Function) => JSX.Element|null;
+        /*
          Define the dates that can be selected. The function receives (currentDate, selectedDate)
          and should return a true or false whether the currentDate is valid or not. See selectable dates.
          */
