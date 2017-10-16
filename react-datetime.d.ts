@@ -70,6 +70,11 @@ declare module ReactDatetime {
      */
     onBlur?: (momentOrInputString : string|any) => void;
     /*
+     Callback trigger when the view mode changes. The callback receives the selected view mode
+     string ('years', 'months', 'days', 'time') as only parameter.
+    */
+    onViewModeChange?: (viewMode: string) => void;
+    /*
      The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
      */
     viewMode?: string|number;

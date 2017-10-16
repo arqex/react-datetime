@@ -1,5 +1,22 @@
 Changelog
 =========
+## 2.10.3
+* Update react-onclickoutside dependancy
+* Remove isValidDate check before rendering as implementation was causing crashes in some ednge cases.
+
+## 2.10.2
+* Move @types/react back to devDependencies
+* Add [demo](https://youcanbookme.github.io/react-datetime) app.
+
+## 2.10.1
+* Fix build files.
+
+## 2.10.0
+* Add isValidDate check before rendering so it doesn't render with an invalid date.
+
+## 2.9.0
+* Trigger callback method on view mode changes
+
 ## 2.8.11
 * Update TypeScript definitions
 * Replace deprecated React method with non-deprecated method
