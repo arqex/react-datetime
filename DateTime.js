@@ -351,10 +351,10 @@ var Datetime = createClass({
 		this.props.onChange( date );
 	},
 
-	openCalendar: function() {
-		if (!this.state.open) {
+	openCalendar: function( e ) {
+		if ( !this.state.open ) {
 			this.setState({ open: true }, function() {
-				this.props.onFocus();
+				this.props.onFocus( e );
 			});
 		}
 	},
