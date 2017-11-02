@@ -3,7 +3,7 @@
 var assign = require('object-assign'),
 	PropTypes = require('prop-types'),
 	createClass = require('create-react-class'),
-	moment = require('moment'),
+	moment = require('moment').default,
 	React = require('react'),
 	CalendarContainer = require('./src/CalendarContainer')
 	;
