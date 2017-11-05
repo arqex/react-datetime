@@ -416,10 +416,11 @@ var Datetime = createClass({
 			children = [];
 
 		if ( this.props.input ) {
-			children = [ React.createElement('input', assign({
+			children = [ React.createElement( 'input', assign({
 				key: 'i',
 				type: 'text',
 				className: 'form-control',
+				onClick: this.openCalendar,
 				onFocus: this.openCalendar,
 				onChange: this.onInputChange,
 				onKeyDown: this.onInputKey,
@@ -432,10 +433,10 @@ var Datetime = createClass({
 		if ( this.state.open )
 			className += ' rdtOpen';
 
-		return React.createElement('div', {className: className}, children.concat(
-			React.createElement('div',
+		return React.createElement( 'div', { className: className }, children.concat(
+			React.createElement( 'div',
 				{ key: 'dt', className: 'rdtPicker' },
-				React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
+				React.createElement( CalendarContainer, { view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
 			)
 		));
 	}
