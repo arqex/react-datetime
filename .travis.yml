@@ -10,8 +10,5 @@ node_js:
 script:
   - npm run lint
   - npm run test:all
-cache:
-  directories:
-    - node_modules
 before_install:
 - export TZ=Europe/Stockholm
