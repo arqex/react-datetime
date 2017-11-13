@@ -1,5 +1,13 @@
 Changelog
 =========
+## 2.11.0
+* onFocus now receives the browser event
+* Do not open browser menu on right click of arrows in time view
+* Open calendar when onClick is triggered, before it would just react to onFocus
+* Update TypeScript definitions for value and defaultValue to comply with code
+* Fix bug where AM/PM would not sync between component value and input field value
+* Add renderInput prop which let's the consumer of the component render their own HTML input element
+
 ## 2.10.3
 * Update react-onclickoutside dependancy
 * Remove isValidDate check before rendering as implementation was causing crashes in some ednge cases.
