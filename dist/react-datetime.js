@@ -1,5 +1,5 @@
 /*
-react-datetime v2.10.3
+react-datetime v2.11.0
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -412,10 +412,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			this.props.onChange( date );
 		},
 
-		openCalendar: function() {
-			if (!this.state.open) {
+		openCalendar: function( e ) {
+			if ( !this.state.open ) {
 				this.setState({ open: true }, function() {
-					this.props.onFocus();
+					this.props.onFocus( e );
 				});
 			}
 		},
@@ -477,15 +477,20 @@ return /******/ (function(modules) { // webpackBootstrap
 				children = [];
 
 			if ( this.props.input ) {
-				children = [ React.createElement('input', assign({
-					key: 'i',
+				var finalInputProps = assign({
 					type: 'text',
 					className: 'form-control',
+					onClick: this.openCalendar,
 					onFocus: this.openCalendar,
 					onChange: this.onInputChange,
 					onKeyDown: this.onInputKey,
-					value: this.state.inputValue
-				}, this.props.inputProps ))];
+					value: this.state.inputValue,
+				}, this.props.inputProps);
+				if ( this.props.renderInput ) {
+					children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar )) ];
+				} else {
+					children = [ React.createElement('input', assign({ key: 'i' }, finalInputProps ))];
+				}
 			} else {
 				className += ' rdtStatic';
 			}
@@ -493,10 +498,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( this.state.open )
 				className += ' rdtOpen';
 
-			return React.createElement('div', {className: className}, children.concat(
-				React.createElement('div',
+			return React.createElement( 'div', { className: className }, children.concat(
+				React.createElement( 'div',
 					{ key: 'dt', className: 'rdtPicker' },
-					React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
+					React.createElement( CalendarContainer, { view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
 				)
 			));
 		}
@@ -3455,17 +3460,19 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			}
 
+			var hours = date.format( 'H' );
+			
 			var daypart = false;
 			if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
 				if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
-					daypart = ( this.state.hours >= 12 ) ? 'PM' : 'AM';
+					daypart = ( hours >= 12 ) ? 'PM' : 'AM';
 				} else {
-					daypart = ( this.state.hours >= 12 ) ? 'pm' : 'am';
+					daypart = ( hours >= 12 ) ? 'pm' : 'am';
 				}
 			}
 
 			return {
-				hours: date.format( 'H' ),
+				hours: hours,
 				minutes: date.format( 'mm' ),
 				seconds: date.format( 'ss' ),
 				milliseconds: date.format( 'SSS' ),
@@ -3485,9 +3492,9 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 				}
 				return React.createElement('div', { key: type, className: 'rdtCounter' }, [
-					React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
+					React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
 					React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
-					React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
+					React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
 				]);
 			}
 			return '';
@@ -3495,9 +3502,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		renderDayPart: function() {
 			return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
-				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
 				React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
 			]);
 		},
 
@@ -3611,6 +3618,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				document.body.addEventListener( 'mouseup', me.mouseUpListener );
 			};
+		},
+
+		disableContextMenu: function( event ) {
+			event.preventDefault();
+			return false;
 		},
 
 		padValues: {
