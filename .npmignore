@@ -1,12 +1,10 @@
-*~
+# Folders
 node_modules
+example
+.idea
+
+# Files
+*~
 .DS_Store
 npm-debug.log
-test_bundle.js
-test-built
-.idea
-examples
-bower.json
 webpack.config.js
-TODO.md
-karma.dev.js

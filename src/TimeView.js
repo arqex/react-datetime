@@ -1,12 +1,11 @@
 'use strict';
 
 var React = require('react'),
-    createClass = require('create-react-class'),
+	createClass = require('create-react-class'),
 	assign = require('object-assign'),
-  onClickOutside = require('react-onclickoutside')
-;
+	onClickOutside = require('react-onclickoutside').default
+	;
 
-var DOM = React.DOM;
 var DateTimePickerTime = onClickOutside( createClass({
 	getInitialState: function() {
 		return this.calculateState( this.props );
@@ -16,7 +15,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 		var date = props.selectedDate || props.viewDate,
 			format = props.timeFormat,
 			counters = []
-		;
+			;
 
 		if ( format.toLowerCase().indexOf('h') !== -1 ) {
 			counters.push('hours');
@@ -28,17 +27,19 @@ var DateTimePickerTime = onClickOutside( createClass({
 			}
 		}
 
+		var hours = date.format( 'H' );
+		
 		var daypart = false;
 		if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
 			if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
-				daypart = ( this.state.hours >= 12 ) ? 'PM' : 'AM';
+				daypart = ( hours >= 12 ) ? 'PM' : 'AM';
 			} else {
-				daypart = ( this.state.hours >= 12 ) ? 'pm' : 'am';
+				daypart = ( hours >= 12 ) ? 'pm' : 'am';
 			}
 		}
 
 		return {
-			hours: date.format( 'H' ),
+			hours: hours,
 			minutes: date.format( 'mm' ),
 			seconds: date.format( 'ss' ),
 			milliseconds: date.format( 'SSS' ),
@@ -57,20 +58,20 @@ var DateTimePickerTime = onClickOutside( createClass({
 					value = 12;
 				}
 			}
-			return DOM.div({ key: type, className: 'rdtCounter' }, [
-				DOM.span({ key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
-				DOM.div({ key: 'c', className: 'rdtCount' }, value ),
-				DOM.span({ key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
+			return React.createElement('div', { key: type, className: 'rdtCounter' }, [
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
+				React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
 			]);
 		}
 		return '';
 	},
 
 	renderDayPart: function() {
-		return DOM.div({ key: 'dayPart', className: 'rdtCounter' }, [
-			DOM.span({ key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
-			DOM.div({ key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-			DOM.span({ key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
+		return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
+			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
+			React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
+			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
 		]);
 	},
 
@@ -81,7 +82,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 
 		this.state.counters.forEach( function( c ) {
 			if ( counters.length )
-				counters.push( DOM.div({ key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
+				counters.push( React.createElement('div', { key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
 			counters.push( me.renderCounter( c ) );
 		});
 
@@ -90,19 +91,19 @@ var DateTimePickerTime = onClickOutside( createClass({
 		}
 
 		if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf( 'S' ) !== -1 ) {
-			counters.push( DOM.div({ className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
+			counters.push( React.createElement('div', { className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
 			counters.push(
-				DOM.div({ className: 'rdtCounter rdtMilli', key: 'm' },
-					DOM.input({ value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
+				React.createElement('div', { className: 'rdtCounter rdtMilli', key: 'm' },
+					React.createElement('input', { value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
 					)
 				);
 		}
 
-		return DOM.div({ className: 'rdtTime' },
-			DOM.table({}, [
+		return React.createElement('div', { className: 'rdtTime' },
+			React.createElement('table', {}, [
 				this.renderHeader(),
-				DOM.tbody({ key: 'b'}, DOM.tr({}, DOM.td({},
-					DOM.div({ className: 'rdtCounters' }, counters )
+				React.createElement('tbody', { key: 'b'}, React.createElement('tr', {}, React.createElement('td', {},
+					React.createElement('div', { className: 'rdtCounters' }, counters )
 				)))
 			])
 		);
@@ -155,8 +156,8 @@ var DateTimePickerTime = onClickOutside( createClass({
 			return null;
 
 		var date = this.props.selectedDate || this.props.viewDate;
-		return DOM.thead({ key: 'h' }, DOM.tr({},
-			DOM.th({ className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
+		return React.createElement('thead', { key: 'h' }, React.createElement('tr', {},
+			React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
 		));
 	},
 
@@ -184,6 +185,11 @@ var DateTimePickerTime = onClickOutside( createClass({
 
 			document.body.addEventListener( 'mouseup', me.mouseUpListener );
 		};
+	},
+
+	disableContextMenu: function( event ) {
+		event.preventDefault();
+		return false;
 	},
 
 	padValues: {
@@ -221,9 +227,9 @@ var DateTimePickerTime = onClickOutside( createClass({
 		return str;
 	},
 
-  handleClickOutside: function() {
-    this.props.handleClickOutside();
-  }
+	handleClickOutside: function() {
+		this.props.handleClickOutside();
+	}
 }));
 
 module.exports = DateTimePickerTime;
