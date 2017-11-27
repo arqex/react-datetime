@@ -42,6 +42,11 @@ declare namespace ReactDatetimeClass {
          */
         defaultValue?: Date | string | Moment;
         /*
+         Represents the month which is viewed on opening the calendar when there is no selected date.
+         This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object.
+         */
+        viewDate?: Date | string | Moment;
+        /*
          Defines the format for the date. It accepts any moment.js date format.
          If true the date will be displayed using the defaults for the current locale.
          If false the datepicker is disabled and the component can be used as timepicker.

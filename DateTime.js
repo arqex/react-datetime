@@ -13,6 +13,7 @@ var Datetime = createClass({
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
+		// viewDate: TYPES.object | TYPES.string,
 		onFocus: TYPES.func,
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
@@ -43,24 +44,33 @@ var Datetime = createClass({
 		return state;
 	},
 
+	parseDate: function (date, formats) {
+		var parsedDate;
+
+		if (date && typeof date === 'string')
+			parsedDate = this.localMoment(date, formats.datetime);
+		else if (date)
+			parsedDate = this.localMoment(date);
+
+		if (parsedDate && !parsedDate.isValid())
+			parsedDate = null;
+
+		return parsedDate;
+	},
+
 	getStateFromProps: function( props ) {
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
 			selectedDate, viewDate, updateOn, inputValue
 			;
 
-		if ( date && typeof date === 'string' )
-			selectedDate = this.localMoment( date, formats.datetime );
-		else if ( date )
-			selectedDate = this.localMoment( date );
+		selectedDate = this.parseDate(date, formats);
 
-		if ( selectedDate && !selectedDate.isValid() )
-			selectedDate = null;
+		viewDate = this.parseDate(props.viewDate, formats);
 
 		viewDate = selectedDate ?
 			selectedDate.clone().startOf('month') :
-			this.localMoment().startOf('month')
-		;
+			viewDate ? viewDate.clone().startOf('month') : this.localMoment().startOf('month');
 
 		updateOn = this.getUpdateOn(formats);
 
