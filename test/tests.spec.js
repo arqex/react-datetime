@@ -97,6 +97,18 @@ describe('Datetime', () => {
 		expect(utils.isYearView(component)).toBeTruthy();
 	});
 
+	it('toggles calendar when open prop changes', () => {
+		const component = utils.createDatetime({ open: false });
+		expect(utils.isOpen(component)).toBeFalsy();
+		// expect(component.find('.rdtOpen').length).toEqual(0);
+		component.setProps({ open: true });
+		expect(utils.isOpen(component)).toBeTruthy();
+		// expect(component.find('.rdtOpen').length).toEqual(1);
+		component.setProps({ open: false });
+		expect(utils.isOpen(component)).toBeFalsy();
+		// expect(component.find('.rdtOpen').length).toEqual(0);
+	});
+
 	it('selectYear', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 			component = utils.createDatetime({ viewMode: 'years', defaultValue: date });
