@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.11.1
+* The open prop should now work as intended
+
 ## 2.11.0
 * onFocus now receives the browser event
 * Do not open browser menu on right click of arrows in time view
