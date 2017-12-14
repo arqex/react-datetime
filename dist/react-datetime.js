@@ -384,7 +384,17 @@ return /******/ (function(modules) { // webpackBootstrap
 					.month( currentDate.month() )
 					.date( currentDate.date() )
 					.year( parseInt( target.getAttribute('data-value'), 10 ) );
-			}
+			} else if (target.className.indexOf('rdtTodayButton') !== -1) {
+			    var now = moment(new Date());
+	            date = viewDate.clone()
+	                .month( now.month() )
+	                .date( now.date() )
+	                .year( now.year() );
+
+	            this.setState({
+	                currentView: 'days'
+	            });
+	        }
 
 			date.hours( currentDate.hours() )
 				.minutes( currentDate.minutes() )
@@ -401,7 +411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					selectedDate: date,
 					viewDate: date.clone().startOf('month'),
 					inputValue: date.format( this.state.inputFormat ),
-					open: open
+					open: open,
 				});
 			} else {
 				if ( this.props.closeOnSelect && close ) {
@@ -443,10 +453,22 @@ return /******/ (function(modules) { // webpackBootstrap
 			return m;
 		},
 
+	    goToToday: function (e) {
+	        this.updateSelectedDate(e);
+	    },
+
+	    renderTodayButton: function (key) {
+	        return React.createElement(
+	            'button',
+	            {key: key, className: 'rdtTodayButton', onClick: this.goToToday, 'data-value': '10'},
+	            'Today'
+	        );
+	    },
+
 		componentProps: {
 			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
 			fromState: ['viewDate', 'selectedDate', 'updateOn'],
-			fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
+			fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside', 'renderTodayButton']
 		},
 
 		getComponentProps: function() {
@@ -2797,7 +2819,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		DaysView = __webpack_require__(19),
 		MonthsView = __webpack_require__(22),
 		YearsView = __webpack_require__(23),
-		TimeView = __webpack_require__(24)
+		TimeView = __webpack_require__(24),
+	    TodayButton = __webpack_require__(25);
 		;
 
 	var CalendarContainer = createClass({
@@ -2805,7 +2828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			days: DaysView,
 			months: MonthsView,
 			years: YearsView,
-			time: TimeView
+			time: TimeView,
 		},
 
 		render: function() {
@@ -2852,7 +2875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				tableChildren.push( footer );
 
 			return React.createElement('div', { className: 'rdtDays' },
-				React.createElement('table', {}, tableChildren )
+				[React.createElement('table', {key: 'daysTable'}, tableChildren ), this.props.renderTodayButton('todayDays')]
 			);
 		},
 
@@ -3340,7 +3363,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
 					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
 				]))),
-				React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
+				React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths())),
+	            this.props.renderTodayButton('todayMonths')
 			]);
 		},
 
@@ -3455,7 +3479,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
 					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
 				]))),
-				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
+				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year ))),
+	            this.props.renderTodayButton('todayYears')
 			]);
 		},
 
@@ -3784,6 +3809,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	}));
 
 	module.exports = DateTimePickerTime;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(13),
+	    createClass = __webpack_require__(12);
+
+	var TodayButton = createClass({
+	    render: function() {
+	        return React.createElement( 'button', {className: 'rdtTodayButton'}, 'Today' );
+	    }
+	});
+
+	module.exports = TodayButton;
 
 
 /***/ })
