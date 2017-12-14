@@ -30,7 +30,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 			tableChildren.push( footer );
 
 		return React.createElement('div', { className: 'rdtDays' },
-			React.createElement('table', {}, tableChildren )
+			[React.createElement('table', {key: 'daysTable'}, tableChildren ), this.props.renderTodayButton('todayDays')]
 		);
 	},
 

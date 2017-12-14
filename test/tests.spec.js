@@ -17,6 +17,25 @@ describe('Datetime', () => {
 		expect(component.find('.rdt > .rdtPicker').length).toEqual(1);
 	});
 
+	it('renders a today button', () => {
+		const component = utils.createDatetime({ showTodayButton: true });
+
+		expect(component.find('.rdtTodayButton').length).toEqual(1);
+	});
+
+	it('sets today date when today button is clicked', () => {
+		const onChangeFn = jest.fn();
+		const component = utils.createDatetime({ showTodayButton: true, viewMode: 'years', onChange: onChangeFn, dateFormat: 'MM/DD/YYYY', timeFormat: false,  });
+		const now = moment(new Date());
+
+		const fullDate = (now.month() + 1) + '/' + now.date() + '/' + now.year();
+
+		utils.clickOnElement(component.find('.rdtTodayButton'));
+		expect(utils.isDayView(component)).toBeTruthy();
+		expect(component.find('.rdt > input').getDOMNode().getAttribute('value')).toEqual(fullDate);
+		expect(onChangeFn).toHaveBeenCalled();
+	});
+
 	it('viewMode=days: renders days, week days, month, year', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
@@ -394,7 +413,7 @@ describe('Datetime', () => {
 			const component = utils.createDatetime({ renderInput });
 
 			expect(component.find('button.custom-open').length).toEqual(1);
-            expect(utils.isOpen(component)).toBeFalsy();
+			expect(utils.isOpen(component)).toBeFalsy();
 			utils.clickOnElement(component.find('button.custom-open'));
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
