@@ -36,6 +36,18 @@ describe('Datetime', () => {
 		expect(onChangeFn).toHaveBeenCalled();
 	});
 
+	it('disables today button is today is not a valid date', () => {
+		const component = utils.createDatetime({ showTodayButton: true,
+			dateFormat: 'MM/DD/YYYY', timeFormat: false, isValidDate: function(current) {
+				return current.isBefore(moment().startOf('month'));
+			} });
+		const onChangeFn = jest.fn();
+
+		expect(component.find('.rdtTodayButton').hasClass('rdtDisabled')).toBeTruthy();
+		utils.clickOnElement(component.find('.rdtTodayButton'));
+		expect(onChangeFn).not.toHaveBeenCalled();
+	});
+
 	it('viewMode=days: renders days, week days, month, year', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });

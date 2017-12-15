@@ -235,3 +235,8 @@ td.rdtYear:hover {
 .rdtTodayButton:focus {
     outline: none;
 }
+
+.rdtTodayButton.rdtDisabled {
+    color: #999999;
+    cursor: not-allowed;
+}
