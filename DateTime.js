@@ -396,10 +396,25 @@ var Datetime = createClass({
 		this.updateSelectedDate(e);
 	},
 
+	alwaysValidDate: function () {
+		return true;
+	},
+
 	renderTodayButton: function (key) {
+		var now = moment(new Date());
+		var date = this.state.viewDate.clone()
+			.month( now.month() )
+			.date( now.date() )
+			.year( now.year() );
+
+		var isValidDate = this.props.isValidDate || this.alwaysValidDate;
+
+		var isValid = date.isValid && isValidDate(date);
+		var classes = isValid ? 'rdtTodayButton' : 'rdtTodayButton rdtDisabled';
+
 		return this.props.showTodayButton ? React.createElement(
 			'button',
-			{key: key, className: 'rdtTodayButton', onClick: this.goToToday, 'data-value': '10'},
+			{key: key, className: classes, onClick: isValid ? this.goToToday : undefined},
 			'Today'
 		) : undefined;
 	},

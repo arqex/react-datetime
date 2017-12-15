@@ -6,7 +6,11 @@ ReactDOM.render(
 	React.createElement(DateTime, {
 		viewMode: 'days',
 		dateFormat: 'MM/DD/YY',
-		showTodayButton: true
+		showTodayButton: true,
+		closeOnSelect: true,
+		isValidDate: function(current) {
+			return current.isBefore(DateTime.moment().startOf('month'));
+		}
 	}),
 	document.getElementById('datetime')
 );
