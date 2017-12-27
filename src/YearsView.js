@@ -11,9 +11,9 @@ var DateTimePickerYears = onClickOutside( createClass({
 
 		return React.createElement('div', { className: 'rdtYears' }, [
 			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
-				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
+				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' ), 'data-automation': 'actionPrevDecade'}, React.createElement('span', {}, '‹' )),
+				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), 'data-automation': 'buttonTopView', colSpan: 2 }, year + '-' + ( year + 9 ) ),
+				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' ), 'data-automation': 'actionNextDecade'}, React.createElement('span', {}, '›' ))
 			]))),
 			React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year ))),
 			this.props.renderTodayButton('todayYears')
@@ -65,7 +65,9 @@ var DateTimePickerYears = onClickOutside( createClass({
 			props = {
 				key: year,
 				'data-value': year,
-				className: classes
+				className: classes,
+				'data-automation': year,
+				'data-status': classes.indexOf('rdtDisabled') !== -1 ? 'enabled' : 'disabled'
 			};
 
 			if ( !isDisabled )
