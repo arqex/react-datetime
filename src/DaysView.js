@@ -17,9 +17,9 @@ var DateTimePickerDays = onClickOutside( createClass({
 		tableChildren = [
 			React.createElement('thead', { key: 'th' }, [
 				React.createElement('tr', { key: 'h' }, [
-					React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-					React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span', {}, '›' ))
+					React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' ), 'data-automation': 'actionPrevMonth'}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), 'data-automation': 'actionSwitchToMonthsView', colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
+					React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' ), 'data-automation': 'actionNextMonth'}, React.createElement('span', {}, '›' ))
 				]),
 				React.createElement('tr', { key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th', { key: day + index, className: 'dow'}, day ); }) )
 			]),
@@ -92,7 +92,9 @@ var DateTimePickerDays = onClickOutside( createClass({
 			dayProps = {
 				key: prevMonth.format( 'M_D' ),
 				'data-value': prevMonth.date(),
-				className: classes
+				className: classes,
+				'data-automation': currentDate.year() + '_' + (currentDate.month() + 1) + '_' + currentDate.date(),
+				'data-status': classes.indexOf('rdtDisabled') === -1 ? 'enabled' : 'disabled'
 			};
 
 			if ( !isDisabled )

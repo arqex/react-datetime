@@ -414,7 +414,7 @@ var Datetime = createClass({
 
 		return this.props.showTodayButton ? React.createElement(
 			'button',
-			{key: key, className: classes, onClick: isValid ? this.goToToday : undefined},
+			{key: key, className: classes, onClick: isValid ? this.goToToday : undefined, 'data-automation': 'actionSelectToday', 'data-status': isValid ? 'enabled' : 'disabled' },
 			'Today'
 		) : undefined;
 	},
