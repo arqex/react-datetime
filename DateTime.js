@@ -32,27 +32,6 @@ var Datetime = createClass({
 		closeOnTab: TYPES.bool
 	},
 
-	getDefaultProps: function() {
-		var nof = function() {};
-		return {
-			className: '',
-			defaultValue: '',
-			inputProps: {},
-			input: true,
-			onFocus: nof,
-			onBlur: nof,
-			onChange: nof,
-			onViewModeChange: nof,
-			timeFormat: true,
-			timeConstraints: {},
-			dateFormat: true,
-			strictParsing: true,
-			closeOnSelect: false,
-			closeOnTab: true,
-			utc: false
-		};
-	},
-
 	getInitialState: function() {
 		var state = this.getStateFromProps( this.props );
 
@@ -447,6 +426,24 @@ var Datetime = createClass({
 		));
 	}
 });
+
+Datetime.defaultProps = {
+	className: '',
+	defaultValue: '',
+	inputProps: {},
+	input: true,
+	onFocus: function(){},
+	onBlur: function(){},
+	onChange: function(){},
+	onViewModeChange: function(){},
+	timeFormat: true,
+	timeConstraints: {},
+	dateFormat: true,
+	strictParsing: true,
+	closeOnSelect: false,
+	closeOnTab: true,
+	utc: false
+};
 
 // Make moment accessible through the Datetime class
 Datetime.moment = moment;
