@@ -64,8 +64,8 @@ describe('Datetime', () => {
 	});
 
 	it('persistent valid months going monthView->yearView->monthView', () => {
-		const dateBefore = new Date().getFullYear() + '-06-01',
-			component = utils.createDatetime({ viewMode: 'months', isValidDate: (current) =>
+		const dateBefore = '2018-06-01';
+		const component = utils.createDatetime({ viewMode: 'months', isValidDate: (current) =>
 				current.isBefore(moment(dateBefore, 'YYYY-MM-DD'))
 			});
 
@@ -78,9 +78,9 @@ describe('Datetime', () => {
 		expect(utils.isYearView(component)).toBeTruthy();
 
 		expect(utils.getNthYear(component, 0).hasClass('rdtDisabled')).toEqual(false);
-		expect(utils.getNthYear(component, 9).hasClass('rdtDisabled')).toEqual(true);
+		expect(utils.getNthYear(component, 10).hasClass('rdtDisabled')).toEqual(true);
 
-		utils.clickNthYear(component, 8);
+		utils.clickNthYear(component, 9);
 		expect(utils.getNthMonth(component, 4).hasClass('rdtDisabled')).toEqual(false);
 		expect(utils.getNthMonth(component, 5).hasClass('rdtDisabled')).toEqual(true);
 	});
