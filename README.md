@@ -57,7 +57,7 @@ render: function() {
 | **className** | `string` or `string array` | `''` | Extra class name for the outermost markup element. |
 | **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `onClick`, `placeholder`, `disabled`, `required`, `name` and `className` (`className` *sets* the class attribute for the input element). See [Customize the Input Appearance](#customize-the-input-appearance). |
 | **isValidDate** | `function` | `() => true` | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and shall return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
-| **renderInput** | `function` | `undefined` | Replace the rendering of the input element. The accepted function has `openCalendar` (a function which opens the calendar) and the default calculated `props` for the input. Must return a React component or `null`. See [Customize the Input Appearance](#customize-the-input-appearance). |
+| **renderInput** | `function` | `undefined` | Replace the rendering of the input element. The function has the following arguments: the default calculated `props` for the input, `openCalendar` (a function which opens the calendar) and `closeCalendar` (a function which closes the calendar). Must return a React component or `null`. See [Customize the Input Appearance](#customize-the-input-appearance). |
 | **renderDay** | `function` | `DOM.td(day)` | Customize the way that the days are shown in the daypicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance). |
 | **renderMonth** | `function` | `DOM.td(month)` | Customize the way that the months are shown in the monthpicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance). |
 | **renderYear** | `function` | `DOM.td(year)` | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance). |
@@ -97,7 +97,7 @@ var MyDTPicker = React.createClass({
     render: function(){
         return <Datetime renderInput={ this.renderInput } />;
     },
-    renderInput: function( props, openCalendar ){
+    renderInput: function( props, openCalendar, closeCalendar ){
         function clear(){
             props.onChange({target: {value: ''}});
         }
@@ -105,6 +105,7 @@ var MyDTPicker = React.createClass({
             <div>
                 <input {...props} />
                 <button onClick={openCalendar}>open calendar</button>
+                <button onClick={closeCalendar}>close calendar</button>
                 <button onClick={clear}>clear</button>
             </div>
         );
@@ -144,7 +145,7 @@ var MyDTPicker = React.createClass({
 
 ## Specify Available Units
 You can filter out what you want the user to be able to pick by using `dateFormat` and `timeFormat`, e.g. to create a timepicker, yearpicker etc.
- 
+
 In this example the component is being used as a *timepicker* and can *only be used for selecting a time*.
 ```js
 <Datetime dateFormat={false} />
