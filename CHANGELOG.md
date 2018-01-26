@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.12.0
+* The `renderInput` prop now receives `closeCalendar` function as well
+
 ## 2.11.1
 * The open prop should now work as intended
 
