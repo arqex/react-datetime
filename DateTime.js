@@ -147,7 +147,8 @@ var Datetime = createClass({
 		;
 
 		if ( nextProps.value !== this.props.value ||
-			formats.datetime !== this.getFormats( this.props ).datetime ) {
+			formats.datetime !== this.getFormats( this.props ).datetime ||
+			nextProps.open !== this.props.open) {
 			updatedState = this.getStateFromProps( nextProps );
 		}
 
