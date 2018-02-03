@@ -20,12 +20,12 @@
     "build:mac": "./node_modules/.bin/gulp",
     "build:win": "./node_modules/.bin/gulp.cmd",
     "dev": "./node_modules/.bin/webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
-    "lint": "./node_modules/.bin/eslint src/ DateTime.js test/ && echo 'Linting OK!'",
+    "prettify": "echo '## Running Prettifier' && ./node_modules/.bin/prettier --write DateTime.js src/*.js test/*.js example/*.js demo/src/*.js",
     "test": "./node_modules/.bin/jest",
     "test:typings": "./node_modules/.bin/tsc -p ./typings",
     "test:snapshot": "./node_modules/.bin/jest snapshot",
     "test:snapshot:update": "./node_modules/.bin/jest snapshot --updateSnapshot",
-    "test:all": "npm run test:typings && npm run test",
+    "test:all": "echo '## Running tests' && npm run test:typings && npm run test",
     "test:watch": "./node_modules/.bin/jest --watch"
   },
   "keywords": [
@@ -53,7 +53,6 @@
     "babel-preset-react": "^6.22.0",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-15": "^1.0.5",
-    "eslint": "^3.1.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1",
     "gulp-insert": "^0.4.0",
@@ -67,6 +66,7 @@
     "mocha": "^3.2.0",
     "moment": ">=2.16.0",
     "pre-commit": "^1.1.3",
+    "prettier": "1.10.2",
     "react": "^15.5.0",
     "react-addons-test-utils": ">=0.13",
     "react-dom": "^15.5.0",
@@ -84,7 +84,7 @@
     "react-onclickoutside": "^6.5.0"
   },
   "pre-commit": [
-    "lint",
+    "prettify",
     "test:all"
   ]
 }
