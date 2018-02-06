@@ -32,27 +32,6 @@ var Datetime = createClass({
 		closeOnTab: TYPES.bool
 	},
 
-	getDefaultProps: function() {
-		var nof = function() {};
-		return {
-			className: '',
-			defaultValue: '',
-			inputProps: {},
-			input: true,
-			onFocus: nof,
-			onBlur: nof,
-			onChange: nof,
-			onViewModeChange: nof,
-			timeFormat: true,
-			timeConstraints: {},
-			dateFormat: true,
-			strictParsing: true,
-			closeOnSelect: false,
-			closeOnTab: true,
-			utc: false
-		};
-	},
-
 	getInitialState: function() {
 		var state = this.getStateFromProps( this.props );
 
@@ -428,7 +407,7 @@ var Datetime = createClass({
 				value: this.state.inputValue,
 			}, this.props.inputProps);
 			if ( this.props.renderInput ) {
-				children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar )) ];
+				children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar, this.closeCalendar )) ];
 			} else {
 				children = [ React.createElement('input', assign({ key: 'i' }, finalInputProps ))];
 			}
@@ -447,6 +426,24 @@ var Datetime = createClass({
 		));
 	}
 });
+
+Datetime.defaultProps = {
+	className: '',
+	defaultValue: '',
+	inputProps: {},
+	input: true,
+	onFocus: function() {},
+	onBlur: function() {},
+	onChange: function() {},
+	onViewModeChange: function() {},
+	timeFormat: true,
+	timeConstraints: {},
+	dateFormat: true,
+	strictParsing: true,
+	closeOnSelect: false,
+	closeOnTab: true,
+	utc: false
+};
 
 // Make moment accessible through the Datetime class
 Datetime.moment = moment;
