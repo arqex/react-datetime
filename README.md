@@ -87,7 +87,7 @@ If there are multiple locales loaded, you can use the prop `locale` to define wh
 It is possible to customize the way that the input is displayed. The simplest is to supply `inputProps` which get assigned to the default `<input />` element within the component.
 
 ```js
-<DateTime inputProps={{ placeholder: 'N/A', disabled: true }}>
+<Datetime inputProps={{ placeholder: 'N/A', disabled: true }}>
 ```
 
 Alternatively, if you need to render different content than an `<input />` element, you may supply a `renderInput` function which is called instead.
