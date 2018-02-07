@@ -530,6 +530,7 @@ describe('Datetime', () => {
 			utils.openDatepicker(component);
 			expect(utils.isOpen(component)).toBeTruthy();
 			document.dispatchEvent(new Event('mousedown'));
+			component.update();
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
@@ -541,6 +542,7 @@ describe('Datetime', () => {
 			utils.openDatepicker(component);
 			expect(utils.isOpen(component)).toBeTruthy();
 			document.dispatchEvent(new Event('mousedown'));
+			component.update();
 			expect(utils.isOpen(component)).toBeFalsy();
 		});
 
