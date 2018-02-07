@@ -5,28 +5,30 @@ var createClass = require('create-react-class');
 var moment = require('moment');
 
 var Wrapper = createClass({
-	getInitialState: function() {
-		return {
-			viewMode: 'time'
-		};
-	},
+  getInitialState: function() {
+    return {
+      viewMode: 'time'
+    };
+  },
 
-	updateView: function(format) {
-		console.log('changing viewMode to days');
-		this.setState({
-			viewMode: 'days'
-		});
-	},
+  updateView: function(format) {
+    console.log('changing viewMode to days');
+    this.setState({
+      viewMode: 'days'
+    });
+  },
 
-	componentDidMount: function() {
-		setTimeout(this.updateView, 3000);
-	},
+  componentDidMount: function() {
+    setTimeout(this.updateView, 3000);
+  },
 
-	render: function() {
-		console.log('Current viewmode: ' + this.state.viewMode);
-		return React.createElement(DateTime,
-            { viewMode: this.state.viewMode, defaultValue: moment() });
-	}
+  render: function() {
+    console.log('Current viewmode: ' + this.state.viewMode);
+    return React.createElement(DateTime, {
+      viewMode: this.state.viewMode,
+      defaultValue: moment()
+    });
+  }
 });
 
 ReactDOM.render(
