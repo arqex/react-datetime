@@ -6,6 +6,9 @@ clean:
 install:
 	npm install
 
+snapshot:
+	npm run test:snapshot:update
+
 test:
 	npm run test
 
