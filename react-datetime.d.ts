@@ -75,6 +75,16 @@ declare module ReactDatetime {
     */
     onViewModeChange?: (viewMode: string) => void;
     /*
+      Callback trigger when the user navigates to the previous month, year or group of years.
+      The callback receives the amount and type ('month', 'year') as parameters.
+     */
+    onSubtractTime?: (amount: number, type: string) => void;
+    /*
+      Callback trigger when the user navigates to the next month, year or group of years.
+      The callback receives the amount and type ('month', 'year') as parameters.
+     */
+    onAddTime?: (amount: number, type: string) => void;
+    /*
      The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
      */
     viewMode?: string|number;
@@ -87,8 +97,8 @@ declare module ReactDatetime {
      */
     inputProps?: Object;
     /*
-     Replace the rendering of the input element. The accepted function has openCalendar 
-     (a function which opens the calendar) and the default calculated props for the input. 
+     Replace the rendering of the input element. The accepted function has openCalendar
+     (a function which opens the calendar) and the default calculated props for the input.
      Must return a React component or null.
      */
     renderInput?: (props: Object, openCalendar: Function) => React.Component<any, any>;

@@ -17,6 +17,8 @@ var Datetime = createClass({
 		onBlur: TYPES.func,
 		onChange: TYPES.func,
 		onViewModeChange: TYPES.func,
+		onSubtractTime: TYPES.func,
+		onAddTime: TYPES.func,
 		locale: TYPES.string,
 		utc: TYPES.bool,
 		input: TYPES.bool,
@@ -231,26 +233,29 @@ var Datetime = createClass({
 		};
 	},
 
-	addTime: function( amount, type, toSelected ) {
-		return this.updateTime( 'add', amount, type, toSelected );
+	subtractTime: function( amount, type, toSelected ) {
+		var me = this;
+		return function() {
+			me.props.onSubtractTime( amount, type );
+			me.updateTime( 'subtract', amount, type, toSelected );
+		};
 	},
 
-	subtractTime: function( amount, type, toSelected ) {
-		return this.updateTime( 'subtract', amount, type, toSelected );
+	addTime: function( amount, type, toSelected ) {
+		var me = this;
+		return function() {
+			me.props.onAddTime( amount, type );
+			me.updateTime( 'add', amount, type, toSelected );
+		};
 	},
 
 	updateTime: function( op, amount, type, toSelected ) {
-		var me = this;
+		var update = {},
+			date = toSelected ? 'selectedDate' : 'viewDate';
 
-		return function() {
-			var update = {},
-				date = toSelected ? 'selectedDate' : 'viewDate'
-			;
+		update[ date ] = this.state[ date ].clone()[ op ]( amount, type );
 
-			update[ date ] = me.state[ date ].clone()[ op ]( amount, type );
-
-			me.setState( update );
-		};
+		this.setState( update );
 	},
 
 	allowedSetTime: ['hours', 'minutes', 'seconds', 'milliseconds'],
@@ -436,6 +441,8 @@ Datetime.defaultProps = {
 	onBlur: function() {},
 	onChange: function() {},
 	onViewModeChange: function() {},
+	onSubtractTime: function() {},
+	onAddTime: function() {},
 	timeFormat: true,
 	timeConstraints: {},
 	dateFormat: true,
