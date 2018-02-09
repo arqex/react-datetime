@@ -20,12 +20,13 @@
     "build:mac": "./node_modules/.bin/gulp",
     "build:win": "./node_modules/.bin/gulp.cmd",
     "dev": "./node_modules/.bin/webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
-    "lint": "./node_modules/.bin/eslint src/ DateTime.js test/ && echo 'Linting OK!'",
+    "lint": "./node_modules/.bin/eslint src/ DateTime.js test/ && echo 'Linting OK! 💪'",
+    "notify-pre-commit-hook": "echo '### Starting pre-commit hook 🦄'",
     "test": "./node_modules/.bin/jest",
     "test:typings": "./node_modules/.bin/tsc -p ./typings",
     "test:snapshot": "./node_modules/.bin/jest snapshot",
     "test:snapshot:update": "./node_modules/.bin/jest snapshot --updateSnapshot",
-    "test:all": "npm run test:typings && npm run test",
+    "test:all": "echo 'Running tests...' && npm run test:typings && npm run test && echo 'All tests passed! 🤘'",
     "test:watch": "./node_modules/.bin/jest --watch"
   },
   "keywords": [
@@ -84,6 +85,7 @@
     "react-onclickoutside": "^6.5.0"
   },
   "pre-commit": [
+    "notify-pre-commit-hook",
     "lint",
     "test:all"
   ]
