@@ -220,3 +220,7 @@ td.rdtYear:hover {
 .rdtDayPart {
   margin-top: 43px;
 }
+
+.rdtTime td {
+  cursor: default;
+}
