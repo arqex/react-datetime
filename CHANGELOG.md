@@ -1,5 +1,12 @@
 Changelog
 =========
+## 2.13.0
+* Use more appropriate cursor for empty space in time picker and in day texts
+* Add `viewDate` prop that sets a value when opening the calendar when there is no selected date
+* Make `disableOnClickOutside` work as intended
+* Better touch support for tapping and holding
+* Use static property `defaultProps` instead of `getDefaultProps`
+
 ## 2.12.0
 * The `renderInput` prop now receives `closeCalendar` function as well
 
