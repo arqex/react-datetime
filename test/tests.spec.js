@@ -28,7 +28,9 @@ describe('Datetime', () => {
 		const component = utils.createDatetime({ showTodayButton: true, viewMode: 'years', onChange: onChangeFn, dateFormat: 'MM/DD/YYYY', timeFormat: false,  });
 		const now = moment(new Date());
 
-		const fullDate = (now.month() + 1) + '/' + now.date() + '/' + now.year();
+		const day = now.date() < 10 ? '0' + now.date() : now.date();
+		const month = now.month() + 1 < 10 ? '0' + (now.month() + 1) : (now.month() + 1);
+		const fullDate = month + '/' + day + '/' + now.year();
 
 		utils.clickOnElement(component.find('.rdtTodayButton'));
 		expect(utils.isDayView(component)).toBeTruthy();
@@ -95,8 +97,8 @@ describe('Datetime', () => {
 	});
 
 	it('persistent valid months going monthView->yearView->monthView', () => {
-		const dateBefore = new Date().getFullYear() + '-06-01',
-			component = utils.createDatetime({ viewMode: 'months', isValidDate: (current) =>
+		const dateBefore = '2018-06-01';
+		const component = utils.createDatetime({ viewMode: 'months', isValidDate: (current) =>
 				current.isBefore(moment(dateBefore, 'YYYY-MM-DD'))
 			});
 
@@ -109,9 +111,9 @@ describe('Datetime', () => {
 		expect(utils.isYearView(component)).toBeTruthy();
 
 		expect(utils.getNthYear(component, 0).hasClass('rdtDisabled')).toEqual(false);
-		expect(utils.getNthYear(component, 9).hasClass('rdtDisabled')).toEqual(true);
+		expect(utils.getNthYear(component, 10).hasClass('rdtDisabled')).toEqual(true);
 
-		utils.clickNthYear(component, 8);
+		utils.clickNthYear(component, 9);
 		expect(utils.getNthMonth(component, 4).hasClass('rdtDisabled')).toEqual(false);
 		expect(utils.getNthMonth(component, 5).hasClass('rdtDisabled')).toEqual(true);
 	});
@@ -126,6 +128,18 @@ describe('Datetime', () => {
 		expect(utils.isMonthView(component)).toBeTruthy();
 		utils.clickOnElement(component.find('.rdtSwitch'));
 		expect(utils.isYearView(component)).toBeTruthy();
+	});
+
+	it('toggles calendar when open prop changes', () => {
+		const component = utils.createDatetime({ open: false });
+		expect(utils.isOpen(component)).toBeFalsy();
+		// expect(component.find('.rdtOpen').length).toEqual(0);
+		component.setProps({ open: true });
+		expect(utils.isOpen(component)).toBeTruthy();
+		// expect(component.find('.rdtOpen').length).toEqual(1);
+		component.setProps({ open: false });
+		expect(utils.isOpen(component)).toBeFalsy();
+		// expect(component.find('.rdtOpen').length).toEqual(0);
 	});
 
 	it('selectYear', () => {
@@ -539,6 +553,30 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeTruthy();
 			component.find('.form-control').simulate('keyDown', { key: 'Tab', keyCode: 9, which: 9 });
 			expect(utils.isOpen(component)).toBeTruthy();
+		});
+
+		it('disableOnClickOutside=true', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				component = utils.createDatetime({ value: date, disableOnClickOutside: true });
+
+			expect(utils.isOpen(component)).toBeFalsy();
+			utils.openDatepicker(component);
+			expect(utils.isOpen(component)).toBeTruthy();
+			document.dispatchEvent(new Event('mousedown'));
+			component.update();
+			expect(utils.isOpen(component)).toBeTruthy();
+		});
+
+    it('disableOnClickOutside=false', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				component = utils.createDatetime({ value: date, disableOnClickOutside: false });
+
+			expect(utils.isOpen(component)).toBeFalsy();
+			utils.openDatepicker(component);
+			expect(utils.isOpen(component)).toBeTruthy();
+			document.dispatchEvent(new Event('mousedown'));
+			component.update();
+			expect(utils.isOpen(component)).toBeFalsy();
 		});
 
 		it('increase time', () => {
@@ -1191,5 +1229,54 @@ describe('Datetime', () => {
 			component.find('.form-control').simulate('change', { target: { value: strDate }});
 		});
 
+	});
+
+	describe('with viewDate', () => {
+    it('date value', () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+          strDate = moment(date).format('MMMM YYYY'),
+          component = utils.createDatetime({ viewDate: date });
+      expect(utils.getViewDateValue(component)).toEqual(strDate);
+    });
+
+    it('moment value', () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+          mDate = moment(date),
+          strDate = mDate.format('MMMM YYYY'),
+          component = utils.createDatetime({ viewDate: mDate });
+      expect(utils.getViewDateValue(component)).toEqual(strDate);
+    });
+
+    it('string value', () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+          mDate = moment(date),
+          strDate = mDate.format('L') + ' ' + mDate.format('LT'),
+          expectedStrDate = mDate.format('MMMM YYYY'),
+          component = utils.createDatetime({ viewDate: strDate });
+      expect(utils.getViewDateValue(component)).toEqual(expectedStrDate);
+    });
+
+    it('UTC value from UTC string', () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+          momentDateUTC = moment.utc(date),
+          strDateUTC = momentDateUTC.format('L') + ' ' + momentDateUTC.format('LT'),
+          expectedStrDate = momentDateUTC.format('MMMM YYYY'),
+          component = utils.createDatetime({ viewDate: strDateUTC, utc: true });
+      expect(utils.getViewDateValue(component)).toEqual(expectedStrDate);
+    });
+
+    it('invalid string value', () => {
+      const strDate = 'invalid string',
+          expectedStrDate = moment().format('MMMM YYYY'),
+          component = utils.createDatetime({ viewDate: strDate });
+      expect(utils.getViewDateValue(component)).toEqual(expectedStrDate);
+    });
+
+    it('invalid moment object', () => {
+      const mDate = moment(null),
+          expectedStrDate = moment().format('MMMM YYYY'),
+          component = utils.createDatetime({ viewDate: mDate });
+      expect(utils.getViewDateValue(component)).toEqual(expectedStrDate);
+    });
 	});
 });

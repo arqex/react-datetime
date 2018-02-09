@@ -1,5 +1,5 @@
 /*
-react-datetime v2.11.1
+react-datetime v2.13.0
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -74,6 +74,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		propTypes: {
 			// value: TYPES.object | TYPES.string,
 			// defaultValue: TYPES.object | TYPES.string,
+			// viewDate: TYPES.object | TYPES.string,
 			onFocus: TYPES.func,
 			onBlur: TYPES.func,
 			onChange: TYPES.func,
@@ -93,27 +94,6 @@ return /******/ (function(modules) { // webpackBootstrap
 			closeOnTab: TYPES.bool
 		},
 
-		getDefaultProps: function() {
-			var nof = function() {};
-			return {
-				className: '',
-				defaultValue: '',
-				inputProps: {},
-				input: true,
-				onFocus: nof,
-				onBlur: nof,
-				onChange: nof,
-				onViewModeChange: nof,
-				timeFormat: true,
-				timeConstraints: {},
-				dateFormat: true,
-				strictParsing: true,
-				closeOnSelect: false,
-				closeOnTab: true,
-				utc: false
-			};
-		},
-
 		getInitialState: function() {
 			var state = this.getStateFromProps( this.props );
 
@@ -125,24 +105,33 @@ return /******/ (function(modules) { // webpackBootstrap
 			return state;
 		},
 
+		parseDate: function (date, formats) {
+			var parsedDate;
+
+			if (date && typeof date === 'string')
+				parsedDate = this.localMoment(date, formats.datetime);
+			else if (date)
+				parsedDate = this.localMoment(date);
+
+			if (parsedDate && !parsedDate.isValid())
+				parsedDate = null;
+
+			return parsedDate;
+		},
+
 		getStateFromProps: function( props ) {
 			var formats = this.getFormats( props ),
 				date = props.value || props.defaultValue,
 				selectedDate, viewDate, updateOn, inputValue
 				;
 
-			if ( date && typeof date === 'string' )
-				selectedDate = this.localMoment( date, formats.datetime );
-			else if ( date )
-				selectedDate = this.localMoment( date );
+			selectedDate = this.parseDate(date, formats);
 
-			if ( selectedDate && !selectedDate.isValid() )
-				selectedDate = null;
+			viewDate = this.parseDate(props.viewDate, formats);
 
 			viewDate = selectedDate ?
 				selectedDate.clone().startOf('month') :
-				this.localMoment().startOf('month')
-			;
+				viewDate ? viewDate.clone().startOf('month') : this.localMoment().startOf('month');
 
 			updateOn = this.getUpdateOn(formats);
 
@@ -213,7 +202,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			if ( updatedState.open === undefined ) {
-				if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
+				if ( typeof nextProps.open !== 'undefined' ) {
+					updatedState.open = nextProps.open;
+				} else if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
 					updatedState.open = false;
 				} else {
 					updatedState.open = this.state.open;
@@ -437,7 +428,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		handleClickOutside: function() {
-			if ( this.props.input && this.state.open && !this.props.open ) {
+			if ( this.props.input && this.state.open && !this.props.open && !this.props.disableOnClickOutside ) {
 				this.setState({ open: false }, function() {
 					this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 				});
@@ -475,7 +466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			return this.props.showTodayButton ? React.createElement(
 				'button',
-				{key: key, className: classes, onClick: isValid ? this.goToToday : undefined},
+				{key: key, className: classes, onClick: isValid ? this.goToToday : undefined, 'data-automation': 'actionSelectToday', 'data-status': isValid ? 'enabled' : 'disabled' },
 				'Today'
 			) : undefined;
 		},
@@ -523,7 +514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					value: this.state.inputValue,
 				}, this.props.inputProps);
 				if ( this.props.renderInput ) {
-					children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar )) ];
+					children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar, this.closeCalendar )) ];
 				} else {
 					children = [ React.createElement('input', assign({ key: 'i' }, finalInputProps ))];
 				}
@@ -542,6 +533,24 @@ return /******/ (function(modules) { // webpackBootstrap
 			));
 		}
 	});
+
+	Datetime.defaultProps = {
+		className: '',
+		defaultValue: '',
+		inputProps: {},
+		input: true,
+		onFocus: function() {},
+		onBlur: function() {},
+		onChange: function() {},
+		onViewModeChange: function() {},
+		timeFormat: true,
+		timeConstraints: {},
+		dateFormat: true,
+		strictParsing: true,
+		closeOnSelect: false,
+		closeOnTab: true,
+		utc: false
+	};
 
 	// Make moment accessible through the Datetime class
 	Datetime.moment = moment;
@@ -2096,6 +2105,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    componentWillUnmount: 'DEFINE_MANY',
 
+	    /**
+	     * Replacement for (deprecated) `componentWillMount`.
+	     *
+	     * @optional
+	     */
+	    UNSAFE_componentWillMount: 'DEFINE_MANY',
+
+	    /**
+	     * Replacement for (deprecated) `componentWillReceiveProps`.
+	     *
+	     * @optional
+	     */
+	    UNSAFE_componentWillReceiveProps: 'DEFINE_MANY',
+
+	    /**
+	     * Replacement for (deprecated) `componentWillUpdate`.
+	     *
+	     * @optional
+	     */
+	    UNSAFE_componentWillUpdate: 'DEFINE_MANY',
+
 	    // ==== Advanced methods ====
 
 	    /**
@@ -2109,6 +2139,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @overridable
 	     */
 	    updateComponent: 'OVERRIDE_BASE'
+	  };
+
+	  /**
+	   * Similar to ReactClassInterface but for static methods.
+	   */
+	  var ReactClassStaticInterface = {
+	    /**
+	     * This method is invoked after a component is instantiated and when it
+	     * receives new props. Return an object to update state in response to
+	     * prop changes. Return null to indicate no change to state.
+	     *
+	     * If an object is returned, its keys will be merged into the existing state.
+	     *
+	     * @return {object || null}
+	     * @optional
+	     */
+	    getDerivedStateFromProps: 'DEFINE_MANY_MERGED'
 	  };
 
 	  /**
@@ -2345,6 +2392,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!statics) {
 	      return;
 	    }
+
 	    for (var name in statics) {
 	      var property = statics[name];
 	      if (!statics.hasOwnProperty(name)) {
@@ -2361,14 +2409,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        name
 	      );
 
-	      var isInherited = name in Constructor;
-	      _invariant(
-	        !isInherited,
-	        'ReactClass: You are attempting to define ' +
-	          '`%s` on your component more than once. This conflict may be ' +
-	          'due to a mixin.',
-	        name
-	      );
+	      var isAlreadyDefined = name in Constructor;
+	      if (isAlreadyDefined) {
+	        var specPolicy = ReactClassStaticInterface.hasOwnProperty(name)
+	          ? ReactClassStaticInterface[name]
+	          : null;
+
+	        _invariant(
+	          specPolicy === 'DEFINE_MANY_MERGED',
+	          'ReactClass: You are attempting to define ' +
+	            '`%s` on your component more than once. This conflict may be ' +
+	            'due to a mixin.',
+	          name
+	        );
+
+	        Constructor[name] = createMergedResultFunction(Constructor[name], property);
+
+	        return;
+	      }
+
 	      Constructor[name] = property;
 	    }
 	  }
@@ -2678,6 +2737,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?',
 	        spec.displayName || 'A component'
 	      );
+	      warning(
+	        !Constructor.prototype.UNSAFE_componentWillRecieveProps,
+	        '%s has a method called UNSAFE_componentWillRecieveProps(). ' +
+	          'Did you mean UNSAFE_componentWillReceiveProps()?',
+	        spec.displayName || 'A component'
+	      );
 	    }
 
 	    // Reduce time spent doing lookups by setting these on the prototype.
@@ -2875,9 +2940,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			tableChildren = [
 				React.createElement('thead', { key: 'th' }, [
 					React.createElement('tr', { key: 'h' }, [
-						React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span', {}, '‹' )),
-						React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-						React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span', {}, '›' ))
+						React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' ), 'data-automation': 'actionPrevMonth'}, React.createElement('span', {}, '‹' )),
+						React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), 'data-automation': 'actionSwitchToMonthsView', colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
+						React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' ), 'data-automation': 'actionNextMonth'}, React.createElement('span', {}, '›' ))
 					]),
 					React.createElement('tr', { key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th', { key: day + index, className: 'dow'}, day ); }) )
 				]),
@@ -2950,7 +3015,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				dayProps = {
 					key: prevMonth.format( 'M_D' ),
 					'data-value': prevMonth.date(),
-					className: classes
+					className: classes,
+					'data-automation': currentDate.year() + '_' + (currentDate.month() + 1) + '_' + currentDate.date(),
+					'data-status': classes.indexOf('rdtDisabled') === -1 ? 'enabled' : 'disabled'
 				};
 
 				if ( !isDisabled )
@@ -3137,12 +3204,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	var touchEvents = ['touchstart', 'touchmove'];
 	var IGNORE_CLASS_NAME = 'ignore-react-onclickoutside';
 	/**
+	 * Options for addEventHandler and removeEventHandler
+	 */
+
+	function getEventHandlerOptions(instance, eventName) {
+	  var handlerOptions = null;
+	  var isTouchEvent = touchEvents.indexOf(eventName) !== -1;
+
+	  if (isTouchEvent && passiveEventSupport) {
+	    handlerOptions = {
+	      passive: !instance.props.preventDefault
+	    };
+	  }
+
+	  return handlerOptions;
+	}
+	/**
 	 * This function generates the HOC function that you'll use
 	 * in order to impart onOutsideClick listening to an
 	 * arbitrary component. It gets called at the end of the
 	 * bootstrapping code to yield an instance of the
 	 * onClickOutsideHOC function defined inside setupHOC().
 	 */
+
 
 	function onClickOutsideHOC(WrappedComponent, config) {
 	  var _class, _temp;
@@ -3218,16 +3302,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 
 	        events.forEach(function (eventName) {
-	          var handlerOptions = null;
-	          var isTouchEvent = touchEvents.indexOf(eventName) !== -1;
-
-	          if (isTouchEvent && passiveEventSupport) {
-	            handlerOptions = {
-	              passive: !_this.props.preventDefault
-	            };
-	          }
-
-	          document.addEventListener(eventName, handlersMap[_this._uid], handlerOptions);
+	          document.addEventListener(eventName, handlersMap[_this._uid], getEventHandlerOptions(_this, eventName));
 	        });
 	      };
 
@@ -3243,7 +3318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 
 	          events.forEach(function (eventName) {
-	            return document.removeEventListener(eventName, fn);
+	            return document.removeEventListener(eventName, fn, getEventHandlerOptions(_this, eventName));
 	          });
 	          delete handlersMap[_this._uid];
 	        }
@@ -3372,9 +3447,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		render: function() {
 			return React.createElement('div', { className: 'rdtMonths' }, [
 				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' ), 'data-automation': 'actionPrevYear'}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), 'data-automation': 'actionSwitchToYearsView', colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' ), 'data-automation': 'actionNextYear'}, React.createElement('span', {}, '›' ))
 				]))),
 				React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths())),
 				this.props.renderTodayButton('todayMonths')
@@ -3421,7 +3496,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				props = {
 					key: i,
 					'data-value': i,
-					className: classes
+					className: classes,
+					'data-automation': year + '_' + (i + 1),
+					'data-status': classes.indexOf('rdtDisabled') !== -1 ? 'enabled' : 'disabled'
 				};
 
 				if ( !isDisabled )
@@ -3488,9 +3565,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			return React.createElement('div', { className: 'rdtYears' }, [
 				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' ), 'data-automation': 'actionPrevDecade'}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), 'data-automation': 'buttonTopView', colSpan: 2 }, year + '-' + ( year + 9 ) ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' ), 'data-automation': 'actionNextDecade'}, React.createElement('span', {}, '›' ))
 				]))),
 				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year ))),
 				this.props.renderTodayButton('todayYears')
@@ -3542,7 +3619,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				props = {
 					key: year,
 					'data-value': year,
-					className: classes
+					className: classes,
+					'data-automation': year,
+					'data-status': classes.indexOf('rdtDisabled') !== -1 ? 'enabled' : 'disabled'
 				};
 
 				if ( !isDisabled )
@@ -3648,9 +3727,9 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 				}
 				return React.createElement('div', { key: type, className: 'rdtCounter' }, [
-					React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
+					React.createElement('span', { key: 'up', className: 'rdtBtn', onTouchStart: this.onStartClicking('increase', type), onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
 					React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
-					React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
+					React.createElement('span', { key: 'do', className: 'rdtBtn', onTouchStart: this.onStartClicking('decrease', type), onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
 				]);
 			}
 			return '';
@@ -3658,9 +3737,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		renderDayPart: function() {
 			return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
-				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onTouchStart: this.onStartClicking('toggleDayPart', 'hours'), onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
 				React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onTouchStart: this.onStartClicking('toggleDayPart', 'hours'), onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
 			]);
 		},
 
@@ -3770,9 +3849,11 @@ return /******/ (function(modules) { // webpackBootstrap
 					clearInterval( me.increaseTimer );
 					me.props.setTime( type, me.state[ type ] );
 					document.body.removeEventListener( 'mouseup', me.mouseUpListener );
+					document.body.removeEventListener( 'touchend', me.mouseUpListener );
 				};
 
 				document.body.addEventListener( 'mouseup', me.mouseUpListener );
+				document.body.addEventListener( 'touchend', me.mouseUpListener );
 			};
 		},
 

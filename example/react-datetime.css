@@ -101,6 +101,7 @@
 .rdtPicker .dow {
   width: 14.2857%;
   border-bottom: none;
+  cursor: default;
 }
 .rdtPicker th.rdtSwitch {
   width: 100px;
@@ -239,4 +240,8 @@ td.rdtYear:hover {
 .rdtTodayButton.rdtDisabled {
     color: #999999;
     cursor: not-allowed;
+}
+
+.rdtTime td {
+  cursor: default;
 }
