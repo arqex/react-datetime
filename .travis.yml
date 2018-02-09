@@ -12,3 +12,5 @@ script:
   - npm run test:all
 before_install:
 - export TZ=Europe/Stockholm
+notifications:
+  email: false

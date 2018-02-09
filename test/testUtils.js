@@ -120,5 +120,9 @@ module.exports = {
 
 	getInputValue: (datetime) => {
 		return datetime.find('.rdt > .form-control').getDOMNode().value;
+	},
+
+	getViewDateValue: (datetime) => {
+		return datetime.find('.rdtSwitch').getDOMNode().innerHTML;
 	}
 };
