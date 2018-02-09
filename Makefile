@@ -1,7 +1,10 @@
-.PHONY: all clean install test
+.PHONY: all clean dev install snapshot test test-watch
 
 clean:
 	rm -rf node_modules
+
+dev:
+	npm run dev
 
 install:
 	npm install
