@@ -1062,7 +1062,7 @@ describe('Datetime', () => {
 
 	});
 
-	describe('onSubtractTime', () => {
+	describe('onAddTime', () => {
 		it('when moving to next month', () => {
 			const component = utils.createDatetime({ onAddTime: (amount, type) => {
 				expect(amount).toEqual(1);
@@ -1091,7 +1091,7 @@ describe('Datetime', () => {
 		});
 	});
 
-	describe('onAddTime', () => {
+	describe('onSubtractTime', () => {
 		it('when moving to previous month', () => {
 			const component = utils.createDatetime({ onSubtractTime: (amount, type) => {
 				expect(amount).toEqual(1);
