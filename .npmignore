@@ -2,6 +2,7 @@
 node_modules
 example
 .idea
+test
 
 # Files
 *~

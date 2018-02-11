@@ -96,6 +96,7 @@
 .rdtPicker .dow {
   width: 14.2857%;
   border-bottom: none;
+  cursor: default;
 }
 .rdtPicker th.rdtSwitch {
   width: 100px;
@@ -210,4 +211,8 @@ td.rdtYear:hover {
   width: 100%;
   font-size: 1.2em;
   margin-top: 37px;
+}
+
+.rdtTime td {
+  cursor: default;
 }
