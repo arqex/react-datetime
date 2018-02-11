@@ -1,5 +1,5 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Datetime from '../DateTime'; // eslint-disable-line no-unused-vars
 
 const simulateClickOnElement = (element) => {
@@ -14,6 +14,10 @@ const simulateClickOnElement = (element) => {
 module.exports = {
 	createDatetime: (props) => {
 		return mount(<Datetime {...props} />);
+	},
+
+	createDatetimeShallow: (props) => {
+		return shallow(<Datetime {...props} />);
 	},
 
 	/*

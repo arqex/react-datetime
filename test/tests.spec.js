@@ -374,8 +374,8 @@ describe('Datetime', () => {
 			expect(utils.isTimeView(component)).toBeTruthy();
 		});
 
-		xit('className -> type string', () => {
-			const component = utils.createDatetime({ className: 'custom-class' });
+		it('className -> type string', () => {
+			const component = utils.createDatetimeShallow({ className: 'custom-class' });
 			expect(component.find('.custom-class').length).toEqual(1);
 		});
 
