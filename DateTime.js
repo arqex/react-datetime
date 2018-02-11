@@ -8,6 +8,13 @@ var assign = require('object-assign'),
 	CalendarContainer = require('./src/CalendarContainer')
 	;
 
+var viewModes = Object.freeze({
+	YEARS: 'years',
+	MONTHS: 'months',
+	DAYS: 'days',
+	TIME: 'time',
+});
+
 var TYPES = PropTypes;
 var Datetime = createClass({
 	propTypes: {
@@ -25,7 +32,7 @@ var Datetime = createClass({
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
 		timeConstraints: TYPES.object,
-		viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
+		viewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
@@ -39,7 +46,8 @@ var Datetime = createClass({
 		if ( state.open === undefined )
 			state.open = !this.props.input;
 
-		state.currentView = this.props.dateFormat ? (this.props.viewMode || state.updateOn || 'days') : 'time';
+		state.currentView = this.props.dateFormat ?
+			(this.props.viewMode || state.updateOn || viewModes.DAYS) : viewModes.TIME;
 
 		return state;
 	},
@@ -93,14 +101,14 @@ var Datetime = createClass({
 
 	getUpdateOn: function( formats ) {
 		if ( formats.date.match(/[lLD]/) ) {
-			return 'days';
+			return viewModes.DAYS;
 		} else if ( formats.date.indexOf('M') !== -1 ) {
-			return 'months';
+			return viewModes.MONTHS;
 		} else if ( formats.date.indexOf('Y') !== -1 ) {
-			return 'years';
+			return viewModes.YEARS;
 		}
 
-		return 'days';
+		return viewModes.DAYS;
 	},
 
 	getFormats: function( props ) {
@@ -114,7 +122,7 @@ var Datetime = createClass({
 		if ( formats.date === true ) {
 			formats.date = locale.longDateFormat('L');
 		}
-		else if ( this.getUpdateOn(formats) !== 'days' ) {
+		else if ( this.getUpdateOn(formats) !== viewModes.DAYS ) {
 			formats.time = '';
 		}
 
@@ -143,7 +151,7 @@ var Datetime = createClass({
 		if ( updatedState.open === undefined ) {
 			if ( typeof nextProps.open !== 'undefined' ) {
 				updatedState.open = nextProps.open;
-			} else if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
+			} else if ( this.props.closeOnSelect && this.state.currentView !== viewModes.TIME ) {
 				updatedState.open = false;
 			} else {
 				updatedState.open = this.state.open;
@@ -232,8 +240,8 @@ var Datetime = createClass({
 	setDate: function( type ) {
 		var me = this,
 			nextViews = {
-				month: 'days',
-				year: 'months'
+				month: viewModes.DAYS,
+				year: viewModes.MONTHS,
 			}
 		;
 		return function( e ) {
