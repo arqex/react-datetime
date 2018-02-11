@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.14.0
+* Make `viewDate` dynamic
+
 ## 2.13.0
 * Use more appropriate cursor for empty space in time picker and in day texts
 * Add `viewDate` prop that sets a value when opening the calendar when there is no selected date
@@ -22,8 +25,8 @@ Changelog
 * Add renderInput prop which let's the consumer of the component render their own HTML input element
 
 ## 2.10.3
-* Update react-onclickoutside dependancy
-* Remove isValidDate check before rendering as implementation was causing crashes in some ednge cases.
+* Update react-onclickoutside dependency
+* Remove isValidDate check before rendering as implementation was causing crashes in some edge cases.
 
 ## 2.10.2
 * Move @types/react back to devDependencies

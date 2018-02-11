@@ -1,5 +1,5 @@
 /*
-react-datetime v2.12.0
+react-datetime v2.14.0
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -69,6 +69,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		CalendarContainer = __webpack_require__(18)
 		;
 
+	var viewModes = Object.freeze({
+		YEARS: 'years',
+		MONTHS: 'months',
+		DAYS: 'days',
+		TIME: 'time',
+	});
+
 	var TYPES = PropTypes;
 	var Datetime = createClass({
 		propTypes: {
@@ -86,7 +93,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			// timeFormat: TYPES.string | TYPES.bool,
 			inputProps: TYPES.object,
 			timeConstraints: TYPES.object,
-			viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
+			viewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
 			isValidDate: TYPES.func,
 			open: TYPES.bool,
 			strictParsing: TYPES.bool,
@@ -100,7 +107,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( state.open === undefined )
 				state.open = !this.props.input;
 
-			state.currentView = this.props.dateFormat ? (this.props.viewMode || state.updateOn || 'days') : 'time';
+			state.currentView = this.props.dateFormat ?
+				(this.props.viewMode || state.updateOn || viewModes.DAYS) : viewModes.TIME;
 
 			return state;
 		},
@@ -154,14 +162,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		getUpdateOn: function( formats ) {
 			if ( formats.date.match(/[lLD]/) ) {
-				return 'days';
+				return viewModes.DAYS;
 			} else if ( formats.date.indexOf('M') !== -1 ) {
-				return 'months';
+				return viewModes.MONTHS;
 			} else if ( formats.date.indexOf('Y') !== -1 ) {
-				return 'years';
+				return viewModes.YEARS;
 			}
 
-			return 'days';
+			return viewModes.DAYS;
 		},
 
 		getFormats: function( props ) {
@@ -175,7 +183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( formats.date === true ) {
 				formats.date = locale.longDateFormat('L');
 			}
-			else if ( this.getUpdateOn(formats) !== 'days' ) {
+			else if ( this.getUpdateOn(formats) !== viewModes.DAYS ) {
 				formats.time = '';
 			}
 
@@ -204,7 +212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( updatedState.open === undefined ) {
 				if ( typeof nextProps.open !== 'undefined' ) {
 					updatedState.open = nextProps.open;
-				} else if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
+				} else if ( this.props.closeOnSelect && this.state.currentView !== viewModes.TIME ) {
 					updatedState.open = false;
 				} else {
 					updatedState.open = this.state.open;
@@ -243,6 +251,10 @@ return /******/ (function(modules) { // webpackBootstrap
 						updatedState.inputValue = updatedState.selectedDate.format(formats.datetime);
 					}
 				}
+			}
+
+			if ( nextProps.viewDate !== this.props.viewDate ) {
+				updatedState.viewDate = moment(nextProps.viewDate);
 			}
 			//we should only show a valid date if we are provided a isValidDate function. Removed in 2.10.3
 			/*if (this.props.isValidDate) {
@@ -289,8 +301,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		setDate: function( type ) {
 			var me = this,
 				nextViews = {
-					month: 'days',
-					year: 'months'
+					month: viewModes.DAYS,
+					year: viewModes.MONTHS,
 				}
 			;
 			return function( e ) {
