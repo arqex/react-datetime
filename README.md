@@ -200,6 +200,39 @@ class MyDTPicker extends React.Component<MyDTPickerProps, MyDTPickerState> {
 }
 ```
 
+## Manually Opening the Calendar
+
+In some cases, you'll want to manually get the calendar to open. While you can do so by setting `open` to `true`, another approach is to call the calendar's `openCalendar` method. For that, you'll need to make the calendar available via its `ref` property: 
+
+```js
+class Calendar extends React.Component {
+  constructor() {
+    super();
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.datetime.openCalendar}>Open</button>
+        <Datetime
+          ref={ref => {
+            this.datetime = ref;
+          }}
+        />
+      </div>
+    );
+  }
+}
+```
+
+Note that if you would like to modify the parent component's `state` at the same time, you'll need to call `openCalendar` in your `setState`'s callback: 
+
+```js
+this.setState({ foo: 'bar' }, this.datetime.openCalendar);
+```
+
+Here is a more complex example involving [two calendars](https://codesandbox.io/s/m3rwm69mlj).
+
 ## Contributions
 For information about how to contribute, see the [CONTRIBUTING](.github/CONTRIBUTING.md) file.
 
