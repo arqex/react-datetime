@@ -17,6 +17,7 @@ var viewModes = Object.freeze({
 
 var TYPES = PropTypes;
 var Datetime = createClass({
+	displayName: 'DateTime',
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
