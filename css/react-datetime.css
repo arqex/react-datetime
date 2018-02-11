@@ -1,4 +1,4 @@
-/*!
+/*/
  * https://github.com/YouCanBookMe/react-datetime
  */
 
@@ -211,6 +211,26 @@ td.rdtYear:hover {
   width: 100%;
   font-size: 1.2em;
   margin-top: 37px;
+}
+
+.rdtTodayButton {
+    display: block;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    border: none;
+    border-radius: 0;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.rdtTodayButton:focus {
+    outline: none;
+}
+
+.rdtTodayButton.rdtDisabled {
+    color: #999999;
+    cursor: not-allowed;
 }
 
 .rdtTime td {

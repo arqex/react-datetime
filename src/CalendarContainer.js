@@ -13,7 +13,7 @@ var CalendarContainer = createClass({
 		days: DaysView,
 		months: MonthsView,
 		years: YearsView,
-		time: TimeView
+		time: TimeView,
 	},
 
 	render: function() {

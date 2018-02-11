@@ -1,5 +1,5 @@
 /*
-react-datetime v2.12.0
+react-datetime v2.13.0
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -155,7 +155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		getUpdateOn: function( formats ) {
 			if ( formats.date.match(/[lLD]/) ) {
 				return 'days';
-			} else if ( formats.date.indexOf('M') !== -1 ) {
+			} else if ( formats.date.match(/[MQ]/) ) {
 				return 'months';
 			} else if ( formats.date.indexOf('Y') !== -1 ) {
 				return 'years';
@@ -375,6 +375,16 @@ return /******/ (function(modules) { // webpackBootstrap
 					.month( currentDate.month() )
 					.date( currentDate.date() )
 					.year( parseInt( target.getAttribute('data-value'), 10 ) );
+			} else if (target.className.indexOf('rdtTodayButton') !== -1) {
+				var now = moment(new Date());
+				date = viewDate.clone()
+					.month( now.month() )
+					.date( now.date() )
+					.year( now.year() );
+
+				this.setState({
+					currentView: 'days'
+				});
 			}
 
 			date.hours( currentDate.hours() )
@@ -392,7 +402,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					selectedDate: date,
 					viewDate: date.clone().startOf('month'),
 					inputValue: date.format( this.state.inputFormat ),
-					open: open
+					open: open,
 				});
 			} else {
 				if ( this.props.closeOnSelect && close ) {
@@ -434,10 +444,37 @@ return /******/ (function(modules) { // webpackBootstrap
 			return m;
 		},
 
+		goToToday: function (e) {
+			this.updateSelectedDate(e);
+		},
+
+		alwaysValidDate: function () {
+			return true;
+		},
+
+		renderTodayButton: function (key) {
+			var now = moment(new Date());
+			var date = this.state.viewDate.clone()
+				.month( now.month() )
+				.date( now.date() )
+				.year( now.year() );
+
+			var isValidDate = this.props.isValidDate || this.alwaysValidDate;
+
+			var isValid = date.isValid && isValidDate(date);
+			var classes = isValid ? 'rdtTodayButton' : 'rdtTodayButton rdtDisabled';
+
+			return this.props.showTodayButton ? React.createElement(
+				'button',
+				{key: key, className: classes, onClick: isValid ? this.goToToday : undefined, 'data-automation': 'actionSelectToday', 'data-status': isValid ? 'enabled' : 'disabled' },
+				'Today'
+			) : undefined;
+		},
+
 		componentProps: {
 			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
 			fromState: ['viewDate', 'selectedDate', 'updateOn'],
-			fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
+			fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside', 'renderTodayButton']
 		},
 
 		getComponentProps: function() {
@@ -463,8 +500,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			// TODO: Make a function or clean up this code,
 			// logic right now is really hard to follow
 			var className = 'rdt' + (this.props.className ?
-	                  ( Array.isArray( this.props.className ) ?
-	                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
+				( Array.isArray( this.props.className ) ? ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 				children = [];
 
 			if ( this.props.input ) {
@@ -2870,7 +2906,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			days: DaysView,
 			months: MonthsView,
 			years: YearsView,
-			time: TimeView
+			time: TimeView,
 		},
 
 		render: function() {
@@ -2904,9 +2940,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			tableChildren = [
 				React.createElement('thead', { key: 'th' }, [
 					React.createElement('tr', { key: 'h' }, [
-						React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span', {}, '‹' )),
-						React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-						React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span', {}, '›' ))
+						React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' ), 'data-automation': 'actionPrevMonth'}, React.createElement('span', {}, '‹' )),
+						React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), 'data-automation': 'actionSwitchToMonthsView', colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
+						React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' ), 'data-automation': 'actionNextMonth'}, React.createElement('span', {}, '›' ))
 					]),
 					React.createElement('tr', { key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th', { key: day + index, className: 'dow'}, day ); }) )
 				]),
@@ -2917,7 +2953,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				tableChildren.push( footer );
 
 			return React.createElement('div', { className: 'rdtDays' },
-				React.createElement('table', {}, tableChildren )
+				[React.createElement('table', {key: 'daysTable'}, tableChildren ), this.props.renderTodayButton('todayDays')]
 			);
 		},
 
@@ -2979,7 +3015,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				dayProps = {
 					key: prevMonth.format( 'M_D' ),
 					'data-value': prevMonth.date(),
-					className: classes
+					className: classes,
+					'data-automation': currentDate.year() + '_' + (currentDate.month() + 1) + '_' + currentDate.date(),
+					'data-status': classes.indexOf('rdtDisabled') === -1 ? 'enabled' : 'disabled'
 				};
 
 				if ( !isDisabled )
@@ -3409,11 +3447,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		render: function() {
 			return React.createElement('div', { className: 'rdtMonths' }, [
 				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' ), 'data-automation': 'actionPrevYear'}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), 'data-automation': 'actionSwitchToYearsView', colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' ), 'data-automation': 'actionNextYear'}, React.createElement('span', {}, '›' ))
 				]))),
-				React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
+				React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths())),
+				this.props.renderTodayButton('todayMonths')
 			]);
 		},
 
@@ -3457,7 +3496,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				props = {
 					key: i,
 					'data-value': i,
-					className: classes
+					className: classes,
+					'data-automation': year + '_' + (i + 1),
+					'data-status': classes.indexOf('rdtDisabled') !== -1 ? 'enabled' : 'disabled'
 				};
 
 				if ( !isDisabled )
@@ -3524,11 +3565,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			return React.createElement('div', { className: 'rdtYears' }, [
 				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' ), 'data-automation': 'actionPrevDecade'}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), 'data-automation': 'buttonTopView', colSpan: 2 }, year + '-' + ( year + 9 ) ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' ), 'data-automation': 'actionNextDecade'}, React.createElement('span', {}, '›' ))
 				]))),
-				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
+				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year ))),
+				this.props.renderTodayButton('todayYears')
 			]);
 		},
 
@@ -3577,7 +3619,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				props = {
 					key: year,
 					'data-value': year,
-					className: classes
+					className: classes,
+					'data-automation': year,
+					'data-status': classes.indexOf('rdtDisabled') !== -1 ? 'enabled' : 'disabled'
 				};
 
 				if ( !isDisabled )

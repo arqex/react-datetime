@@ -17,6 +17,39 @@ describe('Datetime', () => {
 		expect(component.find('.rdt > .rdtPicker').length).toEqual(1);
 	});
 
+	it('renders a today button', () => {
+		const component = utils.createDatetime({ showTodayButton: true });
+
+		expect(component.find('.rdtTodayButton').length).toEqual(1);
+	});
+
+	it('sets today date when today button is clicked', () => {
+		const onChangeFn = jest.fn();
+		const component = utils.createDatetime({ showTodayButton: true, viewMode: 'years', onChange: onChangeFn, dateFormat: 'MM/DD/YYYY', timeFormat: false,  });
+		const now = moment(new Date());
+
+		const day = now.date() < 10 ? '0' + now.date() : now.date();
+		const month = now.month() + 1 < 10 ? '0' + (now.month() + 1) : (now.month() + 1);
+		const fullDate = month + '/' + day + '/' + now.year();
+
+		utils.clickOnElement(component.find('.rdtTodayButton'));
+		expect(utils.isDayView(component)).toBeTruthy();
+		expect(component.find('.rdt > input').getDOMNode().getAttribute('value')).toEqual(fullDate);
+		expect(onChangeFn).toHaveBeenCalled();
+	});
+
+	it('disables today button is today is not a valid date', () => {
+		const component = utils.createDatetime({ showTodayButton: true,
+			dateFormat: 'MM/DD/YYYY', timeFormat: false, isValidDate: function(current) {
+				return current.isBefore(moment().startOf('month'));
+			} });
+		const onChangeFn = jest.fn();
+
+		expect(component.find('.rdtTodayButton').hasClass('rdtDisabled')).toBeTruthy();
+		utils.clickOnElement(component.find('.rdtTodayButton'));
+		expect(onChangeFn).not.toHaveBeenCalled();
+	});
+
 	it('viewMode=days: renders days, week days, month, year', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
@@ -406,7 +439,7 @@ describe('Datetime', () => {
 			const component = utils.createDatetime({ renderInput });
 
 			expect(component.find('button.custom-open').length).toEqual(1);
-            expect(utils.isOpen(component)).toBeFalsy();
+			expect(utils.isOpen(component)).toBeFalsy();
 			utils.clickOnElement(component.find('button.custom-open'));
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
@@ -1055,10 +1088,33 @@ describe('Datetime', () => {
 				utils.clickNthDay(component, 9);
 			});
 
+			it('when selecting date with week of year in dateFormat', (done) => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					mDate = moment(date),
+					component = utils.createDatetime({ defaultValue: date, dateFormat: 'gggg-[W]ww', onChange: (selected) => {
+						expect(selected.date()).toEqual(2);
+						expect(selected.month()).toEqual(mDate.month());
+						expect(selected.year()).toEqual(mDate.year());
+						done();
+					}});
+
+				utils.clickNthDay(component, 7);
+			});
+
 			it('when selecting month', () => {
 				const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2),
 					onChangeFn = jest.fn(),
 					component = utils.createDatetime({ defaultValue: date, dateFormat: 'YYYY-MM', onChange: onChangeFn });
+
+				utils.clickNthMonth(component, 2);
+				expect(onChangeFn).toHaveBeenCalledTimes(1);
+				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual('2000-03-15T02:02:02.002Z');
+			});
+
+			it('when selecting month with quarter in dateFormat', () => {
+				const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2),
+					onChangeFn = jest.fn(),
+					component = utils.createDatetime({ defaultValue: date, dateFormat: 'YYYY-[Q]Q', onChange: onChangeFn });
 
 				utils.clickNthMonth(component, 2);
 				expect(onChangeFn).toHaveBeenCalledTimes(1);
