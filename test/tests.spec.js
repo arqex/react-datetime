@@ -1065,6 +1065,7 @@ describe('Datetime', () => {
 				expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual('2000-03-15T02:02:02.002Z');
 			});
 
+			// Passes locally but not on Travis
 			xit('when selecting year', () => {
 				const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2),
 					onChangeFn = jest.fn(),
