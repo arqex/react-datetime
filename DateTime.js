@@ -183,6 +183,10 @@ var Datetime = createClass({
 				}
 			}
 		}
+
+		if ( nextProps.viewDate !== this.props.viewDate ) {
+			updatedState.viewDate = nextProps.viewDate;
+		}
 		//we should only show a valid date if we are provided a isValidDate function. Removed in 2.10.3
 		/*if (this.props.isValidDate) {
 			updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
