@@ -1087,6 +1087,64 @@ describe('Datetime', () => {
 
 	});
 
+	describe('onNavigateForward', () => {
+		it('when moving to next month', () => {
+			const component = utils.createDatetime({ onNavigateForward: (amount, type) => {
+				expect(amount).toEqual(1);
+				expect(type).toEqual('months');
+			}});
+
+			utils.clickOnElement(component.find('.rdtNext'));
+		});
+
+		it('when moving to next year', () => {
+			const component = utils.createDatetime({ viewMode: 'months', onNavigateForward: (amount, type) => {
+				expect(amount).toEqual(1);
+				expect(type).toEqual('years');
+			}});
+
+			utils.clickOnElement(component.find('.rdtNext'));
+		});
+
+		it('when moving decade forward', () => {
+			const component = utils.createDatetime({ viewMode: 'years', onNavigateForward: (amount, type) => {
+				expect(amount).toEqual(10);
+				expect(type).toEqual('years');
+			}});
+
+			utils.clickOnElement(component.find('.rdtNext'));
+		});
+	});
+
+	describe('onNavigateBack', () => {
+		it('when moving to previous month', () => {
+			const component = utils.createDatetime({ onNavigateBack: (amount, type) => {
+				expect(amount).toEqual(1);
+				expect(type).toEqual('months');
+			}});
+
+			utils.clickOnElement(component.find('.rdtPrev'));
+		});
+
+		it('when moving to previous year', () => {
+			const component = utils.createDatetime({ viewMode: 'months', onNavigateBack: (amount, type) => {
+				expect(amount).toEqual(1);
+				expect(type).toEqual('years');
+			}});
+
+			utils.clickOnElement(component.find('.rdtPrev'));
+		});
+
+		it('when moving decade back', () => {
+			const component = utils.createDatetime({ viewMode: 'years', onNavigateBack: (amount, type) => {
+				expect(amount).toEqual(10);
+				expect(type).toEqual('years');
+			}});
+
+			utils.clickOnElement(component.find('.rdtPrev'));
+		});
+	});
+
 	describe('with set value', () => {
 		it('date value', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),

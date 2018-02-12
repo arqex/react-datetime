@@ -99,6 +99,16 @@ declare namespace ReactDatetimeClass {
          */
         onViewModeChange?: (viewMode: string) => void;
         /*
+         Callback trigger when the user navigates to the previous month, year or decade.
+         The callback receives the amount and type ('month', 'year') as parameters.
+         */
+        onNavigateBack?: (amount: number, type: string) => void;
+        /*
+         Callback trigger when the user navigates to the next month, year or decade.
+         The callback receives the amount and type ('month', 'year') as parameters.
+         */
+        onNavigateForward?: (amount: number, type: string) => void;
+        /*
          The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
          */
         viewMode?: ViewMode | number;
