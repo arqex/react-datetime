@@ -75,15 +75,15 @@ declare module ReactDatetime {
     */
     onViewModeChange?: (viewMode: string) => void;
     /*
-      Callback trigger when the user navigates to the previous month, year or group of years.
+      Callback trigger when the user navigates to the previous month, year or decade.
       The callback receives the amount and type ('month', 'year') as parameters.
      */
-    onSubtractTime?: (amount: number, type: string) => void;
+    onNavigateBack?: (amount: number, type: string) => void;
     /*
-      Callback trigger when the user navigates to the next month, year or group of years.
+      Callback trigger when the user navigates to the next month, year or decade.
       The callback receives the amount and type ('month', 'year') as parameters.
      */
-    onAddTime?: (amount: number, type: string) => void;
+    onNavigateForward?: (amount: number, type: string) => void;
     /*
      The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
      */

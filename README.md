@@ -53,8 +53,8 @@ render: function() {
 | **onFocus** | `function` | empty function | Callback trigger for when the user opens the datepicker. The callback receives an event of type SyntheticEvent. |
 | **onBlur** | `function` | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned. |
 | **onViewModeChange** | `function` | empty function | Callback trigger when the view mode changes. The callback receives the selected view mode string (`years`, `months`, `days` or `time`) as only parameter.|
-| **onSubtractTime** | `function` | empty function | Callback trigger when the user navigates to the previous month, year or group of years. The callback receives the amount and type ('month', 'year') as parameters. |
-| **onAddTime** | `function` | empty function | Callback trigger when the user navigates to the next month, year or group of years. The callback receives the amount and type ('month', 'year') as parameters. |
+| **onNavigateBack** | `function` | empty function | Callback trigger when the user navigates to the previous month, year or decade. The callback receives the amount and type ('month', 'year') as parameters. |
+| **onNavigateForward** | `function` | empty function | Callback trigger when the user navigates to the next month, year or decade. The callback receives the amount and type ('month', 'year') as parameters. |
 | **viewMode** | `string` or `number` | `'days'` | The default view to display when the picker is shown (`'years'`, `'months'`, `'days'`, `'time'`). |
 | **className** | `string` or `string array` | `''` | Extra class name for the outermost markup element. |
 | **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `onClick`, `placeholder`, `disabled`, `required`, `name` and `className` (`className` *sets* the class attribute for the input element). See [Customize the Input Appearance](#customize-the-input-appearance). |
