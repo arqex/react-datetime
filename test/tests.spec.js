@@ -1,4 +1,4 @@
-/* global it, xit, describe, expect, jasmine, done, jest */
+/* global it, xit, describe, expect, jasmine, done, jest, Promise */
 
 import React from 'react'; // eslint-disable-line no-unused-vars
 import moment from 'moment';
@@ -946,7 +946,7 @@ describe('Datetime', () => {
 			expect(onFocusFn).toHaveBeenCalledTimes(1);
 		});
 
-		describe('onViewModeChange', () => {
+		describe('onViewModeChange', async () => {
 			it('when switch from days to time view mode', () => {
 				const component = utils.createDatetime({ onViewModeChange: (viewMode) => {
 					expect(viewMode).toEqual('time');
@@ -956,51 +956,65 @@ describe('Datetime', () => {
 				expect(utils.isTimeView(component)).toBeTruthy();
 			});
 
-			it('when switch from time to days view mode', () => {
+			it('when switch from time to days view mode', async () => {
 				const component = utils.createDatetime({ viewMode: 'time', onViewModeChange: (viewMode) => {
 					expect(viewMode).toEqual('days');
 				}});
 				expect(utils.isTimeView(component)).toBeTruthy();
 				utils.clickOnElement(component.find('.rdtSwitch'));
+				await Promise.resolve();
 				expect(utils.isDayView(component)).toBeTruthy();
 			});
 
-			it('when switch from days to months view mode', () => {
+			it('when switch from days to months view mode', async () => {
 				const component = utils.createDatetime({ onViewModeChange: (viewMode) => {
 					expect(viewMode).toEqual('months');
 				}});
 				expect(utils.isDayView(component)).toBeTruthy();
 				utils.clickOnElement(component.find('.rdtSwitch'));
+				await Promise.resolve();
 				expect(utils.isMonthView(component)).toBeTruthy();
 			});
 
-			it('when switch from months to years view mode', () => {
+			it('when switch from months to years view mode', async () => {
 				const component = utils.createDatetime({ viewMode: 'months', onViewModeChange: (viewMode) => {
 					expect(viewMode).toEqual('years');
 				}});
 				expect(utils.isMonthView(component)).toBeTruthy();
 				utils.clickOnElement(component.find('.rdtSwitch'));
+				await Promise.resolve();
 				expect(utils.isYearView(component)).toBeTruthy();
 			});
 
-			it('only when switch from years to months view mode', () => {
+			it('only when switch from years to months view mode', async () => {
 				const component = utils.createDatetime({ viewMode: 'years', onViewModeChange: (viewMode) => {
 					expect(viewMode).toEqual('months');
 				}});
 				expect(utils.isYearView(component)).toBeTruthy();
 				utils.clickOnElement(component.find('.rdtSwitch'));
+				await Promise.resolve();
 				expect(utils.isYearView(component)).toBeTruthy();
 				utils.clickNthYear(component, 2);
 				expect(utils.isMonthView(component)).toBeTruthy();
 			});
 
-			it('when switch from months to days view mode', () => {
+			it('when switch from months to days view mode', async () => {
 				const component = utils.createDatetime({ viewMode: 'months', onViewModeChange: (viewMode) => {
 					expect(viewMode).toEqual('days');
 				}});
 				expect(utils.isMonthView(component)).toBeTruthy();
 				utils.clickNthMonth(component, 2);
+				await Promise.resolve();
 				expect(utils.isDayView(component)).toBeTruthy();
+			});
+
+			it('receives the callback only after the currentView state has been set', async () => {
+				const component = utils.createDatetime({ onViewModeChange: () => {
+					expect(component.state('currentView')).toEqual('time');
+				}});
+
+				utils.clickOnElement(component.find('.rdtTimeToggle'));
+				await Promise.resolve();
 			});
 		});
 
@@ -1088,60 +1102,110 @@ describe('Datetime', () => {
 	});
 
 	describe('onNavigateForward', () => {
-		it('when moving to next month', () => {
+		it('is being called', async () => {
+			const callback = jest.fn();
+			const component = utils.createDatetime({ onNavigateForward: callback });
+			utils.clickOnElement(component.find('.rdtNext'));
+
+			await Promise.resolve();
+			expect(callback).toBeCalled();
+		});
+
+		it('when moving to next month', async () => {
 			const component = utils.createDatetime({ onNavigateForward: (amount, type) => {
 				expect(amount).toEqual(1);
 				expect(type).toEqual('months');
 			}});
 
 			utils.clickOnElement(component.find('.rdtNext'));
+			await Promise.resolve();
 		});
 
-		it('when moving to next year', () => {
+		it('when moving to next year', async () => {
 			const component = utils.createDatetime({ viewMode: 'months', onNavigateForward: (amount, type) => {
 				expect(amount).toEqual(1);
 				expect(type).toEqual('years');
 			}});
 
 			utils.clickOnElement(component.find('.rdtNext'));
+			await Promise.resolve();
 		});
 
-		it('when moving decade forward', () => {
+		it('when moving decade forward', async () => {
 			const component = utils.createDatetime({ viewMode: 'years', onNavigateForward: (amount, type) => {
 				expect(amount).toEqual(10);
 				expect(type).toEqual('years');
 			}});
 
 			utils.clickOnElement(component.find('.rdtNext'));
+			await Promise.resolve();
+		});
+
+		it('receives the callback only after the viewDate state has been set', async () => {
+			let date;
+			const component = utils.createDatetime({ onNavigateForward: () => {
+				expect(component.state('viewDate').isSame(date)).toEqual(true);
+			}});
+
+			date = component.state('viewDate').clone();
+			date.add(1, 'months');
+
+			utils.clickOnElement(component.find('.rdtNext'));
+			await Promise.resolve();
 		});
 	});
 
 	describe('onNavigateBack', () => {
-		it('when moving to previous month', () => {
+		it('is being called', async () => {
+			const callback = jest.fn();
+			const component = utils.createDatetime({ onNavigateBack: callback });
+			utils.clickOnElement(component.find('.rdtPrev'));
+
+			await Promise.resolve();
+			expect(callback).toBeCalled();
+		});
+
+		it('when moving to previous month', async () => {
 			const component = utils.createDatetime({ onNavigateBack: (amount, type) => {
 				expect(amount).toEqual(1);
 				expect(type).toEqual('months');
 			}});
 
 			utils.clickOnElement(component.find('.rdtPrev'));
+			await Promise.resolve();
 		});
 
-		it('when moving to previous year', () => {
+		it('when moving to previous year', async () => {
 			const component = utils.createDatetime({ viewMode: 'months', onNavigateBack: (amount, type) => {
 				expect(amount).toEqual(1);
 				expect(type).toEqual('years');
 			}});
 
 			utils.clickOnElement(component.find('.rdtPrev'));
+			await Promise.resolve();
 		});
 
-		it('when moving decade back', () => {
+		it('when moving decade back', async () => {
 			const component = utils.createDatetime({ viewMode: 'years', onNavigateBack: (amount, type) => {
 				expect(amount).toEqual(10);
 				expect(type).toEqual('years');
 			}});
 
 			utils.clickOnElement(component.find('.rdtPrev'));
+			await Promise.resolve();
+		});
+
+		it('receives the callback only after the viewDate state has been set', async () => {
+			let date;
+			const component = utils.createDatetime({ onNavigateBack: () => {
+				expect(component.state('viewDate').isSame(date)).toEqual(true);
+			}});
+
+			date = component.state('viewDate').clone();
+			date.subtract(1, 'months');
+
+			utils.clickOnElement(component.find('.rdtPrev'));
+			await Promise.resolve();
 		});
 	});
 
