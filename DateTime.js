@@ -235,8 +235,10 @@ var Datetime = createClass({
 	showView: function( view ) {
 		var me = this;
 		return function() {
-			me.state.currentView !== view && me.props.onViewModeChange( view );
-			me.setState({ currentView: view });
+			var previousView = me.state.currentView;
+			me.setState({ currentView: view }, function() {
+				previousView !== view && me.props.onViewModeChange( view );
+			});
 		};
 	},
 
@@ -251,34 +253,37 @@ var Datetime = createClass({
 			me.setState({
 				viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
 				currentView: nextViews[ type ]
+			}, function() {
+				me.props.onViewModeChange( nextViews[ type ] );
 			});
-			me.props.onViewModeChange( nextViews[ type ] );
 		};
 	},
 
 	subtractTime: function( amount, type, toSelected ) {
 		var me = this;
 		return function() {
-			me.props.onNavigateBack( amount, type );
-			me.updateTime( 'subtract', amount, type, toSelected );
+			me.updateTime( 'subtract', amount, type, toSelected, function() {
+				me.props.onNavigateBack( amount, type );
+			});
 		};
 	},
 
 	addTime: function( amount, type, toSelected ) {
 		var me = this;
 		return function() {
-			me.props.onNavigateForward( amount, type );
-			me.updateTime( 'add', amount, type, toSelected );
+			me.updateTime( 'add', amount, type, toSelected, function() {
+				me.props.onNavigateForward( amount, type );
+			});
 		};
 	},
 
-	updateTime: function( op, amount, type, toSelected ) {
+	updateTime: function( op, amount, type, toSelected, callback ) {
 		var update = {},
 			date = toSelected ? 'selectedDate' : 'viewDate';
 
 		update[ date ] = this.state[ date ].clone()[ op ]( amount, type );
 
-		this.setState( update );
+		this.setState( update, callback );
 	},
 
 	allowedSetTime: ['hours', 'minutes', 'seconds', 'milliseconds'],
