@@ -38,6 +38,46 @@ var DateTimePickerTime = onClickOutside( createClass({
 			}
 		}
 
+        if (props.timeConstraints['hours']) {
+            if (parseInt(date.get('hour'), 10) < props.timeConstraints['hours'].min) {
+                date.hour(props.timeConstraints['hours'].min);
+            }
+
+            if (parseInt(date.get('hour'), 10) > props.timeConstraints['hours'].max) {
+                date.hour(props.timeConstraints['hours'].max);
+            }
+        }
+
+        if (props.timeConstraints['minutes']) {
+            if (parseInt(date.get('minute'), 10) < props.timeConstraints['minutes'].min) {
+                date.minute(props.timeConstraints['minutes'].min);
+            }
+
+            if (parseInt(date.get('minute'), 10) > props.timeConstraints['minutes'].max) {
+                date.minute(props.timeConstraints['minutes'].max);
+            }
+        }
+
+        if (props.timeConstraints['seconds']) {
+            if (parseInt(date.get('second'), 10) < props.timeConstraints['seconds'].min) {
+                date.second(props.timeConstraints['seconds'].min);
+            }
+
+            if (parseInt(date.get('second'), 10) > props.timeConstraints['seconds'].max) {
+                date.second(props.timeConstraints['seconds'].max);
+            }
+        }
+
+        if (props.timeConstraints['milliseconds']) {
+            if (parseInt(date.get('millisecond'), 10) < props.timeConstraints['milliseconds'].min) {
+                date.millisecond(props.timeConstraints['seconds'].min);
+            }
+
+            if (parseInt(date.get('millisecond'), 10) > props.timeConstraints['milliseconds'].max) {
+                date.millisecond(props.timeConstraints['millisecond'].max);
+            }
+        }
+
 		return {
 			hours: hours,
 			minutes: date.format( 'mm' ),
@@ -111,37 +151,50 @@ var DateTimePickerTime = onClickOutside( createClass({
 
 	componentWillMount: function() {
 		var me = this;
-		me.timeConstraints = {
-			hours: {
-				min: 0,
-				max: 23,
-				step: 1
-			},
-			minutes: {
-				min: 0,
-				max: 59,
-				step: 1
-			},
-			seconds: {
-				min: 0,
-				max: 59,
-				step: 1
-			},
-			milliseconds: {
-				min: 0,
-				max: 999,
-				step: 1
-			}
-		};
+		me.timeConstraints = this.defaultTimeConstraints();
+
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
 			assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
 		});
+
 		this.setState( this.calculateState( this.props ) );
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
+        var me = this;
+        me.timeConstraints = this.defaultTimeConstraints();
+
+        ['hours', 'minutes', 'seconds', 'milliseconds'].forEach(function(type) {
+            assign(me.timeConstraints[type], nextProps.timeConstraints[type]);
+        });
+
 		this.setState( this.calculateState( nextProps ) );
 	},
+
+    defaultTimeConstraints: function() {
+        return {
+            hours: {
+                min: 0,
+                max: 23,
+                step: 1
+            },
+            minutes: {
+                min: 0,
+                max: 59,
+                step: 1
+            },
+            seconds: {
+                min: 0,
+                max: 59,
+                step: 1
+            },
+            milliseconds: {
+                min: 0,
+                max: 999,
+                step: 1
+            }
+        };
+    },
 
 	updateMilli: function( e ) {
 		var milli = parseInt( e.target.value, 10 );
