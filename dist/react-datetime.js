@@ -96,8 +96,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			yearsTableProps: TYPES.object,
 			headerTableProps: TYPES.object,
 		},
-
-		getDefaultProps: function() {
+		getDefaultProps12313: function() {
 			var nof = function() {};
 			return {
 				className: '',
@@ -507,6 +506,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// Make moment accessible through the Datetime class
 	Datetime.moment = moment;
+	Datetime.defaultProps={
+		className: '',
+		defaultValue: '',
+		inputProps: {},
+		input: true,
+		onFocus: function() {},
+		onBlur: function() {},
+		onChange: function() {},
+		timeFormat: true,
+		timeConstraints: {},
+		dateFormat: true,
+		strictParsing: true,
+		closeOnSelect: false,
+		closeOnTab: true,
+		timeTableProps: {},
+		daysTableProps: {},
+		monthsTableProps: {},
+		yearsTableProps: {},
+		headerTableProps: {},
+		utc: false
+	};
 
 	module.exports = Datetime;
 
@@ -3040,12 +3060,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DateTimePickerMonths = onClickOutside( createClass({
 		render: function() {
 			return DOM.div({ className: 'rdtMonths' }, [
-				DOM.table(assign({ key: 'a' },this.props.headerTableProps), DOM.thead( {}, DOM.tr( {}, [
+				DOM.table(assign({ key: 'a' }, this.props.headerTableProps), DOM.thead( {}, DOM.tr( {}, [
 					DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, DOM.span({}, '‹' )),
 					DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
 					DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, DOM.span({}, '›' ))
 				]))),
-				DOM.table(assign({ key: 'months' },this.props.monthsTableProps), DOM.tbody({ key: 'b' }, this.renderMonths()))
+				DOM.table(assign({ key: 'months' }, this.props.monthsTableProps), DOM.tbody({ key: 'b' }, this.renderMonths()))
 			]);
 		},
 
@@ -3157,12 +3177,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
 
 			return DOM.div({ className: 'rdtYears' }, [
-				DOM.table(assign({ key: 'a' },this.props.headerTableProps), DOM.thead({}, DOM.tr({}, [
+				DOM.table(assign({ key: 'a' }, this.props.headerTableProps), DOM.thead({}, DOM.tr({}, [
 					DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, DOM.span({}, '‹' )),
 					DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
 					DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, DOM.span({}, '›' ))
 					]))),
-				DOM.table(assign({ key: 'years' },this.props.yearsTableProps), DOM.tbody( {}, this.renderYears( year )))
+				DOM.table(assign({ key: 'years' }, this.props.yearsTableProps), DOM.tbody( {}, this.renderYears( year )))
 			]);
 		},
 

@@ -35,8 +35,7 @@ var Datetime = createClass({
 		yearsTableProps: TYPES.object,
 		headerTableProps: TYPES.object,
 	},
-
-	getDefaultProps: function() {
+	getDefaultProps12313: function() {
 		var nof = function() {};
 		return {
 			className: '',
@@ -446,5 +445,26 @@ var Datetime = createClass({
 
 // Make moment accessible through the Datetime class
 Datetime.moment = moment;
+Datetime.defaultProps={
+	className: '',
+	defaultValue: '',
+	inputProps: {},
+	input: true,
+	onFocus: function() {},
+	onBlur: function() {},
+	onChange: function() {},
+	timeFormat: true,
+	timeConstraints: {},
+	dateFormat: true,
+	strictParsing: true,
+	closeOnSelect: false,
+	closeOnTab: true,
+	timeTableProps: {},
+	daysTableProps: {},
+	monthsTableProps: {},
+	yearsTableProps: {},
+	headerTableProps: {},
+	utc: false
+};
 
 module.exports = Datetime;
