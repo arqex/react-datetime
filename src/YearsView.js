@@ -3,7 +3,7 @@
 var React = require('react'),
 	assign = require('object-assign'),
     createClass = require('create-react-class'),
-	onClickOutside = require('react-onclickoutside')
+	onClickOutside = require('react-onclickoutside').default
 ;
 
 var DOM = React.DOM;
@@ -11,13 +11,13 @@ var DateTimePickerYears = onClickOutside( createClass({
 	render: function() {
 		var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
 
-		return DOM.div({ className: 'rdtYears' }, [
-			DOM.table(assign({ key: 'a' }, this.props.headerTableProps), DOM.thead({}, DOM.tr({}, [
-				DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, DOM.span({}, '‹' )),
-				DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-				DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, DOM.span({}, '›' ))
+		return React.createElement('div',{ className: 'rdtYears' }, [
+			React.createElement('table',assign({ key: 'a' }, this.props.headerTableProps), React.createElement('thead',{}, React.createElement('tr',{}, [
+				React.createElement('th',{ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span',{}, '‹' )),
+				React.createElement('th',{ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
+				React.createElement('th',{ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span',{}, '›' ))
 				]))),
-			DOM.table(assign({ key: 'years' }, this.props.yearsTableProps), DOM.tbody( {}, this.renderYears( year )))
+			React.createElement('table',assign({ key: 'years' }, this.props.yearsTableProps), React.createElement('tbody', {}, this.renderYears( year ))),
 		]);
 	},
 
@@ -76,7 +76,7 @@ var DateTimePickerYears = onClickOutside( createClass({
 			years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
 
 			if ( years.length === 4 ) {
-				rows.push( DOM.tr({ key: i }, years ) );
+				rows.push( React.createElement('tr',{ key: i }, years ) );
 				years = [];
 			}
 
@@ -92,7 +92,7 @@ var DateTimePickerYears = onClickOutside( createClass({
 	},
 
 	renderYear: function( props, year ) {
-		return DOM.td( props, year );
+		return React.createElement('td', props, year );
 	},
 
 	alwaysValidDate: function() {

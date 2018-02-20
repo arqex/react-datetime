@@ -3,19 +3,19 @@
 var React = require('react'),
 	assign = require('object-assign'),
     createClass = require('create-react-class'),
-	onClickOutside = require('react-onclickoutside')
+	onClickOutside = require('react-onclickoutside').default
 ;
 
 var DOM = React.DOM;
 var DateTimePickerMonths = onClickOutside( createClass({
 	render: function() {
-		return DOM.div({ className: 'rdtMonths' }, [
-			DOM.table(assign({ key: 'a' }, this.props.headerTableProps), DOM.thead( {}, DOM.tr( {}, [
-				DOM.th({ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, DOM.span({}, '‹' )),
-				DOM.th({ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-				DOM.th({ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, DOM.span({}, '›' ))
+		return React.createElement('div',{ className: 'rdtMonths' }, [
+			React.createElement('table',assign({ key: 'a' }, this.props.headerTableProps), React.createElement('thead', {}, React.createElement('tr', {}, [
+				React.createElement('th',{ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span',{}, '‹' )),
+				React.createElement('th',{ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
+				React.createElement('th',{ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span',{}, '›' ))
 			]))),
-			DOM.table(assign({ key: 'months' }, this.props.monthsTableProps), DOM.tbody({ key: 'b' }, this.renderMonths()))
+			React.createElement('table',assign({ key: 'months' }, this.props.monthsTableProps), React.createElement('tbody',{ key: 'b' }, this.renderMonths()))
 		]);
 	},
 
@@ -69,7 +69,7 @@ var DateTimePickerMonths = onClickOutside( createClass({
 			months.push( renderer( props, i, year, date && date.clone() ) );
 
 			if ( months.length === 4 ) {
-				rows.push( DOM.tr({ key: month + '_' + rows.length }, months ) );
+				rows.push( React.createElement('tr',{ key: month + '_' + rows.length }, months ) );
 				months = [];
 			}
 
@@ -90,7 +90,7 @@ var DateTimePickerMonths = onClickOutside( createClass({
 		// Because some months are up to 5 characters long, we want to
 		// use a fixed string length for consistency
 		var monthStrFixedLength = monthStr.substring( 0, strLength );
-		return DOM.td( props, capitalize( monthStrFixedLength ) );
+		return React.createElement('td', props, capitalize( monthStrFixedLength ) );
 	},
 
 	alwaysValidDate: function() {
