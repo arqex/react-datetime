@@ -105,7 +105,7 @@ var Datetime = createClass({
 	getUpdateOn: function( formats ) {
 		if ( formats.date.match(/[lLD]/) ) {
 			return viewModes.DAYS;
-		} else if ( formats.date.indexOf('M') !== -1 ) {
+		} else if ( formats.date.match(/[MQ]/) ) {
 			return viewModes.MONTHS;
 		} else if ( formats.date.indexOf('Y') !== -1 ) {
 			return viewModes.YEARS;
