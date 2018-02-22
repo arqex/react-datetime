@@ -40,7 +40,8 @@ var Datetime = createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		showTodayButton: TYPES.bool,
 	},
 
 	getInitialState: function() {
@@ -507,7 +508,8 @@ Datetime.defaultProps = {
 	strictParsing: true,
 	closeOnSelect: false,
 	closeOnTab: true,
-	utc: false
+	utc: false,
+	showTodayButton: false,
 };
 
 // Make moment accessible through the Datetime class
