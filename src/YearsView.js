@@ -15,7 +15,8 @@ var DateTimePickerYears = onClickOutside( createClass({
 				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
 				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
 			]))),
-			React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
+			React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year ))),
+			this.props.renderTodayButton('todayYears')
 		]);
 	},
 

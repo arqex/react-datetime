@@ -332,6 +332,14 @@ var Datetime = createClass({
 				.month( currentDate.month() )
 				.date( currentDate.date() )
 				.year( parseInt( target.getAttribute('data-value'), 10 ) );
+		} else if (target.className.indexOf('rdtTodayButton') !== -1) {
+			var now = moment(new Date());
+			date = viewDate.clone()
+				.month( now.month() )
+				.date( now.date() )
+				.year( now.year() );
+
+			this.setState({currentView: 'days'});
 		}
 
 		date.hours( currentDate.hours() )
@@ -391,10 +399,37 @@ var Datetime = createClass({
 		return m;
 	},
 
+	alwaysValidDate: function () {
+		return true;
+	},
+
+	goToToday: function (e) {
+		this.updateSelectedDate(e);
+	},
+
+	renderTodayButton: function (key) {
+		var now = moment(new Date());
+		var date = this.state.viewDate.clone()
+				.month( now.month() )
+				.date( now.date() )
+				.year( now.year() );
+
+		var isValidDate = this.props.isValidDate || this.alwaysValidDate;
+
+		var isValid = date.isValid && isValidDate(date);
+		var classes = isValid ? 'rdtTodayButton' : 'rdtTodayButton rdtDisabled';
+
+		return this.props.showTodayButton ? React.createElement(
+			'button',
+			{key: key, className: classes, onClick: isValid ? this.goToToday : undefined},
+			'Today'
+			) : undefined;
+	},
+
 	componentProps: {
 		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside', 'renderTodayButton']
 	},
 
 	getComponentProps: function() {
@@ -420,8 +455,8 @@ var Datetime = createClass({
 		// TODO: Make a function or clean up this code,
 		// logic right now is really hard to follow
 		var className = 'rdt' + (this.props.className ?
-                  ( Array.isArray( this.props.className ) ?
-                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
+					( Array.isArray( this.props.className ) ?
+					' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 			children = [];
 
 		if ( this.props.input ) {
