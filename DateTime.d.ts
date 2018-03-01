@@ -30,6 +30,10 @@ declare namespace ReactDatetimeClass {
 
     type EventOrValueHandler<Event> = (event: Event | Moment | string) => void;
 
+    type ButtonPropFunction = (viewMode: ViewMode) => Object;
+
+    type TilePropFunction = (viewMode: ViewMode, currentTime: Moment, isDisabled: boolean) => Object;
+
     export interface DatetimepickerProps {
         /*
          Represents the selected date by the component, in order to use it as a controlled component.
@@ -165,7 +169,29 @@ declare namespace ReactDatetimeClass {
          close it.
          */
         disableOnClickOutside?: boolean;
-    }
+        /*
+         Defines additional attributes for the previous period button. May be an object or a function
+         returning the object. The function will get current viewMode as an argument.
+         */
+        prevButtonProps?: Object | ButtonPropFunction;
+        /*
+         Defines additional attributes for the "switch to previous view mode" button.
+         May be an object or a function returning the object. The function will get current viewMode
+         as an argument.
+         */
+        switchButtonProps?: Object | ButtonPropFunction;
+        /*
+         Defines additional attributes for the next period button. May be an object or a function
+         returning the object. The function will get current viewMode as an argument.
+         */
+        nextButtonProps?: Object | ButtonPropFunction;
+        /*
+         Defines additional attributes for a tile in the calendar view. May be an object or a function
+         returning the object. The function will get current viewMode, time the tile corresponds to
+         and whether the tile is disabled as arguments.
+         */
+        tileProps?: Object | TilePropFunction;
+        }
 
     export interface DatetimepickerState {
         updateOn: string;
