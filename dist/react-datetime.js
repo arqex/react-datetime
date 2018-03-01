@@ -293,8 +293,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		showView: function( view ) {
 			var me = this;
 			return function() {
-				me.state.currentView !== view && me.props.onViewModeChange( view );
-				me.setState({ currentView: view });
+				if (me.state.currentView !== view && me.props.onViewModeChange( view )) {
+					me.setState({ currentView: view });
+				}
 			};
 		},
 
