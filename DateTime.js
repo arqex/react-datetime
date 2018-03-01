@@ -209,7 +209,7 @@ var Datetime = createClass({
 	},
 
 	onInputChange: function( e ) {
-		var value = e.target === null ? e : e.target.value,
+		var value = e.target == null ? e : e.target.value,
 			localMoment = this.localMoment( value, this.state.inputFormat ),
 			update = { inputValue: value }
 			;
