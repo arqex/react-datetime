@@ -5,15 +5,9 @@ var assign = require('object-assign'),
 	createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
-	CalendarContainer = require('./src/CalendarContainer')
+	CalendarContainer = require('./src/CalendarContainer'),
+	viewModes = require('./src/viewModes')
 	;
-
-var viewModes = Object.freeze({
-	YEARS: 'years',
-	MONTHS: 'months',
-	DAYS: 'days',
-	TIME: 'time',
-});
 
 var TYPES = PropTypes;
 var Datetime = createClass({
@@ -40,7 +34,11 @@ var Datetime = createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		prevButtonProps: TYPES.oneOfType([TYPES.object, TYPES.func]),
+		switchButtonProps: TYPES.oneOfType([TYPES.object, TYPES.func]),
+		nextButtonProps: TYPES.oneOfType([TYPES.object, TYPES.func]),
+		tileProps: TYPES.oneOfType([TYPES.object, TYPES.func])
 	},
 
 	getInitialState: function() {
@@ -392,7 +390,7 @@ var Datetime = createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'prevButtonProps', 'switchButtonProps', 'nextButtonProps', 'tileProps'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
 	},
@@ -472,7 +470,11 @@ Datetime.defaultProps = {
 	strictParsing: true,
 	closeOnSelect: false,
 	closeOnTab: true,
-	utc: false
+	utc: false,
+	prevButtonProps: {},
+	switchButtonProps: {},
+	nextButtonProps: {},
+	tileProps: {}
 };
 
 // Make moment accessible through the Datetime class

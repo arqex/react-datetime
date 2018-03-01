@@ -3,7 +3,9 @@
 var React = require('react'),
 	createClass = require('create-react-class'),
 	moment = require('moment'),
-	onClickOutside = require('react-onclickoutside').default
+	onClickOutside = require('react-onclickoutside').default,
+	mergeProps = require('./mergeProps'),
+	viewModes = require('./viewModes')
 	;
 
 var DateTimePickerDays = onClickOutside( createClass({
@@ -14,12 +16,32 @@ var DateTimePickerDays = onClickOutside( createClass({
 			tableChildren
 			;
 
+		var finalPrevButtonProps = mergeProps({
+			key: 'p',
+			className: 'rdtPrev',
+			onClick: this.props.subtractTime( 1, 'months' )
+		}, this.props.prevButtonProps, [viewModes.DAYS]);
+
+		var finalSwitchButtonProps = mergeProps({
+			key: 's',
+			className: 'rdtSwitch',
+			onClick: this.props.showView( 'months' ),
+			colSpan: 5,
+			'data-value': this.props.viewDate.month()
+		}, this.props.switchButtonProps, [viewModes.DAYS]);
+
+		var finalNextButtonProps = mergeProps({
+			key: 'n',
+			className: 'rdtNext',
+			onClick: this.props.addTime( 1, 'months' )
+		}, this.props.nextButtonProps, [viewModes.DAYS]);
+
 		tableChildren = [
 			React.createElement('thead', { key: 'th' }, [
 				React.createElement('tr', { key: 'h' }, [
-					React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-					React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span', {}, '›' ))
+					React.createElement('th', finalPrevButtonProps, React.createElement('span', {}, '‹' )),
+					React.createElement('th', finalSwitchButtonProps, locale.months( date ) + ' ' + date.year() ),
+					React.createElement('th', finalNextButtonProps, React.createElement('span', {}, '›' ))
 				]),
 				React.createElement('tr', { key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th', { key: day + index, className: 'dow'}, day ); }) )
 			]),
@@ -89,11 +111,11 @@ var DateTimePickerDays = onClickOutside( createClass({
 			if ( isDisabled )
 				classes += ' rdtDisabled';
 
-			dayProps = {
+			dayProps = mergeProps({
 				key: prevMonth.format( 'M_D' ),
 				'data-value': prevMonth.date(),
 				className: classes
-			};
+			}, this.props.tileProps, [viewModes.DAYS, currentDate, isDisabled]);
 
 			if ( !isDisabled )
 				dayProps.onClick = this.updateSelectedDate;

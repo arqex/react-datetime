@@ -2,16 +2,38 @@
 
 var React = require('react'),
 	createClass = require('create-react-class'),
-	onClickOutside = require('react-onclickoutside').default
+	onClickOutside = require('react-onclickoutside').default,
+	mergeProps = require('./mergeProps'),
+	viewModes = require('./viewModes')
 	;
 
 var DateTimePickerMonths = onClickOutside( createClass({
 	render: function() {
+		var finalPrevButtonProps = mergeProps({
+			key: 'prev',
+			className: 'rdtPrev',
+			onClick: this.props.subtractTime( 1, 'years' )
+		}, this.props.prevButtonProps, [viewModes.MONTHS]);
+
+		var finalSwitchButtonProps = mergeProps({
+			key: 'year',
+			className: 'rdtSwitch',
+			onClick: this.props.showView( 'years' ),
+			colSpan: 2,
+			'data-value': this.props.viewDate.year()
+		}, this.props.switchButtonProps, [viewModes.MONTHS]);
+
+		var finalNextButtonProps = mergeProps({
+			key: 'next',
+			className: 'rdtNext',
+			onClick: this.props.addTime( 1, 'years' )
+		}, this.props.nextButtonProps, [viewModes.MONTHS]);
+
 		return React.createElement('div', { className: 'rdtMonths' }, [
 			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
-				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
+				React.createElement('th', finalPrevButtonProps, React.createElement('span', {}, '‹' )),
+				React.createElement('th', finalSwitchButtonProps, this.props.viewDate.year() ),
+				React.createElement('th', finalNextButtonProps, React.createElement('span', {}, '›' ))
 			]))),
 			React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
 		]);
@@ -54,11 +76,11 @@ var DateTimePickerMonths = onClickOutside( createClass({
 			if ( date && i === date.month() && year === date.year() )
 				classes += ' rdtActive';
 
-			props = {
+			props = mergeProps({
 				key: i,
 				'data-value': i,
 				className: classes
-			};
+			}, this.props.tileProps, [viewModes.MONTHS, currentMonth, isDisabled]);
 
 			if ( !isDisabled )
 				props.onClick = ( this.props.updateOn === 'months' ?

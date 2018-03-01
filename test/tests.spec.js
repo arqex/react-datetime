@@ -394,6 +394,156 @@ describe('Datetime', () => {
 			expect(component.find('input').getDOMNode().placeholder).toEqual('custom-placeholder');
 		});
 
+		it('prevButtonProps object', () => {
+			const component = utils.createDatetime({
+				prevButtonProps: { 'data-test': 'passes' }
+			});
+
+			utils.openDatepicker(component);
+
+			expect(component.find('.rdtPrev').prop('data-test')).toEqual('passes');
+		});
+
+		it('prevButtonProps function', () => {
+			const component = utils.createDatetime({
+				prevButtonProps: function(viewMode) {
+					return {
+						'data-test': viewMode+'-passes'
+					};
+				}
+			});
+
+			utils.openDatepicker(component);
+
+			expect(component.find('.rdtPrev').prop('data-test')).toEqual('days-passes');
+
+			utils.clickOnElement(component.find('.rdtSwitch'));
+
+			expect(component.find('.rdtPrev').prop('data-test')).toEqual('months-passes');
+
+			utils.clickOnElement(component.find('.rdtSwitch'));
+
+			expect(component.find('.rdtPrev').prop('data-test')).toEqual('years-passes');
+		});
+
+		it('switchButtonProps object', () => {
+			const component = utils.createDatetime({
+				switchButtonProps: { 'data-test': 'passes' }
+			});
+
+			utils.openDatepicker(component);
+
+			expect(component.find('.rdtSwitch').prop('data-test')).toEqual('passes');
+		});
+
+		it('switchButtonProps function', () => {
+			const component = utils.createDatetime({
+				switchButtonProps: function(viewMode) {
+					return {
+						'data-test': viewMode+'-passes'
+					};
+				}
+			});
+
+			utils.openDatepicker(component);
+
+			expect(component.find('.rdtSwitch').prop('data-test')).toEqual('days-passes');
+
+			utils.clickOnElement(component.find('.rdtSwitch'));
+
+			expect(component.find('.rdtSwitch').prop('data-test')).toEqual('months-passes');
+
+			utils.clickOnElement(component.find('.rdtSwitch'));
+
+			expect(component.find('.rdtSwitch').prop('data-test')).toEqual('years-passes');
+		});
+
+		it('nextButtonProps object', () => {
+			const component = utils.createDatetime({
+				nextButtonProps: { 'data-test': 'passes' }
+			});
+
+			utils.openDatepicker(component);
+
+			expect(component.find('.rdtNext').prop('data-test')).toEqual('passes');
+		});
+
+		it('nextButtonProps function', () => {
+			const component = utils.createDatetime({
+				nextButtonProps: function(viewMode) {
+					return {
+						'data-test': viewMode+'-passes'
+					};
+				}
+			});
+
+			utils.openDatepicker(component);
+
+			expect(component.find('.rdtNext').prop('data-test')).toEqual('days-passes');
+
+			utils.clickOnElement(component.find('.rdtSwitch'));
+
+			expect(component.find('.rdtNext').prop('data-test')).toEqual('months-passes');
+
+			utils.clickOnElement(component.find('.rdtSwitch'));
+
+			expect(component.find('.rdtNext').prop('data-test')).toEqual('years-passes');
+		});
+
+		it('tileProps object', () => {
+			const component = utils.createDatetime({
+				tileProps: { 'data-test': 'passes' }
+			});
+
+			utils.openDatepicker(component);
+
+			component.find('.rdtDay').forEach(function(day) {
+				expect(day.prop('data-test')).toEqual('passes');
+			});
+		});
+
+		it('tileProps function', () => {
+			const component = utils.createDatetime({
+				tileProps: function(viewMode, currentTime, isDisabled) {
+					var value = '';
+
+					if (viewMode === 'days')
+						value = currentTime.date();
+					else if (viewMode === 'months')
+						value = currentTime.month();
+					else if (viewMode === 'years')
+						value = currentTime.year();
+
+					var str = viewMode+'-'+value;
+
+					if (isDisabled)
+						str += '-disabled';
+
+					return {
+						'data-test': str
+					};
+				}
+			});
+
+			utils.openDatepicker(component);
+
+			component.find('.rdtDay').forEach(function(day) {
+				expect(day.prop('data-test')).toEqual('days-'+day.prop('data-value'));
+			});
+
+			utils.clickOnElement(component.find('.rdtSwitch'));
+
+			component.find('.rdtMonth').forEach(function(day) {
+				expect(day.prop('data-test')).toEqual('months-'+day.prop('data-value'));
+			});
+
+			utils.clickOnElement(component.find('.rdtSwitch'));
+
+			component.find('.rdtYear').forEach(function(day) {
+				expect(day.prop('data-test')).toEqual('years-'+day.prop('data-value'));
+			});
+		});
+
 		it('renderInput', () => {
 			const renderInput = (props, openCalendar) => {
 				return (

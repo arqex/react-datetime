@@ -152,6 +152,28 @@ declare module ReactDatetime {
      close it.
     */
     disableOnClickOutside?: boolean;
+    /*
+     Defines additional attributes for the previous period button. May be an object or a function
+     returning the object. The function will get current viewMode as an argument.
+     */
+    prevButtonProps?: Object | (viewMode: string) => Object;
+    /*
+     Defines additional attributes for the "switch to previous view mode" button.
+     May be an object or a function returning the object. The function will get current viewMode
+     as an argument.
+     */
+    switchButtonProps?: Object | (viewMode: string) => Object;
+    /*
+     Defines additional attributes for the next period button. May be an object or a function
+     returning the object. The function will get current viewMode as an argument.
+     */
+    nextButtonProps?: Object | (viewMode: string) => Object;
+    /*
+     Defines additional attributes for a tile in the calendar view. May be an object or a function
+     returning the object. The function will get current viewMode, time the tile corresponds to
+     and whether the tile is disabled as arguments.
+     */
+    tileProps?: Object | (viewMode: string, currentTime: Object, isDisabled: boolean) => Object;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {
