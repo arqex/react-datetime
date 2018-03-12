@@ -146,6 +146,14 @@ declare namespace ReactDatetimeClass {
          */
         renderYear?: (props: any, year: number, selectedDate: any) => JSX.Element;
         /*
+         Customize the way that the Input is shown.
+         The accepted function has openCalendar (a function which opens the calendar),
+         closeCalendar (a function which closes the calendar), and
+         the default calculated props for the input. Must return a React component or null.
+         See appearance customization
+         */
+        renderInput?: (props: any, openCalendar: Function, closeCalendar: Function) => JSX.Element;
+        /*
          Whether to use moment's strict parsing when parsing input.
          */
         strictParsing?: boolean;
