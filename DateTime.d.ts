@@ -132,6 +132,13 @@ declare namespace ReactDatetimeClass {
          */
         renderDay?: (props: any, currentDate: any, selectedDate: any) => JSX.Element;
         /*
+         Replace the rendering of the input element. The function has the following arguments:
+         the default calculated props for the input, openCalendar (a function which opens the calendar)
+         and closeCalendar (a function which closes the calendar).
+         Must return a React component or null. See input customization
+         */
+        renderInput?: (props: any, openCalendar: () => void, closeCalendar: () => void) => void;
+        /*
          Customize the way that the months are shown in the month picker.
          The accepted function has the selectedDate, the current date and the default calculated
          props for the cell, the month and the year to be shown, and must return a
