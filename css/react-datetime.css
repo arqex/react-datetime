@@ -6,6 +6,7 @@
   position: relative;
 }
 .rdtPicker {
+  color: #212529;
   display: none;
   position: absolute;
   width: 250px;
