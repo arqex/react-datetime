@@ -747,38 +747,77 @@ describe('Datetime', () => {
 			expect(actualMonths).toEqual(expectedMonths);
 		});
 
-		it('closeOnSelect=false', (done) => {
-			const component = utils.createDatetime({ closeOnSelect: false });
+		describe('closeOnSelect', () => {
+			it('closeOnSelect=false', (done) => {
+				const component = utils.createDatetime({ closeOnSelect: false });
 
-			// A unknown race condition is causing this test to fail without this time out,
-			// and when the test fails it says:
-			// 'Timeout - Async callback was not invoked within timeout'
-			// Ideally it would say something else but at least we know the tests are passing now
-			setTimeout(() => {
-				expect(utils.isOpen(component)).toBeFalsy();
-				utils.openDatepicker(component);
-				expect(utils.isOpen(component)).toBeTruthy();
-				utils.clickNthDay(component, 2);
-				expect(utils.isOpen(component)).toBeTruthy();
-				done();
-			}, 0);
-		});
+				// A unknown race condition is causing this test to fail without this time out,
+				// and when the test fails it says:
+				// 'Timeout - Async callback was not invoked within timeout'
+				// Ideally it would say something else but at least we know the tests are passing now
+				setTimeout(() => {
+					expect(utils.isOpen(component)).toBeFalsy();
+					utils.openDatepicker(component);
+					expect(utils.isOpen(component)).toBeTruthy();
+					utils.clickNthDay(component, 2);
+					expect(utils.isOpen(component)).toBeTruthy();
+					done();
+				}, 0);
+			});
 
-		it('closeOnSelect=true', (done) => {
-			const component = utils.createDatetime({ closeOnSelect: true });
+			it('closeOnSelect=true', (done) => {
+				const component = utils.createDatetime({ closeOnSelect: true });
 
-			// A unknown race condition is causing this test to fail without this time out,
-			// and when the test fails it says:
-			// 'Timeout - Async callback was not invoked within timeout'
-			// Ideally it would say something else but at least we know the tests are passing now
-			setTimeout(() => {
-				expect(utils.isOpen(component)).toBeFalsy();
-				utils.openDatepicker(component);
-				expect(utils.isOpen(component)).toBeTruthy();
-				utils.clickNthDay(component, 2);
-				expect(utils.isOpen(component)).toBeFalsy();
-				done();
-			}, 0);
+				// A unknown race condition is causing this test to fail without this time out,
+				// and when the test fails it says:
+				// 'Timeout - Async callback was not invoked within timeout'
+				// Ideally it would say something else but at least we know the tests are passing now
+				setTimeout(() => {
+					expect(utils.isOpen(component)).toBeFalsy();
+					utils.openDatepicker(component);
+					expect(utils.isOpen(component)).toBeTruthy();
+					utils.clickNthDay(component, 2);
+					expect(utils.isOpen(component)).toBeFalsy();
+					done();
+				}, 0);
+			});
+
+			it('closes the calendar when re-redering if the date was changed', (done) => {
+				const component = utils.createDatetime({ closeOnSelect: true });
+
+				// A unknown race condition is causing this test to fail without this time out,
+				// and when the test fails it says:
+				// 'Timeout - Async callback was not invoked within timeout'
+				// Ideally it would say something else but at least we know the tests are passing now
+				setTimeout(() => {
+					expect(utils.isOpen(component)).toBeFalsy();
+					utils.openDatepicker(component);
+					expect(utils.isOpen(component)).toBeTruthy();
+					const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+					component.setProps({ closeOnSelect: true, value: date }, () => {
+						expect(utils.isOpen(component)).toBeFalsy();
+						done();
+					});
+				}, 0);
+			});
+
+			it('does NOT close the calendar when re-redering if props are unchanged', (done) => {
+				const component = utils.createDatetime({ closeOnSelect: true });
+
+				// A unknown race condition is causing this test to fail without this time out,
+				// and when the test fails it says:
+				// 'Timeout - Async callback was not invoked within timeout'
+				// Ideally it would say something else but at least we know the tests are passing now
+				setTimeout(() => {
+					expect(utils.isOpen(component)).toBeFalsy();
+					utils.openDatepicker(component);
+					expect(utils.isOpen(component)).toBeTruthy();
+					component.setProps(component.props, () => {
+						expect(utils.isOpen(component)).toBeTruthy();
+						done();
+					});
+				}, 0);
+			});
 		});
 
 		describe('defaultValue of type', () => {

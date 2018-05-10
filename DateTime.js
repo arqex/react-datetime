@@ -141,12 +141,29 @@ var Datetime = createClass({
 		return formats;
 	},
 
+	areEquivalentDates: function( currentDate, nextDate ) {
+		if (!currentDate && !nextDate) {
+			return true;
+		} else if ((!currentDate && nextDate) || (currentDate && !nextDate)) {
+			return false;
+		}
+		if (typeof currentDate === 'string' && typeof nextDate === 'string') {
+			return currentDate === nextDate;
+		} else if (currentDate instanceof Date && nextDate instanceof Date) {
+			return currentDate.getTime() === nextDate.getTime();
+		} else if ((currentDate instanceof moment) && (nextDate instanceof moment)) {
+			return currentDate.isSame(nextDate);
+		}
+		return false;
+	},
+
 	componentWillReceiveProps: function( nextProps ) {
 		var formats = this.getFormats( nextProps ),
-			updatedState = {}
-		;
+			updatedState = {},
+			valueChanged = !this.areEquivalentDates(this.props.value, nextProps.value)
+			;
 
-		if ( nextProps.value !== this.props.value ||
+		if ( valueChanged ||
 			formats.datetime !== this.getFormats( this.props ).datetime ) {
 			updatedState = this.getStateFromProps( nextProps );
 		}
@@ -154,7 +171,7 @@ var Datetime = createClass({
 		if ( updatedState.open === undefined ) {
 			if ( typeof nextProps.open !== 'undefined' ) {
 				updatedState.open = nextProps.open;
-			} else if ( this.props.closeOnSelect && this.state.currentView !== viewModes.TIME ) {
+			} else if ( this.props.closeOnSelect && this.state.currentView !== viewModes.TIME && valueChanged ) {
 				updatedState.open = false;
 			} else {
 				updatedState.open = this.state.open;
