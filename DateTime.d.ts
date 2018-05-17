@@ -32,6 +32,11 @@ declare namespace ReactDatetimeClass {
 
     export interface DatetimepickerProps {
         /*
+        Name attribute of the element, useful in recognizing this particular element when using the ref tag,
+        most components support it, I think it makes sense to support it here aswell.
+        */
+        name?: string;
+        /*
          Represents the selected date by the component, in order to use it as a controlled component.
          This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
          */
