@@ -388,50 +388,6 @@ exports[`dateFormat set to true 1`] = `
               31
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
-            </td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -731,50 +687,6 @@ exports[`input input: set to false 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -1086,50 +998,6 @@ exports[`input input: set to true 1`] = `
               31
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
-            </td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -1437,50 +1305,6 @@ exports[`inputProps with className specified 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -1793,50 +1617,6 @@ exports[`inputProps with disabled specified 1`] = `
               31
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
-            </td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -2145,50 +1925,6 @@ exports[`inputProps with name specified 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -2501,50 +2237,6 @@ exports[`inputProps with placeholder specified 1`] = `
               31
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
-            </td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -2853,50 +2545,6 @@ exports[`inputProps with required specified 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -3208,50 +2856,6 @@ exports[`open set to false 1`] = `
               31
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
-            </td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -3559,50 +3163,6 @@ exports[`open set to true 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -3914,50 +3474,6 @@ exports[`test className: set to arbitraty value 1`] = `
               31
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
-            </td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -4265,50 +3781,6 @@ exports[`test defaultValue: set to arbitrary value 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -4620,50 +4092,6 @@ exports[`test everything default: renders correctly 1`] = `
               31
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
-            </td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -4946,50 +4374,6 @@ exports[`test isValidDate: only valid if after yesterday 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -5301,50 +4685,6 @@ exports[`test renderDay: specified 1`] = `
               031
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              01
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              02
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              03
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              04
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              05
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              06
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              07
-            </td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -5652,50 +4992,6 @@ exports[`test renderMonth: specified 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -6007,50 +5303,6 @@ exports[`test renderYear: specified 1`] = `
               31
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
-            </td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -6358,50 +5610,6 @@ exports[`test value: set to arbitrary value 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -6713,50 +5921,6 @@ exports[`timeFormat set to false 1`] = `
               31
             </td>
           </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
-            </td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -7054,50 +6218,6 @@ exports[`timeFormat set to true 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
@@ -7407,50 +6527,6 @@ exports[`viewMode set to days 1`] = `
               data-value={31}
               onClick={[Function]}>
               31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              data-value={1}
-              onClick={[Function]}>
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={2}
-              onClick={[Function]}>
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={3}
-              onClick={[Function]}>
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={4}
-              onClick={[Function]}>
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={5}
-              onClick={[Function]}>
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={6}
-              onClick={[Function]}>
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              data-value={7}
-              onClick={[Function]}>
-              7
             </td>
           </tr>
         </tbody>
