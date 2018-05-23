@@ -18,6 +18,7 @@
   then don't hesitate to ask. We're here to help!
 -->
 ```
+[ ] I have not included any built dist files (us maintainers do that prior to a new release)
 [ ] I have added tests covering my changes
 [ ] All new and existing tests pass
 [ ] My changes required the documentation to be updated

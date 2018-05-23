@@ -23,6 +23,11 @@ declare module ReactDatetime {
      */
     defaultValue?: Date;
     /*
+     Represents the month which is viewed on opening the calendar when there is no selected date.
+     This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object.
+     */
+    viewDate?: Date;
+    /*
      Defines the format for the date. It accepts any moment.js date format.
      If true the date will be displayed using the defaults for the current locale.
      If false the datepicker is disabled and the component can be used as timepicker.
@@ -70,6 +75,21 @@ declare module ReactDatetime {
      */
     onBlur?: (momentOrInputString : string|any) => void;
     /*
+     Callback trigger when the view mode changes. The callback receives the selected view mode
+     string ('years', 'months', 'days', 'time') as only parameter.
+    */
+    onViewModeChange?: (viewMode: string) => void;
+    /*
+      Callback trigger when the user navigates to the previous month, year or decade.
+      The callback receives the amount and type ('month', 'year') as parameters.
+     */
+    onNavigateBack?: (amount: number, type: string) => void;
+    /*
+      Callback trigger when the user navigates to the next month, year or decade.
+      The callback receives the amount and type ('month', 'year') as parameters.
+     */
+    onNavigateForward?: (amount: number, type: string) => void;
+    /*
      The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
      */
     viewMode?: string|number;
@@ -81,6 +101,12 @@ declare module ReactDatetime {
      Defines additional attributes for the input element of the component.
      */
     inputProps?: Object;
+    /*
+     Replace the rendering of the input element. The accepted function has openCalendar
+     (a function which opens the calendar) and the default calculated props for the input.
+     Must return a React component or null.
+     */
+    renderInput?: (props: Object, openCalendar: Function) => React.Component<any, any>;
     /*
      Define the dates that can be selected. The function receives (currentDate, selectedDate)
      and should return a true or false whether the currentDate is valid or not. See selectable dates.

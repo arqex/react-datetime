@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Moment } from "moment";
+import * as moment from "moment";
 import * as ReactDatetime from "react-datetime";
 
 /*
@@ -18,6 +19,22 @@ const TEST_DATE_PROPS_FOR_VALUE: JSX.Element = <ReactDatetime
 
 const TEST_DATE_PROPS_FOR_DEFAULT_VALUE: JSX.Element = <ReactDatetime
 		defaultValue={ new Date() }
+	/>;
+
+const TEST_DATE_PROPS_FOR_VALUE_AS_MOMENT: JSX.Element = <ReactDatetime
+		value={ moment() }
+	/>;
+
+const TEST_DATE_PROPS_FOR_VALUE_AS_STRING: JSX.Element = <ReactDatetime
+		value={ '1995-12-25' }
+	/>;
+
+const TEST_DATE_PROPS_FOR_DEFAULT_VALUE_AS_MOMENT: JSX.Element = <ReactDatetime
+		defaultValue={ moment() }
+	/>;
+
+const TEST_DATE_PROPS_FOR_DEFAULT_VALUE_AS_STRING: JSX.Element = <ReactDatetime
+		defaultValue={ '1995-12-25' }
 	/>;
 
 /*
@@ -81,6 +98,9 @@ const TEST_INPUT_PROPS: JSX.Element = <ReactDatetime
 		onBlur={
 			(momentOrInputString:string) => {}
 		}
+		onViewModeChange={
+ 			(viewMode:string) => {}
+ 		}
  	/>;
 
 const TEST_EVENT_HANDLERS_WITH_MOMENT: JSX.Element = <ReactDatetime

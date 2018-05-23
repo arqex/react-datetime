@@ -35,24 +35,29 @@ declare namespace ReactDatetimeClass {
          Represents the selected date by the component, in order to use it as a controlled component.
          This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
          */
-        value?: Date;
+        value?: Date | string | Moment;
         /*
          Represents the selected date for the component to use it as a uncontrolled component.
          This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
          */
-        defaultValue?: Date;
+        defaultValue?: Date | string | Moment;
+        /*
+         Represents the month which is viewed on opening the calendar when there is no selected date.
+         This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object.
+         */
+        viewDate?: Date | string | Moment;
         /*
          Defines the format for the date. It accepts any moment.js date format.
          If true the date will be displayed using the defaults for the current locale.
          If false the datepicker is disabled and the component can be used as timepicker.
          */
-        dateFormat?: boolean|string;
+        dateFormat?: boolean | string;
         /*
          Defines the format for the time. It accepts any moment.js time format.
          If true the time will be displayed using the defaults for the current locale.
          If false the timepicker is disabled and the component can be used as datepicker.
          */
-        timeFormat?: boolean|string;
+        timeFormat?: boolean | string;
         /*
          Whether to show an input field to edit the date manually.
          */
@@ -89,9 +94,24 @@ declare namespace ReactDatetimeClass {
          */
         onBlur?: EventOrValueHandler<FocusEvent<any>>;
         /*
+         Callback trigger when the view mode changes. The callback receives the selected view mode
+         string ('years', 'months', 'days', 'time') as only parameter.
+         */
+        onViewModeChange?: (viewMode: string) => void;
+        /*
+         Callback trigger when the user navigates to the previous month, year or decade.
+         The callback receives the amount and type ('month', 'year') as parameters.
+         */
+        onNavigateBack?: (amount: number, type: string) => void;
+        /*
+         Callback trigger when the user navigates to the next month, year or decade.
+         The callback receives the amount and type ('month', 'year') as parameters.
+         */
+        onNavigateForward?: (amount: number, type: string) => void;
+        /*
          The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
          */
-        viewMode?: ViewMode|number;
+        viewMode?: ViewMode | number;
         /*
          Extra class names for the component markup.
          */
