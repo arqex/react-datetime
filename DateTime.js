@@ -81,7 +81,7 @@ var Datetime = createClass({
 
 		viewDate = selectedDate ?
 			selectedDate.clone().startOf('month') :
-			viewDate ? viewDate.clone().startOf('month') : this.localMoment().startOf('month');
+			viewDate ? viewDate : this.localMoment().startOf('month');
 
 		updateOn = this.getUpdateOn(formats);
 
