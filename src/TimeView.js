@@ -3,6 +3,7 @@
 var React = require('react'),
 	createClass = require('create-react-class'),
 	assign = require('object-assign'),
+	moment = require('moment'),
 	onClickOutside = require('react-onclickoutside').default
 	;
 
@@ -11,9 +12,18 @@ var DateTimePickerTime = onClickOutside( createClass({
 		return this.calculateState( this.props );
 	},
 
+	getLocalizedFormat: function( format ) {
+		var passedLocale = (this.props.localMoment().localeData()._abbr);
+		if ( format.indexOf('L') !== -1 ) {
+			return new moment().locale(passedLocale).localeData()._longDateFormat[format];
+		} else {
+			return format;			
+		}
+	},
+
 	calculateState: function( props ) {
 		var date = props.selectedDate || props.viewDate,
-			format = props.timeFormat,
+			format = this.getLocalizedFormat(props.timeFormat),
 			counters = []
 			;
 
@@ -30,8 +40,8 @@ var DateTimePickerTime = onClickOutside( createClass({
 		var hours = date.format( 'H' );
 		
 		var daypart = false;
-		if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
-			if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
+		if ( this.state !== null && format.toLowerCase().indexOf( ' a' ) !== -1 ) {
+			if ( format.indexOf( ' A' ) !== -1 ) {
 				daypart = ( hours >= 12 ) ? 'PM' : 'AM';
 			} else {
 				daypart = ( hours >= 12 ) ? 'pm' : 'am';
@@ -51,7 +61,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 	renderCounter: function( type ) {
 		if ( type !== 'daypart' ) {
 			var value = this.state[ type ];
-			if ( type === 'hours' && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
+			if ( type === 'hours' && this.getLocalizedFormat(this.props.timeFormat).toLowerCase().indexOf( ' a' ) !== -1 ) {
 				value = ( value - 1 ) % 12 + 1;
 
 				if ( value === 0 ) {
@@ -77,8 +87,9 @@ var DateTimePickerTime = onClickOutside( createClass({
 
 	render: function() {
 		var me = this,
+			format = this.getLocalizedFormat(this.props.timeFormat),
 			counters = []
-		;
+			;
 
 		this.state.counters.forEach( function( c ) {
 			if ( counters.length )
@@ -90,7 +101,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 			counters.push( me.renderDayPart() );
 		}
 
-		if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf( 'S' ) !== -1 ) {
+		if ( this.state.counters.length === 3 && format.indexOf( 'S' ) !== -1 ) {
 			counters.push( React.createElement('div', { className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
 			counters.push(
 				React.createElement('div', { className: 'rdtCounter rdtMilli', key: 'm' },
