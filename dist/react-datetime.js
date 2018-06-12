@@ -1,5 +1,5 @@
 /*
-react-datetime v2.15.0
+@capaj/react-datetime v2.15.1
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -121,9 +121,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			if (date && typeof date === 'string')
 				parsedDate = this.localMoment(date, formats.datetime);
-			else if (date)
-				parsedDate = this.localMoment(date);
-
+			else if (date instanceof moment)
+				parsedDate = date;
 			if (parsedDate && !parsedDate.isValid())
 				parsedDate = null;
 
@@ -241,9 +240,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( nextProps.timezone !== this.props.timezone ) {
 				if ( nextProps.timezone ) {
 					if ( this.state.viewDate )
-						updatedState.viewDate = this.state.viewDate.clone().tz(nextProps.timezone);
+						updatedState.viewDate = this.state.viewDate.clone().tz(nextProps.timezone, true);
 					if ( this.state.selectedDate ) {
-						updatedState.selectedDate = this.state.selectedDate.clone().tz(nextProps.timezone);
+						updatedState.selectedDate = this.state.selectedDate.clone().tz(nextProps.timezone, true);
 						updatedState.inputValue = updatedState.selectedDate.format( formats.datetime );
 					}
 				} else {
@@ -446,7 +445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		localMoment: function( date, format, props ) {
 			props = props || this.props;
 			var momentFn = props.timezone ? function (time) {
-				return moment(time).tz(props.timezone);
+				return moment(time).tz(props.timezone, true);
 			} : moment;
 			var m = momentFn( date, format, props.strictParsing );
 			if ( props.locale )
