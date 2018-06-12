@@ -54,9 +54,9 @@ declare module ReactDatetime {
      */
     locale?: string;
     /*
-     Whether to interpret input times as UTC or the user's local timezone.
+     When truthy, it will interpret input times as beingin the selected timezone. When falsy, it will use user's local timezone.
      */
-    utc?: boolean;
+    timezone?: string;
     /*
      Callback trigger when the date changes. The callback receives the selected `moment` object as
      only parameter, if the date in the input is valid. If the date in the input is not valid, the

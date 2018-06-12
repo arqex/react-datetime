@@ -2,6 +2,7 @@
 
 import React from 'react'; // eslint-disable-line no-unused-vars
 import moment from 'moment';
+import 'moment-timezone';
 import utils from './testUtils';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-15';
@@ -38,7 +39,7 @@ describe('with viewDate', () => {
             momentDateUTC = moment.utc(date),
             strDateUTC = momentDateUTC.format('L') + ' ' + momentDateUTC.format('LT'),
             expectedStrDate = momentDateUTC.format('MMMM YYYY'),
-            component = utils.createDatetime({viewDate: strDateUTC, utc: true});
+            component = utils.createDatetime({viewDate: strDateUTC, timezone: 'UTC'});
         expect(utils.getViewDateValue(component)).toEqual(expectedStrDate);
     });
 

@@ -73,9 +73,9 @@ declare namespace ReactDatetimeClass {
          */
         locale?: string;
         /*
-         Whether to interpret input times as UTC or the user's local timezone.
+         A timezone where we want to interpret times into. Use "UTC" to show time in the UTC timezone
          */
-        utc?: boolean;
+        timezone?: string;
         /*
          Callback trigger when the date changes. The callback receives the selected `moment` object as
          only parameter, if the date in the input is valid. If the date in the input is not valid, the

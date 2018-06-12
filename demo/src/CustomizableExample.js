@@ -46,6 +46,7 @@ export default class CustomizableExample extends Component {
         </div>
       </div>
     )
+    const {utc, restOfState} = this.state
 
     return (
       <div className="form-horizontal">
@@ -54,10 +55,12 @@ export default class CustomizableExample extends Component {
           Try out various configuration options and see how they affect the component.
         </p>
 
+
         <DateTime
           defaultValue={new Date()}
           onChange={console.log}
-          {...this.state}
+          timezone={utc ? "UTC": null}
+          {...restOfState}
         />
 
         <hr />

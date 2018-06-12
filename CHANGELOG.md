@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.15.0
+* utc prop replaced by "timezone" prop
+
 ## 2.14.0
 * Make `viewDate` dynamic
 

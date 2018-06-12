@@ -61,7 +61,7 @@ const TEST_BOOLEAN_PROPS: JSX.Element = <ReactDatetime
 		strictParsing={ false }
 		closeOnSelect={ false }
 		disableOnClickOutside={ false }
-		utc={ false }
+		timezone={ null }
 	/>;
 
 /*

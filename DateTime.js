@@ -29,7 +29,7 @@ var Datetime = createClass({
 		onNavigateBack: TYPES.func,
 		onNavigateForward: TYPES.func,
 		locale: TYPES.string,
-		utc: TYPES.bool,
+		timezone: TYPES.string,
 		input: TYPES.bool,
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
@@ -177,12 +177,12 @@ var Datetime = createClass({
 			}
 		}
 
-		if ( nextProps.utc !== this.props.utc ) {
-			if ( nextProps.utc ) {
+		if ( nextProps.timezone !== this.props.timezone ) {
+			if ( nextProps.timezone ) {
 				if ( this.state.viewDate )
-					updatedState.viewDate = this.state.viewDate.clone().utc();
+					updatedState.viewDate = this.state.viewDate.clone().tz(nextProps.timezone);
 				if ( this.state.selectedDate ) {
-					updatedState.selectedDate = this.state.selectedDate.clone().utc();
+					updatedState.selectedDate = this.state.selectedDate.clone().tz(nextProps.timezone);
 					updatedState.inputValue = updatedState.selectedDate.format( formats.datetime );
 				}
 			} else {
@@ -384,7 +384,9 @@ var Datetime = createClass({
 
 	localMoment: function( date, format, props ) {
 		props = props || this.props;
-		var momentFn = props.utc ? moment.utc : moment;
+		var momentFn = props.timezone ? function (time) {
+			return moment(time).tz(props.timezone);
+		} : moment;
 		var m = momentFn( date, format, props.strictParsing );
 		if ( props.locale )
 			m.locale( props.locale );
@@ -472,7 +474,7 @@ Datetime.defaultProps = {
 	strictParsing: true,
 	closeOnSelect: false,
 	closeOnTab: true,
-	utc: false
+	timezone: null
 };
 
 // Make moment accessible through the Datetime class
