@@ -1,5 +1,5 @@
 {
-  "name": "react-datetime",
+  "name": "@capaj/react-datetime",
   "version": "2.15.0",
   "description": "A lightweight but complete datetime picker React.js component",
   "homepage": "https://github.com/YouCanBookMe/react-datetime",
