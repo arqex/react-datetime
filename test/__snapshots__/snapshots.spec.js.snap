@@ -24,8 +24,7 @@ exports[`dateFormat set to false 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▲
                   </span>
                   <div
@@ -35,8 +34,7 @@ exports[`dateFormat set to false 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▼
                   </span>
                 </div>
@@ -49,8 +47,7 @@ exports[`dateFormat set to false 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▲
                   </span>
                   <div
@@ -60,8 +57,7 @@ exports[`dateFormat set to false 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▼
                   </span>
                 </div>
@@ -70,8 +66,7 @@ exports[`dateFormat set to false 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▲
                   </span>
                   <div
@@ -81,8 +76,7 @@ exports[`dateFormat set to false 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▼
                   </span>
                 </div>
@@ -7635,8 +7629,7 @@ exports[`viewMode set to time 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▲
                   </span>
                   <div
@@ -7646,8 +7639,7 @@ exports[`viewMode set to time 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▼
                   </span>
                 </div>
@@ -7660,8 +7652,7 @@ exports[`viewMode set to time 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▲
                   </span>
                   <div
@@ -7671,8 +7662,7 @@ exports[`viewMode set to time 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▼
                   </span>
                 </div>
@@ -7681,8 +7671,7 @@ exports[`viewMode set to time 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▲
                   </span>
                   <div
@@ -7692,8 +7681,7 @@ exports[`viewMode set to time 1`] = `
                   <span
                     className="rdtBtn"
                     onContextMenu={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}>
+                    onMouseDown={[Function]}>
                     ▼
                   </span>
                 </div>
