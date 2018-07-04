@@ -45,6 +45,10 @@ var DateTimePickerDays = createClass({
 			i = 0
 			;
 
+		if (this.props.firstDayOfWeek) {
+			first = moment().day(this.props.firstDayOfWeek).day();
+		}
+
 		days.forEach( function( day ) {
 			dow[ (7 + ( i++ ) - first) % 7 ] = day;
 		});
@@ -67,6 +71,10 @@ var DateTimePickerDays = createClass({
 
 		// Go to the last week of the previous month
 		prevMonth.date( prevMonth.daysInMonth() ).startOf( 'week' );
+		if (this.props.firstDayOfWeek) {
+			prevMonth.day(this.props.firstDayOfWeek);
+		}
+
 		var lastDay = prevMonth.clone().add( 42, 'd' );
 
 		while ( prevMonth.isBefore( lastDay ) ) {
