@@ -157,6 +157,10 @@ declare module ReactDatetime {
      close it.
     */
     disableOnClickOutside?: boolean;
+    /*
+     Customize the first day of the week in the date picker (`monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`).
+     */
+    firstDayOfWeek?: string;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {

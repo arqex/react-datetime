@@ -170,6 +170,10 @@ declare namespace ReactDatetimeClass {
          close it.
          */
         disableOnClickOutside?: boolean;
+        /*
+         Customize the first day of the week in the date picker (`monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`).
+         */
+        firstDayOfWeek?: string;
     }
 
     export interface DatetimepickerState {
