@@ -102,6 +102,10 @@ module.exports = {
 		return datetime.find('.rdtDay').at(n);
 	},
 
+	getActiveDay: (datetime) => {
+		return datetime.find('.rdtDay.rdtActive');
+	},
+
 	getNthMonth: (datetime, n) => {
 		return datetime.find('.rdtMonth').at(n);
 	},

@@ -81,7 +81,7 @@ var Datetime = createClass({
 
 		viewDate = selectedDate ?
 			selectedDate.clone().startOf('month') :
-			viewDate ? viewDate.clone().startOf('month') : this.localMoment().startOf('month');
+			viewDate ? viewDate : this.localMoment().startOf('month');
 
 		updateOn = this.getUpdateOn(formats);
 
@@ -314,50 +314,52 @@ var Datetime = createClass({
 			date
 			;
 
-		if (target.className.indexOf('rdtDay') !== -1) {
-			if (target.className.indexOf('rdtNew') !== -1)
-				modifier = 1;
-			else if (target.className.indexOf('rdtOld') !== -1)
-				modifier = -1;
+    if (typeof currentDate !== 'undefined') {
+		  if (target.className.indexOf('rdtDay') !== -1) {
+			  if (target.className.indexOf('rdtNew') !== -1)
+				  modifier = 1;
+			  else if (target.className.indexOf('rdtOld') !== -1)
+				  modifier = -1;
 
-			date = viewDate.clone()
-				.month( viewDate.month() + modifier )
-				.date( parseInt( target.getAttribute('data-value'), 10 ) );
-		} else if (target.className.indexOf('rdtMonth') !== -1) {
-			date = viewDate.clone()
-				.month( parseInt( target.getAttribute('data-value'), 10 ) )
-				.date( currentDate.date() );
-		} else if (target.className.indexOf('rdtYear') !== -1) {
-			date = viewDate.clone()
-				.month( currentDate.month() )
-				.date( currentDate.date() )
-				.year( parseInt( target.getAttribute('data-value'), 10 ) );
-		}
+			  date = viewDate.clone()
+				               .month( viewDate.month() + modifier )
+				               .date( parseInt( target.getAttribute('data-value'), 10 ) );
+		  } else if (target.className.indexOf('rdtMonth') !== -1) {
+			  date = viewDate.clone()
+				               .month( parseInt( target.getAttribute('data-value'), 10 ) )
+				               .date( currentDate.date() );
+		  } else if (target.className.indexOf('rdtYear') !== -1) {
+			  date = viewDate.clone()
+				               .month( currentDate.month() )
+				               .date( currentDate.date() )
+				               .year( parseInt( target.getAttribute('data-value'), 10 ) );
+		  }
 
-		date.hours( currentDate.hours() )
-			.minutes( currentDate.minutes() )
-			.seconds( currentDate.seconds() )
-			.milliseconds( currentDate.milliseconds() );
+		  date.hours( currentDate.hours() )
+			    .minutes( currentDate.minutes() )
+			    .seconds( currentDate.seconds() )
+			    .milliseconds( currentDate.milliseconds() );
 
-		if ( !this.props.value ) {
-			var open = !( this.props.closeOnSelect && close );
-			if ( !open ) {
-				this.props.onBlur( date );
+		  if ( !this.props.value ) {
+			  var open = !( this.props.closeOnSelect && close );
+			  if ( !open ) {
+				  this.props.onBlur( date );
+			  }
+
+			  this.setState({
+				  selectedDate: date,
+				  viewDate: date.clone().startOf('month'),
+				  inputValue: date.format( this.state.inputFormat ),
+				  open: open
+			  });
+		  } else {
+			  if ( this.props.closeOnSelect && close ) {
+				  this.closeCalendar();
 			}
+		  }
 
-			this.setState({
-				selectedDate: date,
-				viewDate: date.clone().startOf('month'),
-				inputValue: date.format( this.state.inputFormat ),
-				open: open
-			});
-		} else {
-			if ( this.props.closeOnSelect && close ) {
-				this.closeCalendar();
-			}
-		}
-
-		this.props.onChange( date );
+		  this.props.onChange( date );
+    }
 	},
 
 	openCalendar: function( e ) {

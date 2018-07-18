@@ -257,14 +257,16 @@ describe('Datetime', () => {
 	});
 
 	it('selected day persists (in UI) when navigating to prev month', () => {
-		const date = new Date(2000, 0, 3, 2, 2, 2, 2),
+		const date = new Date(2000, 0, 1, 2, 2, 2, 2),
 			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
 
 		utils.openDatepicker(component);
-		expect(utils.getNthDay(component, 8).hasClass('rdtActive')).toBeTruthy();
+		expect(utils.getNthDay(component, 6).hasClass('rdtActive')).toBeTruthy();
+		let dayNumber = utils.getNthDay(component, 6).text();
 		// Go to previous month
 		utils.clickOnElement(component.find('.rdtDays .rdtPrev span'));
-		expect(utils.getNthDay(component, 36).hasClass('rdtActive')).toBeTruthy();
+
+		expect(utils.getActiveDay(component).text() === dayNumber).toBeTruthy();
 	});
 
 	it('sets CSS class on today date', () => {
@@ -428,7 +430,7 @@ describe('Datetime', () => {
 			const component = utils.createDatetime({ value: mDate, renderDay: renderDayFn });
 
 			// Last day should be 6th of february
-			expect(currentDate.day()).toEqual(6);
+			expect(currentDate.day()).toEqual(1);
 			expect(currentDate.month()).toEqual(1);
 
 			// The date must be the same
