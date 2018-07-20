@@ -165,6 +165,10 @@ declare namespace ReactDatetimeClass {
          close it.
          */
         disableOnClickOutside?: boolean;
+        /*
+         When true, adds a 'Today' button at the bottom of the date picker.
+        */
+        showTodayButton?: boolean;
     }
 
     export interface DatetimepickerState {

@@ -152,6 +152,10 @@ declare module ReactDatetime {
      close it.
     */
     disableOnClickOutside?: boolean;
+    /*
+     When true, adds a 'Today' button at the bottom of the date picker.
+    */
+    showTodayButton?: boolean;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {
