@@ -935,6 +935,24 @@ describe('Datetime', () => {
 				utils.clickNthDay(component, 2);
 				expect(onBlurFn).not.toHaveBeenCalled();
 			});
+
+			it('when clicking outside', () => {
+				const onBlurFn = jest.fn(),
+					component = utils.createDatetime({ value: null, onBlur: onBlurFn, closeOnSelect: true });
+
+				utils.openDatepicker(component);
+				document.dispatchEvent(new Event('mousedown'));
+				expect(onBlurFn).toHaveBeenCalledTimes(1);
+			});
+
+			it('when clicking outside and open prop is true', () => {
+				const onBlurFn = jest.fn(),
+					component = utils.createDatetime({ value: null, onBlur: onBlurFn, closeOnSelect: true, open: true });
+
+				utils.openDatepicker(component);
+				document.dispatchEvent(new Event('mousedown'));
+				expect(onBlurFn).toHaveBeenCalledTimes(1);
+			});
 		});
 
 		it('onFocus when opening datepicker', () => {

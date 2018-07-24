@@ -375,11 +375,15 @@ var Datetime = createClass({
 	},
 
 	handleClickOutside: function() {
-		if ( this.props.input && this.state.open && !this.props.open && !this.props.disableOnClickOutside ) {
-			this.setState({ open: false }, function() {
-				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
-			});
-		}
+    if (this.props.input && this.state.open) {
+      if (!this.props.open && !this.props.disableOnClickOutside) {
+        this.setState({ open: false }, function () {
+          this.props.onBlur(this.state.selectedDate || this.state.inputValue)
+        })
+      } else {
+        this.props.onBlur(this.state.selectedDate || this.state.inputValue)
+      }
+    }
 	},
 
 	localMoment: function( date, format, props ) {
