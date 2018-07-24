@@ -3979,7 +3979,7 @@ exports[`test defaultValue: set to arbitrary value 1`] = `
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
-    value="12/22/2016 3:36 AM" />
+    value="12/22/2016 12:36 AM" />
   <div
     className="rdtPicker">
     <div
@@ -4312,7 +4312,7 @@ exports[`test defaultValue: set to arbitrary value 1`] = `
               className="rdtTimeToggle"
               colSpan={7}
               onClick={[Function]}>
-              3:36 AM
+              12:36 AM
             </td>
           </tr>
         </tfoot>
@@ -6072,7 +6072,7 @@ exports[`test value: set to arbitrary value 1`] = `
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
-    value="12/22/2016 3:36 AM" />
+    value="12/22/2016 12:36 AM" />
   <div
     className="rdtPicker">
     <div
@@ -6405,7 +6405,7 @@ exports[`test value: set to arbitrary value 1`] = `
               className="rdtTimeToggle"
               colSpan={7}
               onClick={[Function]}>
-              3:36 AM
+              12:36 AM
             </td>
           </tr>
         </tfoot>
