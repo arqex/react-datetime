@@ -1,5 +1,10 @@
 Changelog
 =========
+## 2.15.0
+* New `onNavigateBack` and `onNavigateForward` hooks thanks to @DaanDD and @simeg.
+* Touch improvements by @NicoDos
+* TS and debugging improvements
+
 ## 2.14.0
 * Make `viewDate` dynamic
 

@@ -81,7 +81,7 @@ declare namespace ReactDatetimeClass {
          only parameter, if the date in the input is valid. If the date in the input is not valid, the
          callback receives the value of the input (a string).
          */
-        onChange?: EventOrValueHandler<ChangeEvent<any>>;
+        onChange?: (value: Moment | string) => void;
         /*
          Callback trigger for when the user opens the datepicker.
          */
