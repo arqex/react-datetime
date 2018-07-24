@@ -406,7 +406,7 @@ describe('Datetime', () => {
 			const component = utils.createDatetime({ renderInput });
 
 			expect(component.find('button.custom-open').length).toEqual(1);
-            expect(utils.isOpen(component)).toBeFalsy();
+						expect(utils.isOpen(component)).toBeFalsy();
 			utils.clickOnElement(component.find('button.custom-open'));
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
@@ -534,7 +534,7 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
-    it('disableOnClickOutside=false', () => {
+		it('disableOnClickOutside=false', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ value: date, disableOnClickOutside: false });
 

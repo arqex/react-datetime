@@ -375,15 +375,15 @@ var Datetime = createClass({
 	},
 
 	handleClickOutside: function() {
-    if (this.props.input && this.state.open) {
-      if (!this.props.open && !this.props.disableOnClickOutside) {
-        this.setState({ open: false }, function () {
-          this.props.onBlur(this.state.selectedDate || this.state.inputValue)
-        })
-      } else {
-        this.props.onBlur(this.state.selectedDate || this.state.inputValue)
-      }
-    }
+		if ( this.props.input && this.state.open ) {
+			if ( !this.props.open && !this.props.disableOnClickOutside ) {
+				this.setState({ open: false }, function () {
+					this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+				});
+			} else {
+				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
+			}
+		}
 	},
 
 	localMoment: function( date, format, props ) {
@@ -424,8 +424,8 @@ var Datetime = createClass({
 		// TODO: Make a function or clean up this code,
 		// logic right now is really hard to follow
 		var className = 'rdt' + (this.props.className ?
-                  ( Array.isArray( this.props.className ) ?
-                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
+									( Array.isArray( this.props.className ) ?
+									' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 			children = [];
 
 		if ( this.props.input ) {
