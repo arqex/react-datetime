@@ -215,7 +215,7 @@ describe('Datetime', () => {
 	it('opens picker when clicking on input', () => {
 		const component = utils.createDatetime();
 		expect(utils.isOpen(component)).toBeFalsy();
-		component.find('.form-control').simulate('click');
+		component.find('.form-control').simulate('click', { nativeEvent: { stopImmediatePropagation: () => {} } });
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 

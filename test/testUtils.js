@@ -8,7 +8,7 @@ const _simulateClickOnElement = (element) => {
 		console.warn('Element not clicked since it doesn\'t exist');
 		return;
 	}
-	return element.simulate('click');
+	return element.simulate('click', { nativeEvent: { stopImmediatePropagation: () => {} } });
 };
 
 module.exports = {
