@@ -13,7 +13,7 @@ const _simulateClickOnElement = (element) => {
 
 module.exports = {
 	createDatetime: (props) => {
-		return mount(<Datetime {...props} />);
+		return mount(<Datetime {...props} disableEventPropagation={true} />);
 	},
 
 	createDatetimeShallow: (props) => {
