@@ -15,6 +15,13 @@ var viewModes = Object.freeze({
 	TIME: 'time',
 });
 
+var stopEventPropagation = function ( e ) { e.nativeEvent.stopImmediatePropagation(); };
+var eventPropagationHandlers = Object.freeze({
+	onClick: stopEventPropagation,
+	onKeyUp: stopEventPropagation,
+	onTouchEnd: stopEventPropagation
+});
+
 var TYPES = PropTypes;
 var Datetime = createClass({
 	displayName: 'DateTime',
@@ -40,7 +47,8 @@ var Datetime = createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		disableEventPropagation: TYPES.bool
 	},
 
 	getInitialState: function() {
@@ -446,7 +454,12 @@ var Datetime = createClass({
 		if ( this.state.open )
 			className += ' rdtOpen';
 
-		return React.createElement( 'div', { className: className }, children.concat(
+		var rootProps = Object.assign(
+			{ className: className },
+			this.props.disableEventPropagation ? eventPropagationHandlers : null
+		);
+
+		return React.createElement( 'div', rootProps, children.concat(
 			React.createElement( 'div',
 				{ key: 'dt', className: 'rdtPicker' },
 				React.createElement( CalendarContainer, { view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
@@ -458,6 +471,7 @@ var Datetime = createClass({
 Datetime.defaultProps = {
 	className: '',
 	defaultValue: '',
+	disableEventPropagation: false,
 	inputProps: {},
 	input: true,
 	onFocus: function() {},
