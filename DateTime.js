@@ -30,6 +30,7 @@ var Datetime = createClass({
 		onNavigateForward: TYPES.func,
 		locale: TYPES.string,
 		utc: TYPES.bool,
+		displayTimeZone: TYPES.string,
 		input: TYPES.bool,
 		// dateFormat: TYPES.string | TYPES.bool,
 		// timeFormat: TYPES.string | TYPES.bool,
@@ -177,13 +178,20 @@ var Datetime = createClass({
 			}
 		}
 
-		if ( nextProps.utc !== this.props.utc ) {
+		if ( nextProps.utc !== this.props.utc || nextProps.displayTimeZone !== this.props.displayTimeZone ) {
 			if ( nextProps.utc ) {
 				if ( this.state.viewDate )
 					updatedState.viewDate = this.state.viewDate.clone().utc();
 				if ( this.state.selectedDate ) {
 					updatedState.selectedDate = this.state.selectedDate.clone().utc();
 					updatedState.inputValue = updatedState.selectedDate.format( formats.datetime );
+				}
+			} else if ( nextProps.displayTimeZone ) {
+				if ( this.state.viewDate )
+					updatedState.viewDate = this.state.viewDate.clone().tz(nextProps.displayTimeZone);
+				if ( this.state.selectedDate ) {
+					updatedState.selectedDate = this.state.selectedDate.clone().tz(nextProps.displayTimeZone);
+					updatedState.inputValue = updatedState.selectedDate.tz(nextProps.displayTimeZone).format( formats.datetime );
 				}
 			} else {
 				if ( this.state.viewDate )
@@ -384,8 +392,16 @@ var Datetime = createClass({
 
 	localMoment: function( date, format, props ) {
 		props = props || this.props;
-		var momentFn = props.utc ? moment.utc : moment;
-		var m = momentFn( date, format, props.strictParsing );
+		var m = null;
+
+		if (props.utc) {
+			m = moment.utc(date, format, props.strictParsing);
+		} else if (props.displayTimeZone) {
+			m = moment.tz(date, format, props.displayTimeZone);
+		} else {
+			m = moment(date, format, props.strictParsing);
+		}
+
 		if ( props.locale )
 			m.locale( props.locale );
 		return m;
@@ -420,8 +436,8 @@ var Datetime = createClass({
 		// TODO: Make a function or clean up this code,
 		// logic right now is really hard to follow
 		var className = 'rdt' + (this.props.className ?
-                  ( Array.isArray( this.props.className ) ?
-                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
+									( Array.isArray( this.props.className ) ?
+									' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 			children = [];
 
 		if ( this.props.input ) {

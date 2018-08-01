@@ -77,6 +77,11 @@ declare namespace ReactDatetimeClass {
          */
         utc?: boolean;
         /*
+         When specified, input time values will be displayed in the given time zone. Otherwise they will default
+         to the user's local timezone (unless `utc` specified).
+         */
+        displayTimeZone?: string;
+        /*
          Callback trigger when the date changes. The callback receives the selected `moment` object as
          only parameter, if the date in the input is valid. If the date in the input is not valid, the
          callback receives the value of the input (a string).

@@ -2,6 +2,7 @@
 
 import React from 'react'; // eslint-disable-line no-unused-vars
 import moment from 'moment';
+import _momentTimezone from 'moment-timezone'; // eslint-disable-line no-unused-vars
 import utils from './testUtils';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-15';
@@ -877,6 +878,34 @@ describe('Datetime', () => {
 				});
 			});
 
+			it('displayTimeZone -> value should change format (undefined->America/New_York)', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					momentDate = moment(date),
+					component = utils.createDatetime({ value: momentDate }),
+					displayTimeZone = (moment.tz.guess() === 'America/New_York' ? 'America/Los_Angeles' : 'America/New_York');
+
+				const valueBefore = utils.getInputValue(component);
+				component.setProps({ displayTimeZone: displayTimeZone }, () => {
+					const valueAfter = utils.getInputValue(component);
+
+					expect(valueBefore).not.toEqual(valueAfter);
+				});
+			});
+
+			it('displayTimeZone -> value should change format (America/New_York->undefined)', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					momentDate = moment(date),
+					displayTimeZone = (moment.tz.guess() === 'America/New_York' ? 'America/Los_Angeles' : 'America/New_York'),
+					component = utils.createDatetime({ value: momentDate, displayTimeZone: displayTimeZone });
+
+				const valueBefore = utils.getInputValue(component);
+				component.setProps({ displayTimeZone: undefined }, () => {
+					const valueAfter = utils.getInputValue(component);
+
+					expect(valueBefore).not.toEqual(valueAfter);
+				});
+			});
+
 			it('locale -> picker should change language (viewMode=days)', () => {
 				const component = utils.createDatetime({ viewMode: 'days', locale: 'nl' }),
 					weekdaysBefore = component.find('.rdtDays .dow').map((element) =>
@@ -1193,6 +1222,26 @@ describe('Datetime', () => {
 				strDateUTC = momentDateUTC.format('L') + ' ' + momentDateUTC.format('LT'),
 				component = utils.createDatetime({ value: strDateUTC, utc: true });
 			expect(utils.getInputValue(component)).toEqual(strDateUTC);
+		});
+
+		it('TZ value from local moment', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+        displayTimeZone = 'America/New_York',
+				momentDate = moment(date),
+				momentDateTZ = moment.tz(date, displayTimeZone),
+				strDateTZ = momentDateTZ.format('L') + ' ' + momentDateTZ.format('LT'),
+				component = utils.createDatetime({ value: momentDate, displayTimeZone: displayTimeZone });
+			expect(utils.getInputValue(component)).toEqual(strDateTZ);
+		});
+
+		it('TZ value from UTC moment', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				displayTimeZone = 'America/New_York',
+				momentDateUTC = moment.utc(date),
+				momentDateTZ = moment.tz(date, displayTimeZone),
+				strDateTZ = momentDateTZ.format('L') + ' ' + momentDateTZ.format('LT'),
+				component = utils.createDatetime({ value: momentDateUTC, displayTimeZone: displayTimeZone });
+			expect(utils.getInputValue(component)).toEqual(strDateTZ);
 		});
 
 		it('invalid string value', (done) => {
