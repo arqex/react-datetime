@@ -1,37 +1,36 @@
 'use strict';
 
 var React = require('react'),
-    createClass = require('create-react-class'),
+	createClass = require('create-react-class'),
 	moment = require('moment'),
-  onClickOutside = require('react-onclickoutside').default
-;
+	onClickOutside = require('react-onclickoutside').default
+	;
 
-var DOM = React.DOM;
 var DateTimePickerDays = onClickOutside( createClass({
 	render: function() {
 		var footer = this.renderFooter(),
 			date = this.props.viewDate,
 			locale = date.localeData(),
 			tableChildren
-		;
+			;
 
 		tableChildren = [
-			React.createElement('thead',{ key: 'th' }, [
-				React.createElement('tr',{ key: 'h' }, [
-					React.createElement('th',{ key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span',{}, '‹' )),
-					React.createElement('th',{ key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-					React.createElement('th',{ key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span',{}, '›' ))
+			React.createElement('thead', { key: 'th' }, [
+				React.createElement('tr', { key: 'h' }, [
+					React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
+					React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span', {}, '›' ))
 				]),
-				React.createElement('tr',{ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th',{ key: day + index, className: 'dow'}, day ); }) )
+				React.createElement('tr', { key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th', { key: day + index, className: 'dow'}, day ); }) )
 			]),
-			React.createElement('tbody',{ key: 'tb' }, this.renderDays())
+			React.createElement('tbody', { key: 'tb' }, this.renderDays())
 		];
 
 		if ( footer )
 			tableChildren.push( footer );
 
-		return React.createElement('div',{ className: 'rdtDays' },
-			React.createElement('table',this.props.daysTableProps, tableChildren )
+		return React.createElement('div', { className: 'rdtDays' },
+			React.createElement('table', this.props.daysTableProps, tableChildren )
 		);
 	},
 
@@ -45,7 +44,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 			first = locale.firstDayOfWeek(),
 			dow = [],
 			i = 0
-		;
+			;
 
 		days.forEach( function( day ) {
 			dow[ (7 + ( i++ ) - first) % 7 ] = day;
@@ -65,7 +64,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 			renderer = this.props.renderDay || this.renderDay,
 			isValid = this.props.isValidDate || this.alwaysValidDate,
 			classes, isDisabled, dayProps, currentDate
-		;
+			;
 
 		// Go to the last week of the previous month
 		prevMonth.date( prevMonth.daysInMonth() ).startOf( 'week' );
@@ -102,7 +101,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 			days.push( renderer( dayProps, currentDate, selected ) );
 
 			if ( days.length === 7 ) {
-				weeks.push( React.createElement('tr',{ key: prevMonth.format( 'M_D' )}, days ) );
+				weeks.push( React.createElement('tr', { key: prevMonth.format( 'M_D' )}, days ) );
 				days = [];
 			}
 
@@ -117,7 +116,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 	},
 
 	renderDay: function( props, currentDate ) {
-		return React.createElement('td', props, currentDate.date() );
+		return React.createElement('td',  props, currentDate.date() );
 	},
 
 	renderFooter: function() {
@@ -126,9 +125,9 @@ var DateTimePickerDays = onClickOutside( createClass({
 
 		var date = this.props.selectedDate || this.props.viewDate;
 
-		return React.createElement('tfoot',{ key: 'tf'},
-			React.createElement('tr',{},
-				React.createElement('td',{ onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
+		return React.createElement('tfoot', { key: 'tf'},
+			React.createElement('tr', {},
+				React.createElement('td', { onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
 			)
 		);
 	},
@@ -137,9 +136,9 @@ var DateTimePickerDays = onClickOutside( createClass({
 		return 1;
 	},
 
-  handleClickOutside: function() {
-    this.props.handleClickOutside();
-  }
+	handleClickOutside: function() {
+		this.props.handleClickOutside();
+	}
 }));
 
 module.exports = DateTimePickerDays;

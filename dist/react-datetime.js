@@ -1,5 +1,5 @@
 /*
-react-datetime v2.8.10
+react-datetime v2.15.0
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -12,7 +12,7 @@ MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 		exports["Datetime"] = factory(require("React"), require("moment"), require("ReactDOM"));
 	else
 		root["Datetime"] = factory(root["React"], root["moment"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_12__, __WEBPACK_EXTERNAL_MODULE_18__, __WEBPACK_EXTERNAL_MODULE_22__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_17__, __WEBPACK_EXTERNAL_MODULE_21__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -62,22 +62,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var assign = __webpack_require__(1),
-	        PropTypes = __webpack_require__(2),
-	        createClass = __webpack_require__(11),
-		moment = __webpack_require__(18),
-		React = __webpack_require__(12),
-		CalendarContainer = __webpack_require__(19),
-		ReactDOM = __webpack_require__(22)
-	;
+		PropTypes = __webpack_require__(2),
+		createClass = __webpack_require__(9),
+		moment = __webpack_require__(17),
+		React = __webpack_require__(10),
+		CalendarContainer = __webpack_require__(18)
+		;
+
+	var viewModes = Object.freeze({
+		YEARS: 'years',
+		MONTHS: 'months',
+		DAYS: 'days',
+		TIME: 'time',
+	});
 
 	var TYPES = PropTypes;
 	var Datetime = createClass({
+		displayName: 'DateTime',
 		propTypes: {
 			// value: TYPES.object | TYPES.string,
 			// defaultValue: TYPES.object | TYPES.string,
+			// viewDate: TYPES.object | TYPES.string,
 			onFocus: TYPES.func,
 			onBlur: TYPES.func,
 			onChange: TYPES.func,
+			onViewModeChange: TYPES.func,
+			onNavigateBack: TYPES.func,
+			onNavigateForward: TYPES.func,
 			locale: TYPES.string,
 			utc: TYPES.bool,
 			input: TYPES.bool,
@@ -85,41 +96,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			// timeFormat: TYPES.string | TYPES.bool,
 			inputProps: TYPES.object,
 			timeConstraints: TYPES.object,
-			viewMode: TYPES.oneOf(['years', 'months', 'days', 'time']),
+			viewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
 			isValidDate: TYPES.func,
 			open: TYPES.bool,
 			strictParsing: TYPES.bool,
 			closeOnSelect: TYPES.bool,
-			closeOnTab: TYPES.bool,
-			timeTableProps: TYPES.object,
-			daysTableProps: TYPES.object,
-			monthsTableProps: TYPES.object,
-			yearsTableProps: TYPES.object,
-			headerTableProps: TYPES.object,
-		},
-		getDefaultProps12313: function() {
-			var nof = function() {};
-			return {
-				className: '',
-				defaultValue: '',
-				inputProps: {},
-				input: true,
-				onFocus: nof,
-				onBlur: nof,
-				onChange: nof,
-				timeFormat: true,
-				timeConstraints: {},
-				dateFormat: true,
-				strictParsing: true,
-				closeOnSelect: false,
-				closeOnTab: true,
-				timeTableProps: {},
-				daysTableProps: {},
-				monthsTableProps: {},
-				yearsTableProps: {},
-				headerTableProps: {},
-				utc: false
-			};
+			closeOnTab: TYPES.bool
 		},
 
 		getInitialState: function() {
@@ -128,29 +110,39 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( state.open === undefined )
 				state.open = !this.props.input;
 
-			state.currentView = this.props.dateFormat ? (this.props.viewMode || state.updateOn || 'days') : 'time';
+			state.currentView = this.props.dateFormat ?
+				(this.props.viewMode || state.updateOn || viewModes.DAYS) : viewModes.TIME;
 
 			return state;
+		},
+
+		parseDate: function (date, formats) {
+			var parsedDate;
+
+			if (date && typeof date === 'string')
+				parsedDate = this.localMoment(date, formats.datetime);
+			else if (date)
+				parsedDate = this.localMoment(date);
+
+			if (parsedDate && !parsedDate.isValid())
+				parsedDate = null;
+
+			return parsedDate;
 		},
 
 		getStateFromProps: function( props ) {
 			var formats = this.getFormats( props ),
 				date = props.value || props.defaultValue,
 				selectedDate, viewDate, updateOn, inputValue
-			;
+				;
 
-			if ( date && typeof date === 'string' )
-				selectedDate = this.localMoment( date, formats.datetime );
-			else if ( date )
-				selectedDate = this.localMoment( date );
+			selectedDate = this.parseDate(date, formats);
 
-			if ( selectedDate && !selectedDate.isValid() )
-				selectedDate = null;
+			viewDate = this.parseDate(props.viewDate, formats);
 
 			viewDate = selectedDate ?
 				selectedDate.clone().startOf('month') :
-				this.localMoment().startOf('month')
-			;
+				viewDate ? viewDate.clone().startOf('month') : this.localMoment().startOf('month');
 
 			updateOn = this.getUpdateOn(formats);
 
@@ -173,16 +165,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		getUpdateOn: function( formats ) {
 			if ( formats.date.match(/[lLD]/) ) {
-				return 'days';
-			}
-			else if ( formats.date.indexOf('M') !== -1 ) {
-				return 'months';
-			}
-			else if ( formats.date.indexOf('Y') !== -1 ) {
-				return 'years';
+				return viewModes.DAYS;
+			} else if ( formats.date.indexOf('M') !== -1 ) {
+				return viewModes.MONTHS;
+			} else if ( formats.date.indexOf('Y') !== -1 ) {
+				return viewModes.YEARS;
 			}
 
-			return 'days';
+			return viewModes.DAYS;
 		},
 
 		getFormats: function( props ) {
@@ -191,12 +181,12 @@ return /******/ (function(modules) { // webpackBootstrap
 					time: props.timeFormat || ''
 				},
 				locale = this.localMoment( props.date, null, props ).localeData()
-			;
+				;
 
 			if ( formats.date === true ) {
 				formats.date = locale.longDateFormat('L');
 			}
-			else if ( this.getUpdateOn(formats) !== 'days' ) {
+			else if ( this.getUpdateOn(formats) !== viewModes.DAYS ) {
 				formats.time = '';
 			}
 
@@ -223,7 +213,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			if ( updatedState.open === undefined ) {
-				if ( this.props.closeOnSelect && this.state.currentView !== 'time' ) {
+				if ( typeof nextProps.open !== 'undefined' ) {
+					updatedState.open = nextProps.open;
+				} else if ( this.props.closeOnSelect && this.state.currentView !== viewModes.TIME ) {
 					updatedState.open = false;
 				} else {
 					updatedState.open = this.state.open;
@@ -264,6 +256,16 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			}
 
+			if ( nextProps.viewDate !== this.props.viewDate ) {
+				updatedState.viewDate = moment(nextProps.viewDate);
+			}
+			//we should only show a valid date if we are provided a isValidDate function. Removed in 2.10.3
+			/*if (this.props.isValidDate) {
+				updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
+				while (!this.props.isValidDate(updatedState.viewDate)) {
+					updatedState.viewDate = updatedState.viewDate.add(1, 'day');
+				}
+			}*/
 			this.setState( updatedState );
 		},
 
@@ -271,13 +273,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			var value = e.target === null ? e : e.target.value,
 				localMoment = this.localMoment( value, this.state.inputFormat ),
 				update = { inputValue: value }
-			;
+				;
 
 			if ( localMoment.isValid() && !this.props.value ) {
 				update.selectedDate = localMoment;
 				update.viewDate = localMoment.clone().startOf('month');
-			}
-			else {
+			} else {
 				update.selectedDate = null;
 			}
 
@@ -295,6 +296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		showView: function( view ) {
 			var me = this;
 			return function() {
+				me.state.currentView !== view && me.props.onViewModeChange( view );
 				me.setState({ currentView: view });
 			};
 		},
@@ -302,8 +304,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		setDate: function( type ) {
 			var me = this,
 				nextViews = {
-					month: 'days',
-					year: 'months'
+					month: viewModes.DAYS,
+					year: viewModes.MONTHS,
 				}
 			;
 			return function( e ) {
@@ -311,29 +313,33 @@ return /******/ (function(modules) { // webpackBootstrap
 					viewDate: me.state.viewDate.clone()[ type ]( parseInt(e.target.getAttribute('data-value'), 10) ).startOf( type ),
 					currentView: nextViews[ type ]
 				});
+				me.props.onViewModeChange( nextViews[ type ] );
+			};
+		},
+
+		subtractTime: function( amount, type, toSelected ) {
+			var me = this;
+			return function() {
+				me.props.onNavigateBack( amount, type );
+				me.updateTime( 'subtract', amount, type, toSelected );
 			};
 		},
 
 		addTime: function( amount, type, toSelected ) {
-			return this.updateTime( 'add', amount, type, toSelected );
-		},
-
-		subtractTime: function( amount, type, toSelected ) {
-			return this.updateTime( 'subtract', amount, type, toSelected );
+			var me = this;
+			return function() {
+				me.props.onNavigateForward( amount, type );
+				me.updateTime( 'add', amount, type, toSelected );
+			};
 		},
 
 		updateTime: function( op, amount, type, toSelected ) {
-			var me = this;
+			var update = {},
+				date = toSelected ? 'selectedDate' : 'viewDate';
 
-			return function() {
-				var update = {},
-					date = toSelected ? 'selectedDate' : 'viewDate'
-				;
+			update[ date ] = this.state[ date ].clone()[ op ]( amount, type );
 
-				update[ date ] = me.state[ date ].clone()[ op ]( amount, type );
-
-				me.setState( update );
-			};
+			this.setState( update );
 		},
 
 		allowedSetTime: ['hours', 'minutes', 'seconds', 'milliseconds'],
@@ -342,7 +348,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				state = this.state,
 				date = (state.selectedDate || state.viewDate).clone(),
 				nextType
-			;
+				;
 
 			// It is needed to set all the time properties
 			// to not to reset the time
@@ -367,7 +373,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				viewDate = this.state.viewDate,
 				currentDate = this.state.selectedDate || viewDate,
 				date
-	    ;
+				;
 
 			if (target.className.indexOf('rdtDay') !== -1) {
 				if (target.className.indexOf('rdtNew') !== -1)
@@ -415,10 +421,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			this.props.onChange( date );
 		},
 
-		openCalendar: function() {
-			if (!this.state.open) {
+		openCalendar: function( e ) {
+			if ( !this.state.open ) {
 				this.setState({ open: true }, function() {
-					this.props.onFocus();
+					this.props.onFocus( e );
 				});
 			}
 		},
@@ -430,7 +436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		handleClickOutside: function() {
-			if ( this.props.input && this.state.open && !this.props.open ) {
+			if ( this.props.input && this.state.open && !this.props.open && !this.props.disableOnClickOutside ) {
 				this.setState({ open: false }, function() {
 					this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 				});
@@ -447,7 +453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		componentProps: {
-			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'daysTableProps', 'monthsTableProps', 'yearsTableProps', 'headerTableProps', 'timeTableProps'],
+			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
 			fromState: ['viewDate', 'selectedDate', 'updateOn'],
 			fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
 		},
@@ -456,7 +462,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var me = this,
 				formats = this.getFormats( this.props ),
 				props = {dateFormat: formats.date, timeFormat: formats.time}
-			;
+				;
 
 			this.componentProps.fromProps.forEach( function( name ) {
 				props[ name ] = me.props[ name ];
@@ -472,23 +478,28 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		render: function() {
-			var DOM = ReactDOM,
-				className = 'rdt' + (this.props.className ?
+			// TODO: Make a function or clean up this code,
+			// logic right now is really hard to follow
+			var className = 'rdt' + (this.props.className ?
 	                  ( Array.isArray( this.props.className ) ?
 	                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
-				children = []
-			;
+				children = [];
 
 			if ( this.props.input ) {
-				children = [  React.createElement('input', assign({
-					key: 'i',
+				var finalInputProps = assign({
 					type: 'text',
 					className: 'form-control',
+					onClick: this.openCalendar,
 					onFocus: this.openCalendar,
 					onChange: this.onInputChange,
 					onKeyDown: this.onInputKey,
-					value: this.state.inputValue
-				}, this.props.inputProps ))];
+					value: this.state.inputValue,
+				}, this.props.inputProps);
+				if ( this.props.renderInput ) {
+					children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar, this.closeCalendar )) ];
+				} else {
+					children = [ React.createElement('input', assign({ key: 'i' }, finalInputProps ))];
+				}
 			} else {
 				className += ' rdtStatic';
 			}
@@ -496,18 +507,16 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( this.state.open )
 				className += ' rdtOpen';
 
-			return  React.createElement('div', {className: className}, children.concat(
-				React.createElement('div',
+			return React.createElement( 'div', { className: className }, children.concat(
+				React.createElement( 'div',
 					{ key: 'dt', className: 'rdtPicker' },
-					React.createElement( CalendarContainer, {view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
+					React.createElement( CalendarContainer, { view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
 				)
 			));
 		}
 	});
 
-	// Make moment accessible through the Datetime class
-	Datetime.moment = moment;
-	Datetime.defaultProps={
+	Datetime.defaultProps = {
 		className: '',
 		defaultValue: '',
 		inputProps: {},
@@ -515,6 +524,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		onFocus: function() {},
 		onBlur: function() {},
 		onChange: function() {},
+		onViewModeChange: function() {},
+		onNavigateBack: function() {},
+		onNavigateForward: function() {},
 		timeFormat: true,
 		timeConstraints: {},
 		dateFormat: true,
@@ -529,6 +541,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		utc: false
 	};
 
+	// Make moment accessible through the Datetime class
+	Datetime.moment = moment;
+
 	module.exports = Datetime;
 
 
@@ -536,91 +551,40 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ (function(module, exports) {
 
-	/*
-	object-assign
-	(c) Sindre Sorhus
-	@license MIT
-	*/
-
 	'use strict';
-	/* eslint-disable no-unused-vars */
-	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
-	function toObject(val) {
-		if (val === null || val === undefined) {
+	function ToObject(val) {
+		if (val == null) {
 			throw new TypeError('Object.assign cannot be called with null or undefined');
 		}
 
 		return Object(val);
 	}
 
-	function shouldUseNative() {
-		try {
-			if (!Object.assign) {
-				return false;
-			}
+	function ownEnumerableKeys(obj) {
+		var keys = Object.getOwnPropertyNames(obj);
 
-			// Detect buggy property enumeration order in older V8 versions.
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-			test1[5] = 'de';
-			if (Object.getOwnPropertyNames(test1)[0] === '5') {
-				return false;
-			}
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-			var test2 = {};
-			for (var i = 0; i < 10; i++) {
-				test2['_' + String.fromCharCode(i)] = i;
-			}
-			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-				return test2[n];
-			});
-			if (order2.join('') !== '0123456789') {
-				return false;
-			}
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-			var test3 = {};
-			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-				test3[letter] = letter;
-			});
-			if (Object.keys(Object.assign({}, test3)).join('') !==
-					'abcdefghijklmnopqrst') {
-				return false;
-			}
-
-			return true;
-		} catch (err) {
-			// We don't expect any of the above to throw, but better to be safe.
-			return false;
+		if (Object.getOwnPropertySymbols) {
+			keys = keys.concat(Object.getOwnPropertySymbols(obj));
 		}
+
+		return keys.filter(function (key) {
+			return propIsEnumerable.call(obj, key);
+		});
 	}
 
-	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	module.exports = Object.assign || function (target, source) {
 		var from;
-		var to = toObject(target);
-		var symbols;
+		var keys;
+		var to = ToObject(target);
 
 		for (var s = 1; s < arguments.length; s++) {
-			from = Object(arguments[s]);
+			from = arguments[s];
+			keys = ownEnumerableKeys(Object(from));
 
-			for (var key in from) {
-				if (hasOwnProperty.call(from, key)) {
-					to[key] = from[key];
-				}
-			}
-
-			if (getOwnPropertySymbols) {
-				symbols = getOwnPropertySymbols(from);
-				for (var i = 0; i < symbols.length; i++) {
-					if (propIsEnumerable.call(from, symbols[i])) {
-						to[symbols[i]] = from[symbols[i]];
-					}
-				}
+			for (var i = 0; i < keys.length; i++) {
+				to[keys[i]] = from[keys[i]];
 			}
 		}
 
@@ -658,7 +622,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	} else {
 	  // By explicitly using `prop-types` you are opting into new production behavior.
 	  // http://fb.me/prop-types-in-prod
-	  module.exports = __webpack_require__(10)();
+	  module.exports = __webpack_require__(8)();
 	}
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
@@ -866,13 +830,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var emptyFunction = __webpack_require__(5);
-	var invariant = __webpack_require__(6);
-	var warning = __webpack_require__(7);
-	var assign = __webpack_require__(1);
+	var assign = __webpack_require__(5);
 
-	var ReactPropTypesSecret = __webpack_require__(8);
-	var checkPropTypes = __webpack_require__(9);
+	var ReactPropTypesSecret = __webpack_require__(6);
+	var checkPropTypes = __webpack_require__(7);
+
+	var printWarning = function() {};
+
+	if (process.env.NODE_ENV !== 'production') {
+	  printWarning = function(text) {
+	    var message = 'Warning: ' + text;
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {}
+	  };
+	}
+
+	function emptyFunctionThatReturnsNull() {
+	  return null;
+	}
 
 	module.exports = function(isValidElement, throwOnDirectAccess) {
 	  /* global Symbol */
@@ -1016,12 +998,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (secret !== ReactPropTypesSecret) {
 	        if (throwOnDirectAccess) {
 	          // New behavior only for users of `prop-types` package
-	          invariant(
-	            false,
+	          var err = new Error(
 	            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
 	            'Use `PropTypes.checkPropTypes()` to call them. ' +
 	            'Read more at http://fb.me/use-check-prop-types'
 	          );
+	          err.name = 'Invariant Violation';
+	          throw err;
 	        } else if (process.env.NODE_ENV !== 'production' && typeof console !== 'undefined') {
 	          // Old behavior for people using React.PropTypes
 	          var cacheKey = componentName + ':' + propName;
@@ -1030,15 +1013,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // Avoid spamming the console because they are often not actionable except for lib authors
 	            manualPropTypeWarningCount < 3
 	          ) {
-	            warning(
-	              false,
+	            printWarning(
 	              'You are manually calling a React.PropTypes validation ' +
-	              'function for the `%s` prop on `%s`. This is deprecated ' +
+	              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
 	              'and will throw in the standalone `prop-types` package. ' +
 	              'You may be seeing this warning due to a third-party PropTypes ' +
-	              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.',
-	              propFullName,
-	              componentName
+	              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
 	            );
 	            manualPropTypeCallCache[cacheKey] = true;
 	            manualPropTypeWarningCount++;
@@ -1082,7 +1062,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function createAnyTypeChecker() {
-	    return createChainableTypeChecker(emptyFunction.thatReturnsNull);
+	    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
 	  }
 
 	  function createArrayOfTypeChecker(typeChecker) {
@@ -1132,8 +1112,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function createEnumTypeChecker(expectedValues) {
 	    if (!Array.isArray(expectedValues)) {
-	      process.env.NODE_ENV !== 'production' ? warning(false, 'Invalid argument supplied to oneOf, expected an instance of array.') : void 0;
-	      return emptyFunction.thatReturnsNull;
+	      process.env.NODE_ENV !== 'production' ? printWarning('Invalid argument supplied to oneOf, expected an instance of array.') : void 0;
+	      return emptyFunctionThatReturnsNull;
 	    }
 
 	    function validate(props, propName, componentName, location, propFullName) {
@@ -1175,21 +1155,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function createUnionTypeChecker(arrayOfTypeCheckers) {
 	    if (!Array.isArray(arrayOfTypeCheckers)) {
-	      process.env.NODE_ENV !== 'production' ? warning(false, 'Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
-	      return emptyFunction.thatReturnsNull;
+	      process.env.NODE_ENV !== 'production' ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
+	      return emptyFunctionThatReturnsNull;
 	    }
 
 	    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
 	      var checker = arrayOfTypeCheckers[i];
 	      if (typeof checker !== 'function') {
-	        warning(
-	          false,
+	        printWarning(
 	          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
-	          'received %s at index %s.',
-	          getPostfixForTypeWarning(checker),
-	          i
+	          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
 	        );
-	        return emptyFunction.thatReturnsNull;
+	        return emptyFunctionThatReturnsNull;
 	      }
 	    }
 
@@ -1406,172 +1383,100 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
 
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 * 
-	 */
+	'use strict';
+	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
-	function makeEmptyFunction(arg) {
-	  return function () {
-	    return arg;
-	  };
+	function toObject(val) {
+		if (val === null || val === undefined) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+
+		return Object(val);
 	}
 
-	/**
-	 * This function accepts and discards inputs; it has no side effects. This is
-	 * primarily useful idiomatically for overridable function endpoints which
-	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-	 */
-	var emptyFunction = function emptyFunction() {};
+	function shouldUseNative() {
+		try {
+			if (!Object.assign) {
+				return false;
+			}
 
-	emptyFunction.thatReturns = makeEmptyFunction;
-	emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-	emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-	emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-	emptyFunction.thatReturnsThis = function () {
-	  return this;
-	};
-	emptyFunction.thatReturnsArgument = function (arg) {
-	  return arg;
+			// Detect buggy property enumeration order in older V8 versions.
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+			test1[5] = 'de';
+			if (Object.getOwnPropertyNames(test1)[0] === '5') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test2 = {};
+			for (var i = 0; i < 10; i++) {
+				test2['_' + String.fromCharCode(i)] = i;
+			}
+			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+				return test2[n];
+			});
+			if (order2.join('') !== '0123456789') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test3 = {};
+			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+				test3[letter] = letter;
+			});
+			if (Object.keys(Object.assign({}, test3)).join('') !==
+					'abcdefghijklmnopqrst') {
+				return false;
+			}
+
+			return true;
+		} catch (err) {
+			// We don't expect any of the above to throw, but better to be safe.
+			return false;
+		}
+	}
+
+	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+		var from;
+		var to = toObject(target);
+		var symbols;
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = Object(arguments[s]);
+
+			for (var key in from) {
+				if (hasOwnProperty.call(from, key)) {
+					to[key] = from[key];
+				}
+			}
+
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
+				for (var i = 0; i < symbols.length; i++) {
+					if (propIsEnumerable.call(from, symbols[i])) {
+						to[symbols[i]] = from[symbols[i]];
+					}
+				}
+			}
+		}
+
+		return to;
 	};
 
-	module.exports = emptyFunction;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 */
-
-	'use strict';
-
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-
-	var validateFormat = function validateFormat(format) {};
-
-	if (process.env.NODE_ENV !== 'production') {
-	  validateFormat = function validateFormat(format) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  };
-	}
-
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  validateFormat(format);
-
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      }));
-	      error.name = 'Invariant Violation';
-	    }
-
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	}
-
-	module.exports = invariant;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2014-present, Facebook, Inc.
-	 *
-	 * This source code is licensed under the MIT license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 *
-	 */
-
-	'use strict';
-
-	var emptyFunction = __webpack_require__(5);
-
-	/**
-	 * Similar to invariant but only logs a warning if the condition is not met.
-	 * This can be used to log issues in development environments in critical
-	 * paths. Removing the logging code for production environments will keep the
-	 * same logic and follow the same code paths.
-	 */
-
-	var warning = emptyFunction;
-
-	if (process.env.NODE_ENV !== 'production') {
-	  var printWarning = function printWarning(format) {
-	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	      args[_key - 1] = arguments[_key];
-	    }
-
-	    var argIndex = 0;
-	    var message = 'Warning: ' + format.replace(/%s/g, function () {
-	      return args[argIndex++];
-	    });
-	    if (typeof console !== 'undefined') {
-	      console.error(message);
-	    }
-	    try {
-	      // --- Welcome to debugging React ---
-	      // This error was thrown as a convenience so that you can use this stack
-	      // to find the callsite that caused this warning to fire.
-	      throw new Error(message);
-	    } catch (x) {}
-	  };
-
-	  warning = function warning(condition, format) {
-	    if (format === undefined) {
-	      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-	    }
-
-	    if (format.indexOf('Failed Composite propType: ') === 0) {
-	      return; // Ignore CompositeComponent proptype check.
-	    }
-
-	    if (!condition) {
-	      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-	        args[_key2 - 2] = arguments[_key2];
-	      }
-
-	      printWarning.apply(undefined, [format].concat(args));
-	    }
-	  };
-	}
-
-	module.exports = warning;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1589,7 +1494,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 9 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1601,11 +1506,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var printWarning = function() {};
+
 	if (process.env.NODE_ENV !== 'production') {
-	  var invariant = __webpack_require__(6);
-	  var warning = __webpack_require__(7);
-	  var ReactPropTypesSecret = __webpack_require__(8);
+	  var ReactPropTypesSecret = __webpack_require__(6);
 	  var loggedTypeFailures = {};
+
+	  printWarning = function(text) {
+	    var message = 'Warning: ' + text;
+	    if (typeof console !== 'undefined') {
+	      console.error(message);
+	    }
+	    try {
+	      // --- Welcome to debugging React ---
+	      // This error was thrown as a convenience so that you can use this stack
+	      // to find the callsite that caused this warning to fire.
+	      throw new Error(message);
+	    } catch (x) {}
+	  };
 	}
 
 	/**
@@ -1630,12 +1548,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	        try {
 	          // This is intentionally an invariant that gets caught. It's the same
 	          // behavior as without this statement except with a better message.
-	          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+	          if (typeof typeSpecs[typeSpecName] !== 'function') {
+	            var err = Error(
+	              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
+	              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
+	            );
+	            err.name = 'Invariant Violation';
+	            throw err;
+	          }
 	          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
 	        } catch (ex) {
 	          error = ex;
 	        }
-	        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+	        if (error && !(error instanceof Error)) {
+	          printWarning(
+	            (componentName || 'React class') + ': type specification of ' +
+	            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
+	            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
+	            'You may have forgotten to pass an argument to the type checker ' +
+	            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
+	            'shape all require an argument).'
+	          )
+
+	        }
 	        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
 	          // Only monitor this failure once because there tends to be a lot of the
 	          // same error.
@@ -1643,7 +1578,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	          var stack = getStack ? getStack() : '';
 
-	          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+	          printWarning(
+	            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
+	          );
 	        }
 	      }
 	    }
@@ -1655,7 +1592,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -1667,9 +1604,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var emptyFunction = __webpack_require__(5);
-	var invariant = __webpack_require__(6);
-	var ReactPropTypesSecret = __webpack_require__(8);
+	var ReactPropTypesSecret = __webpack_require__(6);
+
+	function emptyFunction() {}
 
 	module.exports = function() {
 	  function shim(props, propName, componentName, location, propFullName, secret) {
@@ -1677,12 +1614,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // It is still safe when called from React.
 	      return;
 	    }
-	    invariant(
-	      false,
+	    var err = new Error(
 	      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
 	      'Use PropTypes.checkPropTypes() to call them. ' +
 	      'Read more at http://fb.me/use-check-prop-types'
 	    );
+	    err.name = 'Invariant Violation';
+	    throw err;
 	  };
 	  shim.isRequired = shim;
 	  function getShim() {
@@ -1719,7 +1657,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -1732,8 +1670,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var React = __webpack_require__(12);
-	var factory = __webpack_require__(13);
+	var React = __webpack_require__(10);
+	var factory = __webpack_require__(11);
 
 	if (typeof React === 'undefined') {
 	  throw Error(
@@ -1753,13 +1691,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 12 */
+/* 10 */
 /***/ (function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_12__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1772,13 +1710,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _assign = __webpack_require__(1);
+	var _assign = __webpack_require__(12);
 
-	var emptyObject = __webpack_require__(14);
-	var _invariant = __webpack_require__(15);
+	var emptyObject = __webpack_require__(13);
+	var _invariant = __webpack_require__(14);
 
 	if (process.env.NODE_ENV !== 'production') {
-	  var warning = __webpack_require__(16);
+	  var warning = __webpack_require__(15);
 	}
 
 	var MIXINS_KEY = 'mixins';
@@ -2692,7 +2630,103 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 14 */
+/* 12 */
+/***/ (function(module, exports) {
+
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+
+	'use strict';
+	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+	function toObject(val) {
+		if (val === null || val === undefined) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+
+		return Object(val);
+	}
+
+	function shouldUseNative() {
+		try {
+			if (!Object.assign) {
+				return false;
+			}
+
+			// Detect buggy property enumeration order in older V8 versions.
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+			test1[5] = 'de';
+			if (Object.getOwnPropertyNames(test1)[0] === '5') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test2 = {};
+			for (var i = 0; i < 10; i++) {
+				test2['_' + String.fromCharCode(i)] = i;
+			}
+			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+				return test2[n];
+			});
+			if (order2.join('') !== '0123456789') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test3 = {};
+			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+				test3[letter] = letter;
+			});
+			if (Object.keys(Object.assign({}, test3)).join('') !==
+					'abcdefghijklmnopqrst') {
+				return false;
+			}
+
+			return true;
+		} catch (err) {
+			// We don't expect any of the above to throw, but better to be safe.
+			return false;
+		}
+	}
+
+	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+		var from;
+		var to = toObject(target);
+		var symbols;
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = Object(arguments[s]);
+
+			for (var key in from) {
+				if (hasOwnProperty.call(from, key)) {
+					to[key] = from[key];
+				}
+			}
+
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
+				for (var i = 0; i < symbols.length; i++) {
+					if (propIsEnumerable.call(from, symbols[i])) {
+						to[symbols[i]] = from[symbols[i]];
+					}
+				}
+			}
+		}
+
+		return to;
+	};
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -2717,7 +2751,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -2778,7 +2812,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -2793,7 +2827,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var emptyFunction = __webpack_require__(17);
+	var emptyFunction = __webpack_require__(16);
 
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -2850,7 +2884,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -2893,22 +2927,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_18__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_17__;
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(12),
-	  createClass = __webpack_require__(11),
-	  DaysView = __webpack_require__(20),
-	  MonthsView = __webpack_require__(23),
-	  YearsView = __webpack_require__(24),
-	  TimeView = __webpack_require__(25)
-	;
+	'use strict';
+
+	var React = __webpack_require__(10),
+		createClass = __webpack_require__(9),
+		DaysView = __webpack_require__(19),
+		MonthsView = __webpack_require__(22),
+		YearsView = __webpack_require__(23),
+		TimeView = __webpack_require__(24)
+		;
 
 	var CalendarContainer = createClass({
 		viewComponents: {
@@ -2918,52 +2954,51 @@ return /******/ (function(modules) { // webpackBootstrap
 			time: TimeView
 		},
 
-	  render: function() {
-	    return React.createElement( this.viewComponents[ this.props.view ], this.props.viewProps );
-	  }
+		render: function() {
+			return React.createElement( this.viewComponents[ this.props.view ], this.props.viewProps );
+		}
 	});
 
 	module.exports = CalendarContainer;
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
-		moment = __webpack_require__(18),
-	  onClickOutside = __webpack_require__(21).default
-	;
+	var React = __webpack_require__(10),
+		createClass = __webpack_require__(9),
+		moment = __webpack_require__(17),
+		onClickOutside = __webpack_require__(20).default
+		;
 
-	var DOM = React.DOM;
 	var DateTimePickerDays = onClickOutside( createClass({
 		render: function() {
 			var footer = this.renderFooter(),
 				date = this.props.viewDate,
 				locale = date.localeData(),
 				tableChildren
-			;
+				;
 
 			tableChildren = [
-				React.createElement('thead',{ key: 'th' }, [
-					React.createElement('tr',{ key: 'h' }, [
-						React.createElement('th',{ key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span',{}, '‹' )),
-						React.createElement('th',{ key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-						React.createElement('th',{ key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span',{}, '›' ))
+				React.createElement('thead', { key: 'th' }, [
+					React.createElement('tr', { key: 'h' }, [
+						React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'months' )}, React.createElement('span', {}, '‹' )),
+						React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
+						React.createElement('th', { key: 'n', className: 'rdtNext', onClick: this.props.addTime( 1, 'months' )}, React.createElement('span', {}, '›' ))
 					]),
-					React.createElement('tr',{ key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th',{ key: day + index, className: 'dow'}, day ); }) )
+					React.createElement('tr', { key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th', { key: day + index, className: 'dow'}, day ); }) )
 				]),
-				React.createElement('tbody',{ key: 'tb' }, this.renderDays())
+				React.createElement('tbody', { key: 'tb' }, this.renderDays())
 			];
 
 			if ( footer )
 				tableChildren.push( footer );
 
-			return React.createElement('div',{ className: 'rdtDays' },
-				React.createElement('table',this.props.daysTableProps, tableChildren )
+			return React.createElement('div', { className: 'rdtDays' },
+				React.createElement('table', this.props.daysTableProps, tableChildren )
 			);
 		},
 
@@ -2977,7 +3012,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				first = locale.firstDayOfWeek(),
 				dow = [],
 				i = 0
-			;
+				;
 
 			days.forEach( function( day ) {
 				dow[ (7 + ( i++ ) - first) % 7 ] = day;
@@ -2997,7 +3032,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				renderer = this.props.renderDay || this.renderDay,
 				isValid = this.props.isValidDate || this.alwaysValidDate,
 				classes, isDisabled, dayProps, currentDate
-			;
+				;
 
 			// Go to the last week of the previous month
 			prevMonth.date( prevMonth.daysInMonth() ).startOf( 'week' );
@@ -3034,7 +3069,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				days.push( renderer( dayProps, currentDate, selected ) );
 
 				if ( days.length === 7 ) {
-					weeks.push( React.createElement('tr',{ key: prevMonth.format( 'M_D' )}, days ) );
+					weeks.push( React.createElement('tr', { key: prevMonth.format( 'M_D' )}, days ) );
 					days = [];
 				}
 
@@ -3049,7 +3084,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		renderDay: function( props, currentDate ) {
-			return React.createElement('td', props, currentDate.date() );
+			return React.createElement('td',  props, currentDate.date() );
 		},
 
 		renderFooter: function() {
@@ -3058,9 +3093,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			var date = this.props.selectedDate || this.props.viewDate;
 
-			return React.createElement('tfoot',{ key: 'tf'},
-				React.createElement('tr',{},
-					React.createElement('td',{ onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
+			return React.createElement('tfoot', { key: 'tf'},
+				React.createElement('tr', {},
+					React.createElement('td', { onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
 				)
 			);
 		},
@@ -3069,24 +3104,24 @@ return /******/ (function(modules) { // webpackBootstrap
 			return 1;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	module.exports = DateTimePickerDays;
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
-	var react = __webpack_require__(12);
-	var reactDom = __webpack_require__(22);
+	var react = __webpack_require__(10);
+	var reactDom = __webpack_require__(21);
 
 	function _inheritsLoose(subClass, superClass) {
 	  subClass.prototype = Object.create(superClass.prototype);
@@ -3435,33 +3470,32 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_22__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_21__;
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(12),
+	var React = __webpack_require__(10),
 		assign = __webpack_require__(1),
-	    createClass = __webpack_require__(11),
-		onClickOutside = __webpack_require__(21).default
-	;
+	    createClass = __webpack_require__(9),
+		onClickOutside = __webpack_require__(20).default
+		;
 
-	var DOM = React.DOM;
 	var DateTimePickerMonths = onClickOutside( createClass({
-		render: function() {
-			return React.createElement('div',{ className: 'rdtMonths' }, [
-				React.createElement('table',assign({ key: 'a' }, this.props.headerTableProps), React.createElement('thead', {}, React.createElement('tr', {}, [
-					React.createElement('th',{ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span',{}, '‹' )),
-					React.createElement('th',{ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-					React.createElement('th',{ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span',{}, '›' ))
+		render: function() {assign
+			return React.createElement('div', { className: 'rdtMonths' }, [
+				React.createElement('table', assign({ key: 'a' }, this.props.headerTableProps), React.createElement('thead', {}, React.createElement('tr', {}, [
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
 				]))),
-				React.createElement('table',assign({ key: 'months' }, this.props.monthsTableProps), React.createElement('tbody',{ key: 'b' }, this.renderMonths()))
+				React.createElement('table', assign({ key: 'months' }, this.props.monthsTableProps), React.createElement('tbody', { key: 'b' }, this.renderMonths()))
 			]);
 		},
 
@@ -3477,7 +3511,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				classes, props, currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
 				// Date is irrelevant because we're only interested in month
 				irrelevantDate = 1
-			;
+				;
 
 			while (i < 12) {
 				classes = 'rdtMonth';
@@ -3515,7 +3549,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				months.push( renderer( props, i, year, date && date.clone() ) );
 
 				if ( months.length === 4 ) {
-					rows.push( React.createElement('tr',{ key: month + '_' + rows.length }, months ) );
+					rows.push( React.createElement('tr', { key: month + '_' + rows.length }, months ) );
 					months = [];
 				}
 
@@ -3543,9 +3577,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			return 1;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	function capitalize( str ) {
@@ -3556,29 +3590,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(12),
+	var React = __webpack_require__(10),
 		assign = __webpack_require__(1),
-	    createClass = __webpack_require__(11),
-		onClickOutside = __webpack_require__(21).default
-	;
+	    createClass = __webpack_require__(9),
+		onClickOutside = __webpack_require__(20).default
+		;
 
-	var DOM = React.DOM;
 	var DateTimePickerYears = onClickOutside( createClass({
 		render: function() {
 			var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
 
-			return React.createElement('div',{ className: 'rdtYears' }, [
-				React.createElement('table',assign({ key: 'a' }, this.props.headerTableProps), React.createElement('thead',{}, React.createElement('tr',{}, [
-					React.createElement('th',{ key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span',{}, '‹' )),
-					React.createElement('th',{ key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-					React.createElement('th',{ key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span',{}, '›' ))
-					]))),
-				React.createElement('table',assign({ key: 'years' }, this.props.yearsTableProps), React.createElement('tbody', {}, this.renderYears( year ))),
+			return React.createElement('div', { className: 'rdtYears' }, [
+				React.createElement('table',assign({ key: 'a' }, this.props.headerTableProps), React.createElement('thead', {}, React.createElement('tr', {}, [
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
+				]))),
+				React.createElement('table', assign({ key: 'years' }, this.props.yearsTableProps), React.createElement('tbody',  {}, this.renderYears( year )))
 			]);
 		},
 
@@ -3594,7 +3627,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				// we're only interested in the year
 				irrelevantMonth = 0,
 				irrelevantDate = 1
-			;
+				;
 
 			year--;
 			while (i < 11) {
@@ -3637,7 +3670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
 
 				if ( years.length === 4 ) {
-					rows.push( React.createElement('tr',{ key: i }, years ) );
+					rows.push( React.createElement('tr', { key: i }, years ) );
 					years = [];
 				}
 
@@ -3653,34 +3686,33 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		renderYear: function( props, year ) {
-			return React.createElement('td', props, year );
+			return React.createElement('td',  props, year );
 		},
 
 		alwaysValidDate: function() {
 			return 1;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	module.exports = DateTimePickerYears;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(12),
-	    createClass = __webpack_require__(11),
+	var React = __webpack_require__(10),
+		createClass = __webpack_require__(9),
 		assign = __webpack_require__(1),
-	  onClickOutside = __webpack_require__(21).default
-	;
+		onClickOutside = __webpack_require__(20).default
+		;
 
-	var DOM = React.DOM;
 	var DateTimePickerTime = onClickOutside( createClass({
 		getInitialState: function() {
 			return this.calculateState( this.props );
@@ -3690,7 +3722,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var date = props.selectedDate || props.viewDate,
 				format = props.timeFormat,
 				counters = []
-			;
+				;
 
 			if ( format.toLowerCase().indexOf('h') !== -1 ) {
 				counters.push('hours');
@@ -3702,17 +3734,19 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			}
 
+			var hours = date.format( 'H' );
+			
 			var daypart = false;
 			if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
 				if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
-					daypart = ( this.state.hours >= 12 ) ? 'PM' : 'AM';
+					daypart = ( hours >= 12 ) ? 'PM' : 'AM';
 				} else {
-					daypart = ( this.state.hours >= 12 ) ? 'pm' : 'am';
+					daypart = ( hours >= 12 ) ? 'pm' : 'am';
 				}
 			}
 
 			return {
-				hours: date.format( 'H' ),
+				hours: hours,
 				minutes: date.format( 'mm' ),
 				seconds: date.format( 'ss' ),
 				milliseconds: date.format( 'SSS' ),
@@ -3731,20 +3765,20 @@ return /******/ (function(modules) { // webpackBootstrap
 						value = 12;
 					}
 				}
-				return React.createElement('div',{ key: type, className: 'rdtCounter' }, [
-					React.createElement('span',{ key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
-					React.createElement('div',{ key: 'c', className: 'rdtCount' }, value ),
-					React.createElement('span',{ key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
+				return React.createElement('div', { key: type, className: 'rdtCounter' }, [
+					React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
+					React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
+					React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
 				]);
 			}
 			return '';
 		},
 
 		renderDayPart: function() {
-			return React.createElement('div',{ key: 'dayPart', className: 'rdtCounter' }, [
-				React.createElement('span',{ key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
-				React.createElement('div',{ key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-				React.createElement('span',{ key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
+			return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
+				React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
 			]);
 		},
 
@@ -3755,7 +3789,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			this.state.counters.forEach( function( c ) {
 				if ( counters.length )
-					counters.push( React.createElement('div',{ key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
+					counters.push( React.createElement('div', { key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
 				counters.push( me.renderCounter( c ) );
 			});
 
@@ -3764,19 +3798,19 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf( 'S' ) !== -1 ) {
-				counters.push( React.createElement('div',{ className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
+				counters.push( React.createElement('div', { className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
 				counters.push(
-					React.createElement('div',{ className: 'rdtCounter rdtMilli', key: 'm' },
-						React.createElement('input',{ value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
+					React.createElement('div', { className: 'rdtCounter rdtMilli', key: 'm' },
+						React.createElement('input', { value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
 						)
 					);
 			}
 
-			return React.createElement('div',{ className: 'rdtTime' },
-				React.createElement('table',this.props.timeTableProps, [
+			return React.createElement('div', { className: 'rdtTime' },
+				React.createElement('table', this.props.timeTableProps, [
 					this.renderHeader(),
-					React.createElement('tbody',{ key: 'b'}, React.createElement('tr',{}, React.createElement('td',{},
-						React.createElement('div',{ className: 'rdtCounters' }, counters )
+					React.createElement('tbody', { key: 'b'}, React.createElement('tr', {}, React.createElement('td', {},
+						React.createElement('div', { className: 'rdtCounters' }, counters )
 					)))
 				])
 			);
@@ -3829,8 +3863,8 @@ return /******/ (function(modules) { // webpackBootstrap
 				return null;
 
 			var date = this.props.selectedDate || this.props.viewDate;
-			return React.createElement('thead',{ key: 'h' }, React.createElement('tr',{},
-				React.createElement('th',{ className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
+			return React.createElement('thead', { key: 'h' }, React.createElement('tr', {},
+				React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
 			));
 		},
 
@@ -3854,10 +3888,17 @@ return /******/ (function(modules) { // webpackBootstrap
 					clearInterval( me.increaseTimer );
 					me.props.setTime( type, me.state[ type ] );
 					document.body.removeEventListener( 'mouseup', me.mouseUpListener );
+					document.body.removeEventListener( 'touchend', me.mouseUpListener );
 				};
 
 				document.body.addEventListener( 'mouseup', me.mouseUpListener );
+				document.body.addEventListener( 'touchend', me.mouseUpListener );
 			};
+		},
+
+		disableContextMenu: function( event ) {
+			event.preventDefault();
+			return false;
 		},
 
 		padValues: {
@@ -3895,9 +3936,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			return str;
 		},
 
-	  handleClickOutside: function() {
-	    this.props.handleClickOutside();
-	  }
+		handleClickOutside: function() {
+			this.props.handleClickOutside();
+		}
 	}));
 
 	module.exports = DateTimePickerTime;

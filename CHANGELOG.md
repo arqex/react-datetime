@@ -1,10 +1,60 @@
 Changelog
 =========
+## 2.15.0
+* New `onNavigateBack` and `onNavigateForward` hooks thanks to @DaanDD and @simeg.
+* Touch improvements by @NicoDos
+* TS and debugging improvements
+
+## 2.14.0
+* Make `viewDate` dynamic
+
+## 2.13.0
+* Use more appropriate cursor for empty space in time picker and in day texts
+* Add `viewDate` prop that sets a value when opening the calendar when there is no selected date
+* Make `disableOnClickOutside` work as intended
+* Better touch support for tapping and holding
+* Use static property `defaultProps` instead of `getDefaultProps`
+
+## 2.12.0
+* The `renderInput` prop now receives `closeCalendar` function as well
+
+## 2.11.1
+* The open prop should now work as intended
+
+## 2.11.0
+* onFocus now receives the browser event
+* Do not open browser menu on right click of arrows in time view
+* Open calendar when onClick is triggered, before it would just react to onFocus
+* Update TypeScript definitions for value and defaultValue to comply with code
+* Fix bug where AM/PM would not sync between component value and input field value
+* Add renderInput prop which let's the consumer of the component render their own HTML input element
+
+## 2.10.3
+* Update react-onclickoutside dependency
+* Remove isValidDate check before rendering as implementation was causing crashes in some edge cases.
+
+## 2.10.2
+* Move @types/react back to devDependencies
+* Add [demo](https://youcanbookme.github.io/react-datetime) app.
+
+## 2.10.1
+* Fix build files.
+
+## 2.10.0
+* Add isValidDate check before rendering so it doesn't render with an invalid date.
+
+## 2.9.0
+* Trigger callback method on view mode changes
+
+## 2.8.11
+* Update TypeScript definitions
+* Replace deprecated React method with non-deprecated method
+
 ## 2.8.10
 * Increase click area of arrows for changing day/month/year
 * Update code according to React 15.5.0
   * Remove usage of React.createClass
-  * Use separate module for PropTypes  
+  * Use separate module for PropTypes
 
 ## 2.8.9
 * Fixes issue where incorrect current month is shown
