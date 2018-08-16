@@ -28,7 +28,14 @@ var DateTimePickerTime = onClickOutside( createClass({
 		}
 
 		var hours = date.format( 'H' );
-		
+		hours = (props.timeConstraints && props.timeConstraints.hours && hours < props.timeConstraints.hours.min) ? props.timeConstraints.hours.min : hours;
+		var minutes = date.format( 'mm' );
+		minutes = (props.timeConstraints && props.timeConstraints.minutes && minutes < props.timeConstraints.minutes.min) ? props.timeConstraints.minutes.min : minutes;
+		var seconds = date.format( 'ss' );
+		seconds = (props.timeConstraints && props.timeConstraints.seconds && seconds < props.timeConstraints.seconds.min) ? props.timeConstraints.seconds.min : seconds;
+		var milliseconds = date.format( 'SSS' );
+		milliseconds = (props.timeConstraints && props.timeConstraints.milliseconds && milliseconds < props.timeConstraints.milliseconds.min) ? props.timeConstraints.milliseconds.min : milliseconds;
+
 		var daypart = false;
 		if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
 			if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
@@ -37,12 +44,11 @@ var DateTimePickerTime = onClickOutside( createClass({
 				daypart = ( hours >= 12 ) ? 'pm' : 'am';
 			}
 		}
-
 		return {
 			hours: hours,
-			minutes: date.format( 'mm' ),
-			seconds: date.format( 'ss' ),
-			milliseconds: date.format( 'SSS' ),
+			minutes: minutes,
+			seconds: seconds,
+			milliseconds: milliseconds,
 			daypart: daypart,
 			counters: counters
 		};
