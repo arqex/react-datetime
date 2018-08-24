@@ -1,29 +1,28 @@
-var webpack = require('webpack');
+var webpack = require("webpack");
 
 var plugins = [
   new webpack.DefinePlugin({
-  	'process.env': { NODE_ENV: '"production"'}
+    "process.env": { NODE_ENV: '"production"' }
   })
 ];
 
 module.exports = {
-
-  entry: ['./DateTime.js'],
+  entry: ["./DateTime.js"],
 
   output: {
-    path: __dirname + '/dist/',
-    library: 'Datetime',
-    libraryTarget: 'umd'
+    path: __dirname + "/dist/",
+    library: "Datetime",
+    libraryTarget: "umd"
   },
 
   resolve: {
-    extensions: ['', '.js']
+    extensions: ["", ".js"]
   },
 
   externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM',
-    'moment': 'moment'
+    react: "React",
+    "react-dom": "ReactDOM",
+    moment: "moment"
   },
 
   plugins: plugins

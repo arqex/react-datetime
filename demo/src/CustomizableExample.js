@@ -1,23 +1,21 @@
-import React, { Component } from 'react'
-import DateTime from 'react-datetime'
+import React, { Component } from "react";
+import DateTime from "react-datetime";
 
 export default class CustomizableExample extends Component {
   state = {
-    viewMode: 'days',
-    dateFormat: 'MM/DD/YYYY',
-    timeFormat: 'HH:mm A',
+    viewMode: "days",
+    dateFormat: "MM/DD/YYYY",
+    timeFormat: "HH:mm A",
     input: true,
     utc: false,
     closeOnSelect: false,
-    closeOnTab: true,
-  }
+    closeOnTab: true
+  };
 
   render() {
-    const Select = ({name, children}) => (
+    const Select = ({ name, children }) => (
       <div className="form-group">
-        <label className="control-label col-xs-6">
-          {name}
-        </label>
+        <label className="control-label col-xs-6">{name}</label>
 
         <div className="col-xs-6">
           <select
@@ -29,13 +27,11 @@ export default class CustomizableExample extends Component {
           </select>
         </div>
       </div>
-    )
+    );
 
-    const Checkbox = ({name}) => (
+    const Checkbox = ({ name }) => (
       <div className="form-group">
-        <label className="control-label col-xs-6">
-          {name}
-        </label>
+        <label className="control-label col-xs-6">{name}</label>
 
         <div className="col-xs-6">
           <input
@@ -45,13 +41,14 @@ export default class CustomizableExample extends Component {
           />
         </div>
       </div>
-    )
+    );
 
     return (
       <div className="form-horizontal">
         <h2>Customization props</h2>
         <p>
-          Try out various configuration options and see how they affect the component.
+          Try out various configuration options and see how they affect the
+          component.
         </p>
 
         <DateTime
@@ -99,6 +96,6 @@ export default class CustomizableExample extends Component {
 
         <Checkbox name="closeOnTab" />
       </div>
-    )
+    );
   }
 }

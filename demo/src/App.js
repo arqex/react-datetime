@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import 'react-datetime/css/react-datetime.css'
+import React, { Component } from "react";
+import "react-datetime/css/react-datetime.css";
 
-import CustomizableExample from './CustomizableExample'
-import OpenExample from './OpenExample'
-import ValidatedExample from './ValidatedExample'
+import CustomizableExample from "./CustomizableExample";
+import OpenExample from "./OpenExample";
+import ValidatedExample from "./ValidatedExample";
 
 export default class App extends Component {
   render() {
@@ -16,16 +16,16 @@ export default class App extends Component {
               href="https://github.com/YouCanBookMe/react-datetime"
               target="_blank"
               rel="noopener noreferrer"
-            >react-datetime</a>
+            >
+              react-datetime
+            </a>
           </div>
         </nav>
 
         <div className="container">
           <div className="jumbotron">
             <h2>react-datetime</h2>
-            <p>
-              A lightweight but complete datetime picker react component.
-            </p>
+            <p>A lightweight but complete datetime picker react component.</p>
           </div>
 
           <div className="row">
