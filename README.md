@@ -25,15 +25,14 @@ yarn add react-datetime
 
 
 ```js
-require('react-datetime');
+import Datetime from 'react-datetime';
 
 ...
-
-render: function() {
+render() {
     return <Datetime />;
 }
 ```
-[See this example working](http://codepen.io/simeg/pen/mEmQmP).
+[See this example working](https://codepen.io/joshuaobrien/pen/pOyEdL).
 
 **Don't forget to add the [CSS stylesheet](https://github.com/YouCanBookMe/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
 
@@ -74,8 +73,9 @@ render: function() {
 Different language and date formats are supported by react-datetime. React uses [Moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the Moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
 
 ```js
-var moment = require('moment');
-require('moment/locale/fr');
+import moment from 'moment';
+
+import 'moment/locale/fr';
 // Now react-datetime will be in french
 ```
 
@@ -84,7 +84,7 @@ If there are multiple locales loaded, you can use the prop `locale` to define wh
 <Datetime locale="fr-ca" />
 <Datetime locale="de" />
 ```
-[Here you can see the i18n example working](http://codepen.io/simeg/pen/yVVjdJ).
+[Here you can see the i18n example working](https://codepen.io/joshuaobrien/pen/MqyrNz).
 
 ## Customize the Input Appearance
 It is possible to customize the way that the input is displayed. The simplest is to supply `inputProps` which get assigned to the default `<input />` element within the component.
@@ -96,50 +96,56 @@ It is possible to customize the way that the input is displayed. The simplest is
 Alternatively, if you need to render different content than an `<input />` element, you may supply a `renderInput` function which is called instead.
 
 ```js
-var MyDTPicker = React.createClass({
-    render: function(){
-        return <Datetime renderInput={ this.renderInput } />;
-    },
-    renderInput: function( props, openCalendar, closeCalendar ){
-        function clear(){
-            props.onChange({target: {value: ''}});
-        }
+
+class MyDTPicker extends Component {
+    clear(props){
+        props.onChange({target: {value: ''}});
+    }
+
+    renderInput(props, openCalendar, closeCalendar){
         return (
             <div>
                 <input {...props} />
                 <button onClick={openCalendar}>open calendar</button>
                 <button onClick={closeCalendar}>close calendar</button>
-                <button onClick={clear}>clear</button>
+                <button onClick={() => this.clear(props)}>clear</button>
             </div>
         );
-    },
-});
+    }
+
+    render() {
+        return <Datetime renderInput={ this.renderInput } />;
+    }
+}
 ```
 
 ## Customize the Datepicker Appearance
 It is possible to customize the way that the datepicker display the days, months and years in the calendar. To adapt the calendar for every need it is possible to use the props `renderDay(props, currentDate, selectedDate)`, `renderMonth(props, month, year, selectedDate)` and `renderYear(props, year, selectedDate)` to customize the output of each rendering method.
 
 ```js
-var MyDTPicker = React.createClass({
-    render: function(){
+class MyDTPicker extends Component {
+    renderDay(props, currentDate, selectedDate) {
+        return <td {...props}>{ '0' + currentDate.date() }</td>;
+    }
+
+    renderMonth(props, month, year, selectedDate) {
+        return <td {...props}>{ month }</td>;
+    }
+
+    renderYear(props, year, selectedDate) {
+        return <td {...props}>{ year % 100 }</td>;
+    }
+
+    render() {
         return <Datetime
             renderDay={ this.renderDay }
             renderMonth={ this.renderMonth }
             renderYear={ this.renderYear }
         />;
-    },
-    renderDay: function( props, currentDate, selectedDate ){
-        return <td {...props}>{ '0' + currentDate.date() }</td>;
-    },
-    renderMonth: function( props, month, year, selectedDate ){
-        return <td {...props}>{ month }</td>;
-    },
-    renderYear: function( props, year, selectedDate ){
-        return <td {...props}>{ year % 100 }</td>;
     }
-});
+}
 ```
-[You can see a customized calendar here.](http://codepen.io/simeg/pen/YppLmO)
+[You can see a customized calendar here.](https://codepen.io/joshuaobrien/pen/LJNQZN)
 
 #### Method Parameters
 * `props` is the object that the datepicker has calculated for this object. It is convenient to use this object as the `props` for your custom component, since it knows how to handle the click event and its `className` attribute is used by the default styles.
@@ -153,13 +159,14 @@ In this example the component is being used as a *timepicker* and can *only be u
 ```js
 <Datetime dateFormat={false} />
 ```
-[Working example of a timepicker here.](http://codepen.io/simeg/pen/mRQBrp)
+[Working example of a timepicker here.](https://codepen.io/joshuaobrien/pen/MqyQpd)
 
 In this example you can *only select a year and month*.
 ```js
 <Datetime dateFormat="YYYY-MM" timeFormat={false} />
 ```
-[Working example of only selecting year and month here.](http://codepen.io/simeg/pen/apQLdd)
+[Working example of only selecting year and month here.](https://codepen.io/joshuaobrien/pen/pOyaWB)
+
 
 ## Selectable Dates
 It is possible to disable dates in the calendar if the user are not allowed to select them, e.g. dates in the past. This is done using the prop `isValidDate`, which admits a function in the form `function(currentDate, selectedDate)` where both arguments are [moment objects](http://momentjs.com). The function shall return `true` for selectable dates, and `false` for disabled ones.
@@ -168,22 +175,19 @@ In the example below are *all dates before today* disabled.
 
 ```js
 // Let's use the static moment reference in the Datetime component
-var yesterday = Datetime.moment().subtract( 1, 'day' );
-var valid = function( current ){
-    return current.isAfter( yesterday );
-};
+const yesterday = Datetime.moment().subtract(1, 'day');
+const valid = (current) => current.isAfter(yesterday);
+
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled days here.](http://codepen.io/simeg/pen/XNNYJg)
+[Working example of disabled days here.](https://codepen.io/joshuaobrien/pen/rZeJKV)
 
 It's also possible to disable *the weekends*, as shown in the example below.
 ```js
-var valid = function( current ){
-    return current.day() !== 0 && current.day() !== 6;
-};
+const valid = (current) => current.day() !== 0 && current.day() !== 6;
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled weekends here.](http://codepen.io/simeg/pen/jVVKWq)
+[Working example of disabled weekends here.](https://codepen.io/joshuaobrien/pen/zJqRJr)
 
 ## Usage with TypeScript
 
