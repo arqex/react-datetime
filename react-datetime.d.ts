@@ -1,5 +1,5 @@
 // Type definitions for react-datetime
-// Project: https://github.com/YouCanBookMe/react-datetime
+// Project: https://github.com/NateRadebaugh/react-datetime
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
 
 // These are the typings for Typescript 1.8

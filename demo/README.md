@@ -1,6 +1,6 @@
 # react-datetime demo app
 
-[Demo](https://YouCanBookMe.github.io/react-datetime)
+[Demo](https://NateRadebaugh.github.io/react-datetime)
 
 #### How to Start
 

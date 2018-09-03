@@ -68,7 +68,7 @@ const getWebpackConfig = () => {
   };
 };
 
-const setHeader = "/*\n%%name%% v%%version%%\n%%homepage%%\n%%license%%: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE\n*/\n"
+const setHeader = "/*\n%%name%% v%%version%%\n%%homepage%%\n%%license%%: https://github.com/NateRadebaugh/react-datetime/raw/master/LICENSE\n*/\n"
   .replace("%%name%%", pack.name)
   .replace("%%version%%", pack.version)
   .replace("%%license%%", pack.license)

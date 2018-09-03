@@ -1,7 +1,7 @@
 /*
 react-datetime v2.15.0
-https://github.com/YouCanBookMe/react-datetime
-MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
+https://github.com/NateRadebaugh/react-datetime
+MIT: https://github.com/NateRadebaugh/react-datetime/raw/master/LICENSE
 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -2944,7 +2944,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This source code is licensed under the MIT license found in the
 	 * LICENSE file in the root directory of this source tree.
 	 *
-	 * 
+	 *
 	 */
 
 	function makeEmptyFunction(arg) {

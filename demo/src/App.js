@@ -13,7 +13,7 @@ export default class App extends Component {
           <div className="container">
             <a
               className="navbar-brand"
-              href="https://github.com/YouCanBookMe/react-datetime"
+              href="https://github.com/NateRadebaugh/react-datetime"
               target="_blank"
               rel="noopener noreferrer"
             >

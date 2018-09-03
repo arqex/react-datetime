@@ -1,6 +1,6 @@
 # react-datetime
 
-[![Build Status](https://secure.travis-ci.org/YouCanBookMe/react-datetime.svg)](https://travis-ci.org/YouCanBookMe/react-datetime)
+[![Build Status](https://secure.travis-ci.org/NateRadebaugh/react-datetime.svg)](https://travis-ci.org/NateRadebaugh/react-datetime)
 [![npm version](https://badge.fury.io/js/react-datetime.svg)](http://badge.fury.io/js/react-datetime)
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable** and it even allows to edit date's milliseconds.
@@ -35,7 +35,7 @@ render: function() {
 ```
 [See this example working](http://codepen.io/simeg/pen/mEmQmP).
 
-**Don't forget to add the [CSS stylesheet](https://github.com/YouCanBookMe/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
+**Don't forget to add the [CSS stylesheet](https://github.com/NateRadebaugh/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
 
 ## API
 

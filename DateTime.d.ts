@@ -1,5 +1,5 @@
 // Type definitions for react-datetime
-// Project: https://github.com/YouCanBookMe/react-datetime
+// Project: https://github.com/NateRadebaugh/react-datetime
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
 //     Updates by: Aaron Spaulding <aaron@sachimp.com>,
 //                 Karol Janyst <http://github.com/LKay>
