@@ -5,6 +5,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@nateradebaugh/react-datetime": "link:..",
     "react": "^16.4.1",
     "react-datetime": "link:..",
     "react-dom": "^16.4.1",
