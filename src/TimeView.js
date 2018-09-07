@@ -1,237 +1,339 @@
-'use strict';
+import React, { Component } from "react";
+import format from "date-fns/format";
+import getHours from "date-fns/get_hours";
+import onClickOutside from "react-onclickoutside";
 
-var React = require('react'),
-	createClass = require('create-react-class'),
-	assign = require('object-assign'),
-	onClickOutside = require('react-onclickoutside').default
-	;
+const padValues = {
+  hours: 1,
+  minutes: 2,
+  seconds: 2,
+  milliseconds: 3
+};
 
-var DateTimePickerTime = onClickOutside( createClass({
-	getInitialState: function() {
-		return this.calculateState( this.props );
-	},
+class TimeView extends Component {
+  constructor(props) {
+    super(props);
 
-	calculateState: function( props ) {
-		var date = props.selectedDate || props.viewDate,
-			format = props.timeFormat,
-			counters = []
-			;
+    this.state = this.calculateState(props);
 
-		if ( format.toLowerCase().indexOf('h') !== -1 ) {
-			counters.push('hours');
-			if ( format.indexOf('m') !== -1 ) {
-				counters.push('minutes');
-				if ( format.indexOf('s') !== -1 ) {
-					counters.push('seconds');
-				}
-			}
-		}
+    // Bind functions
+    this.onStartClicking = this.onStartClicking.bind(this);
+    this.disableContextMenu = this.disableContextMenu.bind(this);
+    this.toggleDayPart = this.toggleDayPart.bind(this);
+    this.increase = this.increase.bind(this);
+    this.decrease = this.decrease.bind(this);
+    this.pad = this.pad.bind(this);
+    this.calculateState = this.calculateState.bind(this);
+    this.updateMilli = this.updateMilli.bind(this);
+    this.renderHeader = this.renderHeader.bind(this);
+    this.renderCounter = this.renderCounter.bind(this);
+    this.renderDayPart = this.renderDayPart.bind(this);
+    this.getFormatOptions = this.getFormatOptions.bind(this);
+  }
 
-		var hours = date.format( 'H' );
-		
-		var daypart = false;
-		if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
-			if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
-				daypart = ( hours >= 12 ) ? 'PM' : 'AM';
-			} else {
-				daypart = ( hours >= 12 ) ? 'pm' : 'am';
-			}
-		}
+  getFormatOptions() {
+    return { locale: this.props.locale };
+  }
 
-		return {
-			hours: hours,
-			minutes: date.format( 'mm' ),
-			seconds: date.format( 'ss' ),
-			milliseconds: date.format( 'SSS' ),
-			daypart: daypart,
-			counters: counters
-		};
-	},
+  componentDidMount() {
+    this.timeConstraints = {
+      hours: {
+        min: 0,
+        max: 23,
+        step: 1
+      },
+      minutes: {
+        min: 0,
+        max: 59,
+        step: 1
+      },
+      seconds: {
+        min: 0,
+        max: 59,
+        step: 1
+      },
+      milliseconds: {
+        min: 0,
+        max: 999,
+        step: 1
+      }
+    };
 
-	renderCounter: function( type ) {
-		if ( type !== 'daypart' ) {
-			var value = this.state[ type ];
-			if ( type === 'hours' && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
-				value = ( value - 1 ) % 12 + 1;
+    if (this.props.timeConstraints) {
+      ["hours", "minutes", "seconds", "millisecond"].forEach(type => {
+        if (this.props.timeConstraints[type]) {
+          this.timeConstraints[type] = {
+            ...this.timeConstraints[type],
+            ...this.props.timeConstraints[type]
+          };
+        }
+      });
+    }
 
-				if ( value === 0 ) {
-					value = 12;
-				}
-			}
-			return React.createElement('div', { key: type, className: 'rdtCounter' }, [
-				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
-				React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
-				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
-			]);
-		}
-		return '';
-	},
+    this.setState(this.calculateState(this.props));
+  }
 
-	renderDayPart: function() {
-		return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
-			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
-			React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
-		]);
-	},
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    this.setState(this.calculateState(nextProps));
+  }
 
-	render: function() {
-		var me = this,
-			counters = []
-		;
+  onStartClicking(action, type) {
+    return () => {
+      const update = {};
+      update[type] = this[action](type);
 
-		this.state.counters.forEach( function( c ) {
-			if ( counters.length )
-				counters.push( React.createElement('div', { key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
-			counters.push( me.renderCounter( c ) );
-		});
+      this.setState(update);
 
-		if ( this.state.daypart !== false ) {
-			counters.push( me.renderDayPart() );
-		}
+      this.timer = setTimeout(() => {
+        this.increaseTimer = setInterval(() => {
+          update[type] = this[action](type);
+          this.setState(update);
+        }, 70);
+      }, 500);
 
-		if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf( 'S' ) !== -1 ) {
-			counters.push( React.createElement('div', { className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
-			counters.push(
-				React.createElement('div', { className: 'rdtCounter rdtMilli', key: 'm' },
-					React.createElement('input', { value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
-					)
-				);
-		}
+      this.mouseUpListener = () => {
+        clearTimeout(this.timer);
+        clearInterval(this.increaseTimer);
+        this.props.setTime(type, this.state[type]);
+        document.body.removeEventListener("mouseup", this.mouseUpListener);
+        document.body.removeEventListener("touchend", this.mouseUpListener);
+      };
 
-		return React.createElement('div', { className: 'rdtTime' },
-			React.createElement('table', {}, [
-				this.renderHeader(),
-				React.createElement('tbody', { key: 'b'}, React.createElement('tr', {}, React.createElement('td', {},
-					React.createElement('div', { className: 'rdtCounters' }, counters )
-				)))
-			])
-		);
-	},
+      document.body.addEventListener("mouseup", this.mouseUpListener);
+      document.body.addEventListener("touchend", this.mouseUpListener);
+    };
+  }
 
-	componentWillMount: function() {
-		var me = this;
-		me.timeConstraints = {
-			hours: {
-				min: 0,
-				max: 23,
-				step: 1
-			},
-			minutes: {
-				min: 0,
-				max: 59,
-				step: 1
-			},
-			seconds: {
-				min: 0,
-				max: 59,
-				step: 1
-			},
-			milliseconds: {
-				min: 0,
-				max: 999,
-				step: 1
-			}
-		};
-		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
-			assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
-		});
-		this.setState( this.calculateState( this.props ) );
-	},
+  disableContextMenu(event) {
+    event.preventDefault();
+    return false;
+  }
 
-	componentWillReceiveProps: function( nextProps ) {
-		this.setState( this.calculateState( nextProps ) );
-	},
+  toggleDayPart(type) {
+    const constraints = this.timeConstraints[type];
 
-	updateMilli: function( e ) {
-		var milli = parseInt( e.target.value, 10 );
-		if ( milli === e.target.value && milli >= 0 && milli < 1000 ) {
-			this.props.setTime( 'milliseconds', milli );
-			this.setState( { milliseconds: milli } );
-		}
-	},
+    // type is always 'hours'
+    let value = parseInt(this.state[type], 10) + 12;
+    if (value > constraints.max) {
+      value = constraints.min + (value - (constraints.max + 1));
+    }
 
-	renderHeader: function() {
-		if ( !this.props.dateFormat )
-			return null;
+    return this.pad(type, value);
+  }
 
-		var date = this.props.selectedDate || this.props.viewDate;
-		return React.createElement('thead', { key: 'h' }, React.createElement('tr', {},
-			React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
-		));
-	},
+  increase(type) {
+    const constraints = this.timeConstraints[type];
 
-	onStartClicking: function( action, type ) {
-		var me = this;
+    let value = parseInt(this.state[type], 10) + constraints.step;
+    if (value > constraints.max) {
+      value = constraints.min + (value - (constraints.max + 1));
+    }
 
-		return function() {
-			var update = {};
-			update[ type ] = me[ action ]( type );
-			me.setState( update );
+    return this.pad(type, value);
+  }
 
-			me.timer = setTimeout( function() {
-				me.increaseTimer = setInterval( function() {
-					update[ type ] = me[ action ]( type );
-					me.setState( update );
-				}, 70);
-			}, 500);
+  decrease(type) {
+    const constraints = this.timeConstraints[type];
 
-			me.mouseUpListener = function() {
-				clearTimeout( me.timer );
-				clearInterval( me.increaseTimer );
-				me.props.setTime( type, me.state[ type ] );
-				document.body.removeEventListener( 'mouseup', me.mouseUpListener );
-				document.body.removeEventListener( 'touchend', me.mouseUpListener );
-			};
+    let value = parseInt(this.state[type], 10) - constraints.step;
+    if (value < constraints.min) {
+      value = constraints.max + 1 - (constraints.min - value);
+    }
 
-			document.body.addEventListener( 'mouseup', me.mouseUpListener );
-			document.body.addEventListener( 'touchend', me.mouseUpListener );
-		};
-	},
+    return this.pad(type, value);
+  }
 
-	disableContextMenu: function( event ) {
-		event.preventDefault();
-		return false;
-	},
+  pad(type, value) {
+    let str = value + "";
+    while (str.length < padValues[type]) str = "0" + str;
+    return str;
+  }
 
-	padValues: {
-		hours: 1,
-		minutes: 2,
-		seconds: 2,
-		milliseconds: 3
-	},
+  calculateState(props) {
+    const date = props.selectedDate || props.viewDate;
+    const timeFormat =
+      typeof props.timeFormat === "string"
+        ? props.timeFormat.toLowerCase()
+        : "";
+    const counters = [];
 
-	toggleDayPart: function( type ) { // type is always 'hours'
-		var value = parseInt( this.state[ type ], 10) + 12;
-		if ( value > this.timeConstraints[ type ].max )
-			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
-		return this.pad( type, value );
-	},
+    if (timeFormat.toLowerCase().indexOf("h") !== -1) {
+      counters.push("hours");
+      if (timeFormat.indexOf("m") !== -1) {
+        counters.push("minutes");
+        if (timeFormat.indexOf("s") !== -1) {
+          counters.push("seconds");
+        }
+      }
+    }
 
-	increase: function( type ) {
-		var value = parseInt( this.state[ type ], 10) + this.timeConstraints[ type ].step;
-		if ( value > this.timeConstraints[ type ].max )
-			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
-		return this.pad( type, value );
-	},
+    const hours = getHours(date);
 
-	decrease: function( type ) {
-		var value = parseInt( this.state[ type ], 10) - this.timeConstraints[ type ].step;
-		if ( value < this.timeConstraints[ type ].min )
-			value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
-		return this.pad( type, value );
-	},
+    let daypart = undefined;
+    if (this.state !== null && timeFormat.indexOf(" a") !== -1) {
+      if (props.timeFormat.indexOf(" A") !== -1) {
+        daypart = hours >= 12 ? "PM" : "AM";
+      } else {
+        daypart = hours >= 12 ? "pm" : "am";
+      }
+    }
 
-	pad: function( type, value ) {
-		var str = value + '';
-		while ( str.length < this.padValues[ type ] )
-			str = '0' + str;
-		return str;
-	},
+    return {
+      hours: hours,
+      minutes: format(date, "mm", this.getFormatOptions()),
+      seconds: format(date, "ss", this.getFormatOptions()),
+      milliseconds: format(date, "SSS", this.getFormatOptions()),
+      daypart: daypart,
+      counters: counters
+    };
+  }
 
-	handleClickOutside: function() {
-		this.props.handleClickOutside();
-	}
-}));
+  updateMilli(e) {
+    const milli = parseInt(e.target.value, 10);
+    if (milli === e.target.value && milli >= 0 && milli < 1000) {
+      this.props.setTime("milliseconds", milli);
+      this.setState({ milliseconds: milli });
+    }
+  }
 
-module.exports = DateTimePickerTime;
+  renderHeader() {
+    if (!this.props.dateFormat) {
+      return null;
+    }
+
+    const date = this.props.selectedDate || this.props.viewDate;
+    return (
+      <thead>
+        <tr>
+          <th
+            className="rdtSwitch"
+            colSpan={4}
+            onClick={this.props.showView("days")}
+          >
+            {format(date, this.props.dateFormat)}
+          </th>
+        </tr>
+      </thead>
+    );
+  }
+
+  renderCounter(type) {
+    const timeFormat =
+      typeof this.props.timeFormat === "string"
+        ? this.props.timeFormat.toLowerCase()
+        : "";
+    if (type !== "daypart") {
+      let value = this.state[type];
+      if (type === "hours" && timeFormat.indexOf(" a") !== -1) {
+        value = ((value - 1) % 12) + 1;
+
+        if (value === 0) {
+          value = 12;
+        }
+      }
+
+      return (
+        <div key={type} className="rdtCounter">
+          <span
+            className="rdtBtn"
+            onMouseDown={this.onStartClicking("increase", type)}
+            onContextMenu={this.disableContextMenu}
+          >
+            ▲
+          </span>
+          <div className="rdtCount">{value}</div>
+          <span
+            className="rdtBtn"
+            onMouseDown={this.onStartClicking("decrease", type)}
+            onContextMenu={this.disableContextMenu}
+          >
+            ▼
+          </span>
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  renderDayPart() {
+    return (
+      <div key="dayPart" className="rdtCounter">
+        <span
+          className="rdtBtn"
+          onMouseDown={this.onStartClicking("toggleDayPart", "hours")}
+          onContextMenu={this.disableContextMenu}
+        >
+          ▲
+        </span>
+        <div className="rdtCount">{this.state.daypart}</div>
+        <span
+          className="rdtBtn"
+          onMouseDown={this.onStartClicking("toggleDayPart", "hours")}
+          onContextMenu={this.disableContextMenu}
+        >
+          ▼
+        </span>
+      </div>
+    );
+  }
+
+  render() {
+    const counters = [];
+
+    this.state.counters.forEach(c => {
+      if (counters.length) {
+        counters.push(
+          <div key={`sep${counters.length}`} className="rdtCounterSeparator">
+            :
+          </div>
+        );
+      }
+
+      counters.push(this.renderCounter(c));
+    });
+
+    if (this.state.daypart) {
+      counters.push(this.renderDayPart());
+    }
+
+    const timeFormat = this.props.timeFormat || "";
+    if (this.state.counters.length === 3 && timeFormat.indexOf("S") !== -1) {
+      counters.push(
+        <div key="sep5" className="rdtCounterSeparator">
+          :
+        </div>
+      );
+      counters.push(
+        <div key="ms" className="rdtCounter rdtMilli">
+          <input
+            type="text"
+            value={this.state.milliseconds}
+            onChange={this.updateMilli}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div className="rdtTime">
+        <table>
+          {this.renderHeader()}
+          <tbody>
+            <tr>
+              <td>
+                <div className="rdtCounters">{counters}</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  handleClickOutside() {
+    this.props.handleClickOutside();
+  }
+}
+
+export default onClickOutside(TimeView);

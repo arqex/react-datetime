@@ -1,24 +1,21 @@
-'use strict';
+import React from "react";
+import DaysView from "./DaysView";
+import MonthsView from "./MonthsView";
+import YearsView from "./YearsView";
+import TimeView from "./TimeView";
 
-var React = require('react'),
-	createClass = require('create-react-class'),
-	DaysView = require('./DaysView'),
-	MonthsView = require('./MonthsView'),
-	YearsView = require('./YearsView'),
-	TimeView = require('./TimeView')
-	;
+const viewComponents = {
+  days: DaysView,
+  months: MonthsView,
+  years: YearsView,
+  time: TimeView
+};
 
-var CalendarContainer = createClass({
-	viewComponents: {
-		days: DaysView,
-		months: MonthsView,
-		years: YearsView,
-		time: TimeView
-	},
+const CalendarContainer = props => {
+  const { view, viewProps } = props;
+  const Component = viewComponents[view || "days"];
 
-	render: function() {
-		return React.createElement( this.viewComponents[ this.props.view ], this.props.viewProps );
-	}
-});
+  return <Component {...viewProps} />;
+};
 
-module.exports = CalendarContainer;
+export default CalendarContainer;

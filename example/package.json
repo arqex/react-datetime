@@ -1,0 +1,19 @@
+{
+  "name": "react-datetime-example",
+  "homepage": "https://NateRadebaugh.github.io/react-datetime",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "react": "^16.4.1",
+    "react-datetime": "link:..",
+    "react-dom": "^16.4.1",
+    "react-scripts": "^1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
