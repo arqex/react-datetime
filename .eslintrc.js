@@ -21,29 +21,39 @@ module.exports = {
   },
   settings: {
     react: {
-      version: "15.6.2"
+      version: "16.4.2"
     }
   },
-  globals: {
-    require: true,
-    module: true
-  },
-  // Enables rules that report common problems,
-  // see http://eslint.org/docs/rules/ for list
   rules: {
-    // Ignore display-name errors for now
-    "react/display-name": "warn",
+    // Enforce prettier formatting
+    "prettier/prettier": "error",
 
-    // Enforce the use of variables within the scope they are defined
-    "block-scoped-var": "error",
+    // We do not use prop types at the moment
+    "react/prop-types": "off",
 
-    // Enforce camelcase naming convention
-    camelcase: "error",
+    // Don't enforce "noopener noreferrer" security mitigation for now
+    // https://mathiasbynens.github.io/rel-noopener
+    "react/jsx-no-target-blank": "off",
 
-    // Require the use of === and !==
-    eqeqeq: ["error", "smart"],
+    // Allow hardcoded " inline
+    "react/no-unescaped-entities": "off",
 
-    // Enforce the consistent use of the radix argument when using parseInt()
-    radix: "error"
+    // Catch usages of non-defined (forgotten imports) as errors at compile time
+    "no-undef": "error",
+
+    // Warn if any var is used (prefer let or const)
+    "no-var": "warn",
+
+    // Warn if there is an unused variable
+    "no-unused-vars": ["warn", { ignoreRestSiblings: true, args: "none" }],
+
+    // Warn if there is a console output
+    "no-console": "warn",
+
+    // Disallow arrow functions in render functions
+    "react/jsx-no-bind": "warn",
+
+    // Disallow inconsistent returns
+    "consistent-return": "error"
   }
 };

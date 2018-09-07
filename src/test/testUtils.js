@@ -1,23 +1,24 @@
 import React from "react";
 import { mount, shallow } from "enzyme";
-import Datetime from "../DateTime";
+import DateTime from "../";
 
 const _simulateClickOnElement = element => {
   if (element.length === 0) {
     // eslint-disable-next-line no-console
     console.warn("Element not clicked since it doesn't exist");
-    return;
+    return null;
   }
+
   return element.simulate("click");
 };
 
 module.exports = {
   createDatetime: props => {
-    return mount(<Datetime {...props} />);
+    return mount(<DateTime {...props} />);
   },
 
   createDatetimeShallow: props => {
-    return shallow(<Datetime {...props} />);
+    return shallow(<DateTime {...props} />);
   },
 
   /*

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import DateTime from "react-datetime";
+import isBefore from "date-fns/is_before";
+import startOfMonth from "date-fns/start_of_month";
 
 export default class ValidatedExample extends Component {
   render() {
@@ -10,9 +12,7 @@ export default class ValidatedExample extends Component {
         <DateTime
           viewMode="months"
           dateFormat="MMMM"
-          isValidDate={current =>
-            current.isBefore(DateTime.moment().startOf("month"))
-          }
+          isValidDate={current => isBefore(current, startOfMonth(new Date()))}
           onChange={console.log}
         />
       </div>

@@ -1,15 +1,10 @@
 /*!
- * https://github.com/arqex/react-datetime
+ * https://github.com/YouCanBookMe/react-datetime
  */
 
 .rdt {
   position: relative;
 }
-
-.rdt > input {
-  border: 1px solid #000;
-}
-
 .rdtPicker {
   display: none;
   position: absolute;
@@ -45,7 +40,7 @@
 .rdtPicker td {
   cursor: pointer;
 }
-.rdtPicker td.rdtToday:hover,
+.rdtPicker td.rdtDay:hover,
 .rdtPicker td.rdtHour:hover,
 .rdtPicker td.rdtMinute:hover,
 .rdtPicker td.rdtSecond:hover,
@@ -216,10 +211,6 @@ td.rdtYear:hover {
   width: 100%;
   font-size: 1.2em;
   margin-top: 37px;
-}
-
-.rdtDayPart {
-  margin-top: 43px;
 }
 
 .rdtTime td {

@@ -1,161 +1,139 @@
-"use strict";
+import React, { Component } from "react";
+import format from "date-fns/format";
+import getMonth from "date-fns/get_month";
+import setMonth from "date-fns/set_month";
+import getYear from "date-fns/get_year";
+import getDaysInMonth from "date-fns/get_days_in_month";
+import setDate from "date-fns/set_date";
+import onClickOutside from "react-onclickoutside";
 
-var React = require("react"),
-  createClass = require("create-react-class"),
-  onClickOutside = require("react-onclickoutside").default;
+class MonthsView extends Component {
+  constructor(props) {
+    super(props);
 
-var DateTimePickerMonths = onClickOutside(
-  createClass({
-    render: function() {
-      return React.createElement("div", { className: "rdtMonths" }, [
-        React.createElement(
-          "table",
-          { key: "a" },
-          React.createElement(
-            "thead",
-            {},
-            React.createElement("tr", {}, [
-              React.createElement(
-                "th",
-                {
-                  key: "prev",
-                  className: "rdtPrev",
-                  onClick: this.props.subtractTime(1, "years")
-                },
-                React.createElement("span", {}, "‹")
-              ),
-              React.createElement(
-                "th",
-                {
-                  key: "year",
-                  className: "rdtSwitch",
-                  onClick: this.props.showView("years"),
-                  colSpan: 2,
-                  "data-value": this.props.viewDate.year()
-                },
-                this.props.viewDate.year()
-              ),
-              React.createElement(
-                "th",
-                {
-                  key: "next",
-                  className: "rdtNext",
-                  onClick: this.props.addTime(1, "years")
-                },
-                React.createElement("span", {}, "›")
-              )
-            ])
-          )
-        ),
-        React.createElement(
-          "table",
-          { key: "months" },
-          React.createElement("tbody", { key: "b" }, this.renderMonths())
-        )
-      ]);
-    },
+    // Bind functions
+    this.renderMonths = this.renderMonths.bind(this);
+    this.updateSelectedMonth = this.updateSelectedMonth.bind(this);
+    this.renderMonth = this.renderMonth.bind(this);
+    this.alwaysValidDate = this.alwaysValidDate.bind(this);
+    this.getFormatOptions = this.getFormatOptions.bind(this);
+  }
 
-    renderMonths: function() {
-      var date = this.props.selectedDate,
-        month = this.props.viewDate.month(),
-        year = this.props.viewDate.year(),
-        rows = [],
-        i = 0,
-        months = [],
-        renderer = this.props.renderMonth || this.renderMonth,
-        isValid = this.props.isValidDate || this.alwaysValidDate,
-        classes,
-        props,
-        currentMonth,
-        isDisabled,
-        noOfDaysInMonth,
-        daysInMonth,
-        validDay,
-        // Date is irrelevant because we're only interested in month
-        irrelevantDate = 1;
+  getFormatOptions() {
+    return { locale: this.props.locale };
+  }
 
-      while (i < 12) {
-        classes = "rdtMonth";
-        currentMonth = this.props.viewDate
-          .clone()
-          .set({ year: year, month: i, date: irrelevantDate });
+  render() {
+    const date = this.props.viewDate || new Date();
 
-        noOfDaysInMonth = currentMonth.endOf("month").format("D");
-        daysInMonth = Array.from({ length: noOfDaysInMonth }, function(e, i) {
-          return i + 1;
-        });
+    return (
+      <div className="rdtMonths">
+        <table>
+          <thead>
+            <tr>
+              <th
+                className="rdtPrev"
+                onClick={this.props.subtractTime(1, "years")}
+              >
+                <span>‹</span>
+              </th>
+              <th
+                className="rdtSwitch"
+                onClick={this.props.showView("years")}
+                colSpan={2}
+                data-value={getYear(this.props.viewDate)}
+              >
+                {format(date, "YYYY", this.getFormatOptions())}
+              </th>
+              <th className="rdtNext" onClick={this.props.addTime(1, "years")}>
+                <span>›</span>
+              </th>
+            </tr>
+          </thead>
+        </table>
+        <table>
+          <tbody>{this.renderMonths()}</tbody>
+        </table>
+      </div>
+    );
+  }
 
-        validDay = daysInMonth.find(function(d) {
-          var day = currentMonth.clone().set("date", d);
-          return isValid(day);
-        });
+  renderMonths() {
+    const date = this.props.selectedDate;
+    const year = getYear(this.props.viewDate);
+    const renderer = this.props.renderMonth || this.renderMonth;
+    const isValid = this.props.isValidDate || this.alwaysValidDate;
 
-        isDisabled = validDay === undefined;
+    const rows = [];
+    let months = [];
 
-        if (isDisabled) classes += " rdtDisabled";
+    for (let i = 0; i < 12; i++) {
+      let classes = "rdtMonth";
+      const currentMonth = setMonth(this.props.viewDate, i);
 
-        if (date && i === date.month() && year === date.year())
-          classes += " rdtActive";
+      const noOfDaysInMonth = getDaysInMonth(currentMonth);
+      const daysInMonth = Array.from({ length: noOfDaysInMonth }, (e, i) => {
+        return i + 1;
+      });
 
-        props = {
-          key: i,
-          "data-value": i,
-          className: classes
-        };
+      const validDay = daysInMonth.find(d => {
+        const day = setDate(currentMonth, d);
+        return isValid(day);
+      });
 
-        if (!isDisabled)
-          props.onClick =
-            this.props.updateOn === "months"
-              ? this.updateSelectedMonth
-              : this.props.setDate("month");
+      const isDisabled = validDay === undefined;
 
-        months.push(renderer(props, i, year, date && date.clone()));
-
-        if (months.length === 4) {
-          rows.push(
-            React.createElement(
-              "tr",
-              { key: month + "_" + rows.length },
-              months
-            )
-          );
-          months = [];
-        }
-
-        i++;
+      if (isDisabled) {
+        classes += " rdtDisabled";
       }
 
-      return rows;
-    },
+      if (date && i === getMonth(date) && year === getYear(date)) {
+        classes += " rdtActive";
+      }
 
-    updateSelectedMonth: function(event) {
-      this.props.updateSelectedDate(event);
-    },
+      const props = {
+        key: i,
+        "data-value": i,
+        className: classes
+      };
 
-    renderMonth: function(props, month) {
-      var localMoment = this.props.viewDate;
-      var monthStr = localMoment
-        .localeData()
-        .monthsShort(localMoment.month(month));
-      var strLength = 3;
-      // Because some months are up to 5 characters long, we want to
-      // use a fixed string length for consistency
-      var monthStrFixedLength = monthStr.substring(0, strLength);
-      return React.createElement("td", props, capitalize(monthStrFixedLength));
-    },
+      if (!isDisabled) {
+        props.onClick =
+          this.props.updateOn === "months"
+            ? this.updateSelectedMonth
+            : this.props.setDate("month");
+      }
 
-    alwaysValidDate: function() {
-      return 1;
-    },
+      months.push(renderer(props, i, year, date));
 
-    handleClickOutside: function() {
-      this.props.handleClickOutside();
+      if (months.length === 4) {
+        rows.push(<tr key={i}>{months}</tr>);
+
+        months = [];
+      }
     }
-  })
-);
 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+    return rows;
+  }
+
+  updateSelectedMonth(event) {
+    this.props.updateSelectedDate(event);
+  }
+
+  renderMonth(props, month, year, selected) {
+    const monthDate = setMonth(new Date(), month);
+    return (
+      <td {...props}>{format(monthDate, "MMM", this.getFormatOptions())}</td>
+    );
+  }
+
+  alwaysValidDate() {
+    return 1;
+  }
+
+  handleClickOutside() {
+    this.props.handleClickOutside();
+  }
 }
 
-module.exports = DateTimePickerMonths;
+export default onClickOutside(MonthsView);

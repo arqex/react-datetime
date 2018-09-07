@@ -1,44 +1,47 @@
 {
   "name": "react-datetime",
-  "version": "2.15.0",
+  "version": "3.0.0",
   "description": "A lightweight but complete datetime picker React.js component",
   "homepage": "https://github.com/NateRadebaugh/react-datetime",
   "repository": {
     "type": "git",
     "url": "https://github.com/NateRadebaugh/react-datetime"
   },
-  "main": "./DateTime.js",
-  "typings": "./DateTime.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
   "files": [
-    "DateTime.js",
-    "DateTime.d.ts",
     "src",
     "css",
     "dist"
   ],
   "scripts": {
-    "build:mac": "gulp",
-    "build:win": "gulp.cmd",
-    "dev": "webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
-    "lint": "eslint src/ DateTime.js test/ && echo 'Linting OK! 💪'",
-    "notify-pre-commit-hook": "echo '### Starting pre-commit hook 🦄'",
-    "test": "jest",
-    "test:typings": "tsc -p ./typings",
-    "test:snapshot": "jest snapshot",
-    "test:snapshot:update": "jest snapshot --updateSnapshot",
-    "test:all": "echo 'Running tests...' && npm run test:typings && npm run test && echo 'All tests passed! 🤘'",
-    "test:watch": "jest --watch",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "lint": "eslint **/*.{js,jsx}",
+    "lint:fix": "eslint **/*.{js,jsx} --fix",
+    "test": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:all": "echo 'Running tests...' && npm run test && echo 'All tests passed! 🤘'",
+    "test:watch": "react-scripts test --env=jsdom",
     "prettier": "prettier --write **/*.{json,js,jsx,css}",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prepare": "yarn run build",
+    "predeploy": "cd example && yarn install && yarn run build",
+    "deploy": "gh-pages -d example/build"
   },
   "lint-staged": {
-    ".{json,css}": [
-      "prettier --write",
-      "git add"
-    ],
-    ".{js,jsx}": [
+    "*.{js,jsx}": [
       "prettier --write",
       "eslint --fix",
+      "git add",
+      "cross-env CI=1 react-scripts test --env=jsdom --bail --findRelatedTests"
+    ],
+    "*.{json,css,scss}": [
+      "prettier --write",
       "git add"
     ]
   },
@@ -53,63 +56,47 @@
   "author": "Javier Marquez",
   "license": "MIT",
   "peerDependencies": {
-    "moment": ">=2.16.0",
-    "react": ">=0.13",
-    "react-dom": ">=0.13"
+    "date-fns": "^1.29.0",
+    "react": "^15.0.0 || ^16.0.0",
+    "react-dom": "^16.5.0"
   },
   "devDependencies": {
-    "@types/react": "^16.4.11",
     "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.6",
-    "babel-jest": "^18.0.0",
-    "babel-loader": "^6.2.1",
-    "babel-plugin-transform-remove-strict-mode": "0.0.2",
+    "babel-eslint": "^8.2.5",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.24.1",
-    "enzyme": "^3.4.4",
-    "enzyme-adapter-react-15": "^1.0.6",
-    "eslint": "^3.1.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.1.4",
+    "enzyme": "^3.6.0",
+    "enzyme-adapter-react-16": "^1.5.0",
+    "eslint": "^5.5.0",
     "eslint-config-prettier": "^3.0.1",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-config-standard-react": "^6.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-react": "^7.11.1",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^6.1.3",
-    "gulp-insert": "^0.4.0",
-    "gulp-jsx": "^2.0.1",
-    "gulp-plumber": "^1.2.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^1.2.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "gh-pages": "^1.2.0",
     "husky": "^0.14.3",
-    "jest": "^18.1.0",
-    "jest-cli": "^18.1.0",
-    "jsdom": "^7.0.2",
+    "jest-date-mock": "^1.0.3",
     "lint-staged": "^7.2.2",
-    "mocha": "^3.5.3",
-    "moment": "^2.22.2",
-    "pre-commit": "^1.1.3",
     "prettier": "^1.14.2",
-    "react": "^15.6.2",
-    "react-addons-test-utils": "^15.6.2",
-    "react-dom": "^15.6.2",
-    "react-test-renderer": "^15.6.2",
-    "through2": "^2.0.3",
-    "typescript": "^2.9.2",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^1.7.0",
-    "webpack-stream": "^3.2.0"
+    "react": "^16.4.1",
+    "react-scripts": "^1.1.4",
+    "react-test-renderer": "^16.5.0",
+    "rollup": "^0.64.1",
+    "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-postcss": "^1.6.2",
+    "rollup-plugin-url": "^1.4.0"
   },
   "dependencies": {
-    "create-react-class": "^15.6.3",
-    "object-assign": "^3.0.0",
-    "prop-types": "^15.6.2",
     "react-onclickoutside": "^6.7.1"
-  },
-  "pre-commit": [
-    "notify-pre-commit-hook",
-    "lint",
-    "test:all"
-  ]
+  }
 }
