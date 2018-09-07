@@ -1,7 +1,7 @@
 # react-datetime
 
 [![Build Status](https://secure.travis-ci.org/NateRadebaugh/react-datetime.svg)](https://travis-ci.org/NateRadebaugh/react-datetime)
-[![npm version](https://badge.fury.io/js/react-datetime.svg)](http://badge.fury.io/js/react-datetime)
+[![npm version](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime.svg)](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime)
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable** and it even allows to edit date's milliseconds.
 
@@ -30,8 +30,8 @@ require('react-datetime');
 
 ...
 
-render: function() {
-    return <Datetime />;
+render() {
+    return <DateTime />;
 }
 ```
 
@@ -73,10 +73,10 @@ render: function() {
 
 ## i18n
 
-Different language and date formats are supported by react-datetime. React uses [date-fns](https://date-fns.org/) to format the dates, and the easiest way of changing the language of the calendar is providing a `locale` prop. See date-fns documentation here: [changing the date-fns locale](https://date-fns.org/v1.29.0/docs/I18n).
+Different language and date formats are supported by `react-datetime`. `react-datetime` uses [date-fns](https://date-fns.org/) to format the dates, and the easiest way of changing the language of the calendar is providing a `locale` prop. See date-fns documentation here: [changing the date-fns locale](https://date-fns.org/v1.29.0/docs/I18n).
 
 ```js
-import DateTime from "react-datetime";
+import DateTime from "@nateradebaugh/react-datetime";
 import nl from "date-fns/locale/nl";
 import es from "date-fns/locale/es";
 import fr from "date-fns/locale/fr";
@@ -85,19 +85,19 @@ import fr from "date-fns/locale/fr";
 You can then use the prop `locale` to define what language shall be used by the instance.
 
 ```js
-<Datetime locale={nl} />
-<Datetime locale={es} />
-<Datetime locale={fr} />
+<DateTime locale={nl} />
+<DateTime locale={es} />
+<DateTime locale={fr} />
 ```
 
-[Here you can see the i18n example working](http://codepen.io/simeg/pen/yVVjdJ).
+[Here you can see the i18n example working](https://codesandbox.io/s/v2p1rvwr7).
 
 ## Customize the Input Appearance
 
 It is possible to customize the way that the input is displayed. The simplest is to supply `inputProps` which get assigned to the default `<input />` element within the component.
 
 ```js
-<Datetime inputProps={{ placeholder: 'N/A', disabled: true }}>
+<DateTime inputProps={{ placeholder: 'N/A', disabled: true }}>
 ```
 
 Alternatively, if you need to render different content than an `<input />` element, you may supply a `renderInput` function which is called instead.
@@ -117,7 +117,7 @@ class MyDTPicker extends React.Component {
   }
 
   render() {
-    return <Datetime renderInput={this.renderInput} />;
+    return <DateTime renderInput={this.renderInput} />;
   }
 
   renderInput(props, openCalendar, closeCalendar) {
@@ -150,7 +150,7 @@ class MyDTPicker extends Component {
 
   render() {
     return (
-      <Datetime
+      <DateTime
         renderDay={this.renderDay}
         renderMonth={this.renderMonth}
         renderYear={this.renderYear}
@@ -172,7 +172,7 @@ class MyDTPicker extends Component {
 }
 ```
 
-[You can see a customized calendar here.](http://codepen.io/simeg/pen/YppLmO)
+[You can see a customized calendar here.](https://codesandbox.io/s/xr6xy2y17w)
 
 #### Method Parameters
 
@@ -187,18 +187,18 @@ You can filter out what you want the user to be able to pick by using `dateForma
 In this example the component is being used as a _timepicker_ and can _only be used for selecting a time_.
 
 ```js
-<Datetime dateFormat={false} />
+<DateTime dateFormat={false} />
 ```
 
-[Working example of a timepicker here.](http://codepen.io/simeg/pen/mRQBrp)
+[Working example of a timepicker here.](https://codesandbox.io/s/533w4y46px)
 
 In this example you can _only select a year and month_.
 
 ```js
-<Datetime dateFormat="YYYY-MM" timeFormat={false} />
+<DateTime dateFormat="YYYY-MM" timeFormat={false} />
 ```
 
-[Working example of only selecting year and month here.](http://codepen.io/simeg/pen/apQLdd)
+[Working example of only selecting year and month here.](https://codesandbox.io/s/31vz49pjz1)
 
 ## Selectable Dates
 
@@ -212,13 +212,13 @@ import isAfter from "date-fns/is_after";
 
 const yesterday = subDays(new Date(), 1);
 const valid = function(current) {
-  return is_after(current, yesterday);
+  return isAfter(current, yesterday);
 };
 
-<Datetime isValidDate={valid} />;
+<DateTime isValidDate={valid} />;
 ```
 
-[Working example of disabled days here.](http://codepen.io/simeg/pen/XNNYJg)
+[Working example of disabled days here.](https://codesandbox.io/s/pkx81xx8pq)
 
 It's also possible to disable _the weekends_, as shown in the example below.
 
@@ -229,10 +229,10 @@ const valid = function(current) {
   return getDay(current) !== 0 && getDay(current) !== 6;
 };
 
-<Datetime isValidDate={valid} />;
+<DateTime isValidDate={valid} />;
 ```
 
-[Working example of disabled weekends here.](http://codepen.io/simeg/pen/jVVKWq)
+[Working example of disabled weekends here.](https://codesandbox.io/s/y270j8k54x)
 
 ## Usage with TypeScript
 
@@ -244,11 +244,11 @@ required.
 Typings for 1.8 are found in `react-datetime.d.ts` and typings for 2.0 are found in `typings/index.d.ts`.
 
 ```js
-import * as Datetime from "react-datetime";
+import * as DateTime from "react-datetime";
 
 class MyDTPicker extends React.Component<MyDTPickerProps, MyDTPickerState> {
   render(): JSX.Element {
-    return <Datetime />;
+    return <DateTime />;
   }
 }
 ```
