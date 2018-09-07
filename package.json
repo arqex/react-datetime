@@ -21,9 +21,9 @@
     "start": "rollup -c -w",
     "lint": "eslint **/*.{js,jsx}",
     "lint:fix": "eslint **/*.{js,jsx} --fix",
-    "test": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test": "cross-env CI=1 TZ=Europe/Stockholm react-scripts test --env=jsdom",
     "test:all": "echo 'Running tests...' && npm run test && echo 'All tests passed! 🤘'",
-    "test:watch": "react-scripts test --env=jsdom",
+    "test:watch": "cross-env TZ=Europe/Stockholm react-scripts test --env=jsdom",
     "prettier": "prettier --write **/*.{json,js,jsx,css}",
     "precommit": "lint-staged",
     "prepare": "yarn run build",
@@ -35,7 +35,7 @@
       "prettier --write",
       "eslint --fix",
       "git add",
-      "cross-env CI=1 react-scripts test --env=jsdom --bail --findRelatedTests"
+      "cross-env CI=1 TZ=Europe/Stockholm react-scripts test --env=jsdom --bail --findRelatedTests"
     ],
     "*.{json,css,scss}": [
       "prettier --write",
@@ -50,7 +50,10 @@
     "datetimepicker",
     "datetime"
   ],
-  "author": "Javier Marquez",
+  "authors": [
+    "Javier Marquez",
+    "Nate Radebaugh"
+  ],
   "license": "MIT",
   "peerDependencies": {
     "date-fns": "^1.29.0",
