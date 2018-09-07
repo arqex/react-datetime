@@ -68,8 +68,6 @@ export default class CustomizableExample extends Component {
           <option>MMMM</option>
           <option>YYYY/MM</option>
           <option>YYYY</option>
-          <option>L</option>
-          <option>LL</option>
         </Select>
 
         <Select name="timeFormat">
@@ -79,8 +77,6 @@ export default class CustomizableExample extends Component {
           <option>HH:mm:SSS</option>
           <option>hmm</option>
           <option>HH:mm Z</option>
-          <option>LT</option>
-          <option>LTS</option>
         </Select>
 
         <Select name="viewMode">

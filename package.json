@@ -18,6 +18,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
+    "start": "rollup -c -w",
     "lint": "eslint **/*.{js,jsx}",
     "lint:fix": "eslint **/*.{js,jsx} --fix",
     "test": "cross-env CI=1 react-scripts test --env=jsdom",

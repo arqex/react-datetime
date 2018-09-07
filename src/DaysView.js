@@ -199,7 +199,7 @@ class DaysView extends Component {
 
   renderFooter() {
     if (!this.props.timeFormat) {
-      return "";
+      return null;
     }
 
     const date = this.props.selectedDate || this.props.viewDate;

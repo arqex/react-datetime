@@ -455,6 +455,7 @@ describe("DateTime", () => {
         value: date,
         timeFormat: false
       });
+
       expect(utils.getInputValue(component)).toEqual(
         format(date, "MM/DD/YYYY")
       );
