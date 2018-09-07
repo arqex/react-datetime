@@ -41,6 +41,28 @@ const allowedSetTime = Object.freeze({
   MILLISECONDS: "milliseconds"
 });
 
+const componentProps = {
+  fromProps: [
+    "value",
+    "isValidDate",
+    "renderDay",
+    "renderMonth",
+    "renderYear",
+    "timeConstraints",
+    "locale"
+  ],
+  fromState: ["viewDate", "selectedDate", "updateOn"],
+  fromThis: [
+    "setDate",
+    "setTime",
+    "showView",
+    "addTime",
+    "subtractTime",
+    "updateSelectedDate",
+    "handleClickOutside"
+  ]
+};
+
 class DateTime extends Component {
   constructor(props) {
     super(props);
@@ -469,41 +491,19 @@ class DateTime extends Component {
     return { locale: this.props.locale };
   }
 
-  componentProps = {
-    fromProps: [
-      "value",
-      "isValidDate",
-      "renderDay",
-      "renderMonth",
-      "renderYear",
-      "timeConstraints",
-      "locale"
-    ],
-    fromState: ["viewDate", "selectedDate", "updateOn"],
-    fromThis: [
-      "setDate",
-      "setTime",
-      "showView",
-      "addTime",
-      "subtractTime",
-      "updateSelectedDate",
-      "handleClickOutside"
-    ]
-  };
-
   getComponentProps() {
     const formats = this.getFormats(this.props);
     const props = { dateFormat: formats.date, timeFormat: formats.time };
 
-    this.componentProps.fromProps.forEach(name => {
+    componentProps.fromProps.forEach(name => {
       props[name] = this.props[name];
     });
 
-    this.componentProps.fromState.forEach(name => {
+    componentProps.fromState.forEach(name => {
       props[name] = this.state[name];
     });
 
-    this.componentProps.fromThis.forEach(name => {
+    componentProps.fromThis.forEach(name => {
       props[name] = this[name];
     });
 
