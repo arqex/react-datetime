@@ -1,7 +1,6 @@
 # react-datetime
 
-[![Build Status](https://secure.travis-ci.org/NateRadebaugh/react-datetime.svg)](https://travis-ci.org/NateRadebaugh/react-datetime)
-[![npm version](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime.svg)](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime) [![Greenkeeper badge](https://badges.greenkeeper.io/NateRadebaugh/react-datetime.svg)](https://greenkeeper.io/)
+[![Build Status](https://secure.travis-ci.org/NateRadebaugh/react-datetime.svg)](https://travis-ci.org/NateRadebaugh/react-datetime) [![npm version](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime.svg)](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime) [![Greenkeeper badge](https://badges.greenkeeper.io/NateRadebaugh/react-datetime.svg)](https://greenkeeper.io/) [![Coverage Status](https://coveralls.io/repos/github/NateRadebaugh/react-datetime/badge.svg?branch=master)](https://coveralls.io/github/NateRadebaugh/react-datetime?branch=master)
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable** and it even allows to edit date's milliseconds.
 
