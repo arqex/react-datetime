@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import addDays from "date-fns/add_days";
 import format from "date-fns/format";
 import getDaysInMonth from "date-fns/get_days_in_month";
@@ -11,8 +11,57 @@ import setDate from "date-fns/set_date";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
 import onClickOutside from "react-onclickoutside";
+import { IsValidDateFunc, UpdateSelectedDateFunc } from "./";
 
-class DaysView extends Component {
+interface DaysViewProps {
+  /*
+  Manually set the locale for the react-datetime instance.
+  date-fns locale needs to be loaded to be used, see i18n docs.
+  */
+  locale?: any;
+
+  /*
+  Represents the month which is viewed on opening the calendar when there is no selected date.
+  This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
+  */
+  viewDate?: Date | string;
+  subtractTime: any;
+  addTime: any;
+  showView: any;
+  selectedDate?: Date;
+
+  updateSelectedDate: UpdateSelectedDateFunc;
+
+  /*
+  Defines the format for the time. It accepts any date-fns time format.
+  If true the time will be displayed using the defaults for the current locale.
+  If false the timepicker is disabled and the component can be used as datepicker.
+  */
+  timeFormat: boolean | string;
+
+  /*
+  Define the dates that can be selected. The function receives (currentDate, selectedDate)
+  and should return a true or false whether the currentDate is valid or not. See selectable dates.
+  */
+  isValidDate?: IsValidDateFunc;
+
+  /*
+  Customize the way that the days are shown in the day picker. The accepted function has
+  the selectedDate, the current date and the default calculated props for the cell,
+  and must return a React component. See appearance customization
+  */
+  renderDay?: (
+    props: any,
+    currentDate: any,
+    selectedDate?: Date
+  ) => JSX.Element;
+
+  handleClickOutside: any;
+}
+
+interface DaysViewState {}
+
+class DaysView extends React.Component<DaysViewProps, DaysViewState> {
   constructor(props) {
     super(props);
 
@@ -25,7 +74,7 @@ class DaysView extends Component {
     this.getFormatOptions = this.getFormatOptions.bind(this);
   }
 
-  getFormatOptions() {
+  getFormatOptions(): any {
     return { locale: this.props.locale };
   }
 
@@ -48,7 +97,9 @@ class DaysView extends Component {
                 className="rdtSwitch"
                 onClick={this.props.showView("months")}
                 colSpan={5}
-                data-value={getMonth(this.props.viewDate)}
+                data-value={
+                  this.props.viewDate ? getMonth(this.props.viewDate) : 0
+                }
               >
                 {format(date, "MMMM YYYY", this.getFormatOptions())}
               </th>
@@ -123,8 +174,8 @@ class DaysView extends Component {
     const prevMonth = subMonths(date, 1);
     const currentYear = getYear(date);
     const currentMonth = getMonth(date);
-    const weeks = [];
-    let days = [];
+    const weeks: any[] = [];
+    let days: any[] = [];
     const renderer = this.props.renderDay || this.renderDay;
     const isValid = this.props.isValidDate || this.alwaysValidDate;
 
@@ -166,7 +217,7 @@ class DaysView extends Component {
         classes += " rdtDisabled";
       }
 
-      const dayProps = {
+      const dayProps: any = {
         key: getDate(workingDate),
         className: classes,
         "data-value": getDate(workingDate)
@@ -179,7 +230,7 @@ class DaysView extends Component {
       days.push(renderer(dayProps, workingDate, selectedDate));
 
       if (days.length === 7) {
-        weeks.push(<tr key={workingDate}>{days}</tr>);
+        weeks.push(<tr key={format(workingDate)}>{days}</tr>);
         days = [];
       }
     }
@@ -198,11 +249,11 @@ class DaysView extends Component {
   }
 
   renderFooter() {
-    if (!this.props.timeFormat) {
+    const date = this.props.selectedDate || this.props.viewDate;
+
+    if (typeof this.props.timeFormat !== "string" || !date) {
       return null;
     }
-
-    const date = this.props.selectedDate || this.props.viewDate;
 
     return (
       <tfoot>
@@ -220,7 +271,7 @@ class DaysView extends Component {
   }
 
   alwaysValidDate() {
-    return 1;
+    return true;
   }
 
   handleClickOutside() {

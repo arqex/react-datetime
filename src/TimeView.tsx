@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
 import onClickOutside from "react-onclickoutside";
+import { TimeConstraints } from "./";
 
 const padValues = {
   hours: 1,
@@ -10,7 +11,12 @@ const padValues = {
   milliseconds: 3
 };
 
-class TimeView extends Component {
+class TimeView extends React.Component<any, any> {
+  timeConstraints: TimeConstraints;
+  timer: any;
+  increaseTimer: any;
+  mouseUpListener: any;
+
   constructor(props) {
     super(props);
 
@@ -155,7 +161,7 @@ class TimeView extends Component {
       typeof props.timeFormat === "string"
         ? props.timeFormat.toLowerCase()
         : "";
-    const counters = [];
+    const counters: string[] = [];
 
     if (timeFormat.toLowerCase().indexOf("h") !== -1) {
       counters.push("hours");
@@ -169,7 +175,7 @@ class TimeView extends Component {
 
     const hours = getHours(date);
 
-    let daypart = undefined;
+    let daypart: string | undefined = undefined;
     if (this.state !== null && timeFormat.indexOf(" a") !== -1) {
       if (props.timeFormat.indexOf(" A") !== -1) {
         daypart = hours >= 12 ? "PM" : "AM";
@@ -279,7 +285,7 @@ class TimeView extends Component {
   }
 
   render() {
-    const counters = [];
+    const counters: (JSX.Element | null)[] = [];
 
     this.state.counters.forEach(c => {
       if (counters.length) {

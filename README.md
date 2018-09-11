@@ -116,7 +116,7 @@ It is possible to customize the way that the input is displayed. The simplest is
 Alternatively, if you need to render different content than an `<input />` element, you may supply a `renderInput` function which is called instead.
 
 ```js
-class MyDTPicker extends React.Component {
+class MyDTPicker extends React.Component<any, any> {
   constructor(props) {
     super(props);
 

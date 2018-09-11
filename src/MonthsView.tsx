@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import format from "date-fns/format";
 import getMonth from "date-fns/get_month";
 import setMonth from "date-fns/set_month";
@@ -7,7 +7,7 @@ import getDaysInMonth from "date-fns/get_days_in_month";
 import setDate from "date-fns/set_date";
 import onClickOutside from "react-onclickoutside";
 
-class MonthsView extends Component {
+class MonthsView extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
@@ -64,8 +64,8 @@ class MonthsView extends Component {
     const renderer = this.props.renderMonth || this.renderMonth;
     const isValid = this.props.isValidDate || this.alwaysValidDate;
 
-    const rows = [];
-    let months = [];
+    const rows: any[] = [];
+    let months: any[] = [];
 
     for (let i = 0; i < 12; i++) {
       let classes = "rdtMonth";
@@ -91,7 +91,7 @@ class MonthsView extends Component {
         classes += " rdtActive";
       }
 
-      const props = {
+      const props: any = {
         key: i,
         "data-value": i,
         className: classes
@@ -128,7 +128,7 @@ class MonthsView extends Component {
   }
 
   alwaysValidDate() {
-    return 1;
+    return true;
   }
 
   handleClickOutside() {

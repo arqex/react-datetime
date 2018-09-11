@@ -82,6 +82,7 @@
     "@babel/plugin-syntax-import-meta": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@types/react": "^16.4.14",
     "babel-eslint": "^9.0.0",
     "coveralls": "^3.0.2",
     "cross-env": "^5.1.4",
@@ -113,7 +114,9 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-postcss": "^1.6.2",
-    "rollup-plugin-url": "^1.4.0"
+    "rollup-plugin-typescript2": "^0.17.0",
+    "rollup-plugin-url": "^1.4.0",
+    "typescript": "^3.0.3"
   },
   "dependencies": {
     "react-onclickoutside": "^6.7.1"
