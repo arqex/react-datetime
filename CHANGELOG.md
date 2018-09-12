@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.1.0
+
+- Update components to be written in TypeScript
+- Publish typings with component
+
+## 3.0.1
+
+- Readme updates
+
 ## 3.0.0
 
 - Update to build using rollup
