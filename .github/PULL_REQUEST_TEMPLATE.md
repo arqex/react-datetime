@@ -12,9 +12,9 @@
 
 ### Checklist
 <!--
-  The purpose of this checklist is for you to not forget changes you most likely should do. Look 
-  through the following points, and put an "x" in all the boxes that apply. If you're unsure about 
-  any of these points, then we'd recommend you to read the README. If something still is unclear 
+  The purpose of this checklist is for you to not forget changes you most likely should do. Look
+  through the following points, and put an "x" in all the boxes that apply. If you're unsure about
+  any of these points, then we'd recommend you to read the README. If something still is unclear
   then don't hesitate to ask. We're here to help!
 -->
 ```
@@ -23,8 +23,7 @@
 [ ] All new and existing tests pass
 [ ] My changes required the documentation to be updated
   [ ] I have updated the documentation accordingly
-  [ ] I have updated the TypeScript 1.8 type definitions accordingly
-  [ ] I have updated the TypeScript 2.0+ type definitions accordingly
+  [ ] I have updated the TypeScript type definitions accordingly
 ```
 
 
