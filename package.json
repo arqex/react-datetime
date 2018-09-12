@@ -21,10 +21,10 @@
     "start": "rollup -c -w",
     "lint": "eslint **/*.{js,jsx}",
     "lint:fix": "eslint **/*.{js,jsx} --fix",
-    "test": "cross-env CI=1 TZ=Europe/Stockholm react-scripts test --env=jsdom",
-    "test:coverage": "cross-env CI=1 TZ=Europe/Stockholm react-scripts test --env=jsdom --coverage",
+    "test": "cross-env CI=1 TZ=Europe/Stockholm jest",
+    "test:coverage": "cross-env CI=1 TZ=Europe/Stockholm jest --coverage",
     "test:all": "echo 'Running tests...' && npm run test:coverage && echo 'All tests passed! 🤘'",
-    "test:watch": "cross-env TZ=Europe/Stockholm react-scripts test --env=jsdom",
+    "test:watch": "cross-env TZ=Europe/Stockholm jest",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "prettier": "prettier --write **/*.{json,js,jsx,css}",
     "precommit": "lint-staged",
@@ -37,7 +37,7 @@
       "prettier --write",
       "eslint --fix",
       "git add",
-      "cross-env CI=1 TZ=Europe/Stockholm react-scripts test --env=jsdom --bail --findRelatedTests"
+      "cross-env CI=1 TZ=Europe/Stockholm jest --bail --findRelatedTests"
     ],
     "*.{json,css,scss}": [
       "prettier --write",
@@ -82,6 +82,7 @@
     "@babel/plugin-syntax-import-meta": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@types/jest": "^23.3.2",
     "@types/react": "^16.4.14",
     "babel-eslint": "^9.0.0",
     "coveralls": "^3.0.2",
@@ -100,13 +101,13 @@
     "eslint-plugin-standard": "^4.0.0",
     "gh-pages": "^1.2.0",
     "husky": "^0.14.3",
+    "jest": "^23.6.0",
     "jest-date-mock": "^1.0.3",
     "lint-staged": "^7.2.2",
     "pre-commit": "^1.2.2",
     "prettier": "^1.14.2",
     "react": "^16.4.1",
     "react-dom": "^16.5.0",
-    "react-scripts": "^1.1.4",
     "react-test-renderer": "^16.5.0",
     "rollup": "^0.65.2",
     "rollup-plugin-babel": "^4.0.1",
@@ -116,6 +117,7 @@
     "rollup-plugin-postcss": "^1.6.2",
     "rollup-plugin-typescript2": "^0.17.0",
     "rollup-plugin-url": "^1.4.0",
+    "ts-jest": "^23.1.4",
     "typescript": "^3.0.3"
   },
   "dependencies": {

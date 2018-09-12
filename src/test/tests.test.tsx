@@ -1,5 +1,3 @@
-/* global done */
-
 import React from "react";
 import utils from "./testUtils";
 import Enzyme from "enzyme";
@@ -9,6 +7,9 @@ import { advanceTo as mockDateTo } from "jest-date-mock";
 import format from "date-fns/format";
 import parse from "date-fns/parse";
 import isBefore from "date-fns/is_before";
+import getHours from "date-fns/get_hours";
+import getMinutes from "date-fns/get_minutes";
+import getSeconds from "date-fns/get_seconds";
 import getDate from "date-fns/get_date";
 import getMonth from "date-fns/get_month";
 import getYear from "date-fns/get_year";
@@ -554,7 +555,7 @@ describe("DateTime", () => {
     });
 
     it("renderDay", () => {
-      let props = {};
+      let props: any = {};
       let currentDate = "";
       let selectedDate = "";
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
@@ -591,7 +592,7 @@ describe("DateTime", () => {
     });
 
     it("renderMonth", () => {
-      let props = {};
+      let props: any = {};
       let month = "";
       let year = "";
       let selectedDate = "";
@@ -630,7 +631,7 @@ describe("DateTime", () => {
     });
 
     it("renderYear", () => {
-      let props = {};
+      let props: any = {};
       let year = "";
       let selectedDate = "";
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
@@ -733,10 +734,10 @@ describe("DateTime", () => {
           i++;
           if (i > 2) {
             expect(true).toEqual(false); // Proof that this is not called
-            expect(selected.hour()).toEqual(3);
-            expect(selected.minute()).toEqual(3);
-            expect(selected.second()).toEqual(3);
-            done();
+            expect(getHours(selected)).toEqual(3);
+            expect(getMinutes(selected)).toEqual(3);
+            expect(getSeconds(selected)).toEqual(3);
+            //done();
           }
         }
       });
@@ -769,10 +770,10 @@ describe("DateTime", () => {
             i++;
             if (i > 2) {
               expect(true).toEqual(false); // Proof that this is not called
-              expect(selected.hour()).toEqual(1);
-              expect(selected.minute()).toEqual(1);
-              expect(selected.second()).toEqual(1);
-              done();
+              expect(getHours(selected)).toEqual(1);
+              expect(getMinutes(selected)).toEqual(1);
+              expect(getSeconds(selected)).toEqual(1);
+              //done();
             }
           }
         });
@@ -840,9 +841,9 @@ describe("DateTime", () => {
           // TODO
           i++;
           if (i > 2) {
-            expect(selected.minute()).toEqual(17);
-            expect(selected.second()).toEqual(3);
-            done();
+            expect(getMinutes(selected)).toEqual(17);
+            expect(getSeconds(selected)).toEqual(3);
+            //done();
           }
         }
       });
@@ -869,9 +870,9 @@ describe("DateTime", () => {
             // TODO
             i++;
             if (i > 2) {
-              expect(selected.minute()).toEqual(17);
-              expect(selected.second()).toEqual(3);
-              done();
+              expect(getMinutes(selected)).toEqual(17);
+              expect(getSeconds(selected)).toEqual(3);
+              //done();
             }
           }
         });

@@ -251,7 +251,11 @@ class DaysView extends React.Component<DaysViewProps, DaysViewState> {
   renderFooter() {
     const date = this.props.selectedDate || this.props.viewDate;
 
-    if (typeof this.props.timeFormat !== "string" || !date) {
+    if (
+      typeof this.props.timeFormat !== "string" ||
+      !this.props.timeFormat.trim() ||
+      !date
+    ) {
       return null;
     }
 
