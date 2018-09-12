@@ -249,22 +249,37 @@ const valid = function(current) {
 
 ## Usage with TypeScript
 
-> Note: Typings are currently not functional.
-
-This project includes typings for TypeScript versions 1.8 and 2.0. Additional typings are not
+This project includes typings. Additional typings are not
 required.
 
-Typings for 1.8 are found in `react-datetime.d.ts` and typings for 2.0 are found in `typings/index.d.ts`.
+Typings are bundled with the project and should *just work*.
 
 ```js
-import * as DateTime from "react-datetime";
+import React, { Component } from 'react';
 
-class MyDTPicker extends React.Component<MyDTPickerProps, MyDTPickerState> {
-  render(): JSX.Element {
-    return <DateTime />;
+import DateTime from "@nateradebaugh/react-datetime";
+import "@nateradebaugh/react-datetime/css/react-datetime.css";
+
+interface AppProps { }
+interface AppState { }
+
+class App extends Component<AppProps, AppState> {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello TypeScript</h1>
+        <DateTime />
+      </div>
+    );
   }
 }
 ```
+
+[Working TypeScript example with intellisense here.](https://stackblitz.com/edit/react-ts-hjzjp9)
 
 ## Contributions
 
@@ -272,13 +287,17 @@ For information about how to contribute, see the [CONTRIBUTING](.github/CONTRIBU
 
 ## Development
 
+From `./`
 ```sh
-npm run dev
+yarn start
 ```
 
-This will start a local `webpack-dev-server` based on `example/example.js` where most development can be done.
+In another terminal window/tab from `./example`
+```sh
+yarn start
+```
 
-If you want to develop using the component inside a React application, we recommend that you use [react-datetime-playground](https://github.com/arqex/react-datetime-playground).
+This will start a local `create-react-app` app that has the component `yarn link`'d in. As you make changes and save, the example app will update accordingly.
 
 ### [Changelog](CHANGELOG.md)
 
