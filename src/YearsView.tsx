@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import getYear from "date-fns/get_year";
 import setYear from "date-fns/set_year";
 import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
 import onClickOutside from "react-onclickoutside";
 
-class YearsView extends Component {
+class YearsView extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
@@ -17,7 +17,7 @@ class YearsView extends Component {
   }
 
   render() {
-    const year = parseInt(getYear(this.props.viewDate) / 10, 10) * 10;
+    const year = Math.floor(getYear(this.props.viewDate) / 10) * 10;
 
     return (
       <div className="rdtYears">
@@ -55,8 +55,8 @@ class YearsView extends Component {
     const selectedDate = this.props.selectedDate;
     const date = this.props.viewDate || new Date();
     const isValid = this.props.isValidDate || this.alwaysValidDate;
-    let years = [];
-    const rows = [];
+    let years: any[] = [];
+    const rows: any[] = [];
 
     year--;
     for (let i = -1; i < 11; i++, year++) {
@@ -83,7 +83,7 @@ class YearsView extends Component {
         classes += " rdtActive";
       }
 
-      const props = {
+      const props: any = {
         key: year,
         "data-value": year,
         className: classes
@@ -118,7 +118,7 @@ class YearsView extends Component {
   }
 
   alwaysValidDate() {
-    return 1;
+    return true;
   }
 
   handleClickOutside() {

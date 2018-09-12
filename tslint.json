@@ -1,0 +1,56 @@
+{
+    "extends": ["tslint-config-prettier"],
+    "rules": {
+      "no-internal-module": true,
+      "no-reference": true,
+      "no-var-requires": true,
+      "prefer-for-of": true,
+      "ban-types": {
+        "options": [
+          ["Object", "Avoid using the `Object` type. Did you mean `object`?"],
+          [
+            "Function",
+            "Avoid using the `Function` type. Prefer a specific function type, like `() => void`, or use `ts.AnyFunction`."
+          ],
+          ["Boolean", "Avoid using the `Boolean` type. Did you mean `boolean`?"],
+          ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
+          ["String", "Avoid using the `String` type. Did you mean `string`?"]
+        ]
+      },
+      "unified-signatures": true,
+      "no-arg": true,
+      "no-conditional-assignment": true,
+      "no-eval": true,
+      "no-for-in-array": true,
+      "no-shadowed-variable": true,
+      "no-string-literal": false,
+      "no-string-throw": true,
+      "no-switch-case-fall-through": true,
+      "no-unsafe-finally": true,
+      "no-unused-expression": true,
+      "no-var-keyword": true,
+      "no-void-expression": false,
+      "radix": true,
+      "restrict-plus-operands": true,
+      "use-isnan": true,
+      "no-default-export": false,
+      "no-mergeable-namespace": true,
+      "no-trailing-whitespace": true,
+      "prefer-const": true,
+      "callable-types": true,
+      "class-name": true,
+      "interface-over-type-literal": true,
+      "new-parens": true,
+      "no-angle-bracket-type-assertion": true,
+      "no-consecutive-blank-lines": true,
+      "no-parameter-properties": true,
+      "one-variable-per-declaration": true,
+      "variable-name": [
+        true,
+        "check-format",
+        "allow-pascal-case",
+        "allow-leading-underscore",
+        "ban-keywords"
+      ]
+    }
+  }
