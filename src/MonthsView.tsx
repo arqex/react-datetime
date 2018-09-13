@@ -5,7 +5,6 @@ import setMonth from "date-fns/set_month";
 import getYear from "date-fns/get_year";
 import getDaysInMonth from "date-fns/get_days_in_month";
 import setDate from "date-fns/set_date";
-import onClickOutside from "react-onclickoutside";
 import noop from "./noop";
 
 class MonthsView extends React.Component<any, any> {
@@ -137,10 +136,6 @@ class MonthsView extends React.Component<any, any> {
   alwaysValidDate() {
     return true;
   }
-
-  handleClickOutside() {
-    this.props.handleClickOutside();
-  }
 }
 
-export default onClickOutside(MonthsView);
+export default MonthsView;

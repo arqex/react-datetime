@@ -10,7 +10,6 @@ import isToday from "date-fns/is_today";
 import setDate from "date-fns/set_date";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
-import onClickOutside from "react-onclickoutside";
 import { IsValidDateFunc, UpdateSelectedDateFunc } from "./";
 import noop from "./noop";
 
@@ -56,8 +55,6 @@ interface DaysViewProps {
     currentDate: any,
     selectedDate?: Date
   ) => JSX.Element;
-
-  handleClickOutside: any;
 }
 
 interface DaysViewState {}
@@ -284,10 +281,6 @@ class DaysView extends React.Component<DaysViewProps, DaysViewState> {
   alwaysValidDate() {
     return true;
   }
-
-  handleClickOutside() {
-    this.props.handleClickOutside();
-  }
 }
 
-export default onClickOutside(DaysView);
+export default DaysView;

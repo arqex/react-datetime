@@ -1,4 +1,5 @@
 import React from "react";
+import onClickOutside from "react-onclickoutside";
 import DaysView from "./DaysView";
 import MonthsView from "./MonthsView";
 import YearsView from "./YearsView";
@@ -21,12 +22,17 @@ interface CalendarContainerProps {
 class CalendarContainer extends React.Component<CalendarContainerProps, never> {
   static defaultProps = {
     view: "days",
+    onClickOutside: noop,
     viewProps: {
       subtractTime: noop,
       showView: noop,
       addTime: noop
     }
   };
+
+  handleClickOutside() {
+    this.props.onClickOutside();
+  }
 
   render() {
     const { view, viewProps } = this.props;
@@ -36,4 +42,4 @@ class CalendarContainer extends React.Component<CalendarContainerProps, never> {
   }
 }
 
-export default CalendarContainer;
+export default onClickOutside(CalendarContainer);

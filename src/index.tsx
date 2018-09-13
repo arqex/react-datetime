@@ -273,8 +273,7 @@ const componentProps = {
     "showView",
     "addTime",
     "subtractTime",
-    "updateSelectedDate",
-    "handleClickOutside"
+    "updateSelectedDate"
   ]
 };
 

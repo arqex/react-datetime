@@ -3,7 +3,6 @@ import getYear from "date-fns/get_year";
 import setYear from "date-fns/set_year";
 import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
-import onClickOutside from "react-onclickoutside";
 import noop from "./noop";
 
 class YearsView extends React.Component<any, any> {
@@ -129,10 +128,6 @@ class YearsView extends React.Component<any, any> {
   alwaysValidDate() {
     return true;
   }
-
-  handleClickOutside() {
-    this.props.handleClickOutside();
-  }
 }
 
-export default onClickOutside(YearsView);
+export default YearsView;

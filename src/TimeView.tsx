@@ -1,7 +1,6 @@
 import React from "react";
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
-import onClickOutside from "react-onclickoutside";
 import { TimeConstraints } from "./";
 
 const padValues = {
@@ -338,10 +337,6 @@ class TimeView extends React.Component<any, any> {
       </div>
     );
   }
-
-  handleClickOutside() {
-    this.props.handleClickOutside();
-  }
 }
 
-export default onClickOutside(TimeView);
+export default TimeView;
