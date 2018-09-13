@@ -116,16 +116,12 @@ class TimeView extends React.Component<any, any> {
     return false;
   }
 
-  toggleDayPart(type) {
-    const constraints = this.timeConstraints[type];
+  toggleDayPart() {
+    const hours = this.state.hours;
+    const newHours =
+      hours >= 12 ? this.state.hours - 12 : this.state.hours + 12;
 
-    // type is always 'hours'
-    let value = parseInt(this.state[type], 10) + 12;
-    if (value > constraints.max) {
-      value = constraints.min + (value - (constraints.max + 1));
-    }
-
-    return this.pad(type, value);
+    this.props.setTime("hours", this.pad("hours", newHours));
   }
 
   increase(type) {
@@ -268,7 +264,7 @@ class TimeView extends React.Component<any, any> {
       <div key="dayPart" className="rdtCounter">
         <span
           className="rdtBtn"
-          onMouseDown={this.onStartClicking("toggleDayPart", "hours")}
+          onMouseDown={this.toggleDayPart}
           onContextMenu={this.disableContextMenu}
         >
           ▲
@@ -276,7 +272,7 @@ class TimeView extends React.Component<any, any> {
         <div className="rdtCount">{this.state.daypart}</div>
         <span
           className="rdtBtn"
-          onMouseDown={this.onStartClicking("toggleDayPart", "hours")}
+          onMouseDown={this.toggleDayPart}
           onContextMenu={this.disableContextMenu}
         >
           ▼

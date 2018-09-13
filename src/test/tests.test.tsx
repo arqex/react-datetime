@@ -794,6 +794,47 @@ describe("DateTime", () => {
       expect(utils.getSeconds(component)).toEqual("01");
     });
 
+    it("Toggle down through day part (AM/PM)", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss A",
+        viewMode: "time",
+        defaultValue: date,
+        open: true
+      });
+
+      // Toggle through day part (AM/PM)
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.decreaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.decreaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("AM");
+    });
+
+    it("Toggle up through day part (AM/PM)", () => {
+      const date = new Date(2000, 0, 15, 14, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss A",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      // Toggle through day part (AM/PM)
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.increaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.increaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("PM");
+    });
+
     it("long increase time", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2),
         component = utils.createDatetime({

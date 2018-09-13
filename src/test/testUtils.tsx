@@ -114,6 +114,20 @@ module.exports = {
       .simulate("mouseDown");
   },
 
+  increaseDayPart: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(6)
+      .simulate("mouseDown");
+  },
+
+  decreaseDayPart: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(7)
+      .simulate("mouseDown");
+  },
+
   /*
 	 * Get Values
 	 */
@@ -147,6 +161,13 @@ module.exports = {
     return datetime
       .find(".rdtCount")
       .at(2)
+      .text();
+  },
+
+  getDayPart: datetime => {
+    return datetime
+      .find(".rdtCount")
+      .at(3)
       .text();
   },
 
