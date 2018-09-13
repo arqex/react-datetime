@@ -1117,6 +1117,42 @@ describe("DateTime", () => {
 
         expect(monthsBefore).not.toEqual(monthsAfter);
       });
+
+      it("TimeView -> value should change format (AM -> am)", () => {
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+          component = utils.createDatetime({
+            viewMode: "time",
+            value: date,
+            dateFormat: false,
+            timeFormat: " A"
+          });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual(" AM");
+        component.setProps({ timeFormat: " a" }, () => {
+          const valueAfter = utils.getInputValue(component);
+
+          expect(valueAfter).toEqual(" am");
+        });
+      });
+
+      it("TimeView -> value should change format (pm -> PM)", () => {
+        const date = new Date(2000, 0, 15, 14, 2, 2, 2),
+          component = utils.createDatetime({
+            viewMode: "time",
+            value: date,
+            dateFormat: false,
+            timeFormat: " a"
+          });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual(" pm");
+        component.setProps({ timeFormat: " A" }, () => {
+          const valueAfter = utils.getInputValue(component);
+
+          expect(valueAfter).toEqual(" PM");
+        });
+      });
     });
   });
 
