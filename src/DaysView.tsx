@@ -12,6 +12,7 @@ import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
 import onClickOutside from "react-onclickoutside";
 import { IsValidDateFunc, UpdateSelectedDateFunc } from "./";
+import noop from "./noop";
 
 interface DaysViewProps {
   /*
@@ -62,6 +63,12 @@ interface DaysViewProps {
 interface DaysViewState {}
 
 class DaysView extends React.Component<DaysViewProps, DaysViewState> {
+  static defaultProps = {
+    subtractTime: noop,
+    showView: noop,
+    addTime: noop
+  };
+
   constructor(props) {
     super(props);
 

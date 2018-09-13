@@ -25,7 +25,7 @@
     "test": "cross-env CI=1 TZ=Europe/Stockholm jest",
     "test:coverage": "cross-env CI=1 TZ=Europe/Stockholm jest --coverage",
     "test:all": "echo 'Running tests...' && npm run test:coverage && echo 'All tests passed! 🤘'",
-    "test:watch": "cross-env TZ=Europe/Stockholm jest",
+    "test:watch": "cross-env TZ=Europe/Stockholm jest --watch",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "prettier": "prettier --write **/*.{json,js,jsx,css}",
     "precommit": "lint-staged",

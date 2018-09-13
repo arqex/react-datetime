@@ -4,8 +4,17 @@ import setYear from "date-fns/set_year";
 import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
 import onClickOutside from "react-onclickoutside";
+import noop from "./noop";
 
 class YearsView extends React.Component<any, any> {
+  static defaultProps = {
+    viewDate: new Date(),
+    subtractTime: noop,
+    showView: noop,
+    addTime: noop,
+    setDate: noop
+  };
+
   constructor(props) {
     super(props);
 

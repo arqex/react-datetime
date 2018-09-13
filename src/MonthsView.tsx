@@ -6,8 +6,15 @@ import getYear from "date-fns/get_year";
 import getDaysInMonth from "date-fns/get_days_in_month";
 import setDate from "date-fns/set_date";
 import onClickOutside from "react-onclickoutside";
+import noop from "./noop";
 
 class MonthsView extends React.Component<any, any> {
+  static defaultProps = {
+    subtractTime: noop,
+    showView: noop,
+    addTime: noop
+  };
+
   constructor(props) {
     super(props);
 

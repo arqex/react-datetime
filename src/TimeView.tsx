@@ -12,6 +12,8 @@ const padValues = {
 };
 
 class TimeView extends React.Component<any, any> {
+  static defaultProps = {};
+
   timeConstraints: TimeConstraints;
   timer: any;
   increaseTimer: any;
