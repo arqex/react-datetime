@@ -31,7 +31,6 @@ class TimeView extends React.Component<any, any> {
     this.decrease = this.decrease.bind(this);
     this.pad = this.pad.bind(this);
     this.calculateState = this.calculateState.bind(this);
-    this.updateMilli = this.updateMilli.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.renderCounter = this.renderCounter.bind(this);
     this.renderDayPart = this.renderDayPart.bind(this);
@@ -155,9 +154,7 @@ class TimeView extends React.Component<any, any> {
   calculateState(props) {
     const date = props.selectedDate || props.viewDate;
     const timeFormat =
-      typeof props.timeFormat === "string"
-        ? props.timeFormat.toLowerCase()
-        : "";
+      typeof props.timeFormat === "string" ? props.timeFormat : "";
     const counters: string[] = [];
 
     if (timeFormat.toLowerCase().indexOf("h") !== -1) {
@@ -166,6 +163,9 @@ class TimeView extends React.Component<any, any> {
         counters.push("minutes");
         if (timeFormat.indexOf("s") !== -1) {
           counters.push("seconds");
+          if (timeFormat.indexOf("S") !== -1) {
+            counters.push("milliseconds");
+          }
         }
       }
     }
@@ -173,12 +173,10 @@ class TimeView extends React.Component<any, any> {
     const hours = getHours(date);
 
     let daypart: string | undefined = undefined;
-    if (this.state !== null && timeFormat.indexOf(" a") !== -1) {
-      if (props.timeFormat.indexOf(" A") !== -1) {
-        daypart = hours >= 12 ? "PM" : "AM";
-      } else {
-        daypart = hours >= 12 ? "pm" : "am";
-      }
+    if (timeFormat.indexOf(" a") !== -1) {
+      daypart = hours >= 12 ? "pm" : "am";
+    } else if (timeFormat.indexOf(" A") !== -1) {
+      daypart = hours >= 12 ? "PM" : "AM";
     }
 
     return {
@@ -189,14 +187,6 @@ class TimeView extends React.Component<any, any> {
       daypart: daypart,
       counters: counters
     };
-  }
-
-  updateMilli(e) {
-    const milli = parseInt(e.target.value, 10);
-    if (milli === e.target.value && milli >= 0 && milli < 1000) {
-      this.props.setTime("milliseconds", milli);
-      this.setState({ milliseconds: milli });
-    }
   }
 
   renderHeader() {
@@ -291,24 +281,6 @@ class TimeView extends React.Component<any, any> {
 
     if (this.state.daypart) {
       counters.push(this.renderDayPart());
-    }
-
-    const timeFormat = this.props.timeFormat || "";
-    if (this.state.counters.length === 3 && timeFormat.indexOf("S") !== -1) {
-      counters.push(
-        <div key="sep5" className="rdtCounterSeparator">
-          :
-        </div>
-      );
-      counters.push(
-        <div key="ms" className="rdtCounter rdtMilli">
-          <input
-            type="text"
-            value={this.state.milliseconds}
-            onChange={this.updateMilli}
-          />
-        </div>
-      );
     }
 
     return (
