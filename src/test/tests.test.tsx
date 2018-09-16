@@ -1117,6 +1117,18 @@ describe("DateTime", () => {
         });
       });
 
+      it("UTC -> value should change format (true->false) without date", () => {
+        const component = utils.createDatetime({ utc: true });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual("");
+
+        component.setProps({ utc: false }, () => {
+          const valueAfter = utils.getInputValue(component);
+          expect(valueAfter).toEqual("");
+        });
+      });
+
       it("UTC -> value should change format (false->true)", () => {
         const date = new Date(2000, 0, 15, 2, 2, 2, 2);
         const component = utils.createDatetime({ value: date, utc: false });
@@ -1126,6 +1138,18 @@ describe("DateTime", () => {
           const valueAfter = utils.getInputValue(component);
 
           expect(valueBefore).not.toEqual(valueAfter);
+        });
+      });
+
+      it("UTC -> value should change format (false->true) without date", () => {
+        const component = utils.createDatetime({ utc: false });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual("");
+
+        component.setProps({ utc: true }, () => {
+          const valueAfter = utils.getInputValue(component);
+          expect(valueAfter).toEqual("");
         });
       });
 
