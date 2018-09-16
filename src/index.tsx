@@ -327,16 +327,18 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   getInitialState(props): any {
     const state = this.getStateFromProps(props);
 
-    if (state.open === undefined) state.open = !props.input;
+    if (state.open === undefined) {
+      state.open = !props.input;
+    }
 
     state.currentView = props.dateFormat
-      ? props.viewMode || state.updateOn || viewModes.DAYS
+      ? props.viewMode || state.updateOn
       : viewModes.TIME;
 
     return state;
   }
 
-  parseDate(date, formats): any {
+  parseDate(date): any {
     if (date) {
       const parsedDate = parse(date);
       if (isDate(parsedDate) && isValidDate(parsedDate)) {
@@ -349,31 +351,17 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
   getStateFromProps(props): any {
     const formats = this.getFormats(props);
-    const selectedDate = this.parseDate(
-      props.value || props.defaultValue,
-      formats
+    const selectedDate =
+      this.parseDate(props.value) || this.parseDate(props.defaultValue);
+    const viewDate = startOfMonth(
+      selectedDate || this.parseDate(props.viewDate) || new Date()
     );
-    let viewDate = this.parseDate(props.viewDate, formats);
-
-    viewDate = selectedDate
-      ? startOfMonth(selectedDate)
-      : viewDate
-        ? startOfMonth(viewDate)
-        : startOfMonth(new Date());
 
     const updateOn = this.getUpdateOn(formats);
 
     const inputValue = selectedDate
       ? format(selectedDate, formats.datetime, this.getFormatOptions())
-      : isDate(props.value) && isValidDate(props.value)
-        ? format(props.value, formats.datetime, this.getFormatOptions())
-        : isDate(props.defaultValue) && isValidDate(props.defaultValue)
-          ? format(
-              props.defaultValue,
-              formats.datetime,
-              this.getFormatOptions()
-            )
-          : props.defaultValue || "";
+      : props.defaultValue || "";
 
     return {
       updateOn: updateOn,
@@ -385,7 +373,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     };
   }
 
-  getUpdateOn(formats): any {
+  getUpdateOn(formats): string {
     if (formats.date.match(/[lLD]/)) {
       return viewModes.DAYS;
     } else if (formats.date.indexOf("M") !== -1) {
@@ -452,15 +440,9 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     if (nextProps.locale !== this.props.locale) {
       updatedState.locale = nextProps.locale;
 
-      if (this.state.viewDate) {
-        const updatedViewDate = this.state.viewDate;
-        updatedState.viewDate = updatedViewDate;
-      }
       if (this.state.selectedDate) {
-        const updatedSelectedDate = this.state.selectedDate;
-        updatedState.selectedDate = updatedSelectedDate;
         updatedState.inputValue = format(
-          updatedSelectedDate,
+          this.state.selectedDate,
           formats.datetime,
           this.getFormatOptions()
         );
@@ -508,7 +490,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   }
 
   onInputChange(e) {
-    const value = e.target === null ? e : e.target.value;
+    const value = e.target.value;
     const date = parse(value);
     const update: any = { inputValue: value };
 

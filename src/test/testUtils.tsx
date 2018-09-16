@@ -3,12 +3,6 @@ import { mount, shallow } from "enzyme";
 import DateTime from "../";
 
 const _simulateClickOnElement = element => {
-  if (element.length === 0) {
-    // eslint-disable-next-line no-console
-    console.warn("Element not clicked since it doesn't exist");
-    return null;
-  }
-
   return element.simulate("click");
 };
 

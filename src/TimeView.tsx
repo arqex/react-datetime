@@ -265,7 +265,7 @@ class TimeView extends React.Component<any, any> {
   }
 
   render() {
-    const counters: (JSX.Element | null)[] = [];
+    const counters: JSX.Element[] = [];
 
     this.state.counters.forEach(c => {
       if (counters.length) {
