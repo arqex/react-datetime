@@ -25,9 +25,9 @@ interface DaysViewProps {
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
   viewDate?: Date | string;
-  subtractTime: any;
-  addTime: any;
-  showView: any;
+  subtractTime?: any;
+  addTime?: any;
+  showView?: any;
   selectedDate?: Date;
 
   updateSelectedDate: UpdateSelectedDateFunc;
@@ -37,7 +37,7 @@ interface DaysViewProps {
   If true the time will be displayed using the defaults for the current locale.
   If false the timepicker is disabled and the component can be used as datepicker.
   */
-  timeFormat: boolean | string;
+  timeFormat?: boolean | string;
 
   /*
   Define the dates that can be selected. The function receives (currentDate, selectedDate)

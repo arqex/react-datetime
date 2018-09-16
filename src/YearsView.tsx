@@ -61,7 +61,7 @@ class YearsView extends React.Component<any, any> {
   renderYears(year) {
     const renderer = this.props.renderYear || this.renderYear;
     const selectedDate = this.props.selectedDate;
-    const date = this.props.viewDate || new Date();
+    const date = this.props.viewDate;
     const isValid = this.props.isValidDate || this.alwaysValidDate;
     let years: any[] = [];
     const rows: any[] = [];

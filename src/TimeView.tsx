@@ -221,42 +221,35 @@ class TimeView extends React.Component<any, any> {
   }
 
   renderCounter(type) {
-    const timeFormat =
-      typeof this.props.timeFormat === "string"
-        ? this.props.timeFormat.toLowerCase()
-        : "";
-    if (type !== "daypart") {
-      let value = this.state[type];
-      if (type === "hours" && timeFormat.indexOf(" a") !== -1) {
-        value = ((value - 1) % 12) + 1;
+    const timeFormat = this.props.timeFormat.toLowerCase();
+    let value = this.state[type];
+    if (type === "hours" && timeFormat.indexOf(" a") !== -1) {
+      value = ((value - 1) % 12) + 1;
 
-        if (value === 0) {
-          value = 12;
-        }
+      if (value === 0) {
+        value = 12;
       }
-
-      return (
-        <div key={type} className="rdtCounter">
-          <span
-            className="rdtBtn"
-            onMouseDown={this.onStartClicking("increase", type)}
-            onContextMenu={this.disableContextMenu}
-          >
-            ▲
-          </span>
-          <div className="rdtCount">{value}</div>
-          <span
-            className="rdtBtn"
-            onMouseDown={this.onStartClicking("decrease", type)}
-            onContextMenu={this.disableContextMenu}
-          >
-            ▼
-          </span>
-        </div>
-      );
     }
 
-    return null;
+    return (
+      <div key={type} className="rdtCounter">
+        <span
+          className="rdtBtn"
+          onMouseDown={this.onStartClicking("increase", type)}
+          onContextMenu={this.disableContextMenu}
+        >
+          ▲
+        </span>
+        <div className="rdtCount">{value}</div>
+        <span
+          className="rdtBtn"
+          onMouseDown={this.onStartClicking("decrease", type)}
+          onContextMenu={this.disableContextMenu}
+        >
+          ▼
+        </span>
+      </div>
+    );
   }
 
   renderDayPart() {
