@@ -3342,9 +3342,9 @@ jest-config@^23.6.0:
     micromatch "^2.3.11"
     pretty-format "^23.6.0"
 
-jest-date-mock@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/jest-date-mock/-/jest-date-mock-1.0.3.tgz#c52f8ab9e72e7e82dc0bbf91e32c099041daa7ad"
+jest-date-mock@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/jest-date-mock/-/jest-date-mock-1.0.5.tgz#b9a5ece8908338cac5ba1faec882e53aabbc7e9b"
 
 jest-diff@^23.6.0:
   version "23.6.0"
