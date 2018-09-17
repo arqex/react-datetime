@@ -502,11 +502,9 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     }
 
     return this.setState(update, () => {
-      if (this.props.onChange) {
-        this.props.onChange(
-          isDate(date) && isValidDate(date) ? date : this.state.inputValue
-        );
-      }
+      this.props.onChange!(
+        isDate(date) && isValidDate(date) ? date : this.state.inputValue
+      );
     });
   }
 
@@ -519,9 +517,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   showView(view) {
     return () => {
       if (this.state.currentView !== view) {
-        if (this.props.onViewModeChange) {
-          this.props.onViewModeChange(view);
-        }
+        this.props.onViewModeChange!(view);
       }
 
       this.setState({ currentView: view });
@@ -551,17 +547,13 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
         currentView: nextViews[type]
       });
 
-      if (this.props.onViewModeChange) {
-        this.props.onViewModeChange(nextViews[type]);
-      }
+      this.props.onViewModeChange!(nextViews[type]);
     };
   }
 
   subtractTime(amount, type, toSelected) {
     return () => {
-      if (this.props.onNavigateBack) {
-        this.props.onNavigateBack(amount, type);
-      }
+      this.props.onNavigateBack!(amount, type);
 
       this.updateTime("subtract", amount, type, toSelected);
     };
@@ -569,9 +561,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
   addTime(amount, type, toSelected) {
     return () => {
-      if (this.props.onNavigateForward) {
-        this.props.onNavigateForward(amount, type);
-      }
+      this.props.onNavigateForward!(amount, type);
 
       this.updateTime("add", amount, type, toSelected);
     };
@@ -629,9 +619,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       }
     }
 
-    if (this.props.onChange) {
-      this.props.onChange(date);
-    }
+    this.props.onChange!(date);
   }
 
   updateSelectedDate: UpdateSelectedDateFunc = (e, close) => {
@@ -678,8 +666,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     if (!this.props.value) {
       const open = !(this.props.closeOnSelect && close);
-      if (!open && this.props.onBlur) {
-        this.props.onBlur(date);
+      if (!open) {
+        this.props.onBlur!(date);
       }
 
       this.setState({
@@ -698,26 +686,20 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       }
     }
 
-    if (this.props.onChange) {
-      this.props.onChange(date);
-    }
+    this.props.onChange!(date);
   };
 
   openCalendar(e) {
     if (!this.state.open) {
       this.setState({ open: true }, () => {
-        if (this.props.onFocus) {
-          this.props.onFocus(e);
-        }
+        this.props.onFocus!(e);
       });
     }
   }
 
   closeCalendar() {
     this.setState({ open: false }, () => {
-      if (this.props.onBlur) {
-        this.props.onBlur(this.state.selectedDate || this.state.inputValue);
-      }
+      this.props.onBlur!(this.state.selectedDate || this.state.inputValue);
     });
   }
 
@@ -729,9 +711,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       !this.props.disableOnClickOutside
     ) {
       this.setState({ open: false }, () => {
-        if (this.props.onBlur) {
-          this.props.onBlur(this.state.selectedDate || this.state.inputValue);
-        }
+        this.props.onBlur!(this.state.selectedDate || this.state.inputValue);
       });
     }
   }
