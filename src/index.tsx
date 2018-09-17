@@ -5,7 +5,6 @@ import isDate from "date-fns/is_date";
 import isValidDate from "date-fns/is_valid";
 import parse from "date-fns/parse";
 import setDate from "date-fns/set_date";
-import startOfDay from "date-fns/start_of_day";
 import setMonth from "date-fns/set_month";
 import startOfYear from "date-fns/start_of_year";
 import setYear from "date-fns/set_year";
@@ -53,7 +52,7 @@ export type IsValidDateFunc = (
   selectedDate?: Date
 ) => boolean;
 
-export type SetDateFunc = (type: DateViewMode) => void;
+export type SetDateFunc = (type: "months" | "years") => void;
 export type SetTimeFunc = (type: AllowedSetTime, value: number) => void;
 
 export type UpdateSelectedDateFunc = (e: any, close?: boolean) => void;
@@ -242,7 +241,7 @@ interface DateTimeState {
   currentView: ViewMode;
   updateOn: ViewMode;
   inputFormat: string;
-  viewDate?: Date;
+  viewDate: Date;
   selectedDate?: Date;
   inputValue: string;
   open: boolean;
@@ -466,9 +465,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     if (nextProps.utc !== this.props.utc) {
       // Enabling UTC
       if (nextProps.utc) {
-        if (this.state.viewDate) {
-          updatedState.viewDate = toUtc(this.state.viewDate);
-        }
+        updatedState.viewDate = toUtc(this.state.viewDate);
 
         if (this.state.selectedDate) {
           updatedState.selectedDate = toUtc(this.state.selectedDate);
@@ -481,9 +478,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       }
       // Disabling UTC
       else {
-        if (this.state.viewDate) {
-          updatedState.viewDate = fromUtc(this.state.viewDate);
-        }
+        updatedState.viewDate = fromUtc(this.state.viewDate);
 
         if (this.state.selectedDate) {
           updatedState.selectedDate = fromUtc(this.state.selectedDate);
@@ -546,15 +541,10 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     return e => {
       const value = parseInt(e.target.getAttribute("data-value"), 10);
-      const newDate = this.state.viewDate
-        ? type === viewModes.DAYS
-          ? startOfDay(setDate(this.state.viewDate, value))
-          : type === viewModes.MONTHS
-            ? startOfMonth(setMonth(this.state.viewDate, value))
-            : type === viewModes.YEARS
-              ? startOfYear(setYear(this.state.viewDate, value))
-              : undefined
-        : undefined;
+      const newDate =
+        type === viewModes.MONTHS
+          ? startOfMonth(setMonth(this.state.viewDate, value))
+          : startOfYear(setYear(this.state.viewDate, value));
 
       this.setState({
         viewDate: newDate,
@@ -565,72 +555,57 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     };
   };
 
-  subtractTime(amount, type, toSelected) {
+  subtractTime(amount: number, type: "months" | "years") {
     return () => {
       this.props.onNavigateBack!(amount, type);
 
-      this.updateTime("subtract", amount, type, toSelected);
+      this.updateTime("subtract", amount, type);
     };
   }
 
-  addTime(amount, type, toSelected) {
+  addTime(amount: number, type: "months" | "years") {
     return () => {
       this.props.onNavigateForward!(amount, type);
 
-      this.updateTime("add", amount, type, toSelected);
+      this.updateTime("add", amount, type);
     };
   }
 
-  updateTime(op, amount, type, toSelected) {
-    const update = {};
-    const date = toSelected ? "selectedDate" : "viewDate";
-
+  updateTime(op: "subtract" | "add", amount: number, type: "months" | "years") {
     const multiplier = op === "subtract" ? -1 : 1;
+    const workingDate = this.state.viewDate;
 
-    const workingDate = this.state[date];
-
-    update[date] = workingDate
-      ? type === viewModes.DAYS
-        ? addDays(workingDate, amount * multiplier)
-        : type === viewModes.MONTHS
+    this.setState({
+      viewDate:
+        type === viewModes.MONTHS
           ? addMonths(workingDate, amount * multiplier)
-          : type === viewModes.YEARS
-            ? addYears(workingDate, amount * multiplier)
-            : undefined
-      : undefined;
-
-    this.setState(update);
+          : addYears(workingDate, amount * multiplier)
+    });
   }
 
   setTime: SetTimeFunc = (type, value) => {
-    let date = this.state.selectedDate
-      ? this.state.selectedDate
-      : this.state.viewDate
-        ? this.state.viewDate
-        : undefined;
+    let date = this.state.selectedDate || this.state.viewDate;
 
     // It is needed to set all the time properties to not to reset the time
-    if (date) {
-      if (type === allowedSetTime.HOURS) {
-        date = setHours(date, value);
-      } else if (type === allowedSetTime.MINUTES) {
-        date = setMinutes(date, value);
-      } else if (type === allowedSetTime.SECONDS) {
-        date = setSeconds(date, value);
-      } else if (type === allowedSetTime.MILLISECONDS) {
-        date = setMilliseconds(date, value);
-      }
+    if (type === allowedSetTime.HOURS) {
+      date = setHours(date, value);
+    } else if (type === allowedSetTime.MINUTES) {
+      date = setMinutes(date, value);
+    } else if (type === allowedSetTime.SECONDS) {
+      date = setSeconds(date, value);
+    } else if (type === allowedSetTime.MILLISECONDS) {
+      date = setMilliseconds(date, value);
+    }
 
-      if (!this.props.value) {
-        this.setState({
-          selectedDate: date,
-          inputValue: format(
-            date,
-            this.state.inputFormat,
-            this.getFormatOptions()
-          )
-        });
-      }
+    if (!this.props.value) {
+      this.setState({
+        selectedDate: date,
+        inputValue: format(
+          date,
+          this.state.inputFormat,
+          this.getFormatOptions()
+        )
+      });
     }
 
     this.props.onChange!(date);
@@ -645,38 +620,33 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     const value = parseInt(target.getAttribute("data-value"), 10);
 
-    if (viewDate && currentDate) {
-      if (target.className.indexOf("rdtDay") !== -1) {
-        if (target.className.indexOf("rdtNew") !== -1) modifier = 1;
-        else if (target.className.indexOf("rdtOld") !== -1) modifier = -1;
+    if (target.className.indexOf("rdtDay") !== -1) {
+      if (target.className.indexOf("rdtNew") !== -1) modifier = 1;
+      else if (target.className.indexOf("rdtOld") !== -1) modifier = -1;
 
-        date = setDate(
-          setMonth(viewDate, getMonth(viewDate) + modifier),
-          value
-        );
-      } else if (target.className.indexOf("rdtMonth") !== -1) {
-        date = setDate(setMonth(viewDate, value), getDate(currentDate));
-      } else if (target.className.indexOf("rdtYear") !== -1) {
-        date = setYear(
-          setDate(
-            setMonth(viewDate, getMonth(currentDate)),
-            getDate(currentDate)
-          ),
-          value
-        );
-      }
-
-      date = setMilliseconds(
-        setSeconds(
-          setMinutes(
-            setHours(date, getHours(currentDate)),
-            getMinutes(currentDate)
-          ),
-          getSeconds(currentDate)
+      date = setDate(setMonth(viewDate, getMonth(viewDate) + modifier), value);
+    } else if (target.className.indexOf("rdtMonth") !== -1) {
+      date = setDate(setMonth(viewDate, value), getDate(currentDate));
+    } else if (target.className.indexOf("rdtYear") !== -1) {
+      date = setYear(
+        setDate(
+          setMonth(viewDate, getMonth(currentDate)),
+          getDate(currentDate)
         ),
-        getMilliseconds(currentDate)
+        value
       );
     }
+
+    date = setMilliseconds(
+      setSeconds(
+        setMinutes(
+          setHours(date, getHours(currentDate)),
+          getMinutes(currentDate)
+        ),
+        getSeconds(currentDate)
+      ),
+      getMilliseconds(currentDate)
+    );
 
     if (!this.props.value) {
       const open = !(this.props.closeOnSelect && close);
