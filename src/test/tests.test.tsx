@@ -536,12 +536,15 @@ describe("DateTime", () => {
     });
 
     it("renderInput", () => {
-      const renderInput = (props, openCalendar) => {
+      const renderInput = (props, openCalendar, closeCalendar) => {
         return (
           <div>
             <input {...props} />
             <button className="custom-open" onClick={openCalendar}>
               open calendar
+            </button>
+            <button className="custom-close" onClick={closeCalendar}>
+              close calendar
             </button>
           </div>
         );
@@ -552,6 +555,14 @@ describe("DateTime", () => {
       expect(utils.isOpen(component)).toBeFalsy();
       utils.clickOnElement(component.find("button.custom-open"));
       expect(utils.isOpen(component)).toBeTruthy();
+      utils.clickOnElement(component.find("button.custom-open"));
+      expect(utils.isOpen(component)).toBeTruthy();
+
+      expect(component.find("button.custom-close").length).toEqual(1);
+      utils.clickOnElement(component.find("button.custom-close"));
+      expect(utils.isOpen(component)).toBeFalsy();
+      utils.clickOnElement(component.find("button.custom-close"));
+      expect(utils.isOpen(component)).toBeFalsy();
     });
 
     it("renderDay", () => {
