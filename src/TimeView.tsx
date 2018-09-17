@@ -1,7 +1,7 @@
 import React from "react";
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
-import { TimeConstraints } from "./";
+import { TimeConstraints, SetTimeFunc, allowedSetTime } from "./";
 
 const padValues = {
   hours: 1,
@@ -10,7 +10,49 @@ const padValues = {
   milliseconds: 3
 };
 
-class TimeView extends React.Component<any, any> {
+interface TimeViewProps {
+  /*
+  Manually set the locale for the react-datetime instance.
+  date-fns locale needs to be loaded to be used, see i18n docs.
+  */
+  locale?: any;
+
+  timeConstraints?: TimeConstraints;
+
+  setTime: SetTimeFunc;
+
+  /*
+  Defines the format for the date. It accepts any date-fns date format.
+  If true the date will be displayed using the defaults for the current locale.
+  If false the datepicker is disabled and the component can be used as timepicker.
+  */
+  dateFormat?: string | false;
+
+  /*
+  Defines the format for the time. It accepts any date-fns time format.
+  If true the time will be displayed using the defaults for the current locale.
+  If false the timepicker is disabled and the component can be used as datepicker.
+  */
+  timeFormat?: string | false;
+
+  viewDate: Date;
+  showView?: any;
+  selectedDate?: Date;
+}
+
+type DayParts = "am" | "pm" | "AM" | "PM" | undefined;
+
+interface TimeViewState {
+  daypart: DayParts;
+  counters: string[];
+
+  hours: number;
+  minutes: string;
+  seconds: string;
+  milliseconds: string;
+}
+
+class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   static defaultProps = {};
 
   timeConstraints: TimeConstraints;
@@ -67,7 +109,7 @@ class TimeView extends React.Component<any, any> {
 
     if (this.props.timeConstraints) {
       ["hours", "minutes", "seconds", "millisecond"].forEach(type => {
-        if (this.props.timeConstraints[type]) {
+        if (this.props.timeConstraints && this.props.timeConstraints[type]) {
           this.timeConstraints[type] = {
             ...this.timeConstraints[type],
             ...this.props.timeConstraints[type]
@@ -120,7 +162,7 @@ class TimeView extends React.Component<any, any> {
     const newHours =
       hours >= 12 ? this.state.hours - 12 : this.state.hours + 12;
 
-    this.props.setTime("hours", this.pad("hours", newHours));
+    this.props.setTime(allowedSetTime.HOURS, newHours);
   }
 
   increase(type) {
@@ -151,7 +193,7 @@ class TimeView extends React.Component<any, any> {
     return str;
   }
 
-  calculateState(props) {
+  calculateState(props): TimeViewState {
     const date = props.selectedDate || props.viewDate;
     const timeFormat =
       typeof props.timeFormat === "string" ? props.timeFormat : "";
@@ -172,7 +214,7 @@ class TimeView extends React.Component<any, any> {
 
     const hours = getHours(date);
 
-    let daypart: string | undefined = undefined;
+    let daypart: DayParts = undefined;
     if (timeFormat.indexOf(" a") !== -1) {
       daypart = hours >= 12 ? "pm" : "am";
     } else if (timeFormat.indexOf(" A") !== -1) {
@@ -211,6 +253,10 @@ class TimeView extends React.Component<any, any> {
   }
 
   renderCounter(type) {
+    if (!this.props.timeFormat) {
+      return null;
+    }
+
     const timeFormat = this.props.timeFormat.toLowerCase();
     let value = this.state[type];
     if (type === "hours" && timeFormat.indexOf(" a") !== -1) {
@@ -265,7 +311,7 @@ class TimeView extends React.Component<any, any> {
   }
 
   render() {
-    const counters: JSX.Element[] = [];
+    const counters: (JSX.Element | null)[] = [];
 
     this.state.counters.forEach(c => {
       if (counters.length) {

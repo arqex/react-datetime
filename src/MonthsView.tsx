@@ -6,8 +6,54 @@ import getYear from "date-fns/get_year";
 import getDaysInMonth from "date-fns/get_days_in_month";
 import setDate from "date-fns/set_date";
 import noop from "./noop";
+import {
+  IsValidDateFunc,
+  SetDateFunc,
+  UpdateSelectedDateFunc,
+  viewModes
+} from ".";
 
-class MonthsView extends React.Component<any, any> {
+interface MonthsViewProps {
+  /*
+  Manually set the locale for the react-datetime instance.
+  date-fns locale needs to be loaded to be used, see i18n docs.
+  */
+  locale?: any;
+
+  viewDate: Date;
+  subtractTime?: any;
+  addTime?: any;
+  showView?: any;
+  selectedDate?: Date;
+
+  /*
+  Define the dates that can be selected. The function receives (currentDate, selectedDate)
+  and should return a true or false whether the currentDate is valid or not. See selectable dates.
+  */
+  isValidDate?: IsValidDateFunc;
+
+  /*
+  Customize the way that the months are shown in the month picker.
+  The accepted function has the selectedDate, the current date and the default calculated
+  props for the cell, the month and the year to be shown, and must return a
+  React component. See appearance customization
+  */
+  renderMonth?: (
+    props: any,
+    month: number,
+    year: number,
+    selectedDate?: Date
+  ) => JSX.Element;
+
+  updateOn: string;
+
+  setDate: SetDateFunc;
+  updateSelectedDate: UpdateSelectedDateFunc;
+}
+
+interface MonthsViewState {}
+
+class MonthsView extends React.Component<MonthsViewProps, MonthsViewState> {
   static defaultProps = {
     subtractTime: noop,
     showView: noop,
@@ -105,9 +151,9 @@ class MonthsView extends React.Component<any, any> {
 
       if (!isDisabled) {
         props.onClick =
-          this.props.updateOn === "months"
+          this.props.updateOn === viewModes.MONTHS
             ? this.updateSelectedMonth
-            : this.props.setDate("month");
+            : this.props.setDate(viewModes.MONTHS);
       }
 
       months.push(renderer(props, i, year, date));

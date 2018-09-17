@@ -30,7 +30,10 @@ import fromUtc from "./fromUtc";
 /*
 The view mode can be any of the following strings.
 */
-export type ViewMode = "years" | "months" | "days" | "time";
+export type DateViewMode = "years" | "months" | "days";
+export type ViewMode = DateViewMode | "time";
+
+export type AllowedSetTime = "hours" | "minutes" | "seconds" | "milliseconds";
 
 export interface TimeConstraint {
   min: number;
@@ -50,7 +53,10 @@ export type IsValidDateFunc = (
   selectedDate?: Date
 ) => boolean;
 
-export type UpdateSelectedDateFunc = (e: any, close: boolean) => void;
+export type SetDateFunc = (type: DateViewMode) => void;
+export type SetTimeFunc = (type: AllowedSetTime, value: number) => void;
+
+export type UpdateSelectedDateFunc = (e: any, close?: boolean) => void;
 
 interface DateTimeProps {
   /*
@@ -234,7 +240,7 @@ interface DateTimeProps {
 
 interface DateTimeState {
   currentView: ViewMode;
-  updateOn: string;
+  updateOn: ViewMode;
   inputFormat: string;
   viewDate?: Date;
   selectedDate?: Date;
@@ -242,18 +248,26 @@ interface DateTimeState {
   open: boolean;
 }
 
-const viewModes = Object.freeze({
-  YEARS: "years",
-  MONTHS: "months",
-  DAYS: "days",
-  TIME: "time"
+const YEARS: "years" = "years";
+const MONTHS: "months" = "months";
+const DAYS: "days" = "days";
+const TIME: "time" = "time";
+export const viewModes = Object.freeze({
+  YEARS,
+  MONTHS,
+  DAYS,
+  TIME
 });
 
-const allowedSetTime = Object.freeze({
-  HOURS: "hours",
-  MINUTES: "minutes",
-  SECONDS: "seconds",
-  MILLISECONDS: "milliseconds"
+const HOURS: "hours" = "hours";
+const MINUTES: "minutes" = "minutes";
+const SECONDS: "seconds" = "seconds";
+const MILLISECONDS: "milliseconds" = "milliseconds";
+export const allowedSetTime = Object.freeze({
+  HOURS,
+  MINUTES,
+  SECONDS,
+  MILLISECONDS
 });
 
 const componentProps = {
@@ -524,10 +538,10 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     };
   }
 
-  setDate(type) {
+  setDate: SetDateFunc = type => {
     const nextViews = {
-      month: viewModes.DAYS,
-      year: viewModes.MONTHS
+      months: viewModes.DAYS,
+      years: viewModes.MONTHS
     };
 
     return e => {
@@ -535,9 +549,9 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       const newDate = this.state.viewDate
         ? type === viewModes.DAYS
           ? startOfDay(setDate(this.state.viewDate, value))
-          : type === "month"
+          : type === viewModes.MONTHS
             ? startOfMonth(setMonth(this.state.viewDate, value))
-            : type === "year"
+            : type === viewModes.YEARS
               ? startOfYear(setYear(this.state.viewDate, value))
               : undefined
         : undefined;
@@ -549,7 +563,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
       this.props.onViewModeChange!(nextViews[type]);
     };
-  }
+  };
 
   subtractTime(amount, type, toSelected) {
     return () => {
@@ -588,7 +602,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     this.setState(update);
   }
 
-  setTime(type, value) {
+  setTime: SetTimeFunc = (type, value) => {
     let date = this.state.selectedDate
       ? this.state.selectedDate
       : this.state.viewDate
@@ -620,7 +634,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     }
 
     this.props.onChange!(date);
-  }
+  };
 
   updateSelectedDate: UpdateSelectedDateFunc = (e, close) => {
     const target = e.target;

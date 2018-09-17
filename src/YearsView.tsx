@@ -4,8 +4,44 @@ import setYear from "date-fns/set_year";
 import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
 import noop from "./noop";
+import {
+  IsValidDateFunc,
+  SetDateFunc,
+  UpdateSelectedDateFunc,
+  viewModes
+} from ".";
 
-class YearsView extends React.Component<any, any> {
+interface YearsViewProps {
+  viewDate: Date;
+  subtractTime?: any;
+  addTime?: any;
+  showView?: any;
+  selectedDate?: Date;
+
+  /*
+  Define the dates that can be selected. The function receives (currentDate, selectedDate)
+  and should return a true or false whether the currentDate is valid or not. See selectable dates.
+  */
+  isValidDate?: IsValidDateFunc;
+
+  /*
+  Customize the way that the years are shown in the year picker.
+  The accepted function has the selectedDate, the current date and the default calculated
+  props for the cell, the year to be shown, and must return a React component.
+  See appearance customization
+  */
+  renderYear?: (props: any, year: number, selectedDate?: Date) => JSX.Element;
+
+  updateOn: string;
+
+  setDate: SetDateFunc;
+
+  updateSelectedDate: UpdateSelectedDateFunc;
+}
+
+interface YearsViewState {}
+
+class YearsView extends React.Component<YearsViewProps, YearsViewState> {
   static defaultProps = {
     viewDate: new Date(),
     subtractTime: noop,
@@ -99,9 +135,9 @@ class YearsView extends React.Component<any, any> {
 
       if (!isDisabled) {
         props.onClick =
-          this.props.updateOn === "years"
+          this.props.updateOn === viewModes.YEARS
             ? this.updateSelectedYear
-            : this.props.setDate("year");
+            : this.props.setDate(viewModes.YEARS);
       }
 
       years.push(
