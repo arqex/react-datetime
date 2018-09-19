@@ -108,6 +108,20 @@ module.exports = {
       .simulate("mouseDown");
   },
 
+  increaseMillisecond: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(6)
+      .simulate("mouseDown");
+  },
+
+  decreaseMillisecond: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(7)
+      .simulate("mouseDown");
+  },
+
   increaseDayPart: datetime => {
     datetime
       .find(".rdtCounter .rdtBtn")
@@ -120,6 +134,62 @@ module.exports = {
       .find(".rdtCounter .rdtBtn")
       .at(7)
       .simulate("mouseDown");
+  },
+
+  rightClickIncreaseHour: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(0)
+      .simulate("contextmenu");
+  },
+
+  rightClickDecreaseHour: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(1)
+      .simulate("contextmenu");
+  },
+
+  rightClickIncreaseMinute: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(2)
+      .simulate("contextmenu");
+  },
+
+  rightClickDecreaseMinute: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(3)
+      .simulate("contextmenu");
+  },
+
+  rightClickIncreaseSecond: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(4)
+      .simulate("contextmenu");
+  },
+
+  rightClickDecreaseSecond: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(5)
+      .simulate("contextmenu");
+  },
+
+  rightClickIncreaseMillisecond: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(6)
+      .simulate("contextmenu");
+  },
+
+  rightClickDecreaseMillisecond: datetime => {
+    datetime
+      .find(".rdtCounter .rdtBtn")
+      .at(7)
+      .simulate("contextmenu");
   },
 
   /*
@@ -155,6 +225,13 @@ module.exports = {
     return datetime
       .find(".rdtCount")
       .at(2)
+      .text();
+  },
+
+  getMilliseconds: datetime => {
+    return datetime
+      .find(".rdtCount")
+      .at(3)
       .text();
   },
 

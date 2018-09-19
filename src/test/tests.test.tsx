@@ -770,6 +770,11 @@ describe("DateTime", () => {
       expect(utils.getSeconds(component)).toEqual("02");
       utils.increaseSecond(component);
       expect(utils.getSeconds(component)).toEqual("03");
+
+      // Check millisecond
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.increaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("003");
     });
 
     it("decrease time", () => {
@@ -806,7 +811,49 @@ describe("DateTime", () => {
       expect(utils.getSeconds(component)).toEqual("02");
       utils.decreaseSecond(component);
       expect(utils.getSeconds(component)).toEqual("01");
+
+      // Check millisecond
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.decreaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("001");
     });
+
+    it("right click on times should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      // Check hour
+      expect(utils.getHours(component)).toEqual("2");
+      utils.rightClickIncreaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+      utils.rightClickDecreaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+
+      // Check minute
+      expect(utils.getMinutes(component)).toEqual("02");
+      utils.rightClickIncreaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("02");
+      utils.rightClickDecreaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("02");
+
+      // Check second
+      expect(utils.getSeconds(component)).toEqual("02");
+      utils.rightClickIncreaseSecond(component);
+      expect(utils.getSeconds(component)).toEqual("02");
+      utils.rightClickDecreaseSecond(component);
+      expect(utils.getSeconds(component)).toEqual("02");
+
+      // Check millsecond
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.rightClickIncreaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.rightClickDecreaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("002");
+    })
 
     it("Toggle down through day part (AM/PM)", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
