@@ -22,267 +22,265 @@ const triggerDocumentUp = (time = 0) => {
   }, time);
 };
 
-module.exports = {
-  createDatetime: props => {
-    return mount(<DateTime {...props} />);
-  },
+export const createDatetime = props => {
+  return mount(<DateTime {...props} />);
+};
 
-  createDatetimeShallow: props => {
-    return shallow(<DateTime {...props} />);
-  },
+export const createDatetimeShallow = (props = {}) => {
+  return shallow(<DateTime {...props} />);
+};
 
-  /*
-	 * Click Simulations
-	 */
-  openDatepicker: (datetime, time) => {
-    datetime.find(".form-control").simulate("focus");
-  },
+/*
+ * Click Simulations
+ */
+export const openDatepicker = datetime => {
+  datetime.find(".form-control").simulate("focus");
+};
 
-  clickOnElement: element => {
-    return _simulateClickOnElement(element);
-  },
+export const clickOnElement = element => {
+  return _simulateClickOnElement(element);
+};
 
-  clickNthDay: (datetime, n) => {
-    return _simulateClickOnElement(datetime.find(".rdtDay").at(n));
-  },
+export const clickNthDay = (datetime, n) => {
+  return _simulateClickOnElement(datetime.find(".rdtDay").at(n));
+};
 
-  clickNthMonth: (datetime, n) => {
-    return _simulateClickOnElement(datetime.find(".rdtMonth").at(n));
-  },
+export const clickNthMonth = (datetime, n) => {
+  return _simulateClickOnElement(datetime.find(".rdtMonth").at(n));
+};
 
-  clickNthYear: (datetime, n) => {
-    return _simulateClickOnElement(datetime.find(".rdtYear").at(n));
-  },
+export const clickNthYear = (datetime, n) => {
+  return _simulateClickOnElement(datetime.find(".rdtYear").at(n));
+};
 
-  /*
-	 * Boolean Checks
-	 */
-  isOpen: datetime => {
-    return datetime.find(".rdt.rdtOpen").length === 1;
-  },
+/*
+ * Boolean Checks
+ */
+export const isOpen = datetime => {
+  return datetime.find(".rdt.rdtOpen").length === 1;
+};
 
-  isDayView: datetime => {
-    return datetime.find(".rdtPicker .rdtDays").length === 1;
-  },
+export const isDayView = datetime => {
+  return datetime.find(".rdtPicker .rdtDays").length === 1;
+};
 
-  isMonthView: datetime => {
-    return datetime.find(".rdtPicker .rdtMonths").length === 1;
-  },
+export const isMonthView = datetime => {
+  return datetime.find(".rdtPicker .rdtMonths").length === 1;
+};
 
-  isYearView: datetime => {
-    return datetime.find(".rdtPicker .rdtYears").length === 1;
-  },
+export const isYearView = datetime => {
+  return datetime.find(".rdtPicker .rdtYears").length === 1;
+};
 
-  isTimeView: datetime => {
-    return datetime.find(".rdtPicker .rdtTime").length === 1;
-  },
+export const isTimeView = datetime => {
+  return datetime.find(".rdtPicker .rdtTime").length === 1;
+};
 
-  /*
-	 * Change Time Values
-	 *
-	 * These functions only work when the time view is open
-	 */
-  increaseHour: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(0)
-      .simulate("mouseDown");
+/*
+ * Change Time Values
+ *
+ * These functions only work when the time view is open
+ */
+export const increaseHour = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(0)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  decreaseHour: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(1)
-      .simulate("mouseDown");
+export const decreaseHour = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(1)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  increaseMinute: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(2)
-      .simulate("mouseDown");
+export const increaseMinute = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(2)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  decreaseMinute: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(3)
-      .simulate("mouseDown");
+export const decreaseMinute = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(3)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  increaseSecond: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(4)
-      .simulate("mouseDown");
+export const increaseSecond = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(4)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  decreaseSecond: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(5)
-      .simulate("mouseDown");
+export const decreaseSecond = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(5)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  increaseMillisecond: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(6)
-      .simulate("mouseDown");
+export const increaseMillisecond = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(6)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  decreaseMillisecond: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(7)
-      .simulate("mouseDown");
+export const decreaseMillisecond = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(7)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  increaseDayPart: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(6)
-      .simulate("mouseDown");
+export const increaseDayPart = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(6)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  decreaseDayPart: (datetime, time) => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(7)
-      .simulate("mouseDown");
+export const decreaseDayPart = (datetime, time) => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(7)
+    .simulate("mouseDown");
 
-    triggerDocumentUp(time);
-  },
+  triggerDocumentUp(time);
+};
 
-  rightClickIncreaseHour: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(0)
-      .simulate("contextmenu");
-  },
+export const rightClickIncreaseHour = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(0)
+    .simulate("contextmenu");
+};
 
-  rightClickDecreaseHour: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(1)
-      .simulate("contextmenu");
-  },
+export const rightClickDecreaseHour = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(1)
+    .simulate("contextmenu");
+};
 
-  rightClickIncreaseMinute: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(2)
-      .simulate("contextmenu");
-  },
+export const rightClickIncreaseMinute = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(2)
+    .simulate("contextmenu");
+};
 
-  rightClickDecreaseMinute: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(3)
-      .simulate("contextmenu");
-  },
+export const rightClickDecreaseMinute = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(3)
+    .simulate("contextmenu");
+};
 
-  rightClickIncreaseSecond: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(4)
-      .simulate("contextmenu");
-  },
+export const rightClickIncreaseSecond = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(4)
+    .simulate("contextmenu");
+};
 
-  rightClickDecreaseSecond: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(5)
-      .simulate("contextmenu");
-  },
+export const rightClickDecreaseSecond = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(5)
+    .simulate("contextmenu");
+};
 
-  rightClickIncreaseMillisecond: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(6)
-      .simulate("contextmenu");
-  },
+export const rightClickIncreaseMillisecond = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(6)
+    .simulate("contextmenu");
+};
 
-  rightClickDecreaseMillisecond: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(7)
-      .simulate("contextmenu");
-  },
+export const rightClickDecreaseMillisecond = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(7)
+    .simulate("contextmenu");
+};
 
-  /*
-	 * Get Values
-	 */
-  getNthDay: (datetime, n) => {
-    return datetime.find(".rdtDay").at(n);
-  },
+/*
+ * Get Values
+ */
+export const getNthDay = (datetime, n) => {
+  return datetime.find(".rdtDay").at(n);
+};
 
-  getNthMonth: (datetime, n) => {
-    return datetime.find(".rdtMonth").at(n);
-  },
+export const getNthMonth = (datetime, n) => {
+  return datetime.find(".rdtMonth").at(n);
+};
 
-  getNthYear: (datetime, n) => {
-    return datetime.find(".rdtYear").at(n);
-  },
+export const getNthYear = (datetime, n) => {
+  return datetime.find(".rdtYear").at(n);
+};
 
-  getHours: datetime => {
-    return datetime
-      .find(".rdtCount")
-      .at(0)
-      .text();
-  },
+export const getHours = datetime => {
+  return datetime
+    .find(".rdtCount")
+    .at(0)
+    .text();
+};
 
-  getMinutes: datetime => {
-    return datetime
-      .find(".rdtCount")
-      .at(1)
-      .text();
-  },
+export const getMinutes = datetime => {
+  return datetime
+    .find(".rdtCount")
+    .at(1)
+    .text();
+};
 
-  getSeconds: datetime => {
-    return datetime
-      .find(".rdtCount")
-      .at(2)
-      .text();
-  },
+export const getSeconds = datetime => {
+  return datetime
+    .find(".rdtCount")
+    .at(2)
+    .text();
+};
 
-  getMilliseconds: datetime => {
-    return datetime
-      .find(".rdtCount")
-      .at(3)
-      .text();
-  },
+export const getMilliseconds = datetime => {
+  return datetime
+    .find(".rdtCount")
+    .at(3)
+    .text();
+};
 
-  getDayPart: datetime => {
-    return datetime
-      .find(".rdtCount")
-      .at(3)
-      .text();
-  },
+export const getDayPart = datetime => {
+  return datetime
+    .find(".rdtCount")
+    .at(3)
+    .text();
+};
 
-  getInputValue: datetime => {
-    return datetime.find(".rdt > .form-control").getDOMNode().value;
-  },
+export const getInputValue = datetime => {
+  return datetime.find(".rdt > .form-control").getDOMNode().value;
+};
 
-  getViewDateValue: datetime => {
-    return datetime.find(".rdtSwitch").getDOMNode().innerHTML;
-  }
+export const getViewDateValue = datetime => {
+  return datetime.find(".rdtSwitch").getDOMNode().innerHTML;
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import utils from "./testUtils";
+import * as utils from "./testUtils";
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { advanceTo as mockDateTo } from "jest-date-mock";
