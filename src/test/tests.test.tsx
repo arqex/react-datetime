@@ -10,6 +10,7 @@ import isBefore from "date-fns/is_before";
 import getHours from "date-fns/get_hours";
 import getMinutes from "date-fns/get_minutes";
 import getSeconds from "date-fns/get_seconds";
+import getMilliseconds from "date-fns/get_milliseconds";
 import getDate from "date-fns/get_date";
 import getMonth from "date-fns/get_month";
 import getYear from "date-fns/get_year";
@@ -736,23 +737,15 @@ describe("DateTime", () => {
       expect(utils.isOpen(component)).toBeFalsy();
     });
 
-    it("increase time", () => {
-      let i = 0;
+    it("increase hours", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         timeFormat: "HH:mm:ss:SSS",
         viewMode: "time",
         defaultValue: date,
         onChange: selected => {
-          // TODO: Trigger onChange when increasing time
-          i++;
-          if (i > 2) {
-            expect(true).toEqual(false); // Proof that this is not called
             expect(getHours(selected)).toEqual(3);
-            expect(getMinutes(selected)).toEqual(3);
-            expect(getSeconds(selected)).toEqual(3);
-            //done();
-          }
+            done();
         }
       });
 
@@ -760,16 +753,55 @@ describe("DateTime", () => {
       expect(utils.getHours(component)).toEqual("2");
       utils.increaseHour(component);
       expect(utils.getHours(component)).toEqual("3");
+    });
+
+    it("increase minutes", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+            expect(getMinutes(selected)).toEqual(3);
+            done();
+        }
+      });
 
       // Check minute
       expect(utils.getMinutes(component)).toEqual("02");
       utils.increaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("03");
+    });
+
+    it("increase seconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+            expect(getSeconds(selected)).toEqual(3);
+            done();
+        }
+      });
 
       // Check second
       expect(utils.getSeconds(component)).toEqual("02");
       utils.increaseSecond(component);
       expect(utils.getSeconds(component)).toEqual("03");
+    });
+
+    it("increase milliseconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+            expect(getMilliseconds(selected)).toEqual(3);
+            done();
+        }
+      });
 
       // Check millisecond
       expect(utils.getMilliseconds(component)).toEqual("002");
@@ -777,23 +809,15 @@ describe("DateTime", () => {
       expect(utils.getMilliseconds(component)).toEqual("003");
     });
 
-    it("decrease time", () => {
-      let i = 0;
+    it("decrease hours", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         timeFormat: "HH:mm:ss:SSS",
         viewMode: "time",
         defaultValue: date,
         onChange: selected => {
-          // TODO: Trigger onChange when increasing time
-          i++;
-          if (i > 2) {
-            expect(true).toEqual(false); // Proof that this is not called
-            expect(getHours(selected)).toEqual(1);
-            expect(getMinutes(selected)).toEqual(1);
-            expect(getSeconds(selected)).toEqual(1);
-            //done();
-          }
+          expect(getHours(selected)).toEqual(1);
+          done();
         }
       });
 
@@ -801,16 +825,55 @@ describe("DateTime", () => {
       expect(utils.getHours(component)).toEqual("2");
       utils.decreaseHour(component);
       expect(utils.getHours(component)).toEqual("1");
+    });
+
+    it("decrease minutes", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(1);
+          done();
+        }
+      });
 
       // Check minute
       expect(utils.getMinutes(component)).toEqual("02");
       utils.decreaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("01");
+    });
+
+    it("decrease seconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getSeconds(selected)).toEqual(1);
+          done();
+        }
+      });
 
       // Check second
       expect(utils.getSeconds(component)).toEqual("02");
       utils.decreaseSecond(component);
       expect(utils.getSeconds(component)).toEqual("01");
+    });
+
+    it("decrease milliseconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getMilliseconds(selected)).toEqual(1);
+          done();
+        }
+      });
 
       // Check millisecond
       expect(utils.getMilliseconds(component)).toEqual("002");
@@ -853,7 +916,7 @@ describe("DateTime", () => {
       expect(utils.getMilliseconds(component)).toEqual("002");
       utils.rightClickDecreaseMillisecond(component);
       expect(utils.getMilliseconds(component)).toEqual("002");
-    })
+    });
 
     it("Toggle down through day part (AM/PM)", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
@@ -904,12 +967,11 @@ describe("DateTime", () => {
         defaultValue: date
       });
 
-      utils.increaseHour(component);
+      utils.increaseHour(component, 641);
       setTimeout(() => {
-        expect(utils.getHours(component)).not.toEqual("2");
-        expect(utils.getHours(component)).not.toEqual("3");
+        expect(utils.getHours(component)).toEqual("3");
         done();
-      }, 920);
+      }, 1000);
     });
 
     it("long decrease time", done => {
@@ -920,15 +982,34 @@ describe("DateTime", () => {
         defaultValue: date
       });
 
-      utils.decreaseHour(component);
+      utils.decreaseHour(component, 641);
       setTimeout(() => {
-        expect(utils.getHours(component)).not.toEqual("1");
-        expect(utils.getHours(component)).not.toEqual("0");
+        expect(utils.getHours(component)).toEqual("0");
         done();
-      }, 920);
+      }, 1000);
     });
 
-    it("timeConstraints -> increase time", () => {
+    it("timeConstraints -> increase hour", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: {
+          hours: { max: 6, step: 8 },
+          minutes: { step: 15 }
+        },
+        onChange: selected => {
+          expect(getHours(selected)).toEqual(3);
+          done();
+        }
+      });
+
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("3");
+    });
+
+    it("timeConstraints -> increase minutes", done => {
       let i = 0;
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
@@ -940,27 +1021,58 @@ describe("DateTime", () => {
           minutes: { step: 15 }
         },
         onChange: selected => {
-          // TODO
-          i++;
-          if (i > 2) {
-            expect(getMinutes(selected)).toEqual(17);
-            expect(getSeconds(selected)).toEqual(3);
-            //done();
-          }
+          expect(getMinutes(selected)).toEqual(17);
+          done();
         }
       });
 
-      utils.increaseHour(component);
-      expect(utils.getHours(component)).toEqual("3");
-
       utils.increaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("17");
+    });
+
+    it("timeConstraints -> increase seconds", done => {
+      let i = 0;
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: {
+          hours: { max: 6, step: 8 },
+          minutes: { step: 15 }
+        },
+        onChange: selected => {
+          expect(getSeconds(selected)).toEqual(3);
+          done();
+        }
+      });
 
       utils.increaseSecond(component);
       expect(utils.getSeconds(component)).toEqual("03");
     });
 
-    it("timeConstraints -> decrease time", () => {
+    it("timeConstraints -> increase milliseconds", done => {
+      let i = 0;
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: {
+          hours: { max: 6, step: 8 },
+          minutes: { step: 15 }
+        },
+        onChange: selected => {
+          expect(getMilliseconds(selected)).toEqual(3);
+          done();
+        }
+      });
+
+      utils.increaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("003");
+    });
+
+    it("timeConstraints -> decrease time", done => {
       let i = 0;
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
@@ -969,13 +1081,8 @@ describe("DateTime", () => {
         defaultValue: date,
         timeConstraints: { minutes: { step: 15 } },
         onChange: selected => {
-          // TODO
-          i++;
-          if (i > 2) {
-            expect(getMinutes(selected)).toEqual(17);
-            expect(getSeconds(selected)).toEqual(3);
-            //done();
-          }
+          expect(getMinutes(selected)).toEqual(47);
+          done();
         }
       });
 
@@ -1112,7 +1219,6 @@ describe("DateTime", () => {
           timeFormat: "HH:mm:ss:SSS"
         });
         expect(component.find(".rdtCounter").length).toEqual(4);
-        // TODO: Test that you can input a value in milli seconds input
       });
 
       it("seconds", () => {
@@ -1461,7 +1567,15 @@ describe("DateTime", () => {
           defaultValue: date,
           onChange: selected => {
             i++;
-            if (i > 2) {
+            if (i === 1) {
+              expect(getDate(selected)).toEqual(2);
+              expect(getMonth(selected)).toEqual(getMonth(date));
+              expect(getYear(selected)).toEqual(getYear(date));
+            } else if (i === 2) {
+              expect(getDate(selected)).toEqual(3);
+              expect(getMonth(selected)).toEqual(getMonth(date));
+              expect(getYear(selected)).toEqual(getYear(date));
+            } else if (i === 3) {
               expect(getDate(selected)).toEqual(4);
               expect(getMonth(selected)).toEqual(getMonth(date));
               expect(getYear(selected)).toEqual(getYear(date));
@@ -1486,7 +1600,9 @@ describe("DateTime", () => {
 
         utils.clickNthMonth(component, 2);
         expect(onChangeFn).toHaveBeenCalledTimes(1);
-        //expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual("2000-03-15T02:02:02.002Z");
+        expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual(
+          "2000-03-15T02:02:02.002Z"
+        );
       });
 
       // Passes locally but not on Travis
@@ -1510,7 +1626,7 @@ describe("DateTime", () => {
         // Did not manage to be able to get onChange to trigger, even though I know it does.
         // The listener for the time buttons are set up differently because of having to handle both
         // onMouseDown and onMouseUp. Not sure how to test it.
-        expect(true).toEqual(true);
+        // TODO: implement this
       });
     });
   });

@@ -6,6 +6,22 @@ const _simulateClickOnElement = element => {
   return element.simulate("click");
 };
 
+const triggerDocumentUp = (time = 0) => {
+  setTimeout(() => {
+    {
+      const evt = document.createEvent("HTMLEvents");
+      evt.initEvent("mouseup", false, true);
+      document.body.dispatchEvent(evt);
+    }
+
+    {
+      const evt = document.createEvent("HTMLEvents");
+      evt.initEvent("touchend", false, true);
+      document.body.dispatchEvent(evt);
+    }
+  }, time);
+};
+
 module.exports = {
   createDatetime: props => {
     return mount(<DateTime {...props} />);
@@ -18,7 +34,7 @@ module.exports = {
   /*
 	 * Click Simulations
 	 */
-  openDatepicker: datetime => {
+  openDatepicker: (datetime, time) => {
     datetime.find(".form-control").simulate("focus");
   },
 
@@ -66,74 +82,94 @@ module.exports = {
 	 *
 	 * These functions only work when the time view is open
 	 */
-  increaseHour: datetime => {
+  increaseHour: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(0)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
-  decreaseHour: datetime => {
+  decreaseHour: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(1)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
-  increaseMinute: datetime => {
+  increaseMinute: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(2)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
-  decreaseMinute: datetime => {
+  decreaseMinute: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(3)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
-  increaseSecond: datetime => {
+  increaseSecond: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(4)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
-  decreaseSecond: datetime => {
+  decreaseSecond: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(5)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
-  increaseMillisecond: datetime => {
+  increaseMillisecond: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(6)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
-  decreaseMillisecond: datetime => {
+  decreaseMillisecond: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(7)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
-  increaseDayPart: datetime => {
+  increaseDayPart: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(6)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
-  decreaseDayPart: datetime => {
+  decreaseDayPart: (datetime, time) => {
     datetime
       .find(".rdtCounter .rdtBtn")
       .at(7)
       .simulate("mouseDown");
+
+    triggerDocumentUp(time);
   },
 
   rightClickIncreaseHour: datetime => {

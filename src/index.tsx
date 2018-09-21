@@ -8,7 +8,6 @@ import setDate from "date-fns/set_date";
 import setMonth from "date-fns/set_month";
 import startOfYear from "date-fns/start_of_year";
 import setYear from "date-fns/set_year";
-import addDays from "date-fns/add_days";
 import addMonths from "date-fns/add_months";
 import addYears from "date-fns/add_years";
 import setHours from "date-fns/set_hours";
@@ -22,6 +21,7 @@ import getHours from "date-fns/get_hours";
 import getMinutes from "date-fns/get_minutes";
 import getSeconds from "date-fns/get_seconds";
 import getMilliseconds from "date-fns/get_milliseconds";
+import isEqual from "date-fns/is_equal";
 
 import toUtc from "./toUtc";
 import fromUtc from "./fromUtc";
@@ -53,7 +53,7 @@ export type IsValidDateFunc = (
 ) => boolean;
 
 export type SetDateFunc = (type: "months" | "years") => void;
-export type SetTimeFunc = (type: AllowedSetTime, value: number) => void;
+export type SetTimeFunc = (type: AllowedSetTime, value: string) => void;
 
 export type UpdateSelectedDateFunc = (e: any, close?: boolean) => void;
 
@@ -337,6 +337,20 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     this.getFormatOptions = this.getFormatOptions.bind(this);
   }
 
+  componentDidUpdate(prevProps: DateTimeProps, prevState: DateTimeState) {
+    const prevVal = prevState.selectedDate || prevState.inputValue;
+    const val = this.state.selectedDate || this.state.inputValue;
+    if (
+      prevVal instanceof Date &&
+      val instanceof Date &&
+      !isEqual(prevVal, val)
+    ) {
+      this.props.onChange!(val);
+    } else if (prevVal !== val) {
+      this.props.onChange!(val);
+    }
+  }
+
   getInitialState(props): any {
     const state = this.getStateFromProps(props);
 
@@ -510,11 +524,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       update.selectedDate = null;
     }
 
-    return this.setState(update, () => {
-      this.props.onChange!(
-        isDate(date) && isValidDate(date) ? date : this.state.inputValue
-      );
-    });
+    return this.setState(update);
   }
 
   onInputKey(e) {
@@ -586,15 +596,17 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   setTime: SetTimeFunc = (type, value) => {
     let date = this.state.selectedDate || this.state.viewDate;
 
+    const valInt = Number.parseInt(value, 10);
+
     // It is needed to set all the time properties to not to reset the time
-    if (type === allowedSetTime.HOURS) {
-      date = setHours(date, value);
-    } else if (type === allowedSetTime.MINUTES) {
-      date = setMinutes(date, value);
-    } else if (type === allowedSetTime.SECONDS) {
-      date = setSeconds(date, value);
-    } else if (type === allowedSetTime.MILLISECONDS) {
-      date = setMilliseconds(date, value);
+    if (type === "hours") {
+      date = setHours(date, valInt);
+    } else if (type === "minutes") {
+      date = setMinutes(date, valInt);
+    } else if (type === "seconds") {
+      date = setSeconds(date, valInt);
+    } else if (type === "milliseconds") {
+      date = setMilliseconds(date, valInt);
     }
 
     if (!this.props.value) {
@@ -607,8 +619,6 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
         )
       });
     }
-
-    this.props.onChange!(date);
   };
 
   updateSelectedDate: UpdateSelectedDateFunc = (e, close) => {
@@ -669,8 +679,6 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
         this.closeCalendar();
       }
     }
-
-    this.props.onChange!(date);
   };
 
   openCalendar(e) {

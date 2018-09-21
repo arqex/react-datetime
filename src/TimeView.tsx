@@ -44,7 +44,7 @@ type DayParts = "am" | "pm" | "AM" | "PM" | undefined;
 
 interface TimeViewState {
   daypart: DayParts;
-  counters: string[];
+  counters: ("hours" | "minutes" | "seconds" | "milliseconds")[];
 
   hours: number;
   minutes: string;
@@ -162,7 +162,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     const newHours =
       hours >= 12 ? this.state.hours - 12 : this.state.hours + 12;
 
-    this.props.setTime(allowedSetTime.HOURS, newHours);
+    this.props.setTime(allowedSetTime.HOURS, `${newHours}`);
   }
 
   increase(type) {
@@ -197,7 +197,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     const date = props.selectedDate || props.viewDate;
     const timeFormat =
       typeof props.timeFormat === "string" ? props.timeFormat : "";
-    const counters: string[] = [];
+    const counters: ("hours" | "minutes" | "seconds" | "milliseconds")[] = [];
 
     if (timeFormat.toLowerCase().indexOf("h") !== -1) {
       counters.push("hours");
