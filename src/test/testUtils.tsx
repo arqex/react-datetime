@@ -12,149 +12,147 @@ const _simulateClickOnElement = element => {
   return element.simulate("click");
 };
 
-module.exports = {
-  createDatetime: props => {
-    return mount(<DateTime {...props} />);
-  },
+export const createDatetime = (props = {}) => {
+  return mount(<DateTime {...props} />);
+};
 
-  createDatetimeShallow: props => {
-    return shallow(<DateTime {...props} />);
-  },
+export const createDatetimeShallow = (props = {}) => {
+  return shallow(<DateTime {...props} />);
+};
 
-  /*
+/*
 	 * Click Simulations
 	 */
-  openDatepicker: datetime => {
-    datetime.find(".form-control").simulate("focus");
-  },
+export const openDatepicker = datetime => {
+  datetime.find(".form-control").simulate("focus");
+};
 
-  clickOnElement: element => {
-    return _simulateClickOnElement(element);
-  },
+export const clickOnElement = element => {
+  return _simulateClickOnElement(element);
+};
 
-  clickNthDay: (datetime, n) => {
-    return _simulateClickOnElement(datetime.find(".rdtDay").at(n));
-  },
+export const clickNthDay = (datetime, n) => {
+  return _simulateClickOnElement(datetime.find(".rdtDay").at(n));
+};
 
-  clickNthMonth: (datetime, n) => {
-    return _simulateClickOnElement(datetime.find(".rdtMonth").at(n));
-  },
+export const clickNthMonth = (datetime, n) => {
+  return _simulateClickOnElement(datetime.find(".rdtMonth").at(n));
+};
 
-  clickNthYear: (datetime, n) => {
-    return _simulateClickOnElement(datetime.find(".rdtYear").at(n));
-  },
+export const clickNthYear = (datetime, n) => {
+  return _simulateClickOnElement(datetime.find(".rdtYear").at(n));
+};
 
-  /*
+/*
 	 * Boolean Checks
 	 */
-  isOpen: datetime => {
-    return datetime.find(".rdt.rdtOpen").length === 1;
-  },
+export const isOpen = datetime => {
+  return datetime.find(".rdt.rdtOpen").length === 1;
+};
 
-  isDayView: datetime => {
-    return datetime.find(".rdtPicker .rdtDays").length === 1;
-  },
+export const isDayView = datetime => {
+  return datetime.find(".rdtPicker .rdtDays").length === 1;
+};
 
-  isMonthView: datetime => {
-    return datetime.find(".rdtPicker .rdtMonths").length === 1;
-  },
+export const isMonthView = datetime => {
+  return datetime.find(".rdtPicker .rdtMonths").length === 1;
+};
 
-  isYearView: datetime => {
-    return datetime.find(".rdtPicker .rdtYears").length === 1;
-  },
+export const isYearView = datetime => {
+  return datetime.find(".rdtPicker .rdtYears").length === 1;
+};
 
-  isTimeView: datetime => {
-    return datetime.find(".rdtPicker .rdtTime").length === 1;
-  },
+export const isTimeView = datetime => {
+  return datetime.find(".rdtPicker .rdtTime").length === 1;
+};
 
-  /*
+/*
 	 * Change Time Values
 	 *
 	 * These functions only work when the time view is open
 	 */
-  increaseHour: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(0)
-      .simulate("mouseDown");
-  },
+export const increaseHour = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(0)
+    .simulate("mouseDown");
+};
 
-  decreaseHour: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(1)
-      .simulate("mouseDown");
-  },
+export const decreaseHour = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(1)
+    .simulate("mouseDown");
+};
 
-  increaseMinute: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(2)
-      .simulate("mouseDown");
-  },
+export const increaseMinute = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(2)
+    .simulate("mouseDown");
+};
 
-  decreaseMinute: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(3)
-      .simulate("mouseDown");
-  },
+export const decreaseMinute = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(3)
+    .simulate("mouseDown");
+};
 
-  increaseSecond: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(4)
-      .simulate("mouseDown");
-  },
+export const increaseSecond = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(4)
+    .simulate("mouseDown");
+};
 
-  decreaseSecond: datetime => {
-    datetime
-      .find(".rdtCounter .rdtBtn")
-      .at(5)
-      .simulate("mouseDown");
-  },
+export const decreaseSecond = datetime => {
+  datetime
+    .find(".rdtCounter .rdtBtn")
+    .at(5)
+    .simulate("mouseDown");
+};
 
-  /*
+/*
 	 * Get Values
 	 */
-  getNthDay: (datetime, n) => {
-    return datetime.find(".rdtDay").at(n);
-  },
+export const getNthDay = (datetime, n) => {
+  return datetime.find(".rdtDay").at(n);
+};
 
-  getNthMonth: (datetime, n) => {
-    return datetime.find(".rdtMonth").at(n);
-  },
+export const getNthMonth = (datetime, n) => {
+  return datetime.find(".rdtMonth").at(n);
+};
 
-  getNthYear: (datetime, n) => {
-    return datetime.find(".rdtYear").at(n);
-  },
+export const getNthYear = (datetime, n) => {
+  return datetime.find(".rdtYear").at(n);
+};
 
-  getHours: datetime => {
-    return datetime
-      .find(".rdtCount")
-      .at(0)
-      .text();
-  },
+export const getHours = datetime => {
+  return datetime
+    .find(".rdtCount")
+    .at(0)
+    .text();
+};
 
-  getMinutes: datetime => {
-    return datetime
-      .find(".rdtCount")
-      .at(1)
-      .text();
-  },
+export const getMinutes = datetime => {
+  return datetime
+    .find(".rdtCount")
+    .at(1)
+    .text();
+};
 
-  getSeconds: datetime => {
-    return datetime
-      .find(".rdtCount")
-      .at(2)
-      .text();
-  },
+export const getSeconds = datetime => {
+  return datetime
+    .find(".rdtCount")
+    .at(2)
+    .text();
+};
 
-  getInputValue: datetime => {
-    return datetime.find(".rdt > .form-control").getDOMNode().value;
-  },
+export const getInputValue = datetime => {
+  return datetime.find(".rdt > .form-control").getDOMNode().value;
+};
 
-  getViewDateValue: datetime => {
-    return datetime.find(".rdtSwitch").getDOMNode().innerHTML;
-  }
+export const getViewDateValue = datetime => {
+  return datetime.find(".rdtSwitch").getDOMNode().innerHTML;
 };
