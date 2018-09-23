@@ -6,23 +6,21 @@ const _simulateClickOnElement = element => {
   return element.simulate("click");
 };
 
-const triggerDocumentUp = (time = 0) => {
-  setTimeout(() => {
-    {
-      const evt = document.createEvent("HTMLEvents");
-      evt.initEvent("mouseup", false, true);
-      document.body.dispatchEvent(evt);
-    }
+export const triggerDocumentUp = () => {
+  {
+    const evt = document.createEvent("HTMLEvents");
+    evt.initEvent("mouseup", false, true);
+    document.body.dispatchEvent(evt);
+  }
 
-    {
-      const evt = document.createEvent("HTMLEvents");
-      evt.initEvent("touchend", false, true);
-      document.body.dispatchEvent(evt);
-    }
-  }, time);
+  {
+    const evt = document.createEvent("HTMLEvents");
+    evt.initEvent("touchend", false, true);
+    document.body.dispatchEvent(evt);
+  }
 };
 
-export const createDatetime = props => {
+export const createDatetime = (props = {}) => {
   return mount(<DateTime {...props} />);
 };
 
@@ -81,94 +79,114 @@ export const isTimeView = datetime => {
  *
  * These functions only work when the time view is open
  */
-export const increaseHour = (datetime, time) => {
+export const increaseHour = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(0)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
-export const decreaseHour = (datetime, time) => {
+export const decreaseHour = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(1)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
-export const increaseMinute = (datetime, time) => {
+export const increaseMinute = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(2)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
-export const decreaseMinute = (datetime, time) => {
+export const decreaseMinute = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(3)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
-export const increaseSecond = (datetime, time) => {
+export const increaseSecond = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(4)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
-export const decreaseSecond = (datetime, time) => {
+export const decreaseSecond = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(5)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
-export const increaseMillisecond = (datetime, time) => {
+export const increaseMillisecond = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(6)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
-export const decreaseMillisecond = (datetime, time) => {
+export const decreaseMillisecond = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(7)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
-export const increaseDayPart = (datetime, time) => {
+export const increaseDayPart = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(6)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
-export const decreaseDayPart = (datetime, time) => {
+export const decreaseDayPart = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(7)
     .simulate("mouseDown");
 
-  triggerDocumentUp(time);
+  if (triggerUp) {
+    triggerDocumentUp();
+  }
 };
 
 export const rightClickIncreaseHour = datetime => {

@@ -744,8 +744,8 @@ describe("DateTime", () => {
         viewMode: "time",
         defaultValue: date,
         onChange: selected => {
-            expect(getHours(selected)).toEqual(3);
-            done();
+          expect(getHours(selected)).toEqual(3);
+          done();
         }
       });
 
@@ -762,8 +762,8 @@ describe("DateTime", () => {
         viewMode: "time",
         defaultValue: date,
         onChange: selected => {
-            expect(getMinutes(selected)).toEqual(3);
-            done();
+          expect(getMinutes(selected)).toEqual(3);
+          done();
         }
       });
 
@@ -780,8 +780,8 @@ describe("DateTime", () => {
         viewMode: "time",
         defaultValue: date,
         onChange: selected => {
-            expect(getSeconds(selected)).toEqual(3);
-            done();
+          expect(getSeconds(selected)).toEqual(3);
+          done();
         }
       });
 
@@ -798,8 +798,8 @@ describe("DateTime", () => {
         viewMode: "time",
         defaultValue: date,
         onChange: selected => {
-            expect(getMilliseconds(selected)).toEqual(3);
-            done();
+          expect(getMilliseconds(selected)).toEqual(3);
+          done();
         }
       });
 
@@ -957,36 +957,6 @@ describe("DateTime", () => {
       expect(utils.getDayPart(component)).toEqual("AM");
       utils.increaseDayPart(component);
       expect(utils.getDayPart(component)).toEqual("PM");
-    });
-
-    it("long increase time", done => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({
-        timeFormat: "HH:mm:ss:SSS",
-        viewMode: "time",
-        defaultValue: date
-      });
-
-      utils.increaseHour(component, 641);
-      setTimeout(() => {
-        expect(utils.getHours(component)).toEqual("3");
-        done();
-      }, 1000);
-    });
-
-    it("long decrease time", done => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({
-        timeFormat: "HH:mm:ss:SSS",
-        viewMode: "time",
-        defaultValue: date
-      });
-
-      utils.decreaseHour(component, 641);
-      setTimeout(() => {
-        expect(utils.getHours(component)).toEqual("0");
-        done();
-      }, 1000);
     });
 
     it("timeConstraints -> increase hour", done => {
