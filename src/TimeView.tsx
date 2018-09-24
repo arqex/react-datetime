@@ -4,6 +4,38 @@ import getHours from "date-fns/get_hours";
 import { TimeConstraints, SetTimeFunc, allowedSetTime } from "./";
 import noop from "./noop";
 
+const disableContextMenu = event => {
+  event.preventDefault();
+  return false;
+};
+
+const CounterComponent = props => {
+  const { showPrefixSeparator, onIncrease, onDecrease, children } = props;
+
+  return (
+    <React.Fragment>
+      {showPrefixSeparator && <div className="rdtCounterSeparator">:</div>}
+      <div className="rdtCounter">
+        <span
+          className="rdtBtn"
+          onMouseDown={onIncrease}
+          onContextMenu={disableContextMenu}
+        >
+          ▲
+        </span>
+        <div className="rdtCount">{children}</div>
+        <span
+          className="rdtBtn"
+          onMouseDown={onDecrease}
+          onContextMenu={disableContextMenu}
+        >
+          ▼
+        </span>
+      </div>
+    </React.Fragment>
+  );
+};
+
 const padValues = {
   hours: 1,
   minutes: 2,
@@ -44,6 +76,8 @@ interface TimeViewProps {
 type DayParts = "am" | "pm" | "AM" | "PM" | undefined;
 
 interface TimeViewState {
+  timestamp: Date;
+
   daypart: DayParts;
   counters: ("hours" | "minutes" | "seconds" | "milliseconds")[];
 
@@ -71,15 +105,10 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
 
     // Bind functions
     this.onStartClicking = this.onStartClicking.bind(this);
-    this.disableContextMenu = this.disableContextMenu.bind(this);
     this.toggleDayPart = this.toggleDayPart.bind(this);
     this.increase = this.increase.bind(this);
     this.decrease = this.decrease.bind(this);
-    this.pad = this.pad.bind(this);
     this.calculateState = this.calculateState.bind(this);
-    this.renderHeader = this.renderHeader.bind(this);
-    this.renderCounter = this.renderCounter.bind(this);
-    this.renderDayPart = this.renderDayPart.bind(this);
     this.getFormatOptions = this.getFormatOptions.bind(this);
   }
 
@@ -156,15 +185,9 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     };
   }
 
-  disableContextMenu(event) {
-    event.preventDefault();
-    return false;
-  }
-
   toggleDayPart() {
-    const hours = this.state.hours;
-    const newHours =
-      hours >= 12 ? this.state.hours - 12 : this.state.hours + 12;
+    const hours = getHours(this.state.timestamp);
+    const newHours = hours >= 12 ? hours - 12 : hours + 12;
 
     this.props.setTime(allowedSetTime.HOURS, `${newHours}`);
   }
@@ -177,7 +200,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
       value = constraints.min + (value - (constraints.max + 1));
     }
 
-    return this.pad(type, value);
+    return `${value}`.padStart(padValues[type], "0");
   }
 
   decrease(type) {
@@ -188,13 +211,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
       value = constraints.max + 1 - (constraints.min - value);
     }
 
-    return this.pad(type, value);
-  }
-
-  pad(type, value) {
-    let str = value + "";
-    while (str.length < padValues[type]) str = "0" + str;
-    return str;
+    return `${value}`.padStart(padValues[type], "0");
   }
 
   calculateState(props): TimeViewState {
@@ -205,27 +222,38 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
 
     if (timeFormat.toLowerCase().indexOf("h") !== -1) {
       counters.push("hours");
-      if (timeFormat.indexOf("m") !== -1) {
-        counters.push("minutes");
-        if (timeFormat.indexOf("s") !== -1) {
-          counters.push("seconds");
-          if (timeFormat.indexOf("S") !== -1) {
-            counters.push("milliseconds");
-          }
-        }
-      }
     }
 
-    const hours = getHours(date);
+    if (timeFormat.indexOf("m") !== -1) {
+      counters.push("minutes");
+    }
+
+    if (timeFormat.indexOf("s") !== -1) {
+      counters.push("seconds");
+    }
+
+    if (timeFormat.indexOf("S") !== -1) {
+      counters.push("milliseconds");
+    }
 
     let daypart: DayParts = undefined;
     if (timeFormat.indexOf(" a") !== -1) {
-      daypart = hours >= 12 ? "pm" : "am";
+      daypart = getHours(date) >= 12 ? "pm" : "am";
     } else if (timeFormat.indexOf(" A") !== -1) {
-      daypart = hours >= 12 ? "PM" : "AM";
+      daypart = getHours(date) >= 12 ? "PM" : "AM";
+    }
+
+    let hours = getHours(date);
+    if (timeFormat.indexOf(" a") !== -1) {
+      hours = ((hours - 1) % 12) + 1;
+    }
+
+    if (hours === 0) {
+      hours = 12;
     }
 
     return {
+      timestamp: date,
       hours: hours,
       minutes: format(date, "mm", this.getFormatOptions()),
       seconds: format(date, "ss", this.getFormatOptions()),
@@ -235,112 +263,47 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     };
   }
 
-  renderHeader() {
-    if (!this.props.dateFormat) {
-      return null;
-    }
-
-    const date = this.props.selectedDate || this.props.viewDate;
-    return (
-      <thead>
-        <tr>
-          <th
-            className="rdtSwitch"
-            colSpan={4}
-            onClick={this.props.showView("days")}
-          >
-            {format(date, this.props.dateFormat)}
-          </th>
-        </tr>
-      </thead>
-    );
-  }
-
-  renderCounter(type) {
-    if (!this.props.timeFormat) {
-      return null;
-    }
-
-    const timeFormat = this.props.timeFormat.toLowerCase();
-    let value = this.state[type];
-    if (type === "hours" && timeFormat.indexOf(" a") !== -1) {
-      value = ((value - 1) % 12) + 1;
-
-      if (value === 0) {
-        value = 12;
-      }
-    }
-
-    return (
-      <div key={type} className="rdtCounter">
-        <span
-          className="rdtBtn"
-          onMouseDown={this.onStartClicking("increase", type)}
-          onContextMenu={this.disableContextMenu}
-        >
-          ▲
-        </span>
-        <div className="rdtCount">{value}</div>
-        <span
-          className="rdtBtn"
-          onMouseDown={this.onStartClicking("decrease", type)}
-          onContextMenu={this.disableContextMenu}
-        >
-          ▼
-        </span>
-      </div>
-    );
-  }
-
-  renderDayPart() {
-    return (
-      <div key="dayPart" className="rdtCounter">
-        <span
-          className="rdtBtn"
-          onMouseDown={this.toggleDayPart}
-          onContextMenu={this.disableContextMenu}
-        >
-          ▲
-        </span>
-        <div className="rdtCount">{this.state.daypart}</div>
-        <span
-          className="rdtBtn"
-          onMouseDown={this.toggleDayPart}
-          onContextMenu={this.disableContextMenu}
-        >
-          ▼
-        </span>
-      </div>
-    );
-  }
-
   render() {
-    const counters: (JSX.Element | null)[] = [];
-
-    this.state.counters.forEach(c => {
-      if (counters.length) {
-        counters.push(
-          <div key={`sep${counters.length}`} className="rdtCounterSeparator">
-            :
-          </div>
-        );
-      }
-
-      counters.push(this.renderCounter(c));
-    });
-
-    if (this.state.daypart) {
-      counters.push(this.renderDayPart());
-    }
-
     return (
       <div className="rdtTime">
         <table>
-          {this.renderHeader()}
+          {this.props.dateFormat ? (
+            <thead>
+              <tr>
+                <th
+                  className="rdtSwitch"
+                  colSpan={4}
+                  onClick={this.props.showView("days")}
+                >
+                  {format(this.state.timestamp, this.props.dateFormat)}
+                </th>
+              </tr>
+            </thead>
+          ) : null}
           <tbody>
             <tr>
               <td>
-                <div className="rdtCounters">{counters}</div>
+                <div className="rdtCounters">
+                  {this.state.counters.map((type, index) => (
+                    <CounterComponent
+                      key={type}
+                      showPrefixSeparator={index > 0}
+                      onIncrease={this.onStartClicking("increase", type)}
+                      onDecrease={this.onStartClicking("decrease", type)}
+                    >
+                      {this.state[type]}
+                    </CounterComponent>
+                  ))}
+                  {!!this.state.daypart && (
+                    <CounterComponent
+                      key="dayPart"
+                      onIncrease={this.toggleDayPart}
+                      onDecrease={this.toggleDayPart}
+                    >
+                      {this.state.daypart}
+                    </CounterComponent>
+                  )}
+                </div>
               </td>
             </tr>
           </tbody>
