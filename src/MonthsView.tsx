@@ -80,7 +80,7 @@ class MonthsView extends React.Component<MonthsViewProps, MonthsViewState> {
   }
 
   render() {
-    const date = this.props.viewDate || new Date();
+    const date = this.props.viewDate;
 
     return (
       <div className="rdtMonths">
