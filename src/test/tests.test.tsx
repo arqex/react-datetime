@@ -288,6 +288,34 @@ describe("DateTime", () => {
     ).toEqual("10");
   });
 
+  it("should switch to previous month's view when clicking a day in the previous month", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({ defaultValue: date });
+
+    utils.openDatepicker(component);
+    utils.clickNthDay(component, 0);
+
+    expect(utils.getInputValue(component)).toEqual(
+      "12/26/1999 2:02 AM"
+    );
+
+    expect(component.find(".rdtSwitch").text()).toEqual("December 1999");
+  });
+
+  it("should switch to next month's view when clicking a day in the next month", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({ defaultValue: date });
+
+    utils.openDatepicker(component);
+    utils.clickNthDay(component, 41);
+
+    expect(utils.getInputValue(component)).toEqual(
+      "02/05/2000 2:02 AM"
+    );
+
+    expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
+  });
+
   it("open picker", () => {
     const component = utils.createDatetime({});
     expect(utils.isOpen(component)).toBeFalsy();
