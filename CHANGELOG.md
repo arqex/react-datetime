@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.0
+
+- Internal update/refactor with tests to have 100% coverage.
+
 ## 3.1.0
 
 - Update components to be written in TypeScript
