@@ -1,42 +1,59 @@
 module.exports = {
-    "env": {
-        "browser": true
-    },
-    "globals": {
-        "require": true,
-        "module": true
-    },
-    // Enables rules that report common problems,
-    // see http://eslint.org/docs/rules/ for list
-    "extends": "eslint:recommended",
-    "rules": {
-        // Enforce the use of variables within the scope they are defined
-        "block-scoped-var": 2,
-        // Enforce camelcase naming convention
-        "camelcase": 2,
-        // Enforce consistent spacing before and after commas
-        "comma-spacing": 2,
-        // Enforce at least one newline at the end of files
-        "eol-last": 2,
-        // Require the use of === and !==
-        "eqeqeq": [2, "smart"],
-        // Enforce consistent spacing before and after keywords
-        "keyword-spacing": [2, { "before": true, "after": true }],
-        // Disallow multiple empty lines
-        "no-multiple-empty-lines": [2, { "max": 1, "maxEOF": 1, "maxBOF": 0 }],
-        // Enforce the consistent use of the radix argument when using parseInt()
-        "radix": 2,
-        // Require or disallow semicolons instead of AS
-        "semi": 2,
-        // Enforce consistent spacing before and after semicolons
-        "semi-spacing": 2,
-        // Enforce consistent spacing before blocks
-        "space-before-blocks": 2,
-        // Enforce consistent spacing inside parentheses
-        // "space-in-parens": [2, "always"],
-        // Enforce the consistent use of either backticks, double, or single quotes
-        "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
-        // Enforce using tabs for indentation
-        "indent": [2, "tab", { "SwitchCase": 1 }]
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "prettier/react"
+  ],
+  plugins: ["react", "prettier"],
+  parser: "babel-eslint",
+  parserOptions: {
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true
     }
+  },
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+    jest: true
+  },
+  settings: {
+    react: {
+      version: "16.4.2"
+    }
+  },
+  rules: {
+    // Enforce prettier formatting
+    "prettier/prettier": "error",
+
+    // We do not use prop types at the moment
+    "react/prop-types": "off",
+
+    // Don't enforce "noopener noreferrer" security mitigation for now
+    // https://mathiasbynens.github.io/rel-noopener
+    "react/jsx-no-target-blank": "off",
+
+    // Allow hardcoded " inline
+    "react/no-unescaped-entities": "off",
+
+    // Catch usages of non-defined (forgotten imports) as errors at compile time
+    "no-undef": "error",
+
+    // Warn if any var is used (prefer let or const)
+    "no-var": "warn",
+
+    // Warn if there is an unused variable
+    "no-unused-vars": ["warn", { ignoreRestSiblings: true, args: "none" }],
+
+    // Warn if there is a console output
+    "no-console": "warn",
+
+    // Disallow arrow functions in render functions
+    "react/jsx-no-bind": "warn",
+
+    // Disallow inconsistent returns
+    "consistent-return": "error"
+  }
 };
