@@ -737,6 +737,36 @@ describe("DateTime", () => {
       expect(utils.isOpen(component)).toBeFalsy();
     });
 
+    it("increase hour with value provided should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        value: date
+      });
+
+      // Check hour
+      expect(utils.getHours(component)).toEqual("2");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+    });
+
+    it("increase hour with no value/defaultValue provided", done => {
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        onChange: selected => {
+          expect(getHours(selected)).toEqual(13);
+          done();
+        }
+      });
+
+      // Check hour
+      expect(utils.getHours(component)).toEqual("12");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("13");
+    });
+
     it("increase hours", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({

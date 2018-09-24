@@ -38,7 +38,7 @@ class CalendarContainer extends React.Component<CalendarContainerProps, never> {
     const { view, viewProps } = this.props;
     const Component = viewComponents[view];
 
-    return <Component {...viewProps} />;
+    return <Component {...viewProps} readonly={!!viewProps.value} />;
   }
 }
 

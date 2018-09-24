@@ -41,6 +41,8 @@ const padValues = {
 };
 
 interface TimeViewProps {
+  readonly: boolean;
+
   /*
   Manually set the locale for the react-datetime instance.
   date-fns locale needs to be loaded to be used, see i18n docs.
@@ -157,28 +159,32 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
 
   onStartClicking(action, type) {
     return () => {
-      const update = {};
-      update[type] = this[action](type);
+      const { readonly } = this.props;
 
-      this.setState(update);
+      if (!readonly) {
+        const update = {};
+        update[type] = this[action](type);
 
-      this.timer = setTimeout(() => {
-        this.increaseTimer = setInterval(() => {
-          update[type] = this[action](type);
-          this.setState(update);
-        }, 70);
-      }, 500);
+        this.setState(update);
 
-      this.mouseUpListener = () => {
-        clearTimeout(this.timer);
-        clearInterval(this.increaseTimer);
-        this.props.setTime(type, this.state[type]);
-        document.body.removeEventListener("mouseup", this.mouseUpListener);
-        document.body.removeEventListener("touchend", this.mouseUpListener);
-      };
+        this.timer = setTimeout(() => {
+          this.increaseTimer = setInterval(() => {
+            update[type] = this[action](type);
+            this.setState(update);
+          }, 70);
+        }, 500);
 
-      document.body.addEventListener("mouseup", this.mouseUpListener);
-      document.body.addEventListener("touchend", this.mouseUpListener);
+        this.mouseUpListener = () => {
+          clearTimeout(this.timer);
+          clearInterval(this.increaseTimer);
+          this.props.setTime(type, this.state[type]);
+          document.body.removeEventListener("mouseup", this.mouseUpListener);
+          document.body.removeEventListener("touchend", this.mouseUpListener);
+        };
+
+        document.body.addEventListener("mouseup", this.mouseUpListener);
+        document.body.addEventListener("touchend", this.mouseUpListener);
+      }
     };
   }
 

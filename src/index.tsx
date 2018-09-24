@@ -22,6 +22,7 @@ import getMinutes from "date-fns/get_minutes";
 import getSeconds from "date-fns/get_seconds";
 import getMilliseconds from "date-fns/get_milliseconds";
 import isEqual from "date-fns/is_equal";
+import isDateValid from "date-fns/is_valid";
 
 import toUtc from "./toUtc";
 import fromUtc from "./fromUtc";
@@ -394,7 +395,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       updateOn: updateOn,
       inputFormat: formats.datetime,
       viewDate: viewDate,
-      selectedDate: selectedDate,
+      selectedDate:
+        selectedDate && isDateValid(selectedDate) ? selectedDate : undefined,
       inputValue: inputValue,
       open: props.open
     };
@@ -595,16 +597,10 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       date = setMilliseconds(date, valInt);
     }
 
-    if (!this.props.value) {
-      this.setState({
-        selectedDate: date,
-        inputValue: format(
-          date,
-          this.state.inputFormat,
-          this.getFormatOptions()
-        )
-      });
-    }
+    this.setState({
+      selectedDate: date,
+      inputValue: format(date, this.state.inputFormat, this.getFormatOptions())
+    });
   };
 
   updateSelectedDate: UpdateSelectedDateFunc = (e, close) => {
@@ -626,7 +622,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       date = setDate(setMonth(viewDate, getMonth(viewDate) + modifier), value);
     } else if (target.className.indexOf("rdtMonth") !== -1) {
       date = setDate(setMonth(viewDate, value), getDate(currentDate));
-    } else if (target.className.indexOf("rdtYear") !== -1) {
+    } else {
       date = setYear(
         setDate(
           setMonth(viewDate, getMonth(currentDate)),
