@@ -8,6 +8,7 @@ import YearsView from "../YearsView";
 import renderer from "react-test-renderer";
 import { advanceTo as mockDateTo } from "jest-date-mock";
 
+import parse from "date-fns/parse";
 import addDays from "date-fns/add_days";
 import getDate from "date-fns/get_date";
 import isAfter from "date-fns/is_after";
@@ -32,16 +33,14 @@ describe("DateTime component", () => {
 
   it("value: set to arbitrary value", () => {
     const tree = renderer
-      .create(<DateTime value={new Date("December 21, 2016 05:36 PM")} />)
+      .create(<DateTime value={parse("December 21, 2016 05:36 PM")} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
 
   it("defaultValue: set to arbitrary value", () => {
     const tree = renderer
-      .create(
-        <DateTime defaultValue={new Date("December 21, 2016 05:36 PM")} />
-      )
+      .create(<DateTime defaultValue={parse("December 21, 2016 05:36 PM")} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -88,9 +87,45 @@ describe("DateTime component", () => {
       expect(tree).toMatchSnapshot();
     });
 
+    it("should support change true -> false", () => {
+      const tree = renderer.create(<DateTime open={true} />);
+      expect(tree.toJSON()).toMatchSnapshot();
+
+      tree.update(<DateTime open={false} />);
+      expect(tree.toJSON()).toMatchSnapshot();
+    });
+
     it("set to false", () => {
       const tree = renderer.create(<DateTime open={false} />).toJSON();
       expect(tree).toMatchSnapshot();
+    });
+
+    it("should support change false -> true", () => {
+      const tree = renderer.create(<DateTime open={false} />);
+      expect(tree.toJSON()).toMatchSnapshot();
+
+      tree.update(<DateTime open={true} />);
+      expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    describe("undefined `open` prop", () => {
+      it("should hide when changing prop if closeOnSelect is true", () => {
+        const tree = renderer.create(
+          <DateTime
+            value={parse("December 21, 2016 05:36 PM")}
+            closeOnSelect={true}
+          />
+        );
+        expect(tree.toJSON()).toMatchSnapshot();
+
+        // Click into the input field
+        tree.root.findByType("input").props.onClick();
+        expect(tree.toJSON()).toMatchSnapshot();
+
+        // Change the value
+        tree.update(<DateTime value={parse("December 21, 2016 03:36 PM")} />);
+        expect(tree.toJSON()).toMatchSnapshot();
+      });
     });
   });
 
@@ -125,7 +160,7 @@ describe("DateTime component", () => {
     });
   });
 
-  it("className: set to arbitraty value", () => {
+  it("className: set to arbitrary value", () => {
     const tree = renderer
       .create(<DateTime className={"arbitrary-value"} />)
       .toJSON();

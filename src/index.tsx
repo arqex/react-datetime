@@ -438,26 +438,12 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const formats = this.getFormats(nextProps);
-    let updatedState: any = {};
+    const updatedState = this.getStateFromProps(nextProps);
 
-    if (
-      nextProps.value !== this.props.value ||
-      formats.datetime !== this.getFormats(this.props).datetime
-    ) {
-      updatedState = this.getStateFromProps(nextProps);
-    }
-
-    if (updatedState.open === undefined) {
-      if (typeof nextProps.open !== "undefined") {
-        updatedState.open = nextProps.open;
-      } else if (
-        this.props.closeOnSelect &&
-        this.state.currentView !== viewModes.TIME
-      ) {
-        updatedState.open = false;
-      } else {
-        updatedState.open = this.state.open;
-      }
+    // If it's not a controlled component
+    // Any change will close the picker
+    if (updatedState.open === undefined && this.props.closeOnSelect) {
+      updatedState.open = false;
     }
 
     if (nextProps.viewMode !== this.props.viewMode) {
