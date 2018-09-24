@@ -10,8 +10,8 @@ import isToday from "date-fns/is_today";
 import setDate from "date-fns/set_date";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
-import onClickOutside from "react-onclickoutside";
 import { IsValidDateFunc, UpdateSelectedDateFunc } from "./";
+import noop from "./noop";
 
 interface DaysViewProps {
   /*
@@ -25,9 +25,9 @@ interface DaysViewProps {
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
   viewDate?: Date | string;
-  subtractTime: any;
-  addTime: any;
-  showView: any;
+  subtractTime?: any;
+  addTime?: any;
+  showView?: any;
   selectedDate?: Date;
 
   updateSelectedDate: UpdateSelectedDateFunc;
@@ -37,7 +37,7 @@ interface DaysViewProps {
   If true the time will be displayed using the defaults for the current locale.
   If false the timepicker is disabled and the component can be used as datepicker.
   */
-  timeFormat: boolean | string;
+  timeFormat?: boolean | string;
 
   /*
   Define the dates that can be selected. The function receives (currentDate, selectedDate)
@@ -55,13 +55,18 @@ interface DaysViewProps {
     currentDate: any,
     selectedDate?: Date
   ) => JSX.Element;
-
-  handleClickOutside: any;
 }
 
 interface DaysViewState {}
 
 class DaysView extends React.Component<DaysViewProps, DaysViewState> {
+  static defaultProps = {
+    subtractTime: noop,
+    showView: noop,
+    addTime: noop,
+    updateSelectedDate: noop
+  };
+
   constructor(props) {
     super(props);
 
@@ -277,10 +282,6 @@ class DaysView extends React.Component<DaysViewProps, DaysViewState> {
   alwaysValidDate() {
     return true;
   }
-
-  handleClickOutside() {
-    this.props.handleClickOutside();
-  }
 }
 
-export default onClickOutside(DaysView);
+export default DaysView;

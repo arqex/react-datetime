@@ -10,11 +10,12 @@ import isBefore from "date-fns/is_before";
 import getHours from "date-fns/get_hours";
 import getMinutes from "date-fns/get_minutes";
 import getSeconds from "date-fns/get_seconds";
+import getMilliseconds from "date-fns/get_milliseconds";
 import getDate from "date-fns/get_date";
 import getMonth from "date-fns/get_month";
 import getYear from "date-fns/get_year";
 import nl from "date-fns/locale/nl";
-import sv from "date-fns/locale/sv";
+import fr from "date-fns/locale/fr";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -287,15 +288,43 @@ describe("DateTime", () => {
     ).toEqual("10");
   });
 
+  it("should switch to previous month's view when clicking a day in the previous month", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({ defaultValue: date });
+
+    utils.openDatepicker(component);
+    utils.clickNthDay(component, 0);
+
+    expect(utils.getInputValue(component)).toEqual(
+      "12/26/1999 2:02 AM"
+    );
+
+    expect(component.find(".rdtSwitch").text()).toEqual("December 1999");
+  });
+
+  it("should switch to next month's view when clicking a day in the next month", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({ defaultValue: date });
+
+    utils.openDatepicker(component);
+    utils.clickNthDay(component, 41);
+
+    expect(utils.getInputValue(component)).toEqual(
+      "02/05/2000 2:02 AM"
+    );
+
+    expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
+  });
+
   it("open picker", () => {
-    const component = utils.createDatetime();
+    const component = utils.createDatetime({});
     expect(utils.isOpen(component)).toBeFalsy();
     utils.openDatepicker(component);
     expect(utils.isOpen(component)).toBeTruthy();
   });
 
   it("opens picker when clicking on input", () => {
-    const component = utils.createDatetime();
+    const component = utils.createDatetime({});
     expect(utils.isOpen(component)).toBeFalsy();
     component.find(".form-control").simulate("click");
     expect(utils.isOpen(component)).toBeTruthy();
@@ -536,12 +565,15 @@ describe("DateTime", () => {
     });
 
     it("renderInput", () => {
-      const renderInput = (props, openCalendar) => {
+      const renderInput = (props, openCalendar, closeCalendar) => {
         return (
           <div>
             <input {...props} />
             <button className="custom-open" onClick={openCalendar}>
               open calendar
+            </button>
+            <button className="custom-close" onClick={closeCalendar}>
+              close calendar
             </button>
           </div>
         );
@@ -552,6 +584,14 @@ describe("DateTime", () => {
       expect(utils.isOpen(component)).toBeFalsy();
       utils.clickOnElement(component.find("button.custom-open"));
       expect(utils.isOpen(component)).toBeTruthy();
+      utils.clickOnElement(component.find("button.custom-open"));
+      expect(utils.isOpen(component)).toBeTruthy();
+
+      expect(component.find("button.custom-close").length).toEqual(1);
+      utils.clickOnElement(component.find("button.custom-close"));
+      expect(utils.isOpen(component)).toBeFalsy();
+      utils.clickOnElement(component.find("button.custom-close"));
+      expect(utils.isOpen(component)).toBeFalsy();
     });
 
     it("renderDay", () => {
@@ -680,8 +720,11 @@ describe("DateTime", () => {
     });
 
     it("closeOnTab=false", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        component = utils.createDatetime({ value: date, closeOnTab: false });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        value: date,
+        closeOnTab: false
+      });
 
       expect(utils.isOpen(component)).toBeFalsy();
       utils.openDatepicker(component);
@@ -708,11 +751,11 @@ describe("DateTime", () => {
     });
 
     it("disableOnClickOutside=false", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        component = utils.createDatetime({
-          value: date,
-          disableOnClickOutside: false
-        });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        value: date,
+        disableOnClickOutside: false
+      });
 
       expect(utils.isOpen(component)).toBeFalsy();
       utils.openDatepicker(component);
@@ -722,23 +765,45 @@ describe("DateTime", () => {
       expect(utils.isOpen(component)).toBeFalsy();
     });
 
-    it("increase time", () => {
-      let i = 0;
+    it("increase hour with value provided should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        value: date
+      });
+
+      // Check hour
+      expect(utils.getHours(component)).toEqual("2");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+    });
+
+    it("increase hour with no value/defaultValue provided", done => {
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        onChange: selected => {
+          expect(getHours(selected)).toEqual(13);
+          done();
+        }
+      });
+
+      // Check hour
+      expect(utils.getHours(component)).toEqual("12");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("13");
+    });
+
+    it("increase hours", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         timeFormat: "HH:mm:ss:SSS",
         viewMode: "time",
         defaultValue: date,
         onChange: selected => {
-          // TODO: Trigger onChange when increasing time
-          i++;
-          if (i > 2) {
-            expect(true).toEqual(false); // Proof that this is not called
-            expect(getHours(selected)).toEqual(3);
-            expect(getMinutes(selected)).toEqual(3);
-            expect(getSeconds(selected)).toEqual(3);
-            //done();
-          }
+          expect(getHours(selected)).toEqual(3);
+          done();
         }
       });
 
@@ -746,11 +811,97 @@ describe("DateTime", () => {
       expect(utils.getHours(component)).toEqual("2");
       utils.increaseHour(component);
       expect(utils.getHours(component)).toEqual("3");
+    });
+
+    it("increase minute with value provided should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        value: date
+      });
+
+      // Check minute
+      expect(utils.getMinutes(component)).toEqual("02");
+      utils.increaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("02");
+    });
+
+    it("increase minute with no value/defaultValue provided", done => {
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(1);
+          done();
+        }
+      });
+
+      // Check minute
+      expect(utils.getMinutes(component)).toEqual("00");
+      utils.increaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("01");
+    });
+
+    it("increase minutes", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(3);
+          done();
+        }
+      });
 
       // Check minute
       expect(utils.getMinutes(component)).toEqual("02");
       utils.increaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("03");
+    });
+
+    it("increase second with value provided should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        value: date
+      });
+
+      // Check second
+      expect(utils.getSeconds(component)).toEqual("02");
+      utils.increaseSecond(component);
+      expect(utils.getSeconds(component)).toEqual("02");
+    });
+
+    it("increase second with no value/defaultValue provided", done => {
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        onChange: selected => {
+          expect(getSeconds(selected)).toEqual(1);
+          done();
+        }
+      });
+
+      // Check second
+      expect(utils.getSeconds(component)).toEqual("00");
+      utils.increaseSecond(component);
+      expect(utils.getSeconds(component)).toEqual("01");
+    });
+
+    it("increase seconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getSeconds(selected)).toEqual(3);
+          done();
+        }
+      });
 
       // Check second
       expect(utils.getSeconds(component)).toEqual("02");
@@ -758,35 +909,101 @@ describe("DateTime", () => {
       expect(utils.getSeconds(component)).toEqual("03");
     });
 
-    it("decrease time", () => {
-      let i = 0;
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        component = utils.createDatetime({
-          timeFormat: "HH:mm:ss:SSS",
-          viewMode: "time",
-          defaultValue: date,
-          onChange: selected => {
-            // TODO: Trigger onChange when increasing time
-            i++;
-            if (i > 2) {
-              expect(true).toEqual(false); // Proof that this is not called
-              expect(getHours(selected)).toEqual(1);
-              expect(getMinutes(selected)).toEqual(1);
-              expect(getSeconds(selected)).toEqual(1);
-              //done();
-            }
-          }
-        });
+    it("increase millisecond with value provided should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        value: date
+      });
+
+      // Check millisecond
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.increaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("002");
+    });
+
+    it("increase millisecond with no value/defaultValue provided", done => {
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        onChange: selected => {
+          expect(getMilliseconds(selected)).toEqual(1);
+          done();
+        }
+      });
+
+      // Check millisecond
+      expect(utils.getMilliseconds(component)).toEqual("000");
+      utils.increaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("001");
+    });
+
+    it("increase milliseconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getMilliseconds(selected)).toEqual(3);
+          done();
+        }
+      });
+
+      // Check millisecond
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.increaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("003");
+    });
+
+    it("decrease hours", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getHours(selected)).toEqual(1);
+          done();
+        }
+      });
 
       // Check hour
       expect(utils.getHours(component)).toEqual("2");
       utils.decreaseHour(component);
       expect(utils.getHours(component)).toEqual("1");
+    });
+
+    it("decrease minutes", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(1);
+          done();
+        }
+      });
 
       // Check minute
       expect(utils.getMinutes(component)).toEqual("02");
       utils.decreaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("01");
+    });
+
+    it("decrease seconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getSeconds(selected)).toEqual(1);
+          done();
+        }
+      });
 
       // Check second
       expect(utils.getSeconds(component)).toEqual("02");
@@ -794,40 +1011,170 @@ describe("DateTime", () => {
       expect(utils.getSeconds(component)).toEqual("01");
     });
 
-    it("long increase time", done => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        component = utils.createDatetime({
-          timeFormat: "HH:mm:ss:SSS",
-          viewMode: "time",
-          defaultValue: date
-        });
+    it("decrease milliseconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        onChange: selected => {
+          expect(getMilliseconds(selected)).toEqual(1);
+          done();
+        }
+      });
 
-      utils.increaseHour(component);
-      setTimeout(() => {
-        expect(utils.getHours(component)).not.toEqual("2");
-        expect(utils.getHours(component)).not.toEqual("3");
-        done();
-      }, 920);
+      // Check millisecond
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.decreaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("001");
     });
 
-    it("long decrease time", done => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        component = utils.createDatetime({
-          timeFormat: "HH:mm:ss:SSS",
-          viewMode: "time",
-          defaultValue: date
-        });
+    it("right click on increase hour should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
 
-      utils.decreaseHour(component);
-      setTimeout(() => {
-        expect(utils.getHours(component)).not.toEqual("1");
-        expect(utils.getHours(component)).not.toEqual("0");
-        done();
-      }, 920);
+      expect(utils.getHours(component)).toEqual("2");
+      utils.rightClickIncreaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
     });
 
-    it("timeConstraints -> increase time", () => {
-      let i = 0;
+    it("right click on decrease hour should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getHours(component)).toEqual("2");
+      utils.rightClickDecreaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+    });
+
+    it("right click on increase minute should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getMinutes(component)).toEqual("02");
+      utils.rightClickIncreaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("02");
+    });
+
+    it("right click on decrease minute should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getMinutes(component)).toEqual("02");
+      utils.rightClickDecreaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("02");
+    });
+
+    it("right click on increase second should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getSeconds(component)).toEqual("02");
+      utils.rightClickIncreaseSecond(component);
+      expect(utils.getSeconds(component)).toEqual("02");
+    });
+
+    it("right click on decrease second should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getSeconds(component)).toEqual("02");
+      utils.rightClickDecreaseSecond(component);
+      expect(utils.getSeconds(component)).toEqual("02");
+    });
+
+    it("right click on increase millisecond should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.rightClickIncreaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("002");
+    });
+
+    it("right click on decrease millisecond should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.rightClickDecreaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("002");
+    });
+
+    it("Toggle down through day part (AM/PM)", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS A",
+        viewMode: "time",
+        defaultValue: date,
+        open: true
+      });
+
+      // Toggle through day part (AM/PM)
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.decreaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.decreaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("AM");
+    });
+
+    it("Toggle up through day part (AM/PM)", () => {
+      const date = new Date(2000, 0, 15, 14, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS A",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      // Toggle through day part (AM/PM)
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.increaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.increaseDayPart(component);
+      expect(utils.getDayPart(component)).toEqual("PM");
+    });
+
+    it("timeConstraints -> increase hour", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         timeFormat: "HH:mm:ss:SSS",
@@ -838,55 +1185,98 @@ describe("DateTime", () => {
           minutes: { step: 15 }
         },
         onChange: selected => {
-          // TODO
-          i++;
-          if (i > 2) {
-            expect(getMinutes(selected)).toEqual(17);
-            expect(getSeconds(selected)).toEqual(3);
-            //done();
-          }
+          expect(getHours(selected)).toEqual(3);
+          done();
         }
       });
 
       utils.increaseHour(component);
       expect(utils.getHours(component)).toEqual("3");
+    });
+
+    it("timeConstraints -> increase minutes", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: {
+          hours: { max: 6, step: 8 },
+          minutes: { step: 15 }
+        },
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(17);
+          done();
+        }
+      });
 
       utils.increaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("17");
+    });
+
+    it("timeConstraints -> increase seconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: {
+          hours: { max: 6, step: 8 },
+          minutes: { step: 15 }
+        },
+        onChange: selected => {
+          expect(getSeconds(selected)).toEqual(3);
+          done();
+        }
+      });
 
       utils.increaseSecond(component);
       expect(utils.getSeconds(component)).toEqual("03");
     });
 
-    it("timeConstraints -> decrease time", () => {
-      let i = 0;
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        component = utils.createDatetime({
-          timeFormat: "HH:mm:ss:SSS",
-          viewMode: "time",
-          defaultValue: date,
-          timeConstraints: { minutes: { step: 15 } },
-          onChange: selected => {
-            // TODO
-            i++;
-            if (i > 2) {
-              expect(getMinutes(selected)).toEqual(17);
-              expect(getSeconds(selected)).toEqual(3);
-              //done();
-            }
-          }
-        });
+    it("timeConstraints -> increase milliseconds", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: {
+          hours: { max: 6, step: 8 },
+          minutes: { step: 15 }
+        },
+        onChange: selected => {
+          expect(getMilliseconds(selected)).toEqual(3);
+          done();
+        }
+      });
+
+      utils.increaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("003");
+    });
+
+    it("timeConstraints -> decrease time", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: { minutes: { step: 15 } },
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(47);
+          done();
+        }
+      });
 
       utils.decreaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("47");
     });
 
     it("isValidDate -> disable months", () => {
-      const dateBefore = parse("2018-06-01"),
-        component = utils.createDatetime({
-          viewMode: "months",
-          isValidDate: current => isBefore(current, dateBefore)
-        });
+      const dateBefore = parse("2018-06-01");
+      const component = utils.createDatetime({
+        viewMode: "months",
+        isValidDate: current => isBefore(current, dateBefore)
+      });
 
       expect(utils.getNthMonth(component, 0).hasClass("rdtDisabled")).toEqual(
         false
@@ -931,19 +1321,54 @@ describe("DateTime", () => {
 
     it("locale with viewMode=months", () => {
       const component = utils.createDatetime({
-          locale: nl,
-          viewMode: "months"
-        }),
-        expectedMonths = ["mar", "mei"],
-        actualMonths = [
-          utils.getNthMonth(component, 2).text(),
-          utils.getNthMonth(component, 4).text()
-        ];
+        locale: nl,
+        viewMode: "months"
+      });
+      const expectedMonths = ["mar", "mei"];
+      const actualMonths = [
+        utils.getNthMonth(component, 2).text(),
+        utils.getNthMonth(component, 4).text()
+      ];
 
       expect(actualMonths).toEqual(expectedMonths);
     });
 
-    it("closeOnSelect=false", done => {
+    it("closeOnSelect=true without controlled value", done => {
+      const component = utils.createDatetime({ closeOnSelect: true });
+
+      // A unknown race condition is causing this test to fail without this time out,
+      // and when the test fails it says:
+      // 'Timeout - Async callback was not invoked within timeout'
+      // Ideally it would say something else but at least we know the tests are passing now
+      setTimeout(() => {
+        expect(utils.isOpen(component)).toBeFalsy();
+        utils.openDatepicker(component);
+        expect(utils.isOpen(component)).toBeTruthy();
+        utils.clickNthDay(component, 2);
+        expect(utils.isOpen(component)).toBeFalsy();
+        done();
+      }, 0);
+    });
+
+    it("closeOnSelect=false with controlled value", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({ value: date, closeOnSelect: false });
+
+      // A unknown race condition is causing this test to fail without this time out,
+      // and when the test fails it says:
+      // 'Timeout - Async callback was not invoked within timeout'
+      // Ideally it would say something else but at least we know the tests are passing now
+      setTimeout(() => {
+        expect(utils.isOpen(component)).toBeFalsy();
+        utils.openDatepicker(component);
+        expect(utils.isOpen(component)).toBeTruthy();
+        utils.clickNthDay(component, 2);
+        expect(utils.isOpen(component)).toBeTruthy();
+        done();
+      }, 0);
+    });
+
+    it("closeOnSelect=false without controlled value", done => {
       const component = utils.createDatetime({ closeOnSelect: false });
 
       // A unknown race condition is causing this test to fail without this time out,
@@ -960,8 +1385,9 @@ describe("DateTime", () => {
       }, 0);
     });
 
-    it("closeOnSelect=true", done => {
-      const component = utils.createDatetime({ closeOnSelect: true });
+    it("closeOnSelect=true with controlled value", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({ value: date, closeOnSelect: true });
 
       // A unknown race condition is causing this test to fail without this time out,
       // and when the test fails it says:
@@ -979,23 +1405,26 @@ describe("DateTime", () => {
 
     describe("defaultValue of type", () => {
       it("date", () => {
-        const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-          strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A"),
-          component = utils.createDatetime({ defaultValue: date });
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const strDate =
+          format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A");
+        const component = utils.createDatetime({ defaultValue: date });
         expect(utils.getInputValue(component)).toEqual(strDate);
       });
 
       it("Date", () => {
-        const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-          strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A"),
-          component = utils.createDatetime({ defaultValue: date });
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const strDate =
+          format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A");
+        const component = utils.createDatetime({ defaultValue: date });
         expect(utils.getInputValue(component)).toEqual(strDate);
       });
 
       it("string", () => {
-        const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-          strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A"),
-          component = utils.createDatetime({ defaultValue: strDate });
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const strDate =
+          format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A");
+        const component = utils.createDatetime({ defaultValue: strDate });
         expect(utils.getInputValue(component)).toEqual(strDate);
       });
     });
@@ -1007,7 +1436,6 @@ describe("DateTime", () => {
           timeFormat: "HH:mm:ss:SSS"
         });
         expect(component.find(".rdtCounter").length).toEqual(4);
-        // TODO: Test that you can input a value in milli seconds input
       });
 
       it("seconds", () => {
@@ -1037,12 +1465,12 @@ describe("DateTime", () => {
 
     describe("being updated and should trigger update", () => {
       it("dateFormat -> value should change format", done => {
-        const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-          component = utils.createDatetime({
-            dateFormat: "YYYY-MM-DD",
-            timeFormat: false,
-            defaultValue: date
-          });
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const component = utils.createDatetime({
+          dateFormat: "YYYY-MM-DD",
+          timeFormat: false,
+          defaultValue: date
+        });
 
         const valueBefore = utils.getInputValue(component);
         // A unknown race condition is causing this test to fail without this time out,
@@ -1059,8 +1487,8 @@ describe("DateTime", () => {
       });
 
       it("UTC -> value should change format (true->false)", () => {
-        const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-          component = utils.createDatetime({ value: date, utc: true });
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const component = utils.createDatetime({ value: date, utc: true });
 
         const valueBefore = utils.getInputValue(component);
         component.setProps({ utc: false }, () => {
@@ -1070,9 +1498,21 @@ describe("DateTime", () => {
         });
       });
 
+      it("UTC -> value should change format (true->false) without date", () => {
+        const component = utils.createDatetime({ utc: true });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual("");
+
+        component.setProps({ utc: false }, () => {
+          const valueAfter = utils.getInputValue(component);
+          expect(valueAfter).toEqual("");
+        });
+      });
+
       it("UTC -> value should change format (false->true)", () => {
-        const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-          component = utils.createDatetime({ value: date, utc: false });
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const component = utils.createDatetime({ value: date, utc: false });
 
         const valueBefore = utils.getInputValue(component);
         component.setProps({ utc: true }, () => {
@@ -1082,16 +1522,52 @@ describe("DateTime", () => {
         });
       });
 
+      it("UTC -> value should change format (false->true) without date", () => {
+        const component = utils.createDatetime({ utc: false });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual("");
+
+        component.setProps({ utc: true }, () => {
+          const valueAfter = utils.getInputValue(component);
+          expect(valueAfter).toEqual("");
+        });
+      });
+
+      it("locale -> value should change format (nl->fr)", () => {
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const component = utils.createDatetime({ dateFormat: "MMMM Do YYYY", value: date, locale: nl });
+
+        const valueBefore = utils.getInputValue(component);
+        component.setProps({ locale: fr }, () => {
+          const valueAfter = utils.getInputValue(component);
+
+          expect(valueBefore).not.toEqual(valueAfter);
+        });
+      });
+
+      it("locale -> value should change format (nl->fr) without date", () => {
+        const component = utils.createDatetime({ dateFormat: "MMMM Do YYYY", locale: nl });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual("");
+
+        component.setProps({ locale: fr }, () => {
+          const valueAfter = utils.getInputValue(component);
+          expect(valueAfter).toEqual("");
+        });
+      });
+
       it("locale -> picker should change language (viewMode=days)", () => {
         const component = utils.createDatetime({
-            viewMode: "days",
-            locale: nl
-          }),
-          weekdaysBefore = component
-            .find(".rdtDays .dow")
-            .map(element => element.text());
+          viewMode: "days",
+          locale: nl
+        });
+        const weekdaysBefore = component
+          .find(".rdtDays .dow")
+          .map(element => element.text());
 
-        component.setProps({ locale: sv });
+        component.setProps({ locale: fr });
         const weekdaysAfter = component
           .find(".rdtDays .dow")
           .map(element => element.text());
@@ -1101,15 +1577,15 @@ describe("DateTime", () => {
 
       it("locale -> picker should change language (viewMode=months)", () => {
         const component = utils.createDatetime({
-            viewMode: "months",
-            locale: nl
-          }),
-          monthsBefore = [
-            utils.getNthMonth(component, 2).text(),
-            utils.getNthMonth(component, 4).text()
-          ];
+          viewMode: "months",
+          locale: nl
+        });
+        const monthsBefore = [
+          utils.getNthMonth(component, 2).text(),
+          utils.getNthMonth(component, 4).text()
+        ];
 
-        component.setProps({ locale: sv });
+        component.setProps({ locale: fr });
         const monthsAfter = [
           utils.getNthMonth(component, 2).text(),
           utils.getNthMonth(component, 4).text()
@@ -1117,19 +1593,55 @@ describe("DateTime", () => {
 
         expect(monthsBefore).not.toEqual(monthsAfter);
       });
+
+      it("TimeView -> value should change format (AM -> am)", () => {
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const component = utils.createDatetime({
+          viewMode: "time",
+          value: date,
+          dateFormat: false,
+          timeFormat: " A"
+        });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual(" AM");
+        component.setProps({ timeFormat: " a" }, () => {
+          const valueAfter = utils.getInputValue(component);
+
+          expect(valueAfter).toEqual(" am");
+        });
+      });
+
+      it("TimeView -> value should change format (pm -> PM)", () => {
+        const date = new Date(2000, 0, 15, 14, 2, 2, 2);
+        const component = utils.createDatetime({
+          viewMode: "time",
+          value: date,
+          dateFormat: false,
+          timeFormat: " a"
+        });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual(" pm");
+        component.setProps({ timeFormat: " A" }, () => {
+          const valueAfter = utils.getInputValue(component);
+
+          expect(valueAfter).toEqual(" PM");
+        });
+      });
     });
   });
 
   describe("event listeners", () => {
     describe("onBlur", () => {
       it("when selecting a date", () => {
-        const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-          onBlurFn = jest.fn(),
-          component = utils.createDatetime({
-            value: date,
-            onBlur: onBlurFn,
-            closeOnSelect: true
-          });
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const onBlurFn = jest.fn();
+        const component = utils.createDatetime({
+          value: date,
+          onBlur: onBlurFn,
+          closeOnSelect: true
+        });
 
         utils.openDatepicker(component);
         // Close component by selecting a date
@@ -1138,12 +1650,12 @@ describe("DateTime", () => {
       });
 
       it("when selecting date (value=null and closeOnSelect=true)", () => {
-        const onBlurFn = jest.fn(),
-          component = utils.createDatetime({
-            value: null,
-            onBlur: onBlurFn,
-            closeOnSelect: true
-          });
+        const onBlurFn = jest.fn();
+        const component = utils.createDatetime({
+          value: null,
+          onBlur: onBlurFn,
+          closeOnSelect: true
+        });
 
         utils.openDatepicker(component);
         // Close component by selecting a date
@@ -1152,12 +1664,12 @@ describe("DateTime", () => {
       });
 
       it("when selecting date (value=null and closeOnSelect=false)", () => {
-        const onBlurFn = jest.fn(),
-          component = utils.createDatetime({
-            value: null,
-            onBlur: onBlurFn,
-            closeOnSelect: false
-          });
+        const onBlurFn = jest.fn();
+        const component = utils.createDatetime({
+          value: null,
+          onBlur: onBlurFn,
+          closeOnSelect: false
+        });
 
         utils.openDatepicker(component);
         // Close component by selecting a date
@@ -1167,9 +1679,12 @@ describe("DateTime", () => {
     });
 
     it("onFocus when opening datepicker", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        onFocusFn = jest.fn(),
-        component = utils.createDatetime({ value: date, onFocus: onFocusFn });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const onFocusFn = jest.fn();
+      const component = utils.createDatetime({
+        value: date,
+        onFocus: onFocusFn
+      });
 
       utils.openDatepicker(component);
       expect(onFocusFn).toHaveBeenCalledTimes(1);
@@ -1293,7 +1808,15 @@ describe("DateTime", () => {
           defaultValue: date,
           onChange: selected => {
             i++;
-            if (i > 2) {
+            if (i === 1) {
+              expect(getDate(selected)).toEqual(2);
+              expect(getMonth(selected)).toEqual(getMonth(date));
+              expect(getYear(selected)).toEqual(getYear(date));
+            } else if (i === 2) {
+              expect(getDate(selected)).toEqual(3);
+              expect(getMonth(selected)).toEqual(getMonth(date));
+              expect(getYear(selected)).toEqual(getYear(date));
+            } else if (i === 3) {
               expect(getDate(selected)).toEqual(4);
               expect(getMonth(selected)).toEqual(getMonth(date));
               expect(getYear(selected)).toEqual(getYear(date));
@@ -1318,7 +1841,9 @@ describe("DateTime", () => {
 
         utils.clickNthMonth(component, 2);
         expect(onChangeFn).toHaveBeenCalledTimes(1);
-        //expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual("2000-03-15T02:02:02.002Z");
+        expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual(
+          "2000-03-15T02:02:02.002Z"
+        );
       });
 
       // Passes locally but not on Travis
@@ -1336,13 +1861,6 @@ describe("DateTime", () => {
         expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual(
           "2001-01-15T02:02:02.002Z"
         );
-      });
-
-      it("when selecting time", () => {
-        // Did not manage to be able to get onChange to trigger, even though I know it does.
-        // The listener for the time buttons are set up differently because of having to handle both
-        // onMouseDown and onMouseUp. Not sure how to test it.
-        expect(true).toEqual(true);
       });
     });
   });
@@ -1423,65 +1941,65 @@ describe("DateTime", () => {
 
   describe("with set value", () => {
     it("date value", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A"),
-        component = utils.createDatetime({ value: date });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A");
+      const component = utils.createDatetime({ value: date });
       expect(utils.getInputValue(component)).toEqual(strDate);
     });
 
     it("Date value", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A"),
-        component = utils.createDatetime({ value: date });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A");
+      const component = utils.createDatetime({ value: date });
       expect(utils.getInputValue(component)).toEqual(strDate);
     });
 
     it("string value", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A"),
-        component = utils.createDatetime({ value: strDate });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A");
+      const component = utils.createDatetime({ value: strDate });
       expect(utils.getInputValue(component)).toEqual(strDate);
     });
 
     it("UTC value from local Date", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        dateUTC = date,
-        strDateUTC =
-          format(dateUTC, "MM/DD/YYYY") + " " + format(dateUTC, "h:mm A"),
-        component = utils.createDatetime({ value: date, utc: true });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const dateUTC = date;
+      const strDateUTC =
+        format(dateUTC, "MM/DD/YYYY") + " " + format(dateUTC, "h:mm A");
+      const component = utils.createDatetime({ value: date, utc: true });
       expect(utils.getInputValue(component)).toEqual(strDateUTC);
     });
 
     it("UTC value from UTC Date", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        dateUTC = date,
-        strDateUTC =
-          format(dateUTC, "MM/DD/YYYY") + " " + format(dateUTC, "h:mm A"),
-        component = utils.createDatetime({ value: dateUTC, utc: true });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const dateUTC = date;
+      const strDateUTC =
+        format(dateUTC, "MM/DD/YYYY") + " " + format(dateUTC, "h:mm A");
+      const component = utils.createDatetime({ value: dateUTC, utc: true });
       expect(utils.getInputValue(component)).toEqual(strDateUTC);
     });
 
     it("UTC value from UTC string", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        dateUTC = date,
-        strDateUTC =
-          format(dateUTC, "MM/DD/YYYY") + " " + format(dateUTC, "h:mm A"),
-        component = utils.createDatetime({ value: strDateUTC, utc: true });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const dateUTC = date;
+      const strDateUTC =
+        format(dateUTC, "MM/DD/YYYY") + " " + format(dateUTC, "h:mm A");
+      const component = utils.createDatetime({ value: strDateUTC, utc: true });
       expect(utils.getInputValue(component)).toEqual(strDateUTC);
     });
 
     it("invalid string value", done => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A"),
-        component = utils.createDatetime({
-          defaultValue: "invalid-value",
-          onChange: updated => {
-            expect(format(date, "MM/DD/YYYY h:mm A")).toEqual(
-              format(updated, "MM/DD/YYYY h:mm A")
-            );
-            done();
-          }
-        });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A");
+      const component = utils.createDatetime({
+        defaultValue: "invalid-value",
+        onChange: updated => {
+          expect(format(date, "MM/DD/YYYY h:mm A")).toEqual(
+            format(updated, "MM/DD/YYYY h:mm A")
+          );
+          done();
+        }
+      });
 
       expect(component.find(".form-control").getDOMNode().value).toEqual(
         "invalid-value"
@@ -1492,14 +2010,14 @@ describe("DateTime", () => {
     });
 
     it("delete invalid string value", done => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        component = utils.createDatetime({
-          defaultValue: date,
-          onChange: date => {
-            expect(date).toEqual("");
-            done();
-          }
-        });
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        defaultValue: date,
+        onChange: date => {
+          expect(date).toEqual("");
+          done();
+        }
+      });
 
       component
         .find(".form-control")
@@ -1507,18 +2025,18 @@ describe("DateTime", () => {
     });
 
     it("invalid Date object", done => {
-      const invalidValue = parse("bad"),
-        date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A"),
-        component = utils.createDatetime({
-          value: invalidValue,
-          onChange: updated => {
-            expect(format(date, "MM/DD/YYYY h:mm A")).toEqual(
-              format(updated, "MM/DD/YYYY h:mm A")
-            );
-            done();
-          }
-        });
+      const invalidValue = parse("bad");
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const strDate = format(date, "MM/DD/YYYY") + " " + format(date, "h:mm A");
+      const component = utils.createDatetime({
+        value: invalidValue,
+        onChange: updated => {
+          expect(format(date, "MM/DD/YYYY h:mm A")).toEqual(
+            format(updated, "MM/DD/YYYY h:mm A")
+          );
+          done();
+        }
+      });
 
       expect(component.find(".form-control").getDOMNode().value).toEqual("");
       component
