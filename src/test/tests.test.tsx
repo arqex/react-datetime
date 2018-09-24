@@ -289,14 +289,14 @@ describe("DateTime", () => {
   });
 
   it("open picker", () => {
-    const component = utils.createDatetime();
+    const component = utils.createDatetime({});
     expect(utils.isOpen(component)).toBeFalsy();
     utils.openDatepicker(component);
     expect(utils.isOpen(component)).toBeTruthy();
   });
 
   it("opens picker when clicking on input", () => {
-    const component = utils.createDatetime();
+    const component = utils.createDatetime({});
     expect(utils.isOpen(component)).toBeFalsy();
     component.find(".form-control").simulate("click");
     expect(utils.isOpen(component)).toBeTruthy();
@@ -881,7 +881,7 @@ describe("DateTime", () => {
       expect(utils.getMilliseconds(component)).toEqual("001");
     });
 
-    it("right click on times should do nothing", () => {
+    it("right click on increase hour should do nothing", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         timeFormat: "HH:mm:ss:SSS",
@@ -889,30 +889,97 @@ describe("DateTime", () => {
         defaultValue: date
       });
 
-      // Check hour
       expect(utils.getHours(component)).toEqual("2");
       utils.rightClickIncreaseHour(component);
       expect(utils.getHours(component)).toEqual("2");
+    });
+
+    it("right click on decrease hour should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getHours(component)).toEqual("2");
       utils.rightClickDecreaseHour(component);
       expect(utils.getHours(component)).toEqual("2");
+    });
 
-      // Check minute
+    it("right click on increase minute should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
       expect(utils.getMinutes(component)).toEqual("02");
       utils.rightClickIncreaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("02");
+    });
+
+    it("right click on decrease minute should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getMinutes(component)).toEqual("02");
       utils.rightClickDecreaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("02");
+    });
 
-      // Check second
+    it("right click on increase second should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
       expect(utils.getSeconds(component)).toEqual("02");
       utils.rightClickIncreaseSecond(component);
       expect(utils.getSeconds(component)).toEqual("02");
+    });
+
+    it("right click on decrease second should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      expect(utils.getSeconds(component)).toEqual("02");
       utils.rightClickDecreaseSecond(component);
       expect(utils.getSeconds(component)).toEqual("02");
+    });
 
-      // Check millsecond
+    it("right click on increase millisecond should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
       expect(utils.getMilliseconds(component)).toEqual("002");
       utils.rightClickIncreaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("002");
+    });
+
+    it("right click on decrease millisecond should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
       expect(utils.getMilliseconds(component)).toEqual("002");
       utils.rightClickDecreaseMillisecond(component);
       expect(utils.getMilliseconds(component)).toEqual("002");
@@ -921,7 +988,7 @@ describe("DateTime", () => {
     it("Toggle down through day part (AM/PM)", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
-        timeFormat: "HH:mm:ss A",
+        timeFormat: "HH:mm:ss:SSS A",
         viewMode: "time",
         defaultValue: date,
         open: true
@@ -942,7 +1009,7 @@ describe("DateTime", () => {
     it("Toggle up through day part (AM/PM)", () => {
       const date = new Date(2000, 0, 15, 14, 2, 2, 2);
       const component = utils.createDatetime({
-        timeFormat: "HH:mm:ss A",
+        timeFormat: "HH:mm:ss:SSS A",
         viewMode: "time",
         defaultValue: date
       });

@@ -591,7 +591,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       date = setMinutes(date, valInt);
     } else if (type === "seconds") {
       date = setSeconds(date, valInt);
-    } else if (type === "milliseconds") {
+    } else {
       date = setMilliseconds(date, valInt);
     }
 
@@ -617,8 +617,11 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     const value = parseInt(target.getAttribute("data-value"), 10);
 
     if (target.className.indexOf("rdtDay") !== -1) {
-      if (target.className.indexOf("rdtNew") !== -1) modifier = 1;
-      else if (target.className.indexOf("rdtOld") !== -1) modifier = -1;
+      if (target.className.indexOf("rdtNew") !== -1) {
+        modifier = 1;
+      } else if (target.className.indexOf("rdtOld") !== -1) {
+        modifier = -1;
+      }
 
       date = setDate(setMonth(viewDate, getMonth(viewDate) + modifier), value);
     } else if (target.className.indexOf("rdtMonth") !== -1) {

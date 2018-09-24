@@ -20,11 +20,11 @@ export const triggerDocumentUp = () => {
   }
 };
 
-export const createDatetime = (props = {}) => {
+export const createDatetime = (props: object) => {
   return mount(<DateTime {...props} />);
 };
 
-export const createDatetimeShallow = (props = {}) => {
+export const createDatetimeShallow = (props: object) => {
   return shallow(<DateTime {...props} />);
 };
 
@@ -170,7 +170,7 @@ export const decreaseMillisecond = (datetime, triggerUp = true) => {
 export const increaseDayPart = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
-    .at(6)
+    .at(8)
     .simulate("mouseDown");
 
   if (triggerUp) {
@@ -181,7 +181,7 @@ export const increaseDayPart = (datetime, triggerUp = true) => {
 export const decreaseDayPart = (datetime, triggerUp = true) => {
   datetime
     .find(".rdtCounter .rdtBtn")
-    .at(7)
+    .at(9)
     .simulate("mouseDown");
 
   if (triggerUp) {
@@ -291,7 +291,7 @@ export const getMilliseconds = datetime => {
 export const getDayPart = datetime => {
   return datetime
     .find(".rdtCount")
-    .at(3)
+    .at(4)
     .text();
 };
 

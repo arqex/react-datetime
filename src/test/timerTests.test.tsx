@@ -13,7 +13,7 @@ describe("timer tests", () => {
     jest.useFakeTimers();
   });
 
-  it("long increase time", () => {
+  it("long increase hour", () => {
     const date = new Date(2000, 0, 15, 2, 2, 2, 2);
     const component = utils.createDatetime({
       timeFormat: "HH:mm:ss:SSS",
@@ -38,7 +38,7 @@ describe("timer tests", () => {
     expect(utils.getHours(component)).toEqual("6");
   });
 
-  it("long decrease time", () => {
+  it("long decrease hour", () => {
     const date = new Date(2000, 0, 15, 2, 2, 2, 2);
     const component = utils.createDatetime({
       timeFormat: "HH:mm:ss:SSS",
@@ -61,5 +61,209 @@ describe("timer tests", () => {
     utils.triggerDocumentUp();
 
     expect(utils.getHours(component)).toEqual("22");
+  });
+
+  it("long increase minute", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({
+      timeFormat: "HH:mm:ss:SSS",
+      viewMode: "time",
+      defaultValue: date
+    });
+
+    utils.increaseMinute(component, false);
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getMinutes(component)).toEqual("04");
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getMinutes(component)).toEqual("06");
+
+    utils.triggerDocumentUp();
+
+    expect(utils.getMinutes(component)).toEqual("06");
+  });
+
+  it("long decrease minute", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({
+      timeFormat: "HH:mm:ss:SSS",
+      viewMode: "time",
+      defaultValue: date
+    });
+
+    utils.decreaseMinute(component, false);
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getMinutes(component)).toEqual("00");
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getMinutes(component)).toEqual("58");
+
+    utils.triggerDocumentUp();
+
+    expect(utils.getMinutes(component)).toEqual("58");
+  });
+
+  it("long increase second", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({
+      timeFormat: "HH:mm:ss:SSS",
+      viewMode: "time",
+      defaultValue: date
+    });
+
+    utils.increaseSecond(component, false);
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getSeconds(component)).toEqual("04");
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getSeconds(component)).toEqual("06");
+
+    utils.triggerDocumentUp();
+
+    expect(utils.getSeconds(component)).toEqual("06");
+  });
+
+  it("long decrease second", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({
+      timeFormat: "HH:mm:ss:SSS",
+      viewMode: "time",
+      defaultValue: date
+    });
+
+    utils.decreaseSecond(component, false);
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getSeconds(component)).toEqual("00");
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getSeconds(component)).toEqual("58");
+
+    utils.triggerDocumentUp();
+
+    expect(utils.getSeconds(component)).toEqual("58");
+  });
+
+  it("long increase millisecond", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({
+      timeFormat: "HH:mm:ss:SSS",
+      viewMode: "time",
+      defaultValue: date
+    });
+
+    utils.increaseMillisecond(component, false);
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getMilliseconds(component)).toEqual("004");
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getMilliseconds(component)).toEqual("006");
+
+    utils.triggerDocumentUp();
+
+    expect(utils.getMilliseconds(component)).toEqual("006");
+  });
+
+  it("long decrease millisecond", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({
+      timeFormat: "HH:mm:ss:SSS",
+      viewMode: "time",
+      defaultValue: date
+    });
+
+    utils.decreaseMillisecond(component, false);
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getMilliseconds(component)).toEqual("000");
+
+    jest.runOnlyPendingTimers();
+    jest.runOnlyPendingTimers();
+
+    expect(utils.getMilliseconds(component)).toEqual("998");
+
+    utils.triggerDocumentUp();
+
+    expect(utils.getMilliseconds(component)).toEqual("998");
+  });
+
+  describe("long increase daypart", () => {
+    it("should do nothing if the release is off of the arrow", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS A",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      utils.increaseDayPart(component, false);
+
+      jest.runOnlyPendingTimers();
+      jest.runOnlyPendingTimers();
+
+      expect(utils.getDayPart(component)).toEqual("PM");
+
+      jest.runOnlyPendingTimers();
+      jest.runOnlyPendingTimers();
+
+      expect(utils.getDayPart(component)).toEqual("PM");
+
+      utils.triggerDocumentUp();
+
+      expect(utils.getDayPart(component)).toEqual("PM");
+    });
+  });
+
+  describe("long decrease daypart", () => {
+    it("should do nothing if the release is off of the arrow", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS A",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      utils.decreaseDayPart(component, false);
+
+      jest.runOnlyPendingTimers();
+      jest.runOnlyPendingTimers();
+
+      expect(utils.getDayPart(component)).toEqual("PM");
+
+      jest.runOnlyPendingTimers();
+      jest.runOnlyPendingTimers();
+
+      expect(utils.getDayPart(component)).toEqual("PM");
+
+      utils.triggerDocumentUp();
+
+      expect(utils.getDayPart(component)).toEqual("PM");
+    });
   });
 });
