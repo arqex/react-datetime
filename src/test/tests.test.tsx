@@ -785,6 +785,36 @@ describe("DateTime", () => {
       expect(utils.getHours(component)).toEqual("3");
     });
 
+    it("increase minute with value provided should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        value: date
+      });
+
+      // Check minute
+      expect(utils.getMinutes(component)).toEqual("02");
+      utils.increaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("02");
+    });
+
+    it("increase minute with no value/defaultValue provided", done => {
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(1);
+          done();
+        }
+      });
+
+      // Check minute
+      expect(utils.getMinutes(component)).toEqual("00");
+      utils.increaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("01");
+    });
+
     it("increase minutes", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
@@ -803,6 +833,36 @@ describe("DateTime", () => {
       expect(utils.getMinutes(component)).toEqual("03");
     });
 
+    it("increase second with value provided should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        value: date
+      });
+
+      // Check second
+      expect(utils.getSeconds(component)).toEqual("02");
+      utils.increaseSecond(component);
+      expect(utils.getSeconds(component)).toEqual("02");
+    });
+
+    it("increase second with no value/defaultValue provided", done => {
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        onChange: selected => {
+          expect(getSeconds(selected)).toEqual(1);
+          done();
+        }
+      });
+
+      // Check second
+      expect(utils.getSeconds(component)).toEqual("00");
+      utils.increaseSecond(component);
+      expect(utils.getSeconds(component)).toEqual("01");
+    });
+
     it("increase seconds", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
@@ -819,6 +879,36 @@ describe("DateTime", () => {
       expect(utils.getSeconds(component)).toEqual("02");
       utils.increaseSecond(component);
       expect(utils.getSeconds(component)).toEqual("03");
+    });
+
+    it("increase millisecond with value provided should do nothing", () => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        value: date
+      });
+
+      // Check millisecond
+      expect(utils.getMilliseconds(component)).toEqual("002");
+      utils.increaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("002");
+    });
+
+    it("increase millisecond with no value/defaultValue provided", done => {
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        onChange: selected => {
+          expect(getMilliseconds(selected)).toEqual(1);
+          done();
+        }
+      });
+
+      // Check millisecond
+      expect(utils.getMilliseconds(component)).toEqual("000");
+      utils.increaseMillisecond(component);
+      expect(utils.getMilliseconds(component)).toEqual("001");
     });
 
     it("increase milliseconds", done => {
@@ -1215,7 +1305,42 @@ describe("DateTime", () => {
       expect(actualMonths).toEqual(expectedMonths);
     });
 
-    it("closeOnSelect=false", done => {
+    it("closeOnSelect=true without controlled value", done => {
+      const component = utils.createDatetime({ closeOnSelect: true });
+
+      // A unknown race condition is causing this test to fail without this time out,
+      // and when the test fails it says:
+      // 'Timeout - Async callback was not invoked within timeout'
+      // Ideally it would say something else but at least we know the tests are passing now
+      setTimeout(() => {
+        expect(utils.isOpen(component)).toBeFalsy();
+        utils.openDatepicker(component);
+        expect(utils.isOpen(component)).toBeTruthy();
+        utils.clickNthDay(component, 2);
+        expect(utils.isOpen(component)).toBeFalsy();
+        done();
+      }, 0);
+    });
+
+    it("closeOnSelect=false with controlled value", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({ value: date, closeOnSelect: false });
+
+      // A unknown race condition is causing this test to fail without this time out,
+      // and when the test fails it says:
+      // 'Timeout - Async callback was not invoked within timeout'
+      // Ideally it would say something else but at least we know the tests are passing now
+      setTimeout(() => {
+        expect(utils.isOpen(component)).toBeFalsy();
+        utils.openDatepicker(component);
+        expect(utils.isOpen(component)).toBeTruthy();
+        utils.clickNthDay(component, 2);
+        expect(utils.isOpen(component)).toBeTruthy();
+        done();
+      }, 0);
+    });
+
+    it("closeOnSelect=false without controlled value", done => {
       const component = utils.createDatetime({ closeOnSelect: false });
 
       // A unknown race condition is causing this test to fail without this time out,
@@ -1232,8 +1357,9 @@ describe("DateTime", () => {
       }, 0);
     });
 
-    it("closeOnSelect=true", done => {
-      const component = utils.createDatetime({ closeOnSelect: true });
+    it("closeOnSelect=true with controlled value", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({ value: date, closeOnSelect: true });
 
       // A unknown race condition is causing this test to fail without this time out,
       // and when the test fails it says:

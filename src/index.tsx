@@ -603,11 +603,12 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     });
   };
 
-  updateSelectedDate: UpdateSelectedDateFunc = (e, close) => {
+  updateSelectedDate: UpdateSelectedDateFunc = (e, tryClose = false) => {
     const target = e.target;
     let modifier = 0;
     const viewDate = this.state.viewDate;
     const currentDate = this.state.selectedDate || viewDate;
+    const close = tryClose && this.props.closeOnSelect;
     let date;
 
     const value = parseInt(target.getAttribute("data-value"), 10);
@@ -643,8 +644,9 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       getMilliseconds(currentDate)
     );
 
-    if (!this.props.value) {
-      const open = !(this.props.closeOnSelect && close);
+    const readonly = this.props.value;
+    if (!readonly) {
+      const open = !close;
       if (!open) {
         this.props.onBlur!(date);
       }
@@ -659,10 +661,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
         ),
         open: open
       });
-    } else {
-      if (this.props.closeOnSelect && close) {
-        this.closeCalendar();
-      }
+    } else if (close) {
+      this.closeCalendar();
     }
   };
 
