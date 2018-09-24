@@ -89,6 +89,7 @@ interface TimeViewState {
 class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   static defaultProps = {
     viewDate: new Date(),
+    readonly: false,
     setTime: noop
   };
 
