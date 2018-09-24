@@ -114,6 +114,15 @@ describe("DateTime component", () => {
       const tree = renderer.create(<DateTime viewMode={"time"} />).toJSON();
       expect(tree).toMatchSnapshot();
     });
+
+    it("should support changing dynamically", () => {
+      const tree = renderer.create(<DateTime viewMode={"days"} />);
+      expect(tree.toJSON()).toMatchSnapshot();
+
+      tree.update(<DateTime viewMode={"years"} />);
+
+      expect(tree.toJSON()).toMatchSnapshot();
+    });
   });
 
   it("className: set to arbitraty value", () => {
