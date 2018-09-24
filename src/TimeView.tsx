@@ -3,11 +3,8 @@ import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
 import { TimeConstraints, SetTimeFunc, allowedSetTime } from "./";
 import noop from "./noop";
-
-const disableContextMenu = event => {
-  event.preventDefault();
-  return false;
-};
+import disableContextMenu from "./disableContextMenu";
+import padStart from "./padStart";
 
 const CounterComponent = props => {
   const { showPrefixSeparator, onIncrease, onDecrease, children } = props;
@@ -200,7 +197,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
       value = constraints.min + (value - (constraints.max + 1));
     }
 
-    return `${value}`.padStart(padValues[type], "0");
+    return padStart(`${value}`, padValues[type]);
   }
 
   decrease(type) {
@@ -211,7 +208,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
       value = constraints.max + 1 - (constraints.min - value);
     }
 
-    return `${value}`.padStart(padValues[type], "0");
+    return padStart(`${value}`, padValues[type]);
   }
 
   calculateState(props): TimeViewState {
