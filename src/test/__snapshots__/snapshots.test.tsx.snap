@@ -9890,7 +9890,7 @@ exports[`MonthsView everything default: renders correctly 1`] = `
         <th
           className="rdtSwitch"
           colSpan={2}
-          data-value={NaN}
+          data-value={2018}
         >
           2018
         </th>
@@ -9908,25 +9908,25 @@ exports[`MonthsView everything default: renders correctly 1`] = `
     <tbody>
       <tr>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={0}
         >
           Jan
         </td>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={1}
         >
           Feb
         </td>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={2}
         >
           Mar
         </td>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={3}
         >
           Apr
@@ -9934,25 +9934,25 @@ exports[`MonthsView everything default: renders correctly 1`] = `
       </tr>
       <tr>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={4}
         >
           May
         </td>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={5}
         >
           Jun
         </td>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={6}
         >
           Jul
         </td>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={7}
         >
           Aug
@@ -9960,25 +9960,25 @@ exports[`MonthsView everything default: renders correctly 1`] = `
       </tr>
       <tr>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={8}
         >
           Sep
         </td>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={9}
         >
           Oct
         </td>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={10}
         >
           Nov
         </td>
         <td
-          className="rdtMonth rdtDisabled"
+          className="rdtMonth"
           data-value={11}
         >
           Dec

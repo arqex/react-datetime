@@ -980,7 +980,6 @@ describe("DateTime", () => {
     });
 
     it("timeConstraints -> increase minutes", done => {
-      let i = 0;
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         timeFormat: "HH:mm:ss:SSS",
@@ -1001,7 +1000,6 @@ describe("DateTime", () => {
     });
 
     it("timeConstraints -> increase seconds", done => {
-      let i = 0;
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         timeFormat: "HH:mm:ss:SSS",
@@ -1022,7 +1020,6 @@ describe("DateTime", () => {
     });
 
     it("timeConstraints -> increase milliseconds", done => {
-      let i = 0;
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         timeFormat: "HH:mm:ss:SSS",
@@ -1043,7 +1040,6 @@ describe("DateTime", () => {
     });
 
     it("timeConstraints -> decrease time", done => {
-      let i = 0;
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         timeFormat: "HH:mm:ss:SSS",

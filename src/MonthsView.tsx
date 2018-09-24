@@ -55,9 +55,13 @@ interface MonthsViewState {}
 
 class MonthsView extends React.Component<MonthsViewProps, MonthsViewState> {
   static defaultProps = {
+    viewDate: new Date(),
     subtractTime: noop,
     showView: noop,
-    addTime: noop
+    addTime: noop,
+    updateOn: noop,
+    setDate: noop,
+    updateSelectedDate: noop
   };
 
   constructor(props) {

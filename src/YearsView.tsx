@@ -47,7 +47,9 @@ class YearsView extends React.Component<YearsViewProps, YearsViewState> {
     subtractTime: noop,
     showView: noop,
     addTime: noop,
-    setDate: noop
+    updateOn: noop,
+    setDate: noop,
+    updateSelectedDate: noop
   };
 
   constructor(props) {

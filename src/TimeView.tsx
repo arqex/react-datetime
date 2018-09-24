@@ -2,6 +2,7 @@ import React from "react";
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
 import { TimeConstraints, SetTimeFunc, allowedSetTime } from "./";
+import noop from "./noop";
 
 const padValues = {
   hours: 1,
@@ -53,7 +54,10 @@ interface TimeViewState {
 }
 
 class TimeView extends React.Component<TimeViewProps, TimeViewState> {
-  static defaultProps = {};
+  static defaultProps = {
+    viewDate: new Date(),
+    setTime: noop
+  };
 
   timeConstraints: TimeConstraints;
   timer: any;

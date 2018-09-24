@@ -63,7 +63,8 @@ class DaysView extends React.Component<DaysViewProps, DaysViewState> {
   static defaultProps = {
     subtractTime: noop,
     showView: noop,
-    addTime: noop
+    addTime: noop,
+    updateSelectedDate: noop
   };
 
   constructor(props) {
