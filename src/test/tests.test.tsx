@@ -15,7 +15,7 @@ import getDate from "date-fns/get_date";
 import getMonth from "date-fns/get_month";
 import getYear from "date-fns/get_year";
 import nl from "date-fns/locale/nl";
-import sv from "date-fns/locale/sv";
+import fr from "date-fns/locale/fr";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -1283,6 +1283,30 @@ describe("DateTime", () => {
         });
       });
 
+      it("locale -> value should change format (nl->fr)", () => {
+        const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+        const component = utils.createDatetime({ dateFormat: "MMMM Do YYYY", value: date, locale: nl });
+
+        const valueBefore = utils.getInputValue(component);
+        component.setProps({ locale: fr }, () => {
+          const valueAfter = utils.getInputValue(component);
+
+          expect(valueBefore).not.toEqual(valueAfter);
+        });
+      });
+
+      it("locale -> value should change format (nl->fr) without date", () => {
+        const component = utils.createDatetime({ dateFormat: "MMMM Do YYYY", locale: nl });
+
+        const valueBefore = utils.getInputValue(component);
+        expect(valueBefore).toEqual("");
+
+        component.setProps({ locale: fr }, () => {
+          const valueAfter = utils.getInputValue(component);
+          expect(valueAfter).toEqual("");
+        });
+      });
+
       it("locale -> picker should change language (viewMode=days)", () => {
         const component = utils.createDatetime({
           viewMode: "days",
@@ -1292,7 +1316,7 @@ describe("DateTime", () => {
           .find(".rdtDays .dow")
           .map(element => element.text());
 
-        component.setProps({ locale: sv });
+        component.setProps({ locale: fr });
         const weekdaysAfter = component
           .find(".rdtDays .dow")
           .map(element => element.text());
@@ -1310,7 +1334,7 @@ describe("DateTime", () => {
           utils.getNthMonth(component, 4).text()
         ];
 
-        component.setProps({ locale: sv });
+        component.setProps({ locale: fr });
         const monthsAfter = [
           utils.getNthMonth(component, 2).text(),
           utils.getNthMonth(component, 4).text()
@@ -1586,13 +1610,6 @@ describe("DateTime", () => {
         expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual(
           "2001-01-15T02:02:02.002Z"
         );
-      });
-
-      it("when selecting time", () => {
-        // Did not manage to be able to get onChange to trigger, even though I know it does.
-        // The listener for the time buttons are set up differently because of having to handle both
-        // onMouseDown and onMouseUp. Not sure how to test it.
-        // TODO: implement this
       });
     });
   });

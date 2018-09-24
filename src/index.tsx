@@ -387,7 +387,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     const updateOn = this.getUpdateOn(formats);
 
     const inputValue = selectedDate
-      ? format(selectedDate, formats.datetime, this.getFormatOptions())
+      ? format(selectedDate, formats.datetime, this.getFormatOptions(props))
       : props.defaultValue || "";
 
     return {
@@ -471,7 +471,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
         updatedState.inputValue = format(
           this.state.selectedDate,
           formats.datetime,
-          this.getFormatOptions()
+          this.getFormatOptions(nextProps)
         );
       }
     }
@@ -486,7 +486,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
           updatedState.inputValue = format(
             updatedState.selectedDate,
             formats.datetime,
-            this.getFormatOptions()
+            this.getFormatOptions(nextProps)
           );
         }
       }
@@ -499,7 +499,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
           updatedState.inputValue = format(
             updatedState.selectedDate,
             formats.datetime,
-            this.getFormatOptions()
+            this.getFormatOptions(nextProps)
           );
         }
       }
@@ -708,8 +708,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     }
   }
 
-  getFormatOptions() {
-    return { locale: this.props.locale };
+  getFormatOptions(props = this.props) {
+    return { locale: props.locale };
   }
 
   getComponentProps() {
