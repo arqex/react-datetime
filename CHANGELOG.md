@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.1
+
+- Resolve #34 Hours in TimeView does not show 12/24 format properly based on daypart formatting
+- Internal update/refactor of TimeView to be simpler
+
 ## 3.2.0
 
 - Internal update/refactor with tests to have 100% coverage.
