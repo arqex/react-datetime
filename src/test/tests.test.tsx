@@ -20,7 +20,7 @@ import fr from "date-fns/locale/fr";
 Enzyme.configure({ adapter: new Adapter() });
 
 // Mock date to get rid of time as a factor to make tests deterministic
-mockDateTo("September 2, 2018 03:24:00");
+mockDateTo(parse("September 2, 2018 03:24:00"));
 
 describe("DateTime", () => {
   it("create component", () => {
@@ -784,15 +784,15 @@ describe("DateTime", () => {
         timeFormat: "HH:mm:ss:SSS",
         viewMode: "time",
         onChange: selected => {
-          expect(getHours(selected)).toEqual(13);
+          expect(getHours(selected)).toEqual(1);
           done();
         }
       });
 
       // Check hour
-      expect(utils.getHours(component)).toEqual("12");
+      expect(utils.getHours(component)).toEqual("0");
       utils.increaseHour(component);
-      expect(utils.getHours(component)).toEqual("13");
+      expect(utils.getHours(component)).toEqual("1");
     });
 
     it("increase hours", done => {
@@ -811,6 +811,112 @@ describe("DateTime", () => {
       expect(utils.getHours(component)).toEqual("2");
       utils.increaseHour(component);
       expect(utils.getHours(component)).toEqual("3");
+    });
+
+    it("increase hours should allow up to 23 when AM/PM is not present", () => {
+      const date = new Date(2000, 0, 15, 11, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      // Check hour
+      expect(utils.getDayPart(component)).toEqual("");
+      expect(utils.getHours(component)).toEqual("11");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("12");
+      expect(utils.getDayPart(component)).toEqual("");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("13");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("14");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("15");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("16");
+      expect(utils.getDayPart(component)).toEqual("");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("17");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("18");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("19");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("20");
+      expect(utils.getDayPart(component)).toEqual("");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("21");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("22");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("23");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("0");
+      expect(utils.getDayPart(component)).toEqual("");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("1");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+      expect(utils.getDayPart(component)).toEqual("");
+    });
+
+    it("increase hours should allow up to 12 when AM/PM is present", () => {
+      const date = new Date(2000, 0, 15, 11, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS A",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      // Check hour
+      expect(utils.getHours(component)).toEqual("11");
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("12");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("1");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("3");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("4");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("5");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("6");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("7");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("8");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("9");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("10");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("11");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("12");
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("1");
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+      expect(utils.getDayPart(component)).toEqual("AM");
     });
 
     it("increase minute with value provided should do nothing", () => {
@@ -973,6 +1079,118 @@ describe("DateTime", () => {
       expect(utils.getHours(component)).toEqual("2");
       utils.decreaseHour(component);
       expect(utils.getHours(component)).toEqual("1");
+    });
+
+    it("decrease hours should wrap back to 23 when AM/PM is not present", () => {
+      const date = new Date(2000, 0, 15, 3, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      // Check hour
+      expect(utils.getDayPart(component)).toEqual("");
+      expect(utils.getHours(component)).toEqual("3");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("1");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("0");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("23");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("22");
+      expect(utils.getDayPart(component)).toEqual("");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("21");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("20");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("19");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("18");
+      expect(utils.getDayPart(component)).toEqual("");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("17");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("16");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("15");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("14");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("13");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("12");
+      expect(utils.getDayPart(component)).toEqual("");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("11");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("10");
+      expect(utils.getDayPart(component)).toEqual("");
+    });
+
+    it("decrease hours should wrap back to 12 when AM/PM is present", () => {
+      const date = new Date(2000, 0, 15, 3, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS A",
+        viewMode: "time",
+        defaultValue: date
+      });
+
+      // Check hour
+      expect(utils.getHours(component)).toEqual("3");
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("1");
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("12");
+      expect(utils.getDayPart(component)).toEqual("AM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("11");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("10");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("9");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("8");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("7");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("6");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("5");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("4");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("3");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("2");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("1");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("12");
+      expect(utils.getDayPart(component)).toEqual("PM");
+      utils.decreaseHour(component);
+      expect(utils.getHours(component)).toEqual("11");
+      expect(utils.getDayPart(component)).toEqual("AM");
     });
 
     it("decrease minutes", done => {
@@ -1185,6 +1403,61 @@ describe("DateTime", () => {
           minutes: { step: 15 }
         },
         onChange: selected => {
+          expect(getHours(selected)).toEqual(10);
+          done();
+        }
+      });
+
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("10");
+    });
+
+    it("timeConstraints (empty) -> increase hour", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: null,
+        onChange: selected => {
+          expect(getHours(selected)).toEqual(3);
+          done();
+        }
+      });
+
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("3");
+    });
+
+    it("timeConstraints (empty hours config) -> increase hour", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: {
+          hours: null
+        },
+        onChange: selected => {
+          expect(getHours(selected)).toEqual(3);
+          done();
+        }
+      });
+
+      utils.increaseHour(component);
+      expect(utils.getHours(component)).toEqual("3");
+    });
+
+    it("timeConstraints (empty hours step config) -> increase hour", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: {
+          hours: { step: undefined }
+        },
+        onChange: selected => {
           expect(getHours(selected)).toEqual(3);
           done();
         }
@@ -1269,6 +1542,57 @@ describe("DateTime", () => {
 
       utils.decreaseMinute(component);
       expect(utils.getMinutes(component)).toEqual("47");
+    });
+
+    it("timeConstraints (empty) -> decrease time", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: undefined,
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(1);
+          done();
+        }
+      });
+
+      utils.decreaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("01");
+    });
+
+    it("timeConstraints (empty minutes) -> decrease time", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: { minutes: undefined },
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(1);
+          done();
+        }
+      });
+
+      utils.decreaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("01");
+    });
+
+    it("timeConstraints (empty minutes step) -> decrease time", done => {
+      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+      const component = utils.createDatetime({
+        timeFormat: "HH:mm:ss:SSS",
+        viewMode: "time",
+        defaultValue: date,
+        timeConstraints: { minutes: { step: undefined } },
+        onChange: selected => {
+          expect(getMinutes(selected)).toEqual(1);
+          done();
+        }
+      });
+
+      utils.decreaseMinute(component);
+      expect(utils.getMinutes(component)).toEqual("01");
     });
 
     it("isValidDate -> disable months", () => {

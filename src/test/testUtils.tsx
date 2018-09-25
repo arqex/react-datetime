@@ -289,10 +289,8 @@ export const getMilliseconds = datetime => {
 };
 
 export const getDayPart = datetime => {
-  return datetime
-    .find(".rdtCount")
-    .at(4)
-    .text();
+  const element = datetime.find(".rdtCount").at(4);
+  return element.exists() ? element.text() : "";
 };
 
 export const getInputValue = datetime => {

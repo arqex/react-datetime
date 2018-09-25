@@ -23,7 +23,7 @@ jest.mock("react-dom", () => ({
 }));
 
 // Mock date to get rid of time as a factor to make tests deterministic
-mockDateTo("September 2, 2018 03:24:00");
+mockDateTo(parse("September 2, 2018 03:24:00"));
 
 describe("DateTime component", () => {
   it("everything default: renders correctly", () => {

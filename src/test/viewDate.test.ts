@@ -3,11 +3,12 @@ import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { advanceTo as mockDateTo } from "jest-date-mock";
 import format from "date-fns/format";
+import parse from "date-fns/parse";
 
 Enzyme.configure({ adapter: new Adapter() });
 
 // Mock date to get rid of time as a factor to make tests deterministic
-mockDateTo("September 2, 2018 03:24:00");
+mockDateTo(parse("September 2, 2018 03:24:00"));
 
 describe("with viewDate", () => {
   it("date value", () => {
