@@ -54,7 +54,7 @@ export type IsValidDateFunc = (
 ) => boolean;
 
 export type SetDateFunc = (type: "months" | "years") => void;
-export type SetTimeFunc = (type: AllowedSetTime, value: string) => void;
+export type SetTimeFunc = (date: Date) => void;
 
 export type UpdateSelectedDateFunc = (e: any, close?: boolean) => void;
 
@@ -581,22 +581,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     });
   }
 
-  setTime: SetTimeFunc = (type, value) => {
-    let date = this.state.selectedDate || this.state.viewDate;
-
-    const valInt = Number.parseInt(value, 10);
-
-    // It is needed to set all the time properties to not to reset the time
-    if (type === "hours") {
-      date = setHours(date, valInt);
-    } else if (type === "minutes") {
-      date = setMinutes(date, valInt);
-    } else if (type === "seconds") {
-      date = setSeconds(date, valInt);
-    } else {
-      date = setMilliseconds(date, valInt);
-    }
-
+  setTime: SetTimeFunc = date => {
     this.setState({
       selectedDate: date,
       inputValue: format(date, this.state.inputFormat, this.getFormatOptions())

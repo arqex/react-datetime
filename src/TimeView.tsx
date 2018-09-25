@@ -1,15 +1,52 @@
 import React from "react";
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
-import { TimeConstraints, SetTimeFunc, allowedSetTime } from "./";
+import { TimeConstraint, SetTimeFunc, TimeConstraints } from "./";
 import noop from "./noop";
 import disableContextMenu from "./disableContextMenu";
-import padStart from "./padStart";
+import addHours from "date-fns/add_hours";
+import addMinutes from "date-fns/add_minutes";
+import addSeconds from "date-fns/add_seconds";
+import addMilliseconds from "date-fns/add_milliseconds";
+import subHours from "date-fns/sub_hours";
+import subMinutes from "date-fns/sub_minutes";
+import subSeconds from "date-fns/sub_seconds";
+import subMilliseconds from "date-fns/sub_milliseconds";
+import setHours from "date-fns/set_hours";
+
+const HOURS: "hours" = "hours";
+const MINUTES: "minutes" = "minutes";
+const SECONDS: "seconds" = "seconds";
+const MILLISECONDS: "milliseconds" = "milliseconds";
+const allCounters = [HOURS, MINUTES, SECONDS, MILLISECONDS];
+
+const defaultTimeConstraints: AlwaysTimeConstraints = {
+  hours: {
+    min: 0,
+    max: 23,
+    step: 1
+  },
+  minutes: {
+    min: 0,
+    max: 59,
+    step: 1
+  },
+  seconds: {
+    min: 0,
+    max: 59,
+    step: 1
+  },
+  milliseconds: {
+    min: 0,
+    max: 999,
+    step: 1
+  }
+};
 
 const CounterComponent = props => {
-  const { showPrefixSeparator, onIncrease, onDecrease, children } = props;
+  const { showPrefixSeparator, onIncrease, onDecrease, value } = props;
 
-  return (
+  return value !== null && value !== undefined ? (
     <React.Fragment>
       {showPrefixSeparator && <div className="rdtCounterSeparator">:</div>}
       <div className="rdtCounter">
@@ -20,7 +57,7 @@ const CounterComponent = props => {
         >
           ▲
         </span>
-        <div className="rdtCount">{children}</div>
+        <div className="rdtCount">{value}</div>
         <span
           className="rdtBtn"
           onMouseDown={onDecrease}
@@ -30,15 +67,15 @@ const CounterComponent = props => {
         </span>
       </div>
     </React.Fragment>
-  );
+  ) : null;
 };
 
-const padValues = {
-  hours: 1,
-  minutes: 2,
-  seconds: 2,
-  milliseconds: 3
-};
+interface AlwaysTimeConstraints {
+  hours: TimeConstraint;
+  minutes: TimeConstraint;
+  seconds: TimeConstraint;
+  milliseconds: TimeConstraint;
+}
 
 interface TimeViewProps {
   readonly: boolean;
@@ -72,18 +109,8 @@ interface TimeViewProps {
   selectedDate?: Date;
 }
 
-type DayParts = "am" | "pm" | "AM" | "PM" | undefined;
-
 interface TimeViewState {
   timestamp: Date;
-
-  daypart: DayParts;
-  counters: ("hours" | "minutes" | "seconds" | "milliseconds")[];
-
-  hours: number;
-  minutes: string;
-  seconds: string;
-  milliseconds: string;
 }
 
 class TimeView extends React.Component<TimeViewProps, TimeViewState> {
@@ -93,7 +120,6 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     setTime: noop
   };
 
-  timeConstraints: TimeConstraints;
   timer: any;
   increaseTimer: any;
   mouseUpListener: any;
@@ -104,12 +130,66 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     this.state = this.calculateState(props);
 
     // Bind functions
+    this.getStepSize = this.getStepSize.bind(this);
     this.onStartClicking = this.onStartClicking.bind(this);
     this.toggleDayPart = this.toggleDayPart.bind(this);
     this.increase = this.increase.bind(this);
     this.decrease = this.decrease.bind(this);
     this.calculateState = this.calculateState.bind(this);
+    this.getFormatted = this.getFormatted.bind(this);
     this.getFormatOptions = this.getFormatOptions.bind(this);
+  }
+
+  getStepSize(type: "hours" | "minutes" | "seconds" | "milliseconds") {
+    let stepSize = defaultTimeConstraints[type].step;
+    const config = this.props.timeConstraints
+      ? this.props.timeConstraints[type]
+      : undefined;
+    if (config && config.step) {
+      stepSize = config.step;
+    }
+
+    return stepSize;
+  }
+
+  getFormatted(
+    type: "hours" | "minutes" | "seconds" | "milliseconds" | "daypart"
+  ) {
+    const timestamp = this.state.timestamp;
+    const timeFormat =
+      typeof this.props.timeFormat === "string" ? this.props.timeFormat : "";
+
+    const hasHours = timeFormat.toLowerCase().indexOf("h") !== -1;
+    const hasMinutes = timeFormat.indexOf("m") !== -1;
+    const hasSeconds = timeFormat.indexOf("s") !== -1;
+    const hasMilliseconds = timeFormat.indexOf("S") !== -1;
+
+    const hasUpperDayPart = timeFormat.indexOf("A") !== -1;
+    const hasLowerDayPart = timeFormat.indexOf("a") !== -1;
+    const hasDayPart = hasUpperDayPart || hasLowerDayPart;
+
+    const typeFormat =
+      type === "hours" && hasHours
+        ? hasDayPart
+          ? "h"
+          : "H"
+        : type === "minutes" && hasMinutes
+          ? "mm"
+          : type === "seconds" && hasSeconds
+            ? "ss"
+            : type === "milliseconds" && hasMilliseconds
+              ? "SSS"
+              : type === "daypart" && hasLowerDayPart
+                ? "a"
+                : type === "daypart" && hasUpperDayPart
+                  ? "A"
+                  : undefined;
+
+    if (typeFormat) {
+      return format(timestamp, typeFormat, this.getFormatOptions());
+    }
+
+    return undefined;
   }
 
   getFormatOptions() {
@@ -117,40 +197,6 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   }
 
   componentDidMount() {
-    this.timeConstraints = {
-      hours: {
-        min: 0,
-        max: 23,
-        step: 1
-      },
-      minutes: {
-        min: 0,
-        max: 59,
-        step: 1
-      },
-      seconds: {
-        min: 0,
-        max: 59,
-        step: 1
-      },
-      milliseconds: {
-        min: 0,
-        max: 999,
-        step: 1
-      }
-    };
-
-    if (this.props.timeConstraints) {
-      ["hours", "minutes", "seconds", "millisecond"].forEach(type => {
-        if (this.props.timeConstraints && this.props.timeConstraints[type]) {
-          this.timeConstraints[type] = {
-            ...this.timeConstraints[type],
-            ...this.props.timeConstraints[type]
-          };
-        }
-      });
-    }
-
     this.setState(this.calculateState(this.props));
   }
 
@@ -163,22 +209,22 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
       const { readonly } = this.props;
 
       if (!readonly) {
-        const update = {};
-        update[type] = this[action](type);
-
-        this.setState(update);
+        this.setState({
+          timestamp: this[action](type)
+        });
 
         this.timer = setTimeout(() => {
           this.increaseTimer = setInterval(() => {
-            update[type] = this[action](type);
-            this.setState(update);
+            this.setState({
+              timestamp: this[action](type)
+            });
           }, 70);
         }, 500);
 
         this.mouseUpListener = () => {
           clearTimeout(this.timer);
           clearInterval(this.increaseTimer);
-          this.props.setTime(type, this.state[type]);
+          this.props.setTime(this.state.timestamp);
           document.body.removeEventListener("mouseup", this.mouseUpListener);
           document.body.removeEventListener("touchend", this.mouseUpListener);
         };
@@ -193,81 +239,50 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     const hours = getHours(this.state.timestamp);
     const newHours = hours >= 12 ? hours - 12 : hours + 12;
 
-    this.props.setTime(allowedSetTime.HOURS, `${newHours}`);
+    this.props.setTime(setHours(this.state.timestamp, newHours));
   }
 
-  increase(type) {
-    const constraints = this.timeConstraints[type];
+  increase(type: "hours" | "minutes" | "seconds" | "milliseconds") {
+    const timestamp = this.state.timestamp;
 
-    let value = parseInt(this.state[type], 10) + constraints.step;
-    if (value > constraints.max) {
-      value = constraints.min + (value - (constraints.max + 1));
+    const stepSize = this.getStepSize(type);
+
+    if (type === "hours") {
+      return addHours(timestamp, stepSize);
+    } else if (type === "minutes") {
+      return addMinutes(timestamp, stepSize);
+    } else if (type === "seconds") {
+      return addSeconds(timestamp, stepSize);
+    } else {
+      return addMilliseconds(timestamp, stepSize);
     }
-
-    return padStart(`${value}`, padValues[type]);
   }
 
-  decrease(type) {
-    const constraints = this.timeConstraints[type];
+  decrease(type: "hours" | "minutes" | "seconds" | "milliseconds") {
+    const timestamp = this.state.timestamp;
 
-    let value = parseInt(this.state[type], 10) - constraints.step;
-    if (value < constraints.min) {
-      value = constraints.max + 1 - (constraints.min - value);
+    const stepSize = this.getStepSize(type);
+
+    if (type === "hours") {
+      return subHours(timestamp, stepSize);
+    } else if (type === "minutes") {
+      return subMinutes(timestamp, stepSize);
+    } else if (type === "seconds") {
+      return subSeconds(timestamp, stepSize);
+    } else {
+      return subMilliseconds(timestamp, stepSize);
     }
-
-    return padStart(`${value}`, padValues[type]);
   }
 
   calculateState(props): TimeViewState {
-    const date = props.selectedDate || props.viewDate;
-    const timeFormat =
-      typeof props.timeFormat === "string" ? props.timeFormat : "";
-    const counters: ("hours" | "minutes" | "seconds" | "milliseconds")[] = [];
-
-    if (timeFormat.toLowerCase().indexOf("h") !== -1) {
-      counters.push("hours");
-    }
-
-    if (timeFormat.indexOf("m") !== -1) {
-      counters.push("minutes");
-    }
-
-    if (timeFormat.indexOf("s") !== -1) {
-      counters.push("seconds");
-    }
-
-    if (timeFormat.indexOf("S") !== -1) {
-      counters.push("milliseconds");
-    }
-
-    let daypart: DayParts = undefined;
-    if (timeFormat.indexOf(" a") !== -1) {
-      daypart = getHours(date) >= 12 ? "pm" : "am";
-    } else if (timeFormat.indexOf(" A") !== -1) {
-      daypart = getHours(date) >= 12 ? "PM" : "AM";
-    }
-
-    let hours = getHours(date);
-    if (timeFormat.indexOf(" a") !== -1) {
-      hours = ((hours - 1) % 12) + 1;
-    }
-
-    if (hours === 0) {
-      hours = 12;
-    }
-
     return {
-      timestamp: date,
-      hours: hours,
-      minutes: format(date, "mm", this.getFormatOptions()),
-      seconds: format(date, "ss", this.getFormatOptions()),
-      milliseconds: format(date, "SSS", this.getFormatOptions()),
-      daypart: daypart,
-      counters: counters
+      timestamp: props.selectedDate || props.viewDate
     };
   }
 
   render() {
+    let countersWithValues = 0;
+
     return (
       <div className="rdtTime">
         <table>
@@ -288,25 +303,28 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
             <tr>
               <td>
                 <div className="rdtCounters">
-                  {this.state.counters.map((type, index) => (
-                    <CounterComponent
-                      key={type}
-                      showPrefixSeparator={index > 0}
-                      onIncrease={this.onStartClicking("increase", type)}
-                      onDecrease={this.onStartClicking("decrease", type)}
-                    >
-                      {this.state[type]}
-                    </CounterComponent>
-                  ))}
-                  {!!this.state.daypart && (
-                    <CounterComponent
-                      key="dayPart"
-                      onIncrease={this.toggleDayPart}
-                      onDecrease={this.toggleDayPart}
-                    >
-                      {this.state.daypart}
-                    </CounterComponent>
-                  )}
+                  {allCounters.map(type => {
+                    const value = this.getFormatted(type);
+
+                    if (value) {
+                      countersWithValues++;
+                    }
+
+                    return (
+                      <CounterComponent
+                        key={type}
+                        showPrefixSeparator={countersWithValues > 1}
+                        onIncrease={this.onStartClicking("increase", type)}
+                        onDecrease={this.onStartClicking("decrease", type)}
+                        value={value}
+                      />
+                    );
+                  })}
+                  <CounterComponent
+                    onIncrease={this.toggleDayPart}
+                    onDecrease={this.toggleDayPart}
+                    value={this.getFormatted("daypart")}
+                  />
                 </div>
               </td>
             </tr>
