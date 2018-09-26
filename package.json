@@ -40,7 +40,6 @@
     "test:coverage": "cross-env CI=1 TZ=Europe/Stockholm jest --coverage",
     "test:all": "echo 'Running tests...' && yarn test:coverage && yarn bundlesize && echo 'All tests passed! 🤘'",
     "test:watch": "cross-env TZ=Europe/Stockholm jest --watch",
-    "bundlesize": "yarn build && bundlesize",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "prettier": "prettier --write **/*.{json,js,jsx,css}",
     "precommit": "lint-staged",
