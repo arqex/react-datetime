@@ -136,6 +136,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
+    "classcat": "^3.2.3",
     "react-onclickoutside": "^6.7.1"
   }
 }

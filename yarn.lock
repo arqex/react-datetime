@@ -1424,6 +1424,10 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+classcat@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/classcat/-/classcat-3.2.3.tgz#5e060c7a08598131084f4c60d9793de0c0112e4a"
+
 cli-cursor@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-1.0.2.tgz#64da3f7d56a54412e59794bd62dc35295e8f2987"
