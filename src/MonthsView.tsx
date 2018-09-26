@@ -5,6 +5,7 @@ import setMonth from "date-fns/set_month";
 import getYear from "date-fns/get_year";
 import getDaysInMonth from "date-fns/get_days_in_month";
 import setDate from "date-fns/set_date";
+import cc from "classcat";
 import noop from "./noop";
 import {
   IsValidDateFunc,
@@ -122,7 +123,6 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     let months: any[] = [];
 
     for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
-      let classes = "rdtMonth";
       const currentMonth = setMonth(this.props.viewDate, monthIndex);
 
       const noOfDaysInMonth = getDaysInMonth(currentMonth);
@@ -136,19 +136,17 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
       });
 
       const isDisabled = validDay === undefined;
-
-      if (isDisabled) {
-        classes += " rdtDisabled";
-      }
-
-      if (date && monthIndex === getMonth(date) && year === getYear(date)) {
-        classes += " rdtActive";
-      }
-
       const props: any = {
         key: monthIndex,
         "data-value": monthIndex,
-        className: classes
+        className: cc([
+          "rdtMonth",
+          {
+            rdtDisabled: isDisabled,
+            rdtActive:
+              date && monthIndex === getMonth(date) && year === getYear(date)
+          }
+        ])
       };
 
       if (!isDisabled) {

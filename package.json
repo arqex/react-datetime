@@ -21,6 +21,16 @@
     "css",
     "dist"
   ],
+  "bundlesize": [
+    {
+      "path": "dist/index.js",
+      "maxSize": "11 kB"
+    },
+    {
+      "path": "dist/index.es.js",
+      "maxSize": "11 kB"
+    }
+  ],
   "keywords": [
     "react",
     "react-component",
@@ -41,7 +51,7 @@
     "tslint:fix": "tslint --project tsconfig.json src/**/*.{ts,tsx} --fix",
     "test": "cross-env CI=1 TZ=Europe/Stockholm jest",
     "test:coverage": "cross-env CI=1 TZ=Europe/Stockholm jest --coverage",
-    "test:all": "echo 'Running tests...' && yarn test:coverage && echo 'All tests passed! 🤘'",
+    "test:all": "echo 'Running tests...' && yarn test:coverage && yarn bundlesize && echo 'All tests passed! 🤘'",
     "test:watch": "cross-env TZ=Europe/Stockholm jest --watch",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "prettier": "prettier --write **/*.{json,js,jsx,css}",
@@ -65,6 +75,9 @@
     "*.{json,css,scss}": [
       "prettier --write",
       "git add"
+    ],
+    "*": [
+      "bundlesize"
     ]
   },
   "husky": {
@@ -100,6 +113,7 @@
     "@types/jest": "^23.3.2",
     "@types/react": "^16.4.14",
     "babel-eslint": "^10.0.0",
+    "bundlesize": "^0.17.0",
     "coveralls": "^3.0.2",
     "cross-env": "^5.1.4",
     "enzyme": "^3.6.0",
@@ -140,6 +154,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
+    "classcat": "^3.2.3",
     "react-onclickoutside": "^6.7.1"
   }
 }
