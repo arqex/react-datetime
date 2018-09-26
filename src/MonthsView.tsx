@@ -51,9 +51,7 @@ interface MonthsViewProps {
   updateSelectedDate: UpdateSelectedDateFunc;
 }
 
-interface MonthsViewState {}
-
-class MonthsView extends React.Component<MonthsViewProps, MonthsViewState> {
+class MonthsView extends React.Component<MonthsViewProps, never> {
   static defaultProps = {
     viewDate: new Date(),
     subtractTime: noop,
@@ -123,9 +121,9 @@ class MonthsView extends React.Component<MonthsViewProps, MonthsViewState> {
     const rows: any[] = [];
     let months: any[] = [];
 
-    for (let i = 0; i < 12; i++) {
+    for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
       let classes = "rdtMonth";
-      const currentMonth = setMonth(this.props.viewDate, i);
+      const currentMonth = setMonth(this.props.viewDate, monthIndex);
 
       const noOfDaysInMonth = getDaysInMonth(currentMonth);
       const daysInMonth = Array.from({ length: noOfDaysInMonth }, (e, i) => {
@@ -143,13 +141,13 @@ class MonthsView extends React.Component<MonthsViewProps, MonthsViewState> {
         classes += " rdtDisabled";
       }
 
-      if (date && i === getMonth(date) && year === getYear(date)) {
+      if (date && monthIndex === getMonth(date) && year === getYear(date)) {
         classes += " rdtActive";
       }
 
       const props: any = {
-        key: i,
-        "data-value": i,
+        key: monthIndex,
+        "data-value": monthIndex,
         className: classes
       };
 
@@ -160,10 +158,10 @@ class MonthsView extends React.Component<MonthsViewProps, MonthsViewState> {
             : this.props.setDate(viewModes.MONTHS);
       }
 
-      months.push(renderer(props, i, year, date));
+      months.push(renderer(props, monthIndex, year, date));
 
       if (months.length === 4) {
-        rows.push(<tr key={i}>{months}</tr>);
+        rows.push(<tr key={monthIndex}>{months}</tr>);
 
         months = [];
       }

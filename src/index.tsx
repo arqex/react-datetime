@@ -2,7 +2,7 @@ import React from "react";
 import CalendarContainer from "./CalendarContainer";
 import startOfMonth from "date-fns/start_of_month";
 import isDate from "date-fns/is_date";
-import isValidDate from "date-fns/is_valid";
+import isDateValid from "date-fns/is_valid";
 import parse from "date-fns/parse";
 import setDate from "date-fns/set_date";
 import setMonth from "date-fns/set_month";
@@ -22,10 +22,10 @@ import getMinutes from "date-fns/get_minutes";
 import getSeconds from "date-fns/get_seconds";
 import getMilliseconds from "date-fns/get_milliseconds";
 import isEqual from "date-fns/is_equal";
-import isDateValid from "date-fns/is_valid";
 
 import toUtc from "./toUtc";
 import fromUtc from "./fromUtc";
+import noop from "./noop";
 
 /*
 The view mode can be any of the following strings.
@@ -253,10 +253,10 @@ const MONTHS: "months" = "months";
 const DAYS: "days" = "days";
 const TIME: "time" = "time";
 export const viewModes = Object.freeze({
-  YEARS,
-  MONTHS,
-  DAYS,
-  TIME
+  YEARS: YEARS,
+  MONTHS: MONTHS,
+  DAYS: DAYS,
+  TIME: TIME
 });
 
 const HOURS: "hours" = "hours";
@@ -264,10 +264,10 @@ const MINUTES: "minutes" = "minutes";
 const SECONDS: "seconds" = "seconds";
 const MILLISECONDS: "milliseconds" = "milliseconds";
 export const allowedSetTime = Object.freeze({
-  HOURS,
-  MINUTES,
-  SECONDS,
-  MILLISECONDS
+  HOURS: HOURS,
+  MINUTES: MINUTES,
+  SECONDS: SECONDS,
+  MILLISECONDS: MILLISECONDS
 });
 
 const componentProps = {
@@ -297,12 +297,12 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     defaultValue: "",
     inputProps: {},
     input: true,
-    onFocus: function() {},
-    onBlur: function() {},
-    onChange: function() {},
-    onViewModeChange: function() {},
-    onNavigateBack: function() {},
-    onNavigateForward: function() {},
+    onFocus: noop,
+    onBlur: noop,
+    onChange: noop,
+    onViewModeChange: noop,
+    onNavigateBack: noop,
+    onNavigateForward: noop,
     timeFormat: true,
     timeConstraints: {},
     dateFormat: true,
@@ -369,7 +369,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   parseDate(date): any {
     if (date) {
       const parsedDate = parse(date);
-      if (isDate(parsedDate) && isValidDate(parsedDate)) {
+      if (isDate(parsedDate) && isDateValid(parsedDate)) {
         return parsedDate;
       }
     }
@@ -505,7 +505,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     const date = parse(value);
     const update: any = { inputValue: value };
 
-    if (isDate(date) && isValidDate(date) && !this.props.value) {
+    if (isDate(date) && isDateValid(date) && !this.props.value) {
       update.selectedDate = date;
       update.viewDate = startOfMonth(date);
     } else {

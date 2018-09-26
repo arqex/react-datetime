@@ -295,9 +295,7 @@ describe("DateTime", () => {
     utils.openDatepicker(component);
     utils.clickNthDay(component, 0);
 
-    expect(utils.getInputValue(component)).toEqual(
-      "12/26/1999 2:02 AM"
-    );
+    expect(utils.getInputValue(component)).toEqual("12/26/1999 2:02 AM");
 
     expect(component.find(".rdtSwitch").text()).toEqual("December 1999");
   });
@@ -309,9 +307,7 @@ describe("DateTime", () => {
     utils.openDatepicker(component);
     utils.clickNthDay(component, 41);
 
-    expect(utils.getInputValue(component)).toEqual(
-      "02/05/2000 2:02 AM"
-    );
+    expect(utils.getInputValue(component)).toEqual("02/05/2000 2:02 AM");
 
     expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
   });
@@ -497,10 +493,10 @@ describe("DateTime", () => {
 
     it("timeFormat with lowercase 'am'", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const format = "HH:mm:ss:SSS a";
+      const timeFormat = "HH:mm:ss:SSS a";
       const component = utils.createDatetime({
         value: date,
-        timeFormat: format
+        timeFormat: timeFormat
       });
       expect(utils.getInputValue(component)).toEqual(
         expect.stringMatching(".*am$")
@@ -509,10 +505,10 @@ describe("DateTime", () => {
 
     it("timeFormat with uppercase 'AM'", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const format = "HH:mm:ss:SSS A";
+      const timeFormat = "HH:mm:ss:SSS A";
       const component = utils.createDatetime({
         value: date,
-        timeFormat: format
+        timeFormat: timeFormat
       });
       expect(utils.getInputValue(component)).toEqual(
         expect.stringMatching(".*AM$")
@@ -578,7 +574,8 @@ describe("DateTime", () => {
           </div>
         );
       };
-      const component = utils.createDatetime({ renderInput });
+
+      const component = utils.createDatetime({ renderInput: renderInput });
 
       expect(component.find("button.custom-open").length).toEqual(1);
       expect(utils.isOpen(component)).toBeFalsy();
@@ -1676,7 +1673,10 @@ describe("DateTime", () => {
 
     it("closeOnSelect=false with controlled value", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({ value: date, closeOnSelect: false });
+      const component = utils.createDatetime({
+        value: date,
+        closeOnSelect: false
+      });
 
       // A unknown race condition is causing this test to fail without this time out,
       // and when the test fails it says:
@@ -1711,7 +1711,10 @@ describe("DateTime", () => {
 
     it("closeOnSelect=true with controlled value", done => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({ value: date, closeOnSelect: true });
+      const component = utils.createDatetime({
+        value: date,
+        closeOnSelect: true
+      });
 
       // A unknown race condition is causing this test to fail without this time out,
       // and when the test fails it says:
@@ -1860,7 +1863,11 @@ describe("DateTime", () => {
 
       it("locale -> value should change format (nl->fr)", () => {
         const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-        const component = utils.createDatetime({ dateFormat: "MMMM Do YYYY", value: date, locale: nl });
+        const component = utils.createDatetime({
+          dateFormat: "MMMM Do YYYY",
+          value: date,
+          locale: nl
+        });
 
         const valueBefore = utils.getInputValue(component);
         component.setProps({ locale: fr }, () => {
@@ -1871,7 +1878,10 @@ describe("DateTime", () => {
       });
 
       it("locale -> value should change format (nl->fr) without date", () => {
-        const component = utils.createDatetime({ dateFormat: "MMMM Do YYYY", locale: nl });
+        const component = utils.createDatetime({
+          dateFormat: "MMMM Do YYYY",
+          locale: nl
+        });
 
         const valueBefore = utils.getInputValue(component);
         expect(valueBefore).toEqual("");
@@ -2337,8 +2347,8 @@ describe("DateTime", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
         defaultValue: date,
-        onChange: date => {
-          expect(date).toEqual("");
+        onChange: newDate => {
+          expect(newDate).toEqual("");
           done();
         }
       });

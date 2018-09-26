@@ -10,7 +10,7 @@ import isToday from "date-fns/is_today";
 import setDate from "date-fns/set_date";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
-import { IsValidDateFunc, UpdateSelectedDateFunc } from "./";
+import { IsValidDateFunc, UpdateSelectedDateFunc } from ".";
 import noop from "./noop";
 
 interface DaysViewProps {
@@ -57,9 +57,7 @@ interface DaysViewProps {
   ) => JSX.Element;
 }
 
-interface DaysViewState {}
-
-class DaysView extends React.Component<DaysViewProps, DaysViewState> {
+class DaysView extends React.Component<DaysViewProps, never> {
   static defaultProps = {
     subtractTime: noop,
     showView: noop,

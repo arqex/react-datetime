@@ -39,9 +39,7 @@ interface YearsViewProps {
   updateSelectedDate: UpdateSelectedDateFunc;
 }
 
-interface YearsViewState {}
-
-class YearsView extends React.Component<YearsViewProps, YearsViewState> {
+class YearsView extends React.Component<YearsViewProps, never> {
   static defaultProps = {
     viewDate: new Date(),
     subtractTime: noop,
@@ -105,7 +103,7 @@ class YearsView extends React.Component<YearsViewProps, YearsViewState> {
     const rows: any[] = [];
 
     year--;
-    for (let i = -1; i < 11; i++, year++) {
+    for (let yearIndex = -1; yearIndex < 11; yearIndex++, year++) {
       let classes = "rdtYear";
       const currentYear = setYear(date, year);
 
@@ -147,7 +145,7 @@ class YearsView extends React.Component<YearsViewProps, YearsViewState> {
       );
 
       if (years.length === 4) {
-        rows.push(<tr key={i}>{years}</tr>);
+        rows.push(<tr key={yearIndex}>{years}</tr>);
         years = [];
       }
     }

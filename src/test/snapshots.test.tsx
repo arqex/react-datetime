@@ -19,6 +19,7 @@ import isAfter from "date-fns/is_after";
 // to make the tests pass.
 // https://github.com/facebook/react/issues/7371
 jest.mock("react-dom", () => ({
+  // tslint:disable-next-line:no-empty
   findDOMNode: () => {}
 }));
 
@@ -215,7 +216,7 @@ describe("DateTime component", () => {
 
   it("renderDay: specified", () => {
     const renderDay = (props, currentDate) => (
-      <td {...props}>{"0" + getDate(currentDate)}</td>
+      <td {...props}>{`0${getDate(currentDate)}`}</td>
     );
     const tree = renderer.create(<DateTime renderDay={renderDay} />).toJSON();
     expect(tree).toMatchSnapshot();
@@ -223,7 +224,7 @@ describe("DateTime component", () => {
 
   it("renderMonth: specified", () => {
     const renderMonth = (props, currentDate) => (
-      <td {...props}>{"0" + getDate(currentDate)}</td>
+      <td {...props}>{`0${getDate(currentDate)}`}</td>
     );
     const tree = renderer
       .create(<DateTime renderMonth={renderMonth} />)
@@ -233,7 +234,7 @@ describe("DateTime component", () => {
 
   it("renderYear: specified", () => {
     const renderYear = (props, currentDate) => (
-      <td {...props}>{"0" + getDate(currentDate)}</td>
+      <td {...props}>{`0${getDate(currentDate)}`}</td>
     );
     const tree = renderer.create(<DateTime renderYear={renderYear} />).toJSON();
     expect(tree).toMatchSnapshot();
