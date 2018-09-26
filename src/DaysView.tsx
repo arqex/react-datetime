@@ -10,6 +10,7 @@ import isToday from "date-fns/is_today";
 import setDate from "date-fns/set_date";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
+import cc from "classcat";
 import { IsValidDateFunc, UpdateSelectedDateFunc } from ".";
 import noop from "./noop";
 
@@ -191,38 +192,26 @@ class DaysView extends React.Component<DaysViewProps, never> {
       workingDate < lastDay;
       workingDate = addDays(workingDate, 1)
     ) {
-      let classes = "rdtDay";
-
       const workingYear = getYear(workingDate);
       const workingMonth = getMonth(workingDate);
-      if (
-        (workingYear === currentYear && workingMonth < currentMonth) ||
-        workingYear < currentYear
-      ) {
-        classes += " rdtOld";
-      } else if (
-        (workingYear === currentYear && workingMonth > currentMonth) ||
-        workingYear > currentYear
-      ) {
-        classes += " rdtNew";
-      }
-
-      if (selectedDate && isSameDay(workingDate, selectedDate)) {
-        classes += " rdtActive";
-      }
-
-      if (isToday(workingDate)) {
-        classes += " rdtToday";
-      }
-
       const isDisabled = !isValid(workingDate, selectedDate);
-      if (isDisabled) {
-        classes += " rdtDisabled";
-      }
 
       const dayProps: any = {
         key: getDate(workingDate),
-        className: classes,
+        className: cc([
+          "rdtDay",
+          {
+            rdtOld:
+              (workingYear === currentYear && workingMonth < currentMonth) ||
+              workingYear < currentYear,
+            rdtNew:
+              (workingYear === currentYear && workingMonth > currentMonth) ||
+              workingYear > currentYear,
+            rdtActive: selectedDate && isSameDay(workingDate, selectedDate),
+            rdtToday: isToday(workingDate),
+            rdtDisabled: isDisabled
+          }
+        ]),
         "data-value": getDate(workingDate)
       };
 

@@ -3,6 +3,7 @@ import getYear from "date-fns/get_year";
 import setYear from "date-fns/set_year";
 import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
+import cc from "classcat";
 import noop from "./noop";
 import {
   IsValidDateFunc,
@@ -104,7 +105,6 @@ class YearsView extends React.Component<YearsViewProps, never> {
 
     year--;
     for (let yearIndex = -1; yearIndex < 11; yearIndex++, year++) {
-      let classes = "rdtYear";
       const currentYear = setYear(date, year);
 
       const noOfDaysInYear = getDaysInYear(date);
@@ -118,19 +118,16 @@ class YearsView extends React.Component<YearsViewProps, never> {
       });
 
       const isDisabled = validDay === undefined;
-
-      if (isDisabled) {
-        classes += " rdtDisabled";
-      }
-
-      if (selectedDate && getYear(selectedDate) === year) {
-        classes += " rdtActive";
-      }
-
       const props: any = {
         key: year,
         "data-value": year,
-        className: classes
+        className: cc([
+          "rdtYear",
+          {
+            rdtDisabled: isDisabled,
+            rdtActive: selectedDate && getYear(selectedDate) === year
+          }
+        ])
       };
 
       if (!isDisabled) {

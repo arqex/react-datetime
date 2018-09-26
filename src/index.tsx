@@ -22,6 +22,7 @@ import getMinutes from "date-fns/get_minutes";
 import getSeconds from "date-fns/get_seconds";
 import getMilliseconds from "date-fns/get_milliseconds";
 import isEqual from "date-fns/is_equal";
+import cc from "classcat";
 
 import toUtc from "./toUtc";
 import fromUtc from "./fromUtc";
@@ -702,13 +703,6 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   }
 
   render() {
-    let className =
-      "rdt" +
-      (this.props.className
-        ? Array.isArray(this.props.className)
-          ? " " + this.props.className.join(" ")
-          : " " + this.props.className
-        : "");
     const children: any[] = [];
 
     if (this.props.input) {
@@ -736,16 +730,19 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       } else {
         children.push(<input {...finalInputProps} key="i" />);
       }
-    } else {
-      className += " rdtStatic";
-    }
-
-    if (this.state.open) {
-      className += " rdtOpen";
     }
 
     return (
-      <div className={className}>
+      <div
+        className={cc([
+          "rdt",
+          this.props.className,
+          {
+            rdtStatic: !this.props.input,
+            rdtOpen: this.state.open
+          }
+        ])}
+      >
         {children}
         <div className="rdtPicker">
           <CalendarContainer
