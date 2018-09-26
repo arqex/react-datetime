@@ -2,11 +2,16 @@
   "name": "@nateradebaugh/react-datetime",
   "version": "3.2.1",
   "description": "A lightweight but complete datetime picker React.js component",
+  "license": "MIT",
   "homepage": "https://github.com/NateRadebaugh/react-datetime",
   "repository": {
     "type": "git",
     "url": "https://github.com/NateRadebaugh/react-datetime"
   },
+  "authors": [
+    "Javier Marquez",
+    "Nate Radebaugh"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
@@ -15,6 +20,14 @@
     "src",
     "css",
     "dist"
+  ],
+  "keywords": [
+    "react",
+    "react-component",
+    "datepicker",
+    "timepicker",
+    "datetimepicker",
+    "datetime"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -32,7 +45,6 @@
     "test:watch": "cross-env TZ=Europe/Stockholm jest --watch",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "prettier": "prettier --write **/*.{json,js,jsx,css}",
-    "precommit": "lint-staged",
     "prepare": "yarn build",
     "predeploy": "cd example && yarn install && yarn build",
     "deploy": "gh-pages -d example/build"
@@ -55,19 +67,11 @@
       "git add"
     ]
   },
-  "keywords": [
-    "react",
-    "react-component",
-    "datepicker",
-    "timepicker",
-    "datetimepicker",
-    "datetime"
-  ],
-  "authors": [
-    "Javier Marquez",
-    "Nate Radebaugh"
-  ],
-  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "peerDependencies": {
     "date-fns": "^1.29.0",
     "react": "^15.0.0 || ^16.0.0",
