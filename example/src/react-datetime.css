@@ -4,6 +4,7 @@
 
 .rdt {
   position: relative;
+  display: inline-block;
 }
 .rdtPicker {
   display: none;
@@ -11,7 +12,6 @@
   width: 250px;
   padding: 4px;
   margin-top: 1px;
-  z-index: 99999 !important;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #f9f9f9;
@@ -198,19 +198,14 @@ td.rdtYear:hover {
 }
 .rdtCounter .rdtCount {
   height: 20%;
-  font-size: 1.2em;
+  font-size: 1.2rem;
 }
 
-.rdtMilli {
-  vertical-align: middle;
-  padding-left: 8px;
-  width: 48px;
-}
-
-.rdtMilli input {
-  width: 100%;
-  font-size: 1.2em;
-  margin-top: 37px;
+.rdt .rdtPicker input {
+  margin-top: -0.3rem;
+  width: 2rem;
+  font-size: 1.2rem;
+  text-align: center;
 }
 
 .rdtTime td {
