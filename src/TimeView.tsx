@@ -44,15 +44,15 @@ const defaultTimeConstraints: AlwaysTimeConstraints = {
 };
 
 const CounterComponent = props => {
-  const { showPrefixSeparator, onIncrease, onDecrease, value } = props;
+  const { showPrefix, onUp, onDown, value } = props;
 
   return value !== null && value !== undefined ? (
     <React.Fragment>
-      {showPrefixSeparator && <div className="rdtCounterSeparator">:</div>}
+      {showPrefix && <div className="rdtCounterSeparator">:</div>}
       <div className="rdtCounter">
         <span
           className="rdtBtn"
-          onMouseDown={onIncrease}
+          onMouseDown={onUp}
           onContextMenu={disableContextMenu}
         >
           ▲
@@ -60,7 +60,7 @@ const CounterComponent = props => {
         <div className="rdtCount">{value}</div>
         <span
           className="rdtBtn"
-          onMouseDown={onDecrease}
+          onMouseDown={onDown}
           onContextMenu={disableContextMenu}
         >
           ▼
@@ -141,21 +141,21 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   }
 
   getStepSize(type: "hours" | "minutes" | "seconds" | "milliseconds") {
-    let stepSize = defaultTimeConstraints[type].step;
+    let step = defaultTimeConstraints[type].step;
     const config = this.props.timeConstraints
       ? this.props.timeConstraints[type]
       : undefined;
     if (config && config.step) {
-      stepSize = config.step;
+      step = config.step;
     }
 
-    return stepSize;
+    return step;
   }
 
   getFormatted(
     type: "hours" | "minutes" | "seconds" | "milliseconds" | "daypart"
   ) {
-    const timestamp = this.state.timestamp;
+    const { timestamp } = this.state;
     const timeFormat =
       typeof this.props.timeFormat === "string" ? this.props.timeFormat : "";
 
@@ -243,34 +243,32 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   }
 
   increase(type: "hours" | "minutes" | "seconds" | "milliseconds") {
-    const timestamp = this.state.timestamp;
+    const { timestamp } = this.state;
 
-    const stepSize = this.getStepSize(type);
-
+    const step = this.getStepSize(type);
     if (type === "hours") {
-      return addHours(timestamp, stepSize);
+      return addHours(timestamp, step);
     } else if (type === "minutes") {
-      return addMinutes(timestamp, stepSize);
+      return addMinutes(timestamp, step);
     } else if (type === "seconds") {
-      return addSeconds(timestamp, stepSize);
+      return addSeconds(timestamp, step);
     } else {
-      return addMilliseconds(timestamp, stepSize);
+      return addMilliseconds(timestamp, step);
     }
   }
 
   decrease(type: "hours" | "minutes" | "seconds" | "milliseconds") {
-    const timestamp = this.state.timestamp;
+    const { timestamp } = this.state;
 
-    const stepSize = this.getStepSize(type);
-
+    const step = this.getStepSize(type);
     if (type === "hours") {
-      return subHours(timestamp, stepSize);
+      return subHours(timestamp, step);
     } else if (type === "minutes") {
-      return subMinutes(timestamp, stepSize);
+      return subMinutes(timestamp, step);
     } else if (type === "seconds") {
-      return subSeconds(timestamp, stepSize);
+      return subSeconds(timestamp, step);
     } else {
-      return subMilliseconds(timestamp, stepSize);
+      return subMilliseconds(timestamp, step);
     }
   }
 
@@ -281,7 +279,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   }
 
   render() {
-    let countersWithValues = 0;
+    let numCounters = 0;
 
     return (
       <div className="rdtTime">
@@ -304,25 +302,24 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
               <td>
                 <div className="rdtCounters">
                   {allCounters.map(type => {
-                    const value = this.getFormatted(type);
-
-                    if (value) {
-                      countersWithValues++;
+                    const val = this.getFormatted(type);
+                    if (val) {
+                      numCounters++;
                     }
 
                     return (
                       <CounterComponent
                         key={type}
-                        showPrefixSeparator={countersWithValues > 1}
-                        onIncrease={this.onStartClicking("increase", type)}
-                        onDecrease={this.onStartClicking("decrease", type)}
-                        value={value}
+                        showPrefix={numCounters > 1}
+                        onUp={this.onStartClicking("increase", type)}
+                        onDown={this.onStartClicking("decrease", type)}
+                        value={val}
                       />
                     );
                   })}
                   <CounterComponent
-                    onIncrease={this.toggleDayPart}
-                    onDecrease={this.toggleDayPart}
+                    onUp={this.toggleDayPart}
+                    onDown={this.toggleDayPart}
                     value={this.getFormatted("daypart")}
                   />
                 </div>
