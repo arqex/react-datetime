@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import CalendarContainer from "./CalendarContainer";
 import startOfMonth from "date-fns/start_of_month";
 import isDate from "date-fns/is_date";
@@ -502,7 +502,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   }
 
   onInputChange(e) {
-    const value = e.target.value;
+    const { value } = e.target;
     const date = parse(value);
     const update: any = { inputValue: value };
 
@@ -590,9 +590,9 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   };
 
   updateSelectedDate: UpdateSelectedDateFunc = (e, tryClose = false) => {
-    const target = e.target;
+    const { target } = e;
     let modifier = 0;
-    const viewDate = this.state.viewDate;
+    const { viewDate } = this.state;
     const currentDate = this.state.selectedDate || viewDate;
     const close = tryClose && this.props.closeOnSelect;
     let date;

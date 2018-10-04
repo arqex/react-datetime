@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import onClickOutside from "react-onclickoutside";
 import DaysView from "./DaysView";
 import MonthsView from "./MonthsView";

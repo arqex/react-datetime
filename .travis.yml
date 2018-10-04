@@ -14,7 +14,9 @@ script:
 notifications:
   email: false
 before_install: yarn global add greenkeeper-lockfile@1
-before_script: greenkeeper-lockfile-update
+before_script:
+  - export PATH=$(yarn global bin):$PATH
+  - greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 after_success:
   - yarn report-coverage

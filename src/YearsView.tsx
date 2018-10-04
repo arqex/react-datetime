@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import getYear from "date-fns/get_year";
 import setYear from "date-fns/set_year";
 import getDaysInYear from "date-fns/get_days_in_year";
