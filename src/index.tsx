@@ -393,12 +393,12 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       : props.defaultValue || "";
 
     return {
-      updateOn,
+      updateOn: updateOn,
       inputFormat: formats.datetime,
-      viewDate,
+      viewDate: viewDate,
       selectedDate:
         selectedDate && isDateValid(selectedDate) ? selectedDate : undefined,
-      inputValue,
+      inputValue: inputValue,
       open: props.open
     };
   }
