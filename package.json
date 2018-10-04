@@ -145,7 +145,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-postcss": "^1.6.2",
     "rollup-plugin-typescript2": "^0.17.0",
-    "rollup-plugin-url": "^1.4.0",
+    "rollup-plugin-url": "^2.0.0",
     "ts-jest": "^23.10.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
