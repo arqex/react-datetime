@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.2
+
+- Enable usage in typescript projects without `"allowSyntheticDefaultImports": true` set. Thanks to @saiicharan for this fix!
+- Dependency bumps, including upgrading the example project to react-scripts@2.0.3
+
 ## 3.2.1
 
 - Resolve #34 Hours in TimeView does not show 12/24 format properly based on daypart formatting
