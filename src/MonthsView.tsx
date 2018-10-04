@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import format from "date-fns/format";
 import getMonth from "date-fns/get_month";
 import setMonth from "date-fns/set_month";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
 import { TimeConstraint, SetTimeFunc, TimeConstraints } from "./";

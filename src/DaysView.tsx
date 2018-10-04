@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import addDays from "date-fns/add_days";
 import format from "date-fns/format";
 import getDaysInMonth from "date-fns/get_days_in_month";

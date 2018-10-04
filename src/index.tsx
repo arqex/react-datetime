@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import CalendarContainer from "./CalendarContainer";
 import startOfMonth from "date-fns/start_of_month";
 import isDate from "date-fns/is_date";
