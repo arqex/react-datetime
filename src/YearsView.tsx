@@ -5,12 +5,7 @@ import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
 import cc from "classcat";
 import noop from "./noop";
-import {
-  IsValidDateFunc,
-  SetDateFunc,
-  UpdateSelectedDateFunc,
-  viewModes
-} from ".";
+import { IsValidDateFunc, SetDateFunc, UpdateSelectedDateFunc } from ".";
 
 interface YearsViewProps {
   viewDate: Date;
@@ -132,9 +127,9 @@ class YearsView extends React.Component<YearsViewProps, never> {
 
       if (!isDisabled) {
         props.onClick =
-          this.props.updateOn === viewModes.YEARS
+          this.props.updateOn === "years"
             ? this.updateSelectedYear
-            : this.props.setDate(viewModes.YEARS);
+            : this.props.setDate("years");
       }
 
       years.push(

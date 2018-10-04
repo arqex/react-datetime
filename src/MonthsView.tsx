@@ -7,12 +7,7 @@ import getDaysInMonth from "date-fns/get_days_in_month";
 import setDate from "date-fns/set_date";
 import cc from "classcat";
 import noop from "./noop";
-import {
-  IsValidDateFunc,
-  SetDateFunc,
-  UpdateSelectedDateFunc,
-  viewModes
-} from ".";
+import { IsValidDateFunc, SetDateFunc, UpdateSelectedDateFunc } from ".";
 
 interface MonthsViewProps {
   /*
@@ -151,9 +146,9 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
 
       if (!isDisabled) {
         props.onClick =
-          this.props.updateOn === viewModes.MONTHS
+          this.props.updateOn === "months"
             ? this.updateSelectedMonth
-            : this.props.setDate(viewModes.MONTHS);
+            : this.props.setDate("months");
       }
 
       months.push(renderer(props, monthIndex, year, date));

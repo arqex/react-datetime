@@ -70,27 +70,27 @@ interface DateTimeProps {
   Represents the selected date for the component to use it as a uncontrolled component.
   This prop is parsed by date-fns, so it is possible to use a date string or a date-fns date.
   */
-  defaultValue?: Date | string;
+  defaultValue: Date | string;
 
   /*
   Represents the month which is viewed on opening the calendar when there is no selected date.
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
-  viewDate?: Date | string;
+  viewDate: Date | string;
 
   /*
   Defines the format for the date. It accepts any date-fns date format.
   If true the date will be displayed using the defaults for the current locale.
   If false the datepicker is disabled and the component can be used as timepicker.
   */
-  dateFormat?: boolean | string;
+  dateFormat: boolean | string;
 
   /*
   Defines the format for the time. It accepts any date-fns time format.
   If true the time will be displayed using the defaults for the current locale.
   If false the timepicker is disabled and the component can be used as datepicker.
   */
-  timeFormat?: boolean | string;
+  timeFormat: boolean | string;
 
   /*
   Whether to show an input field to edit the date manually.
@@ -138,24 +138,24 @@ interface DateTimeProps {
   Callback trigger when the view mode changes. The callback receives the selected view mode
   string ('years', 'months', 'days', 'time') as only parameter.
   */
-  onViewModeChange?: (viewMode: string) => void;
+  onViewModeChange?: (viewMode: ViewMode) => void;
 
   /*
   Callback trigger when the user navigates to the previous month, year or decade.
   The callback receives the amount and type ('month', 'year') as parameters.
   */
-  onNavigateBack?: (amount: number, type: string) => void;
+  onNavigateBack?: (amount: number, type: ViewMode) => void;
 
   /*
   Callback trigger when the user navigates to the next month, year or decade.
   The callback receives the amount and type ('month', 'year') as parameters.
   */
-  onNavigateForward?: (amount: number, type: string) => void;
+  onNavigateForward?: (amount: number, type: ViewMode) => void;
 
   /*
   The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
   */
-  viewMode?: ViewMode | number;
+  viewMode?: ViewMode;
 
   /*
   Extra class names for the component markup.
@@ -249,28 +249,6 @@ interface DateTimeState {
   open: boolean;
 }
 
-const YEARS: "years" = "years";
-const MONTHS: "months" = "months";
-const DAYS: "days" = "days";
-const TIME: "time" = "time";
-export const viewModes = Object.freeze({
-  YEARS: YEARS,
-  MONTHS: MONTHS,
-  DAYS: DAYS,
-  TIME: TIME
-});
-
-const HOURS: "hours" = "hours";
-const MINUTES: "minutes" = "minutes";
-const SECONDS: "seconds" = "seconds";
-const MILLISECONDS: "milliseconds" = "milliseconds";
-export const allowedSetTime = Object.freeze({
-  HOURS: HOURS,
-  MINUTES: MINUTES,
-  SECONDS: SECONDS,
-  MILLISECONDS: MILLISECONDS
-});
-
 const componentProps = {
   fromProps: [
     "value",
@@ -290,6 +268,16 @@ const componentProps = {
     "subtractTime",
     "updateSelectedDate"
   ]
+};
+
+interface NextViews {
+  months: "days";
+  years: "months";
+}
+
+const nextViews: NextViews = {
+  months: "days",
+  years: "months"
 };
 
 class DateTime extends React.Component<DateTimeProps, DateTimeState> {
@@ -319,7 +307,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     // Bind functions
     this.getInitialState = this.getInitialState.bind(this);
-    this.parseDate = this.parseDate.bind(this);
+    this.parse = this.parse.bind(this);
     this.getStateFromProps = this.getStateFromProps.bind(this);
     this.getUpdateOn = this.getUpdateOn.bind(this);
     this.getFormats = this.getFormats.bind(this);
@@ -362,12 +350,12 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     state.currentView = props.dateFormat
       ? props.viewMode || state.updateOn
-      : viewModes.TIME;
+      : "time";
 
     return state;
   }
 
-  parseDate(date): any {
+  parse(date): any {
     if (date) {
       const parsedDate = parse(date);
       if (isDate(parsedDate) && isDateValid(parsedDate)) {
@@ -381,9 +369,9 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   getStateFromProps(props): any {
     const formats = this.getFormats(props);
     const selectedDate =
-      this.parseDate(props.value) || this.parseDate(props.defaultValue);
+      this.parse(props.value) || this.parse(props.defaultValue);
     const viewDate = startOfMonth(
-      selectedDate || this.parseDate(props.viewDate) || new Date()
+      selectedDate || this.parse(props.viewDate) || new Date()
     );
 
     const updateOn = this.getUpdateOn(formats);
@@ -396,23 +384,22 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       updateOn: updateOn,
       inputFormat: formats.datetime,
       viewDate: viewDate,
-      selectedDate:
-        selectedDate && isDateValid(selectedDate) ? selectedDate : undefined,
+      selectedDate: selectedDate,
       inputValue: inputValue,
       open: props.open
     };
   }
 
-  getUpdateOn(formats): string {
+  getUpdateOn(formats): "days" | "months" | "years" {
     if (formats.date.match(/[lLD]/)) {
-      return viewModes.DAYS;
+      return "days";
     } else if (formats.date.indexOf("M") !== -1) {
-      return viewModes.MONTHS;
+      return "months";
     } else if (formats.date.indexOf("Y") !== -1) {
-      return viewModes.YEARS;
+      return "years";
     }
 
-    return viewModes.DAYS;
+    return "days";
   }
 
   getFormats(props): any {
@@ -423,7 +410,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     if (formats.date === true) {
       formats.date = "MM/DD/YYYY";
-    } else if (this.getUpdateOn(formats) !== viewModes.DAYS) {
+    } else if (this.getUpdateOn(formats) !== "days") {
       formats.time = "";
     }
 
@@ -503,10 +490,10 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
   onInputChange(e) {
     const { value } = e.target;
-    const date = parse(value);
+    const date = this.parse(value);
     const update: any = { inputValue: value };
 
-    if (isDate(date) && isDateValid(date) && !this.props.value) {
+    if (date && !this.props.value) {
       update.selectedDate = date;
       update.viewDate = startOfMonth(date);
     } else {
@@ -533,15 +520,10 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   }
 
   setDate: SetDateFunc = type => {
-    const nextViews = {
-      months: viewModes.DAYS,
-      years: viewModes.MONTHS
-    };
-
     return e => {
       const value = parseInt(e.target.getAttribute("data-value"), 10);
       const newDate =
-        type === viewModes.MONTHS
+        type === "months"
           ? startOfMonth(setMonth(this.state.viewDate, value))
           : startOfYear(setYear(this.state.viewDate, value));
 
@@ -576,7 +558,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     this.setState({
       viewDate:
-        type === viewModes.MONTHS
+        type === "months"
           ? addMonths(workingDate, amount * multiplier)
           : addYears(workingDate, amount * multiplier)
     });
