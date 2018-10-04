@@ -25,7 +25,7 @@ export default class OpenExample extends Component {
             onClick={() => this.setState({ viewMode: undefined })}
             disabled={this.state.viewMode === undefined}
           >
-            EN - undefined
+            Default - undefined
           </button>
           <button
             type="button"
