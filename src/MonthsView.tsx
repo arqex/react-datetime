@@ -64,7 +64,6 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
 
     // Bind functions
     this.renderMonths = this.renderMonths.bind(this);
-    this.updateSelectedMonth = this.updateSelectedMonth.bind(this);
     this.renderMonth = this.renderMonth.bind(this);
   }
 
@@ -145,7 +144,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
       if (!isDisabled) {
         props.onClick =
           this.props.updateOn === "months"
-            ? this.updateSelectedMonth
+            ? this.props.updateSelectedDate()
             : this.props.setDate("months");
       }
 
@@ -159,10 +158,6 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     }
 
     return rows;
-  }
-
-  updateSelectedMonth(event) {
-    this.props.updateSelectedDate(event);
   }
 
   renderMonth(props, month, year, selected) {

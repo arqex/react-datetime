@@ -74,7 +74,6 @@ class DaysView extends React.Component<DaysViewProps, never> {
 
     // Bind functions
     this.renderDays = this.renderDays.bind(this);
-    this.updateSelectedDate = this.updateSelectedDate.bind(this);
     this.renderDay = this.renderDay.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
   }
@@ -177,7 +176,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
       };
 
       if (!isDisabled) {
-        dayProps.onClick = this.updateSelectedDate;
+        dayProps.onClick = this.props.updateSelectedDate(true);
       }
 
       days.push(renderer(dayProps, workingDate, selectedDate));
@@ -189,10 +188,6 @@ class DaysView extends React.Component<DaysViewProps, never> {
     }
 
     return weeks;
-  }
-
-  updateSelectedDate(event) {
-    this.props.updateSelectedDate(event, true);
   }
 
   renderDay(props, currentDate) {

@@ -50,7 +50,6 @@ class YearsView extends React.Component<YearsViewProps, never> {
 
     // Bind functions
     this.renderYears = this.renderYears.bind(this);
-    this.updateSelectedYear = this.updateSelectedYear.bind(this);
     this.renderYear = this.renderYear.bind(this);
   }
 
@@ -129,7 +128,7 @@ class YearsView extends React.Component<YearsViewProps, never> {
       if (!isDisabled) {
         props.onClick =
           this.props.updateOn === "years"
-            ? this.updateSelectedYear
+            ? this.props.updateSelectedDate()
             : this.props.setDate("years");
       }
 
@@ -144,10 +143,6 @@ class YearsView extends React.Component<YearsViewProps, never> {
     }
 
     return rows;
-  }
-
-  updateSelectedYear(event) {
-    this.props.updateSelectedDate(event);
   }
 
   renderYear(props, year) {

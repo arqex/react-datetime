@@ -57,7 +57,7 @@ export type IsValidDateFunc = (
 export type SetDateFunc = (type: "months" | "years") => void;
 export type SetTimeFunc = (date: Date) => void;
 
-export type UpdateSelectedDateFunc = (e: any, close?: boolean) => void;
+export type UpdateSelectedDateFunc = (close?: boolean) => void;
 
 interface DateTimeProps {
   /*
@@ -554,67 +554,72 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     });
   };
 
-  updateSelectedDate: UpdateSelectedDateFunc = (e, tryClose = false) => {
-    const { target } = e;
-    let modifier = 0;
-    const { viewDate } = this.state;
-    const currentDate = this.state.selectedDate || viewDate;
-    const close = tryClose && this.props.closeOnSelect;
-    let date;
+  updateSelectedDate: UpdateSelectedDateFunc = (tryClose = false) => {
+    return e => {
+      const { target } = e;
+      let modifier = 0;
+      const { viewDate } = this.state;
+      const currentDate = this.state.selectedDate || viewDate;
+      const close = tryClose && this.props.closeOnSelect;
+      let date;
 
-    const value = parseInt(target.getAttribute("data-val"), 10);
+      const value = parseInt(target.getAttribute("data-val"), 10);
 
-    if (target.className.indexOf("rdtDay") !== -1) {
-      if (target.className.indexOf("rdtNew") !== -1) {
-        modifier = 1;
-      } else if (target.className.indexOf("rdtOld") !== -1) {
-        modifier = -1;
+      if (target.className.indexOf("rdtDay") !== -1) {
+        if (target.className.indexOf("rdtNew") !== -1) {
+          modifier = 1;
+        } else if (target.className.indexOf("rdtOld") !== -1) {
+          modifier = -1;
+        }
+
+        date = setDate(
+          setMonth(viewDate, getMonth(viewDate) + modifier),
+          value
+        );
+      } else if (target.className.indexOf("rdtMonth") !== -1) {
+        date = setDate(setMonth(viewDate, value), getDate(currentDate));
+      } else {
+        date = setYear(
+          setDate(
+            setMonth(viewDate, getMonth(currentDate)),
+            getDate(currentDate)
+          ),
+          value
+        );
       }
 
-      date = setDate(setMonth(viewDate, getMonth(viewDate) + modifier), value);
-    } else if (target.className.indexOf("rdtMonth") !== -1) {
-      date = setDate(setMonth(viewDate, value), getDate(currentDate));
-    } else {
-      date = setYear(
-        setDate(
-          setMonth(viewDate, getMonth(currentDate)),
-          getDate(currentDate)
+      date = setMilliseconds(
+        setSeconds(
+          setMinutes(
+            setHours(date, getHours(currentDate)),
+            getMinutes(currentDate)
+          ),
+          getSeconds(currentDate)
         ),
-        value
+        getMilliseconds(currentDate)
       );
-    }
 
-    date = setMilliseconds(
-      setSeconds(
-        setMinutes(
-          setHours(date, getHours(currentDate)),
-          getMinutes(currentDate)
-        ),
-        getSeconds(currentDate)
-      ),
-      getMilliseconds(currentDate)
-    );
+      const readonly = this.props.value;
+      if (!readonly) {
+        const open = !close;
+        if (!open) {
+          this.props.onBlur!(date);
+        }
 
-    const readonly = this.props.value;
-    if (!readonly) {
-      const open = !close;
-      if (!open) {
-        this.props.onBlur!(date);
+        this.setState({
+          selectedDate: date,
+          viewDate: startOfMonth(date),
+          inputValue: format(
+            date,
+            this.state.inputFormat,
+            this.getFormatOptions()
+          ),
+          open: open
+        });
+      } else if (close) {
+        this.closeCalendar();
       }
-
-      this.setState({
-        selectedDate: date,
-        viewDate: startOfMonth(date),
-        inputValue: format(
-          date,
-          this.state.inputFormat,
-          this.getFormatOptions()
-        ),
-        open: open
-      });
-    } else if (close) {
-      this.closeCalendar();
-    }
+    };
   };
 
   openCalendar(e) {

@@ -72,49 +72,42 @@ exports[`CalendarContainer everything default: renders correctly 1`] = `
         <td
           className="rdtDay rdtOld"
           data-val={26}
-          onClick={[Function]}
         >
           26
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={27}
-          onClick={[Function]}
         >
           27
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={28}
-          onClick={[Function]}
         >
           28
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={29}
-          onClick={[Function]}
         >
           29
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={30}
-          onClick={[Function]}
         >
           30
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={31}
-          onClick={[Function]}
         >
           31
         </td>
         <td
           className="rdtDay"
           data-val={1}
-          onClick={[Function]}
         >
           1
         </td>
@@ -123,49 +116,42 @@ exports[`CalendarContainer everything default: renders correctly 1`] = `
         <td
           className="rdtDay rdtToday"
           data-val={2}
-          onClick={[Function]}
         >
           2
         </td>
         <td
           className="rdtDay"
           data-val={3}
-          onClick={[Function]}
         >
           3
         </td>
         <td
           className="rdtDay"
           data-val={4}
-          onClick={[Function]}
         >
           4
         </td>
         <td
           className="rdtDay"
           data-val={5}
-          onClick={[Function]}
         >
           5
         </td>
         <td
           className="rdtDay"
           data-val={6}
-          onClick={[Function]}
         >
           6
         </td>
         <td
           className="rdtDay"
           data-val={7}
-          onClick={[Function]}
         >
           7
         </td>
         <td
           className="rdtDay"
           data-val={8}
-          onClick={[Function]}
         >
           8
         </td>
@@ -174,49 +160,42 @@ exports[`CalendarContainer everything default: renders correctly 1`] = `
         <td
           className="rdtDay"
           data-val={9}
-          onClick={[Function]}
         >
           9
         </td>
         <td
           className="rdtDay"
           data-val={10}
-          onClick={[Function]}
         >
           10
         </td>
         <td
           className="rdtDay"
           data-val={11}
-          onClick={[Function]}
         >
           11
         </td>
         <td
           className="rdtDay"
           data-val={12}
-          onClick={[Function]}
         >
           12
         </td>
         <td
           className="rdtDay"
           data-val={13}
-          onClick={[Function]}
         >
           13
         </td>
         <td
           className="rdtDay"
           data-val={14}
-          onClick={[Function]}
         >
           14
         </td>
         <td
           className="rdtDay"
           data-val={15}
-          onClick={[Function]}
         >
           15
         </td>
@@ -225,49 +204,42 @@ exports[`CalendarContainer everything default: renders correctly 1`] = `
         <td
           className="rdtDay"
           data-val={16}
-          onClick={[Function]}
         >
           16
         </td>
         <td
           className="rdtDay"
           data-val={17}
-          onClick={[Function]}
         >
           17
         </td>
         <td
           className="rdtDay"
           data-val={18}
-          onClick={[Function]}
         >
           18
         </td>
         <td
           className="rdtDay"
           data-val={19}
-          onClick={[Function]}
         >
           19
         </td>
         <td
           className="rdtDay"
           data-val={20}
-          onClick={[Function]}
         >
           20
         </td>
         <td
           className="rdtDay"
           data-val={21}
-          onClick={[Function]}
         >
           21
         </td>
         <td
           className="rdtDay"
           data-val={22}
-          onClick={[Function]}
         >
           22
         </td>
@@ -276,49 +248,42 @@ exports[`CalendarContainer everything default: renders correctly 1`] = `
         <td
           className="rdtDay"
           data-val={23}
-          onClick={[Function]}
         >
           23
         </td>
         <td
           className="rdtDay"
           data-val={24}
-          onClick={[Function]}
         >
           24
         </td>
         <td
           className="rdtDay"
           data-val={25}
-          onClick={[Function]}
         >
           25
         </td>
         <td
           className="rdtDay"
           data-val={26}
-          onClick={[Function]}
         >
           26
         </td>
         <td
           className="rdtDay"
           data-val={27}
-          onClick={[Function]}
         >
           27
         </td>
         <td
           className="rdtDay"
           data-val={28}
-          onClick={[Function]}
         >
           28
         </td>
         <td
           className="rdtDay"
           data-val={29}
-          onClick={[Function]}
         >
           29
         </td>
@@ -327,49 +292,42 @@ exports[`CalendarContainer everything default: renders correctly 1`] = `
         <td
           className="rdtDay"
           data-val={30}
-          onClick={[Function]}
         >
           30
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={1}
-          onClick={[Function]}
         >
           1
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={2}
-          onClick={[Function]}
         >
           2
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={3}
-          onClick={[Function]}
         >
           3
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={4}
-          onClick={[Function]}
         >
           4
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={5}
-          onClick={[Function]}
         >
           5
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={6}
-          onClick={[Function]}
         >
           6
         </td>
@@ -12995,49 +12953,42 @@ exports[`DaysView everything default: renders correctly 1`] = `
         <td
           className="rdtDay rdtOld"
           data-val={26}
-          onClick={[Function]}
         >
           26
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={27}
-          onClick={[Function]}
         >
           27
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={28}
-          onClick={[Function]}
         >
           28
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={29}
-          onClick={[Function]}
         >
           29
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={30}
-          onClick={[Function]}
         >
           30
         </td>
         <td
           className="rdtDay rdtOld"
           data-val={31}
-          onClick={[Function]}
         >
           31
         </td>
         <td
           className="rdtDay"
           data-val={1}
-          onClick={[Function]}
         >
           1
         </td>
@@ -13046,49 +12997,42 @@ exports[`DaysView everything default: renders correctly 1`] = `
         <td
           className="rdtDay rdtToday"
           data-val={2}
-          onClick={[Function]}
         >
           2
         </td>
         <td
           className="rdtDay"
           data-val={3}
-          onClick={[Function]}
         >
           3
         </td>
         <td
           className="rdtDay"
           data-val={4}
-          onClick={[Function]}
         >
           4
         </td>
         <td
           className="rdtDay"
           data-val={5}
-          onClick={[Function]}
         >
           5
         </td>
         <td
           className="rdtDay"
           data-val={6}
-          onClick={[Function]}
         >
           6
         </td>
         <td
           className="rdtDay"
           data-val={7}
-          onClick={[Function]}
         >
           7
         </td>
         <td
           className="rdtDay"
           data-val={8}
-          onClick={[Function]}
         >
           8
         </td>
@@ -13097,49 +13041,42 @@ exports[`DaysView everything default: renders correctly 1`] = `
         <td
           className="rdtDay"
           data-val={9}
-          onClick={[Function]}
         >
           9
         </td>
         <td
           className="rdtDay"
           data-val={10}
-          onClick={[Function]}
         >
           10
         </td>
         <td
           className="rdtDay"
           data-val={11}
-          onClick={[Function]}
         >
           11
         </td>
         <td
           className="rdtDay"
           data-val={12}
-          onClick={[Function]}
         >
           12
         </td>
         <td
           className="rdtDay"
           data-val={13}
-          onClick={[Function]}
         >
           13
         </td>
         <td
           className="rdtDay"
           data-val={14}
-          onClick={[Function]}
         >
           14
         </td>
         <td
           className="rdtDay"
           data-val={15}
-          onClick={[Function]}
         >
           15
         </td>
@@ -13148,49 +13085,42 @@ exports[`DaysView everything default: renders correctly 1`] = `
         <td
           className="rdtDay"
           data-val={16}
-          onClick={[Function]}
         >
           16
         </td>
         <td
           className="rdtDay"
           data-val={17}
-          onClick={[Function]}
         >
           17
         </td>
         <td
           className="rdtDay"
           data-val={18}
-          onClick={[Function]}
         >
           18
         </td>
         <td
           className="rdtDay"
           data-val={19}
-          onClick={[Function]}
         >
           19
         </td>
         <td
           className="rdtDay"
           data-val={20}
-          onClick={[Function]}
         >
           20
         </td>
         <td
           className="rdtDay"
           data-val={21}
-          onClick={[Function]}
         >
           21
         </td>
         <td
           className="rdtDay"
           data-val={22}
-          onClick={[Function]}
         >
           22
         </td>
@@ -13199,49 +13129,42 @@ exports[`DaysView everything default: renders correctly 1`] = `
         <td
           className="rdtDay"
           data-val={23}
-          onClick={[Function]}
         >
           23
         </td>
         <td
           className="rdtDay"
           data-val={24}
-          onClick={[Function]}
         >
           24
         </td>
         <td
           className="rdtDay"
           data-val={25}
-          onClick={[Function]}
         >
           25
         </td>
         <td
           className="rdtDay"
           data-val={26}
-          onClick={[Function]}
         >
           26
         </td>
         <td
           className="rdtDay"
           data-val={27}
-          onClick={[Function]}
         >
           27
         </td>
         <td
           className="rdtDay"
           data-val={28}
-          onClick={[Function]}
         >
           28
         </td>
         <td
           className="rdtDay"
           data-val={29}
-          onClick={[Function]}
         >
           29
         </td>
@@ -13250,49 +13173,42 @@ exports[`DaysView everything default: renders correctly 1`] = `
         <td
           className="rdtDay"
           data-val={30}
-          onClick={[Function]}
         >
           30
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={1}
-          onClick={[Function]}
         >
           1
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={2}
-          onClick={[Function]}
         >
           2
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={3}
-          onClick={[Function]}
         >
           3
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={4}
-          onClick={[Function]}
         >
           4
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={5}
-          onClick={[Function]}
         >
           5
         </td>
         <td
           className="rdtDay rdtNew"
           data-val={6}
-          onClick={[Function]}
         >
           6
         </td>

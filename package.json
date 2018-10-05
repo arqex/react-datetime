@@ -24,11 +24,11 @@
   "bundlesize": [
     {
       "path": "dist/index.js",
-      "maxSize": "11 kB"
+      "maxSize": "10 kB"
     },
     {
       "path": "dist/index.es.js",
-      "maxSize": "11 kB"
+      "maxSize": "10 kB"
     }
   ],
   "keywords": [
@@ -41,6 +41,7 @@
   ],
   "scripts": {
     "build": "rollup -c",
+    "build:size": "rollup -c && yarn bundlesize",
     "dev": "rollup -c -w",
     "start": "rollup -c -w",
     "lint": "yarn tslint",
