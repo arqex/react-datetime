@@ -1,13 +1,15 @@
 import * as React from "react";
 import addDays from "date-fns/add_days";
 import format from "date-fns/format";
-import getDaysInMonth from "date-fns/get_days_in_month";
 import getMonth from "date-fns/get_month";
-import getYear from "date-fns/get_year";
 import startOfWeek from "date-fns/start_of_week";
+import startOfMonth from "date-fns/start_of_month";
+import endOfMonth from "date-fns/end_of_month";
 import isSameDay from "date-fns/is_same_day";
 import isToday from "date-fns/is_today";
-import setDate from "date-fns/set_date";
+import isBefore from "date-fns/is_before";
+import isAfter from "date-fns/is_after";
+import addWeeks from "date-fns/add_weeks";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
 import cc from "classcat";
@@ -173,28 +175,20 @@ class DaysView extends React.Component<DaysViewProps, never> {
 
   renderDays() {
     const date = this.props.viewDate || new Date();
-    const selectedDate = this.props.selectedDate
-      ? this.props.selectedDate
-      : undefined;
+    const { selectedDate } = this.props;
     const prevMonth = subMonths(date, 1);
-    const currentYear = getYear(date);
-    const currentMonth = getMonth(date);
     const weeks: any[] = [];
     let days: any[] = [];
     const renderer = this.props.renderDay || this.renderDay;
     const isValid = this.props.isValidDate || returnTrue;
 
-    const prevMonthLastWeekStart = startOfWeek(
-      setDate(prevMonth, getDaysInMonth(prevMonth))
-    );
-    const lastDay = addDays(prevMonthLastWeekStart, 42);
+    const prevMonthLastWeekStart = startOfWeek(endOfMonth(prevMonth));
+    const lastDay = addWeeks(prevMonthLastWeekStart, 6);
     for (
       let workingDate = prevMonthLastWeekStart;
       workingDate < lastDay;
       workingDate = addDays(workingDate, 1)
     ) {
-      const workingYear = getYear(workingDate);
-      const workingMonth = getMonth(workingDate);
       const isDisabled = !isValid(workingDate, selectedDate);
 
       const dayProps: any = {
@@ -202,12 +196,8 @@ class DaysView extends React.Component<DaysViewProps, never> {
         className: cc([
           "rdtDay",
           {
-            rdtOld:
-              (workingYear === currentYear && workingMonth < currentMonth) ||
-              workingYear < currentYear,
-            rdtNew:
-              (workingYear === currentYear && workingMonth > currentMonth) ||
-              workingYear > currentYear,
+            rdtOld: isBefore(workingDate, startOfMonth(date)),
+            rdtNew: isAfter(workingDate, endOfMonth(date)),
             rdtActive: selectedDate && isSameDay(workingDate, selectedDate),
             rdtToday: isToday(workingDate),
             rdtDisabled: isDisabled
