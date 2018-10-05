@@ -9,8 +9,7 @@ import { IsValidDateFunc, SetDateFunc, UpdateSelectedDateFunc } from ".";
 
 interface YearsViewProps {
   viewDate: Date;
-  subtractTime?: any;
-  addTime?: any;
+  moveTime?: any;
   showView?: any;
   selectedDate?: Date;
 
@@ -38,9 +37,8 @@ interface YearsViewProps {
 class YearsView extends React.Component<YearsViewProps, never> {
   static defaultProps = {
     viewDate: new Date(),
-    subtractTime: noop,
+    moveTime: noop,
     showView: noop,
-    addTime: noop,
     updateOn: noop,
     setDate: noop,
     updateSelectedDate: noop
@@ -66,7 +64,7 @@ class YearsView extends React.Component<YearsViewProps, never> {
             <tr>
               <th
                 className="rdtPrev"
-                onClick={this.props.subtractTime(10, "years")}
+                onClick={this.props.moveTime("sub", 10, "years")}
               >
                 <span>‹</span>
               </th>
@@ -77,7 +75,10 @@ class YearsView extends React.Component<YearsViewProps, never> {
               >
                 {year}-{year + 9}
               </th>
-              <th className="rdtNext" onClick={this.props.addTime(10, "years")}>
+              <th
+                className="rdtNext"
+                onClick={this.props.moveTime("add", 10, "years")}
+              >
                 <span>›</span>
               </th>
             </tr>

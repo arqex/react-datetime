@@ -26,8 +26,7 @@ interface DaysViewProps {
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
   viewDate?: Date | string;
-  subtractTime?: any;
-  addTime?: any;
+  moveTime?: any;
   showView?: any;
   selectedDate?: Date;
 
@@ -60,9 +59,8 @@ interface DaysViewProps {
 
 class DaysView extends React.Component<DaysViewProps, never> {
   static defaultProps = {
-    subtractTime: noop,
+    moveTime: noop,
     showView: noop,
-    addTime: noop,
     updateSelectedDate: noop
   };
 
@@ -93,7 +91,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
             <tr>
               <th
                 className="rdtPrev"
-                onClick={this.props.subtractTime(1, "months")}
+                onClick={this.props.moveTime("sub", 1, "months")}
               >
                 <span>‹</span>
               </th>
@@ -107,7 +105,10 @@ class DaysView extends React.Component<DaysViewProps, never> {
               >
                 {format(date, "MMMM YYYY", this.getFormatOptions())}
               </th>
-              <th className="rdtNext" onClick={this.props.addTime(1, "months")}>
+              <th
+                className="rdtNext"
+                onClick={this.props.moveTime("add", 1, "months")}
+              >
                 <span>›</span>
               </th>
             </tr>

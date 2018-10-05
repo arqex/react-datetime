@@ -17,8 +17,7 @@ interface MonthsViewProps {
   locale?: any;
 
   viewDate: Date;
-  subtractTime?: any;
-  addTime?: any;
+  moveTime?: any;
   showView?: any;
   selectedDate?: Date;
 
@@ -50,9 +49,8 @@ interface MonthsViewProps {
 class MonthsView extends React.Component<MonthsViewProps, never> {
   static defaultProps = {
     viewDate: new Date(),
-    subtractTime: noop,
+    moveTime: noop,
     showView: noop,
-    addTime: noop,
     updateOn: noop,
     setDate: noop,
     updateSelectedDate: noop
@@ -83,7 +81,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
             <tr>
               <th
                 className="rdtPrev"
-                onClick={this.props.subtractTime(1, "years")}
+                onClick={this.props.moveTime("sub", 1, "years")}
               >
                 <span>‹</span>
               </th>
@@ -95,7 +93,10 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
               >
                 {format(date, "YYYY", this.getFormatOptions())}
               </th>
-              <th className="rdtNext" onClick={this.props.addTime(1, "years")}>
+              <th
+                className="rdtNext"
+                onClick={this.props.moveTime("add", 1, "years")}
+              >
                 <span>›</span>
               </th>
             </tr>

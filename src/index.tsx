@@ -260,14 +260,7 @@ const componentProps = {
     "locale"
   ],
   fromState: ["viewDate", "selectedDate", "updateOn"],
-  fromThis: [
-    "setDate",
-    "setTime",
-    "showView",
-    "addTime",
-    "subtractTime",
-    "updateSelectedDate"
-  ]
+  fromThis: ["setDate", "setTime", "showView", "moveTime", "updateSelectedDate"]
 };
 
 interface NextViews {
@@ -315,9 +308,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     this.onInputKey = this.onInputKey.bind(this);
     this.showView = this.showView.bind(this);
     this.setDate = this.setDate.bind(this);
-    this.subtractTime = this.subtractTime.bind(this);
-    this.addTime = this.addTime.bind(this);
-    this.updateTime = this.updateTime.bind(this);
+    this.moveTime = this.moveTime.bind(this);
     this.setTime = this.setTime.bind(this);
     this.updateSelectedDate = this.updateSelectedDate.bind(this);
     this.openCalendar = this.openCalendar.bind(this);
@@ -536,32 +527,24 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     };
   };
 
-  subtractTime(amount: number, type: "months" | "years") {
+  moveTime(op: "sub" | "add", amount: number, type: "months" | "years") {
     return () => {
-      this.props.onNavigateBack!(amount, type);
+      const multiplier = op === "sub" ? -1 : 1;
+      const workingDate = this.state.viewDate;
 
-      this.updateTime("subtract", amount, type);
+      if (op === "sub") {
+        this.props.onNavigateBack!(amount, type);
+      } else {
+        this.props.onNavigateForward!(amount, type);
+      }
+
+      this.setState({
+        viewDate:
+          type === "months"
+            ? addMonths(workingDate, amount * multiplier)
+            : addYears(workingDate, amount * multiplier)
+      });
     };
-  }
-
-  addTime(amount: number, type: "months" | "years") {
-    return () => {
-      this.props.onNavigateForward!(amount, type);
-
-      this.updateTime("add", amount, type);
-    };
-  }
-
-  updateTime(op: "subtract" | "add", amount: number, type: "months" | "years") {
-    const multiplier = op === "subtract" ? -1 : 1;
-    const workingDate = this.state.viewDate;
-
-    this.setState({
-      viewDate:
-        type === "months"
-          ? addMonths(workingDate, amount * multiplier)
-          : addYears(workingDate, amount * multiplier)
-    });
   }
 
   setTime: SetTimeFunc = date => {
