@@ -76,7 +76,7 @@ interface DateTimeProps {
   Represents the month which is viewed on opening the calendar when there is no selected date.
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
-  viewDate: Date | string;
+  viewDate?: Date | string;
 
   /*
   Defines the format for the date. It accepts any date-fns date format.
