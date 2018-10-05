@@ -90,29 +90,23 @@ class YearsView extends React.Component<YearsViewProps, never> {
     );
   }
 
-  renderYears(year) {
+  renderYears(year: number): JSX.Element[] {
     const renderer = this.props.renderYear || this.renderYear;
-    const selectedDate = this.props.selectedDate;
-    const date = this.props.viewDate;
+    const { selectedDate, viewDate } = this.props;
     const isValid = this.props.isValidDate || returnTrue;
-    let years: any[] = [];
-    const rows: any[] = [];
+    let years: JSX.Element[] = [];
+    const rows: JSX.Element[] = [];
 
     year--;
     for (let yearIndex = -1; yearIndex < 11; yearIndex++, year++) {
-      const currentYear = setYear(date, year);
+      const currentYear = setYear(viewDate, year);
 
-      const noOfDaysInYear = getDaysInYear(date);
-      const daysInYear = Array.from({ length: noOfDaysInYear }, (e, i) => {
-        return i + 1;
-      });
+      const daysInYear = Array.from(
+        { length: getDaysInYear(viewDate) },
+        (e, i) => setDayOfYear(currentYear, i + 1)
+      );
 
-      const validDay = daysInYear.find(d => {
-        const day = setDayOfYear(currentYear, d);
-        return isValid(day);
-      });
-
-      const isDisabled = validDay === undefined;
+      const isDisabled = daysInYear.every(d => !isValid(d));
       const props: any = {
         key: year,
         "data-val": year,
@@ -132,9 +126,7 @@ class YearsView extends React.Component<YearsViewProps, never> {
             : this.props.setDate("years");
       }
 
-      years.push(
-        renderer(props, year, selectedDate && new Date(selectedDate.getTime()))
-      );
+      years.push(renderer(props, year, selectedDate));
 
       if (years.length === 4) {
         rows.push(<tr key={yearIndex}>{years}</tr>);
@@ -145,7 +137,7 @@ class YearsView extends React.Component<YearsViewProps, never> {
     return rows;
   }
 
-  renderYear(props, year) {
+  renderYear(props, year: number): JSX.Element {
     return <td {...props}>{year}</td>;
   }
 }

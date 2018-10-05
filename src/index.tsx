@@ -500,7 +500,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     }
   }
 
-  showView(view) {
+  showView(view: "days" | "months" | "years" | "time") {
     return () => {
       if (this.state.currentView !== view) {
         this.props.onViewModeChange!(view);
