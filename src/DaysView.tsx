@@ -13,6 +13,7 @@ import getDate from "date-fns/get_date";
 import cc from "classcat";
 import { IsValidDateFunc, UpdateSelectedDateFunc } from ".";
 import noop from "./noop";
+import returnTrue from "./returnTrue";
 
 interface DaysViewProps {
   /*
@@ -72,7 +73,6 @@ class DaysView extends React.Component<DaysViewProps, never> {
     this.updateSelectedDate = this.updateSelectedDate.bind(this);
     this.renderDay = this.renderDay.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
-    this.alwaysValidDate = this.alwaysValidDate.bind(this);
     this.getFormatOptions = this.getFormatOptions.bind(this);
   }
 
@@ -182,7 +182,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
     const weeks: any[] = [];
     let days: any[] = [];
     const renderer = this.props.renderDay || this.renderDay;
-    const isValid = this.props.isValidDate || this.alwaysValidDate;
+    const isValid = this.props.isValidDate || returnTrue;
 
     const prevMonthLastWeekStart = startOfWeek(
       setDate(prevMonth, getDaysInMonth(prevMonth))
@@ -265,10 +265,6 @@ class DaysView extends React.Component<DaysViewProps, never> {
         </tr>
       </tfoot>
     );
-  }
-
-  alwaysValidDate() {
-    return true;
   }
 }
 

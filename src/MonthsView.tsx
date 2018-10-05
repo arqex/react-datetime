@@ -8,6 +8,7 @@ import setDate from "date-fns/set_date";
 import cc from "classcat";
 import noop from "./noop";
 import { IsValidDateFunc, SetDateFunc, UpdateSelectedDateFunc } from ".";
+import returnTrue from "./returnTrue";
 
 interface MonthsViewProps {
   /*
@@ -63,7 +64,6 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     this.renderMonths = this.renderMonths.bind(this);
     this.updateSelectedMonth = this.updateSelectedMonth.bind(this);
     this.renderMonth = this.renderMonth.bind(this);
-    this.alwaysValidDate = this.alwaysValidDate.bind(this);
     this.getFormatOptions = this.getFormatOptions.bind(this);
   }
 
@@ -113,7 +113,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     const date = this.props.selectedDate;
     const year = getYear(this.props.viewDate);
     const renderer = this.props.renderMonth || this.renderMonth;
-    const isValid = this.props.isValidDate || this.alwaysValidDate;
+    const isValid = this.props.isValidDate || returnTrue;
 
     const rows: any[] = [];
     let months: any[] = [];
@@ -173,10 +173,6 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     return (
       <td {...props}>{format(monthDate, "MMM", this.getFormatOptions())}</td>
     );
-  }
-
-  alwaysValidDate() {
-    return true;
   }
 }
 

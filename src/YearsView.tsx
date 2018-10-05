@@ -6,6 +6,7 @@ import setDayOfYear from "date-fns/set_day_of_year";
 import cc from "classcat";
 import noop from "./noop";
 import { IsValidDateFunc, SetDateFunc, UpdateSelectedDateFunc } from ".";
+import returnTrue from "./returnTrue";
 
 interface YearsViewProps {
   viewDate: Date;
@@ -51,7 +52,6 @@ class YearsView extends React.Component<YearsViewProps, never> {
     this.renderYears = this.renderYears.bind(this);
     this.updateSelectedYear = this.updateSelectedYear.bind(this);
     this.renderYear = this.renderYear.bind(this);
-    this.alwaysValidDate = this.alwaysValidDate.bind(this);
   }
 
   render() {
@@ -95,7 +95,7 @@ class YearsView extends React.Component<YearsViewProps, never> {
     const renderer = this.props.renderYear || this.renderYear;
     const selectedDate = this.props.selectedDate;
     const date = this.props.viewDate;
-    const isValid = this.props.isValidDate || this.alwaysValidDate;
+    const isValid = this.props.isValidDate || returnTrue;
     let years: any[] = [];
     const rows: any[] = [];
 
@@ -152,10 +152,6 @@ class YearsView extends React.Component<YearsViewProps, never> {
 
   renderYear(props, year) {
     return <td {...props}>{year}</td>;
-  }
-
-  alwaysValidDate() {
-    return true;
   }
 }
 
