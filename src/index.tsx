@@ -521,7 +521,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
   setDate: SetDateFunc = type => {
     return e => {
-      const value = parseInt(e.target.getAttribute("data-value"), 10);
+      const value = parseInt(e.target.getAttribute("data-val"), 10);
       const newDate =
         type === "months"
           ? startOfMonth(setMonth(this.state.viewDate, value))
@@ -579,7 +579,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     const close = tryClose && this.props.closeOnSelect;
     let date;
 
-    const value = parseInt(target.getAttribute("data-value"), 10);
+    const value = parseInt(target.getAttribute("data-val"), 10);
 
     if (target.className.indexOf("rdtDay") !== -1) {
       if (target.className.indexOf("rdtNew") !== -1) {

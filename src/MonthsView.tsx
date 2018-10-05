@@ -91,7 +91,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
                 className="rdtSwitch"
                 onClick={this.props.showView("years")}
                 colSpan={2}
-                data-value={getYear(this.props.viewDate)}
+                data-val={getYear(this.props.viewDate)}
               >
                 {format(date, "YYYY", this.getFormatOptions())}
               </th>
@@ -133,7 +133,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
       const isDisabled = validDay === undefined;
       const props: any = {
         key: monthIndex,
-        "data-value": monthIndex,
+        "data-val": monthIndex,
         className: cc([
           "rdtMonth",
           {

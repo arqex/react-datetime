@@ -198,7 +198,7 @@ describe("DateTime", () => {
       component
         .find(".rdtSwitch")
         .getDOMNode()
-        .getAttribute("data-value")
+        .getAttribute("data-val")
     ).toEqual("1");
   });
 
@@ -239,7 +239,7 @@ describe("DateTime", () => {
       component
         .find(".rdtSwitch")
         .getDOMNode()
-        .getAttribute("data-value")
+        .getAttribute("data-val")
     ).toEqual("0");
     utils.clickOnElement(component.find(".rdtNext span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
@@ -247,7 +247,7 @@ describe("DateTime", () => {
       component
         .find(".rdtSwitch")
         .getDOMNode()
-        .getAttribute("data-value")
+        .getAttribute("data-val")
     ).toEqual("1");
     utils.clickOnElement(component.find(".rdtNext span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("March 2000");
@@ -255,7 +255,7 @@ describe("DateTime", () => {
       component
         .find(".rdtSwitch")
         .getDOMNode()
-        .getAttribute("data-value")
+        .getAttribute("data-val")
     ).toEqual("2");
   });
 
@@ -268,7 +268,7 @@ describe("DateTime", () => {
       component
         .find(".rdtSwitch")
         .getDOMNode()
-        .getAttribute("data-value")
+        .getAttribute("data-val")
     ).toEqual("0");
     utils.clickOnElement(component.find(".rdtPrev span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("December 1999");
@@ -276,7 +276,7 @@ describe("DateTime", () => {
       component
         .find(".rdtSwitch")
         .getDOMNode()
-        .getAttribute("data-value")
+        .getAttribute("data-val")
     ).toEqual("11");
     utils.clickOnElement(component.find(".rdtPrev span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("November 1999");
@@ -284,7 +284,7 @@ describe("DateTime", () => {
       component
         .find(".rdtSwitch")
         .getDOMNode()
-        .getAttribute("data-value")
+        .getAttribute("data-val")
     ).toEqual("10");
   });
 

@@ -43,7 +43,7 @@ const defaultTimeConstraints: AlwaysTimeConstraints = {
   }
 };
 
-const CounterComponent = props => {
+const TimePart = props => {
   const { showPrefix, onUp, onDown, value } = props;
 
   return value !== null && value !== undefined ? (
@@ -308,7 +308,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                     }
 
                     return (
-                      <CounterComponent
+                      <TimePart
                         key={type}
                         showPrefix={numCounters > 1}
                         onUp={this.onStartClicking("increase", type)}
@@ -317,7 +317,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                       />
                     );
                   })}
-                  <CounterComponent
+                  <TimePart
                     onUp={this.toggleDayPart}
                     onDown={this.toggleDayPart}
                     value={this.getFormatted("daypart")}

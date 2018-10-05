@@ -115,7 +115,7 @@ class YearsView extends React.Component<YearsViewProps, never> {
       const isDisabled = validDay === undefined;
       const props: any = {
         key: year,
-        "data-value": year,
+        "data-val": year,
         className: cc([
           "rdtYear",
           {

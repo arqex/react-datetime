@@ -101,7 +101,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
                 className="rdtSwitch"
                 onClick={this.props.showView("months")}
                 colSpan={5}
-                data-value={
+                data-val={
                   this.props.viewDate ? getMonth(this.props.viewDate) : 0
                 }
               >
@@ -212,7 +212,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
             rdtDisabled: isDisabled
           }
         ]),
-        "data-value": getDate(workingDate)
+        "data-val": getDate(workingDate)
       };
 
       if (!isDisabled) {
