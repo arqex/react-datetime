@@ -107,6 +107,8 @@ interface TimeViewProps {
   viewDate: Date;
   showView?: any;
   selectedDate?: Date;
+
+  formatOptions?: any;
 }
 
 interface TimeViewState {
@@ -137,7 +139,6 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     this.decrease = this.decrease.bind(this);
     this.calculateState = this.calculateState.bind(this);
     this.getFormatted = this.getFormatted.bind(this);
-    this.getFormatOptions = this.getFormatOptions.bind(this);
   }
 
   getStepSize(type: "hours" | "minutes" | "seconds" | "milliseconds") {
@@ -186,14 +187,10 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                   : undefined;
 
     if (typeFormat) {
-      return format(timestamp, typeFormat, this.getFormatOptions());
+      return format(timestamp, typeFormat, this.props.formatOptions);
     }
 
     return undefined;
-  }
-
-  getFormatOptions() {
-    return { locale: this.props.locale };
   }
 
   componentDidMount() {

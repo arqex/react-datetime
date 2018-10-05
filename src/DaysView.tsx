@@ -58,6 +58,8 @@ interface DaysViewProps {
     currentDate: any,
     selectedDate?: Date
   ) => JSX.Element;
+
+  formatOptions?: any;
 }
 
 class DaysView extends React.Component<DaysViewProps, never> {
@@ -75,16 +77,12 @@ class DaysView extends React.Component<DaysViewProps, never> {
     this.updateSelectedDate = this.updateSelectedDate.bind(this);
     this.renderDay = this.renderDay.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
-    this.getFormatOptions = this.getFormatOptions.bind(this);
-  }
-
-  getFormatOptions(): any {
-    return { locale: this.props.locale };
   }
 
   render() {
     const date = this.props.viewDate || new Date();
     const theStartOfWeek = startOfWeek(date);
+    const { formatOptions } = this.props;
 
     return (
       <div className="rdtDays">
@@ -105,7 +103,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
                   this.props.viewDate ? getMonth(this.props.viewDate) : 0
                 }
               >
-                {format(date, "MMMM YYYY", this.getFormatOptions())}
+                {format(date, "MMMM YYYY", formatOptions)}
               </th>
               <th
                 className="rdtNext"
@@ -116,53 +114,25 @@ class DaysView extends React.Component<DaysViewProps, never> {
             </tr>
             <tr>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 0),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 0), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 1),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 1), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 2),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 2), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 3),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 3), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 4),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 4), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 5),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 5), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 6),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 6), "dd", formatOptions)}
               </th>
             </tr>
           </thead>
@@ -227,7 +197,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
 
   renderDay(props, currentDate) {
     return (
-      <td {...props}>{format(currentDate, "D", this.getFormatOptions())}</td>
+      <td {...props}>{format(currentDate, "D", this.props.formatOptions)}</td>
     );
   }
 
@@ -250,7 +220,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
             colSpan={7}
             className="rdtTimeToggle"
           >
-            {format(date, this.props.timeFormat, this.getFormatOptions())}
+            {format(date, this.props.timeFormat, this.props.formatOptions)}
           </td>
         </tr>
       </tfoot>

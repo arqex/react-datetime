@@ -45,6 +45,8 @@ interface MonthsViewProps {
 
   setDate: SetDateFunc;
   updateSelectedDate: UpdateSelectedDateFunc;
+
+  formatOptions?: any;
 }
 
 class MonthsView extends React.Component<MonthsViewProps, never> {
@@ -64,11 +66,6 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     this.renderMonths = this.renderMonths.bind(this);
     this.updateSelectedMonth = this.updateSelectedMonth.bind(this);
     this.renderMonth = this.renderMonth.bind(this);
-    this.getFormatOptions = this.getFormatOptions.bind(this);
-  }
-
-  getFormatOptions() {
-    return { locale: this.props.locale };
   }
 
   render() {
@@ -91,7 +88,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
                 colSpan={2}
                 data-val={getYear(this.props.viewDate)}
               >
-                {format(date, "YYYY", this.getFormatOptions())}
+                {format(date, "YYYY", this.props.formatOptions)}
               </th>
               <th
                 className="rdtNext"
@@ -171,7 +168,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
   renderMonth(props, month, year, selected) {
     const monthDate = setMonth(new Date(), month);
     return (
-      <td {...props}>{format(monthDate, "MMM", this.getFormatOptions())}</td>
+      <td {...props}>{format(monthDate, "MMM", this.props.formatOptions)}</td>
     );
   }
 }

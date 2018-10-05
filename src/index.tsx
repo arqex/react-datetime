@@ -650,7 +650,11 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
   getComponentProps() {
     const formats = this.getFormats(this.props);
-    const props = { dateFormat: formats.date, timeFormat: formats.time };
+    const props = {
+      formatOptions: this.getFormatOptions(),
+      dateFormat: formats.date,
+      timeFormat: formats.time
+    };
 
     componentProps.fromProps.forEach(name => {
       props[name] = this.props[name];
