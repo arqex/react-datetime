@@ -9,15 +9,7 @@ import setMonth from "date-fns/set_month";
 import setYear from "date-fns/set_year";
 import addMonths from "date-fns/add_months";
 import addYears from "date-fns/add_years";
-import setHours from "date-fns/set_hours";
-import setMinutes from "date-fns/set_minutes";
-import setSeconds from "date-fns/set_seconds";
-import setMilliseconds from "date-fns/set_milliseconds";
 import format from "date-fns/format";
-import getHours from "date-fns/get_hours";
-import getMinutes from "date-fns/get_minutes";
-import getSeconds from "date-fns/get_seconds";
-import getMilliseconds from "date-fns/get_milliseconds";
 import isEqual from "date-fns/is_equal";
 import cc from "classcat";
 
@@ -560,15 +552,10 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
       const { selectedDate, viewDate } = this.state;
       const currentDate = selectedDate || viewDate;
-      const date = setMilliseconds(
-        setSeconds(
-          setMinutes(
-            setHours(newDate, getHours(currentDate)),
-            getMinutes(currentDate)
-          ),
-          getSeconds(currentDate)
-        ),
-        getMilliseconds(currentDate)
+      const date = parse(
+        format(newDate, "YYYY-MM-DD") +
+          " " +
+          format(currentDate, "HH:mm:ss.SSSZ")
       );
 
       const readonly = this.props.value;
