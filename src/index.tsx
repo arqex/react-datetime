@@ -1,6 +1,7 @@
 import * as React from "react";
 import CalendarContainer from "./CalendarContainer";
 import startOfMonth from "date-fns/start_of_month";
+import startOfYear from "date-fns/start_of_year";
 import isDate from "date-fns/is_date";
 import isDateValid from "date-fns/is_valid";
 import parse from "date-fns/parse";
@@ -23,8 +24,6 @@ import cc from "classcat";
 import toUtc from "./toUtc";
 import fromUtc from "./fromUtc";
 import noop from "./noop";
-import firstOfMonth from "./firstOfMonth";
-import firstOfYear from "./firstOfYear";
 
 /*
 The view mode can be any of the following strings.
@@ -484,7 +483,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     if (date && !this.props.value) {
       update.selectedDate = date;
-      update.viewDate = firstOfMonth(date);
+      update.viewDate = startOfMonth(date);
     } else {
       update.selectedDate = null;
     }
@@ -513,8 +512,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       const value = parseInt(e.target.getAttribute("data-val"), 10);
       const newDate =
         type === "months"
-          ? firstOfMonth(setMonth(this.state.viewDate, value))
-          : firstOfYear(setYear(this.state.viewDate, value));
+          ? startOfMonth(setMonth(this.state.viewDate, value))
+          : startOfYear(setYear(this.state.viewDate, value));
 
       this.setState({
         viewDate: newDate,
@@ -581,7 +580,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
         this.setState({
           selectedDate: date,
-          viewDate: firstOfMonth(date),
+          viewDate: startOfMonth(date),
           inputValue: format(
             date,
             this.state.inputFormat,

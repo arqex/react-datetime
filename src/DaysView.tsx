@@ -16,8 +16,6 @@ import { IsValidDateFunc, UpdateSelectedDateFunc } from ".";
 
 import noop from "./noop";
 import returnTrue from "./returnTrue";
-import firstOfWeek from "./firstOfWeek";
-import lastOfMonth from "./lastOfMonth";
 
 interface DaysViewProps {
   /*
@@ -152,7 +150,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
     const renderer = this.props.renderDay || this.renderDay;
     const isValid = this.props.isValidDate || returnTrue;
 
-    const prevMonthLastWeekStart = firstOfWeek(lastOfMonth(prevMonth));
+    const prevMonthLastWeekStart = startOfWeek(endOfMonth(prevMonth));
 
     for (let i = 0; i < 42; i++) {
       const workingDate = addDays(prevMonthLastWeekStart, i);
