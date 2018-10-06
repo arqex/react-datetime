@@ -9,13 +9,15 @@ import isSameDay from "date-fns/is_same_day";
 import isToday from "date-fns/is_today";
 import isBefore from "date-fns/is_before";
 import isAfter from "date-fns/is_after";
-import addWeeks from "date-fns/add_weeks";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
 import cc from "classcat";
 import { IsValidDateFunc, UpdateSelectedDateFunc } from ".";
+
 import noop from "./noop";
 import returnTrue from "./returnTrue";
+import firstOfWeek from "./firstOfWeek";
+import lastOfMonth from "./lastOfMonth";
 
 interface DaysViewProps {
   /*
@@ -142,22 +144,18 @@ class DaysView extends React.Component<DaysViewProps, never> {
     );
   }
 
-  renderDays() {
-    const date = this.props.viewDate || new Date();
-    const { selectedDate } = this.props;
-    const prevMonth = subMonths(date, 1);
-    const weeks: any[] = [];
-    let days: any[] = [];
+  renderDays(): JSX.Element[] {
+    const { viewDate = new Date(), selectedDate } = this.props;
+    const prevMonth = subMonths(viewDate, 1);
+    const weeks: JSX.Element[] = [];
+    let days: JSX.Element[] = [];
     const renderer = this.props.renderDay || this.renderDay;
     const isValid = this.props.isValidDate || returnTrue;
 
-    const prevMonthLastWeekStart = startOfWeek(endOfMonth(prevMonth));
-    const lastDay = addWeeks(prevMonthLastWeekStart, 6);
-    for (
-      let workingDate = prevMonthLastWeekStart;
-      workingDate < lastDay;
-      workingDate = addDays(workingDate, 1)
-    ) {
+    const prevMonthLastWeekStart = firstOfWeek(lastOfMonth(prevMonth));
+
+    for (let i = 0; i < 42; i++) {
+      const workingDate = addDays(prevMonthLastWeekStart, i);
       const isDisabled = !isValid(workingDate, selectedDate);
 
       const dayProps: any = {
@@ -165,8 +163,8 @@ class DaysView extends React.Component<DaysViewProps, never> {
         className: cc([
           "rdtDay",
           {
-            rdtOld: isBefore(workingDate, startOfMonth(date)),
-            rdtNew: isAfter(workingDate, endOfMonth(date)),
+            rdtOld: isBefore(workingDate, startOfMonth(viewDate)),
+            rdtNew: isAfter(workingDate, endOfMonth(viewDate)),
             rdtActive: selectedDate && isSameDay(workingDate, selectedDate),
             rdtToday: isToday(workingDate),
             rdtDisabled: isDisabled
@@ -176,7 +174,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
       };
 
       if (!isDisabled) {
-        dayProps.onClick = this.props.updateSelectedDate(true);
+        dayProps.onClick = this.props.updateSelectedDate(workingDate, true);
       }
 
       days.push(renderer(dayProps, workingDate, selectedDate));
@@ -190,13 +188,13 @@ class DaysView extends React.Component<DaysViewProps, never> {
     return weeks;
   }
 
-  renderDay(props, currentDate) {
+  renderDay(props, currentDate): JSX.Element {
     return (
       <td {...props}>{format(currentDate, "D", this.props.formatOptions)}</td>
     );
   }
 
-  renderFooter() {
+  renderFooter(): JSX.Element | null {
     const date = this.props.selectedDate || this.props.viewDate;
 
     if (

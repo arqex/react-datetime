@@ -1,6 +1,6 @@
 import * as React from "react";
 import format from "date-fns/format";
-import getMonth from "date-fns/get_month";
+import isSameMonth from "date-fns/is_same_month";
 import setMonth from "date-fns/set_month";
 import getYear from "date-fns/get_year";
 import getDaysInMonth from "date-fns/get_days_in_month";
@@ -105,9 +105,9 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     );
   }
 
-  renderMonths() {
-    const date = this.props.selectedDate;
-    const year = getYear(this.props.viewDate);
+  renderMonths(): JSX.Element[] {
+    const { selectedDate, viewDate } = this.props;
+    const year = getYear(viewDate);
     const renderer = this.props.renderMonth || this.renderMonth;
     const isValid = this.props.isValidDate || returnTrue;
 
@@ -135,8 +135,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
           "rdtMonth",
           {
             rdtDisabled: isDisabled,
-            rdtActive:
-              date && monthIndex === getMonth(date) && year === getYear(date)
+            rdtActive: selectedDate && isSameMonth(selectedDate, currentMonth)
           }
         ])
       };
@@ -144,11 +143,13 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
       if (!isDisabled) {
         props.onClick =
           this.props.updateOn === "months"
-            ? this.props.updateSelectedDate()
+            ? this.props.updateSelectedDate(
+                setMonth(selectedDate || viewDate, monthIndex)
+              )
             : this.props.setDate("months");
       }
 
-      months.push(renderer(props, monthIndex, year, date));
+      months.push(renderer(props, monthIndex, year, selectedDate));
 
       if (months.length === 4) {
         rows.push(<tr key={monthIndex}>{months}</tr>);
@@ -160,7 +161,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     return rows;
   }
 
-  renderMonth(props, month, year, selected) {
+  renderMonth(props, month, year, selected): JSX.Element {
     const monthDate = setMonth(new Date(), month);
     return (
       <td {...props}>{format(monthDate, "MMM", this.props.formatOptions)}</td>

@@ -4,9 +4,7 @@ import startOfMonth from "date-fns/start_of_month";
 import isDate from "date-fns/is_date";
 import isDateValid from "date-fns/is_valid";
 import parse from "date-fns/parse";
-import setDate from "date-fns/set_date";
 import setMonth from "date-fns/set_month";
-import startOfYear from "date-fns/start_of_year";
 import setYear from "date-fns/set_year";
 import addMonths from "date-fns/add_months";
 import addYears from "date-fns/add_years";
@@ -15,8 +13,6 @@ import setMinutes from "date-fns/set_minutes";
 import setSeconds from "date-fns/set_seconds";
 import setMilliseconds from "date-fns/set_milliseconds";
 import format from "date-fns/format";
-import getMonth from "date-fns/get_month";
-import getDate from "date-fns/get_date";
 import getHours from "date-fns/get_hours";
 import getMinutes from "date-fns/get_minutes";
 import getSeconds from "date-fns/get_seconds";
@@ -27,6 +23,8 @@ import cc from "classcat";
 import toUtc from "./toUtc";
 import fromUtc from "./fromUtc";
 import noop from "./noop";
+import firstOfMonth from "./firstOfMonth";
+import firstOfYear from "./firstOfYear";
 
 /*
 The view mode can be any of the following strings.
@@ -57,7 +55,7 @@ export type IsValidDateFunc = (
 export type SetDateFunc = (type: "months" | "years") => void;
 export type SetTimeFunc = (date: Date) => void;
 
-export type UpdateSelectedDateFunc = (close?: boolean) => void;
+export type UpdateSelectedDateFunc = (newDate: Date, close?: boolean) => void;
 
 interface DateTimeProps {
   /*
@@ -76,7 +74,7 @@ interface DateTimeProps {
   Represents the month which is viewed on opening the calendar when there is no selected date.
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
-  viewDate?: Date | string;
+  viewDate: Date | string;
 
   /*
   Defines the format for the date. It accepts any date-fns date format.
@@ -346,7 +344,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     return state;
   }
 
-  parse(date): any {
+  parse(date: Date | string): any {
     if (date) {
       const parsedDate = parse(date);
       if (isDate(parsedDate) && isDateValid(parsedDate)) {
@@ -486,7 +484,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     if (date && !this.props.value) {
       update.selectedDate = date;
-      update.viewDate = startOfMonth(date);
+      update.viewDate = firstOfMonth(date);
     } else {
       update.selectedDate = null;
     }
@@ -515,8 +513,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       const value = parseInt(e.target.getAttribute("data-val"), 10);
       const newDate =
         type === "months"
-          ? startOfMonth(setMonth(this.state.viewDate, value))
-          : startOfYear(setYear(this.state.viewDate, value));
+          ? firstOfMonth(setMonth(this.state.viewDate, value))
+          : firstOfYear(setYear(this.state.viewDate, value));
 
       this.setState({
         viewDate: newDate,
@@ -554,44 +552,19 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     });
   };
 
-  updateSelectedDate: UpdateSelectedDateFunc = (tryClose = false) => {
+  updateSelectedDate: UpdateSelectedDateFunc = (
+    newDate: Date,
+    tryClose = false
+  ) => {
     return e => {
-      const { target } = e;
-      let modifier = 0;
-      const { viewDate } = this.state;
-      const currentDate = this.state.selectedDate || viewDate;
       const close = tryClose && this.props.closeOnSelect;
-      let date;
 
-      const value = parseInt(target.getAttribute("data-val"), 10);
-
-      if (target.className.indexOf("rdtDay") !== -1) {
-        if (target.className.indexOf("rdtNew") !== -1) {
-          modifier = 1;
-        } else if (target.className.indexOf("rdtOld") !== -1) {
-          modifier = -1;
-        }
-
-        date = setDate(
-          setMonth(viewDate, getMonth(viewDate) + modifier),
-          value
-        );
-      } else if (target.className.indexOf("rdtMonth") !== -1) {
-        date = setDate(setMonth(viewDate, value), getDate(currentDate));
-      } else {
-        date = setYear(
-          setDate(
-            setMonth(viewDate, getMonth(currentDate)),
-            getDate(currentDate)
-          ),
-          value
-        );
-      }
-
-      date = setMilliseconds(
+      const { selectedDate, viewDate } = this.state;
+      const currentDate = selectedDate || viewDate;
+      const date = setMilliseconds(
         setSeconds(
           setMinutes(
-            setHours(date, getHours(currentDate)),
+            setHours(newDate, getHours(currentDate)),
             getMinutes(currentDate)
           ),
           getSeconds(currentDate)
@@ -608,7 +581,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
         this.setState({
           selectedDate: date,
-          viewDate: startOfMonth(date),
+          viewDate: firstOfMonth(date),
           inputValue: format(
             date,
             this.state.inputFormat,
@@ -677,7 +650,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   }
 
   render() {
-    const children: any[] = [];
+    const children: JSX.Element[] = [];
 
     if (this.props.input) {
       const finalInputProps = {

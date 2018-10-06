@@ -122,7 +122,9 @@ class YearsView extends React.Component<YearsViewProps, never> {
       if (!isDisabled) {
         props.onClick =
           this.props.updateOn === "years"
-            ? this.props.updateSelectedDate()
+            ? this.props.updateSelectedDate(
+                setYear(selectedDate || viewDate, year)
+              )
             : this.props.setDate("years");
       }
 
