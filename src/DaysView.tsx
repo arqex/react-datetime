@@ -12,7 +12,7 @@ import isAfter from "date-fns/is_after";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
 import cc from "classcat";
-import { IsValidDateFunc, UpdateSelectedDateFunc } from ".";
+import { IsValidDateFunc, SetSelectedDateFunc } from ".";
 
 import noop from "./noop";
 import returnTrue from "./returnTrue";
@@ -33,7 +33,7 @@ interface DaysViewProps {
   showView?: any;
   selectedDate?: Date;
 
-  updateSelectedDate: UpdateSelectedDateFunc;
+  setSelectedDate: SetSelectedDateFunc;
 
   /*
   Defines the format for the time. It accepts any date-fns time format.
@@ -66,7 +66,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
   static defaultProps = {
     moveTime: noop,
     showView: noop,
-    updateSelectedDate: noop
+    setSelectedDate: noop
   };
 
   constructor(props) {
@@ -75,13 +75,17 @@ class DaysView extends React.Component<DaysViewProps, never> {
     // Bind functions
     this.renderDays = this.renderDays.bind(this);
     this.renderDay = this.renderDay.bind(this);
-    this.renderFooter = this.renderFooter.bind(this);
   }
 
   render() {
-    const date = this.props.viewDate || new Date();
-    const theStartOfWeek = startOfWeek(date);
-    const { formatOptions } = this.props;
+    const {
+      viewDate = new Date(),
+      selectedDate,
+      timeFormat,
+      formatOptions
+    } = this.props;
+    const dateTime = selectedDate || viewDate;
+    const theStartOfWeek = startOfWeek(viewDate);
 
     return (
       <div className="rdtDays">
@@ -98,11 +102,9 @@ class DaysView extends React.Component<DaysViewProps, never> {
                 className="rdtSwitch"
                 onClick={this.props.showView("months")}
                 colSpan={5}
-                data-val={
-                  this.props.viewDate ? getMonth(this.props.viewDate) : 0
-                }
+                data-val={this.props.viewDate ? getMonth(viewDate) : 0}
               >
-                {format(date, "MMMM YYYY", formatOptions)}
+                {format(viewDate, "MMMM YYYY", formatOptions)}
               </th>
               <th
                 className="rdtNext"
@@ -113,7 +115,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
             </tr>
             <tr>
               <th className="dow">
-                {format(addDays(theStartOfWeek, 0), "dd", formatOptions)}
+                {format(theStartOfWeek, "dd", formatOptions)}
               </th>
               <th className="dow">
                 {format(addDays(theStartOfWeek, 1), "dd", formatOptions)}
@@ -136,7 +138,19 @@ class DaysView extends React.Component<DaysViewProps, never> {
             </tr>
           </thead>
           <tbody>{this.renderDays()}</tbody>
-          {this.renderFooter()}
+          {typeof timeFormat === "string" && timeFormat.trim() && dateTime ? (
+            <tfoot>
+              <tr>
+                <td
+                  onClick={this.props.showView("time")}
+                  colSpan={7}
+                  className="rdtTimeToggle"
+                >
+                  {format(dateTime, timeFormat, formatOptions)}
+                </td>
+              </tr>
+            </tfoot>
+          ) : null}
         </table>
       </div>
     );
@@ -172,7 +186,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
       };
 
       if (!isDisabled) {
-        dayProps.onClick = this.props.updateSelectedDate(workingDate, true);
+        dayProps.onClick = this.props.setSelectedDate(workingDate, true);
       }
 
       days.push(renderer(dayProps, workingDate, selectedDate));
@@ -189,32 +203,6 @@ class DaysView extends React.Component<DaysViewProps, never> {
   renderDay(props, currentDate): JSX.Element {
     return (
       <td {...props}>{format(currentDate, "D", this.props.formatOptions)}</td>
-    );
-  }
-
-  renderFooter(): JSX.Element | null {
-    const date = this.props.selectedDate || this.props.viewDate;
-
-    if (
-      typeof this.props.timeFormat !== "string" ||
-      !this.props.timeFormat.trim() ||
-      !date
-    ) {
-      return null;
-    }
-
-    return (
-      <tfoot>
-        <tr>
-          <td
-            onClick={this.props.showView("time")}
-            colSpan={7}
-            className="rdtTimeToggle"
-          >
-            {format(date, this.props.timeFormat, this.props.formatOptions)}
-          </td>
-        </tr>
-      </tfoot>
     );
   }
 }

@@ -14,11 +14,12 @@ import subSeconds from "date-fns/sub_seconds";
 import subMilliseconds from "date-fns/sub_milliseconds";
 import setHours from "date-fns/set_hours";
 
-const HOURS: "hours" = "hours";
-const MINUTES: "minutes" = "minutes";
-const SECONDS: "seconds" = "seconds";
-const MILLISECONDS: "milliseconds" = "milliseconds";
-const allCounters = [HOURS, MINUTES, SECONDS, MILLISECONDS];
+const allCounters: ("hours" | "minutes" | "seconds" | "milliseconds")[] = [
+  "hours",
+  "minutes",
+  "seconds",
+  "milliseconds"
+];
 
 const defaultTimeConstraints: AlwaysTimeConstraints = {
   hours: {
@@ -115,6 +116,12 @@ interface TimeViewState {
   timestamp: Date;
 }
 
+function calculateState(props): TimeViewState {
+  return {
+    timestamp: props.selectedDate || props.viewDate
+  };
+}
+
 class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   static defaultProps = {
     viewDate: new Date(),
@@ -129,7 +136,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   constructor(props) {
     super(props);
 
-    this.state = this.calculateState(props);
+    this.state = calculateState(props);
 
     // Bind functions
     this.getStepSize = this.getStepSize.bind(this);
@@ -137,7 +144,6 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     this.toggleDayPart = this.toggleDayPart.bind(this);
     this.increase = this.increase.bind(this);
     this.decrease = this.decrease.bind(this);
-    this.calculateState = this.calculateState.bind(this);
     this.getFormatted = this.getFormatted.bind(this);
   }
 
@@ -156,17 +162,17 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   getFormatted(
     type: "hours" | "minutes" | "seconds" | "milliseconds" | "daypart"
   ) {
+    const { timeFormat, formatOptions } = this.props;
     const { timestamp } = this.state;
-    const timeFormat =
-      typeof this.props.timeFormat === "string" ? this.props.timeFormat : "";
+    const fmt = typeof timeFormat === "string" ? timeFormat : "";
 
-    const hasHours = timeFormat.toLowerCase().indexOf("h") !== -1;
-    const hasMinutes = timeFormat.indexOf("m") !== -1;
-    const hasSeconds = timeFormat.indexOf("s") !== -1;
-    const hasMilliseconds = timeFormat.indexOf("S") !== -1;
+    const hasHours = fmt.toLowerCase().indexOf("h") !== -1;
+    const hasMinutes = fmt.indexOf("m") !== -1;
+    const hasSeconds = fmt.indexOf("s") !== -1;
+    const hasMilliseconds = fmt.indexOf("S") !== -1;
 
-    const hasUpperDayPart = timeFormat.indexOf("A") !== -1;
-    const hasLowerDayPart = timeFormat.indexOf("a") !== -1;
+    const hasUpperDayPart = fmt.indexOf("A") !== -1;
+    const hasLowerDayPart = fmt.indexOf("a") !== -1;
     const hasDayPart = hasUpperDayPart || hasLowerDayPart;
 
     const typeFormat =
@@ -187,18 +193,18 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                   : undefined;
 
     if (typeFormat) {
-      return format(timestamp, typeFormat, this.props.formatOptions);
+      return format(timestamp, typeFormat, formatOptions);
     }
 
     return undefined;
   }
 
   componentDidMount() {
-    this.setState(this.calculateState(this.props));
+    this.setState(calculateState(this.props));
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState(this.calculateState(nextProps));
+    this.setState(calculateState(nextProps));
   }
 
   onStartClicking(action, type) {
@@ -267,12 +273,6 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     } else {
       return subMilliseconds(timestamp, step);
     }
-  }
-
-  calculateState(props): TimeViewState {
-    return {
-      timestamp: props.selectedDate || props.viewDate
-    };
   }
 
   render() {

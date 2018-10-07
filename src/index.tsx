@@ -1,12 +1,9 @@
 import * as React from "react";
 import CalendarContainer from "./CalendarContainer";
 import startOfMonth from "date-fns/start_of_month";
-import startOfYear from "date-fns/start_of_year";
 import isDate from "date-fns/is_date";
 import isDateValid from "date-fns/is_valid";
-import parse from "date-fns/parse";
-import setMonth from "date-fns/set_month";
-import setYear from "date-fns/set_year";
+import rawParse from "date-fns/parse";
 import addMonths from "date-fns/add_months";
 import addYears from "date-fns/add_years";
 import format from "date-fns/format";
@@ -43,10 +40,13 @@ export type IsValidDateFunc = (
   selectedDate?: Date
 ) => boolean;
 
-export type SetDateFunc = (type: "months" | "years") => void;
+export type SetViewDateFunc = (
+  newViewMode: "days" | "months",
+  date: Date
+) => void;
 export type SetTimeFunc = (date: Date) => void;
 
-export type UpdateSelectedDateFunc = (newDate: Date, close?: boolean) => void;
+export type SetSelectedDateFunc = (newDate: Date, close?: boolean) => void;
 
 interface DateTimeProps {
   /*
@@ -249,18 +249,102 @@ const componentProps = {
     "locale"
   ],
   fromState: ["viewDate", "selectedDate", "updateOn"],
-  fromThis: ["setDate", "setTime", "showView", "moveTime", "updateSelectedDate"]
+  fromThis: [
+    "setViewDate",
+    "setTime",
+    "showView",
+    "moveTime",
+    "setSelectedDate"
+  ]
 };
 
-interface NextViews {
-  months: "days";
-  years: "months";
+function getInitialState(props): any {
+  const state = getStateFromProps(props);
+
+  if (state.open === undefined) {
+    state.open = !props.input;
+  }
+
+  state.currentView = props.dateFormat
+    ? props.viewMode || state.updateOn
+    : "time";
+
+  return state;
 }
 
-const nextViews: NextViews = {
-  months: "days",
-  years: "months"
-};
+function parse(date: Date | string): any {
+  if (date) {
+    const parsedDate = rawParse(date);
+    if (isDate(parsedDate) && isDateValid(parsedDate)) {
+      return parsedDate;
+    }
+  }
+
+  return undefined;
+}
+
+function getStateFromProps(props): any {
+  const formats = getFormats(props);
+  const selectedDate = parse(props.value) || parse(props.defaultValue);
+  const viewDate = startOfMonth(
+    selectedDate || parse(props.viewDate) || new Date()
+  );
+
+  const updateOn = getUpdateOn(formats);
+
+  const inputValue = selectedDate
+    ? format(selectedDate, formats.datetime, getFormatOptions(props))
+    : props.defaultValue || "";
+
+  return {
+    updateOn: updateOn,
+    inputFormat: formats.datetime,
+    viewDate: viewDate,
+    selectedDate: selectedDate,
+    inputValue: inputValue,
+    open: props.open
+  };
+}
+
+function getUpdateOn(formats): "days" | "months" | "years" {
+  if (formats.date.match(/[lLD]/)) {
+    return "days";
+  } else if (formats.date.indexOf("M") !== -1) {
+    return "months";
+  } else if (formats.date.indexOf("Y") !== -1) {
+    return "years";
+  }
+
+  return "days";
+}
+
+function getFormats(props): any {
+  const formats: any = {
+    date: props.dateFormat || "",
+    time: props.timeFormat || ""
+  };
+
+  if (formats.date === true) {
+    formats.date = "MM/DD/YYYY";
+  } else if (getUpdateOn(formats) !== "days") {
+    formats.time = "";
+  }
+
+  if (formats.time === true) {
+    formats.time = "h:mm A";
+  }
+
+  formats.datetime =
+    formats.date && formats.time
+      ? `${formats.date} ${formats.time}`
+      : formats.date || formats.time;
+
+  return formats;
+}
+
+function getFormatOptions(props) {
+  return { locale: props.locale };
+}
 
 class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   static defaultProps = {
@@ -285,130 +369,39 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   constructor(props) {
     super(props);
 
-    this.state = this.getInitialState(props);
+    this.state = getInitialState(props);
 
     // Bind functions
-    this.getInitialState = this.getInitialState.bind(this);
-    this.parse = this.parse.bind(this);
-    this.getStateFromProps = this.getStateFromProps.bind(this);
-    this.getUpdateOn = this.getUpdateOn.bind(this);
-    this.getFormats = this.getFormats.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onInputKey = this.onInputKey.bind(this);
     this.showView = this.showView.bind(this);
-    this.setDate = this.setDate.bind(this);
+    this.setViewDate = this.setViewDate.bind(this);
     this.moveTime = this.moveTime.bind(this);
     this.setTime = this.setTime.bind(this);
-    this.updateSelectedDate = this.updateSelectedDate.bind(this);
+    this.setSelectedDate = this.setSelectedDate.bind(this);
     this.openCalendar = this.openCalendar.bind(this);
     this.closeCalendar = this.closeCalendar.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.getComponentProps = this.getComponentProps.bind(this);
-    this.getFormatOptions = this.getFormatOptions.bind(this);
   }
 
   componentDidUpdate(prevProps: DateTimeProps, prevState: DateTimeState) {
     const prevVal = prevState.selectedDate || prevState.inputValue;
     const val = this.state.selectedDate || this.state.inputValue;
     if (
-      prevVal instanceof Date &&
-      val instanceof Date &&
-      !isEqual(prevVal, val)
+      (prevVal instanceof Date &&
+        val instanceof Date &&
+        !isEqual(prevVal, val)) ||
+      prevVal !== val
     ) {
       this.props.onChange!(val);
-    } else if (prevVal !== val) {
-      this.props.onChange!(val);
     }
-  }
-
-  getInitialState(props): any {
-    const state = this.getStateFromProps(props);
-
-    if (state.open === undefined) {
-      state.open = !props.input;
-    }
-
-    state.currentView = props.dateFormat
-      ? props.viewMode || state.updateOn
-      : "time";
-
-    return state;
-  }
-
-  parse(date: Date | string): any {
-    if (date) {
-      const parsedDate = parse(date);
-      if (isDate(parsedDate) && isDateValid(parsedDate)) {
-        return parsedDate;
-      }
-    }
-
-    return undefined;
-  }
-
-  getStateFromProps(props): any {
-    const formats = this.getFormats(props);
-    const selectedDate =
-      this.parse(props.value) || this.parse(props.defaultValue);
-    const viewDate = startOfMonth(
-      selectedDate || this.parse(props.viewDate) || new Date()
-    );
-
-    const updateOn = this.getUpdateOn(formats);
-
-    const inputValue = selectedDate
-      ? format(selectedDate, formats.datetime, this.getFormatOptions(props))
-      : props.defaultValue || "";
-
-    return {
-      updateOn: updateOn,
-      inputFormat: formats.datetime,
-      viewDate: viewDate,
-      selectedDate: selectedDate,
-      inputValue: inputValue,
-      open: props.open
-    };
-  }
-
-  getUpdateOn(formats): "days" | "months" | "years" {
-    if (formats.date.match(/[lLD]/)) {
-      return "days";
-    } else if (formats.date.indexOf("M") !== -1) {
-      return "months";
-    } else if (formats.date.indexOf("Y") !== -1) {
-      return "years";
-    }
-
-    return "days";
-  }
-
-  getFormats(props): any {
-    const formats: any = {
-      date: props.dateFormat || "",
-      time: props.timeFormat || ""
-    };
-
-    if (formats.date === true) {
-      formats.date = "MM/DD/YYYY";
-    } else if (this.getUpdateOn(formats) !== "days") {
-      formats.time = "";
-    }
-
-    if (formats.time === true) {
-      formats.time = "h:mm A";
-    }
-
-    formats.datetime =
-      formats.date && formats.time
-        ? `${formats.date} ${formats.time}`
-        : formats.date || formats.time;
-
-    return formats;
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const formats = this.getFormats(nextProps);
-    const updatedState = this.getStateFromProps(nextProps);
+    const formats = getFormats(nextProps);
+    const updatedState = getStateFromProps(nextProps);
+    const formatOptions = getFormatOptions(nextProps);
 
     // If it's not a controlled component
     // Any change will close the picker
@@ -427,37 +420,22 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
         updatedState.inputValue = format(
           this.state.selectedDate,
           formats.datetime,
-          this.getFormatOptions(nextProps)
+          formatOptions
         );
       }
     }
 
     if (nextProps.utc !== this.props.utc) {
-      // Enabling UTC
-      if (nextProps.utc) {
-        updatedState.viewDate = toUtc(this.state.viewDate);
+      const func = nextProps.utc ? toUtc : fromUtc;
 
-        if (this.state.selectedDate) {
-          updatedState.selectedDate = toUtc(this.state.selectedDate);
-          updatedState.inputValue = format(
-            updatedState.selectedDate,
-            formats.datetime,
-            this.getFormatOptions(nextProps)
-          );
-        }
-      }
-      // Disabling UTC
-      else {
-        updatedState.viewDate = fromUtc(this.state.viewDate);
-
-        if (this.state.selectedDate) {
-          updatedState.selectedDate = fromUtc(this.state.selectedDate);
-          updatedState.inputValue = format(
-            updatedState.selectedDate,
-            formats.datetime,
-            this.getFormatOptions(nextProps)
-          );
-        }
+      updatedState.viewDate = func(this.state.viewDate);
+      if (this.state.selectedDate) {
+        updatedState.selectedDate = func(this.state.selectedDate);
+        updatedState.inputValue = format(
+          updatedState.selectedDate,
+          formats.datetime,
+          formatOptions
+        );
       }
     }
 
@@ -470,7 +448,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
   onInputChange(e) {
     const { value } = e.target;
-    const date = this.parse(value);
+    const date = parse(value);
     const update: any = { inputValue: value };
 
     if (date && !this.props.value) {
@@ -499,20 +477,14 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     };
   }
 
-  setDate: SetDateFunc = type => {
+  setViewDate: SetViewDateFunc = (newViewMode, newDate) => {
     return e => {
-      const value = parseInt(e.target.getAttribute("data-val"), 10);
-      const newDate =
-        type === "months"
-          ? startOfMonth(setMonth(this.state.viewDate, value))
-          : startOfYear(setYear(this.state.viewDate, value));
-
       this.setState({
         viewDate: newDate,
-        currentView: nextViews[type]
+        currentView: newViewMode
       });
 
-      this.props.onViewModeChange!(nextViews[type]);
+      this.props.onViewModeChange!(newViewMode);
     };
   };
 
@@ -539,15 +511,16 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   setTime: SetTimeFunc = date => {
     this.setState({
       selectedDate: date,
-      inputValue: format(date, this.state.inputFormat, this.getFormatOptions())
+      inputValue: format(
+        date,
+        this.state.inputFormat,
+        getFormatOptions(this.props)
+      )
     });
   };
 
-  updateSelectedDate: UpdateSelectedDateFunc = (
-    newDate: Date,
-    tryClose = false
-  ) => {
-    return e => {
+  setSelectedDate: SetSelectedDateFunc = (newDate: Date, tryClose = false) => {
+    return () => {
       const close = tryClose && this.props.closeOnSelect;
 
       const { selectedDate, viewDate } = this.state;
@@ -571,7 +544,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
           inputValue: format(
             date,
             this.state.inputFormat,
-            this.getFormatOptions()
+            getFormatOptions(this.props)
           ),
           open: open
         });
@@ -608,14 +581,10 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     }
   }
 
-  getFormatOptions(props = this.props) {
-    return { locale: props.locale };
-  }
-
   getComponentProps() {
-    const formats = this.getFormats(this.props);
+    const formats = getFormats(this.props);
     const props = {
-      formatOptions: this.getFormatOptions(),
+      formatOptions: getFormatOptions(this.props),
       dateFormat: formats.date,
       timeFormat: formats.time
     };
@@ -636,34 +605,16 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   }
 
   render() {
-    const children: JSX.Element[] = [];
-
-    if (this.props.input) {
-      const finalInputProps = {
-        type: "text",
-        className: "form-control",
-        onClick: this.openCalendar,
-        onFocus: this.openCalendar,
-        onChange: this.onInputChange,
-        onKeyDown: this.onInputKey,
-        value: this.state.inputValue,
-        ...this.props.inputProps
-      };
-
-      if (this.props.renderInput) {
-        children.push(
-          <div key="i">
-            {this.props.renderInput(
-              finalInputProps,
-              this.openCalendar,
-              this.closeCalendar
-            )}
-          </div>
-        );
-      } else {
-        children.push(<input {...finalInputProps} key="i" />);
-      }
-    }
+    const finalInputProps = {
+      type: "text",
+      className: "form-control",
+      onClick: this.openCalendar,
+      onFocus: this.openCalendar,
+      onChange: this.onInputChange,
+      onKeyDown: this.onInputKey,
+      value: this.state.inputValue,
+      ...this.props.inputProps
+    };
 
     return (
       <div
@@ -676,7 +627,18 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
           }
         ])}
       >
-        {children}
+        {!!this.props.input &&
+          (this.props.renderInput ? (
+            <div key="i">
+              {this.props.renderInput(
+                finalInputProps,
+                this.openCalendar,
+                this.closeCalendar
+              )}
+            </div>
+          ) : (
+            <input {...finalInputProps} key="i" />
+          ))}
         <div className="rdtPicker">
           <CalendarContainer
             view={this.state.currentView}

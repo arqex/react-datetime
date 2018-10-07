@@ -7,7 +7,7 @@ import getDaysInMonth from "date-fns/get_days_in_month";
 import setDate from "date-fns/set_date";
 import cc from "classcat";
 import noop from "./noop";
-import { IsValidDateFunc, SetDateFunc, UpdateSelectedDateFunc } from ".";
+import { IsValidDateFunc, SetViewDateFunc, SetSelectedDateFunc } from ".";
 import returnTrue from "./returnTrue";
 
 interface MonthsViewProps {
@@ -43,8 +43,8 @@ interface MonthsViewProps {
 
   updateOn: string;
 
-  setDate: SetDateFunc;
-  updateSelectedDate: UpdateSelectedDateFunc;
+  setViewDate: SetViewDateFunc;
+  setSelectedDate: SetSelectedDateFunc;
 
   formatOptions?: any;
 }
@@ -55,8 +55,8 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     moveTime: noop,
     showView: noop,
     updateOn: noop,
-    setDate: noop,
-    updateSelectedDate: noop
+    setViewDate: noop,
+    setSelectedDate: noop
   };
 
   constructor(props) {
@@ -114,8 +114,8 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     const rows: any[] = [];
     let months: any[] = [];
 
-    for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
-      const currentMonth = setMonth(this.props.viewDate, monthIndex);
+    for (let month = 0; month < 12; month++) {
+      const currentMonth = setMonth(viewDate, month);
 
       const noOfDaysInMonth = getDaysInMonth(currentMonth);
       const daysInMonth = Array.from({ length: noOfDaysInMonth }, (e, i) => {
@@ -129,8 +129,8 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
 
       const isDisabled = validDay === undefined;
       const props: any = {
-        key: monthIndex,
-        "data-val": monthIndex,
+        key: month,
+        "data-val": month,
         className: cc([
           "rdtMonth",
           {
@@ -143,16 +143,16 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
       if (!isDisabled) {
         props.onClick =
           this.props.updateOn === "months"
-            ? this.props.updateSelectedDate(
-                setMonth(selectedDate || viewDate, monthIndex)
+            ? this.props.setSelectedDate(
+                setMonth(selectedDate || viewDate, month)
               )
-            : this.props.setDate("months");
+            : this.props.setViewDate("days", setMonth(viewDate, month));
       }
 
-      months.push(renderer(props, monthIndex, year, selectedDate));
+      months.push(renderer(props, month, year, selectedDate));
 
       if (months.length === 4) {
-        rows.push(<tr key={monthIndex}>{months}</tr>);
+        rows.push(<tr key={month}>{months}</tr>);
 
         months = [];
       }

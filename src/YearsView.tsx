@@ -5,7 +5,7 @@ import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
 import cc from "classcat";
 import noop from "./noop";
-import { IsValidDateFunc, SetDateFunc, UpdateSelectedDateFunc } from ".";
+import { IsValidDateFunc, SetViewDateFunc, SetSelectedDateFunc } from ".";
 import returnTrue from "./returnTrue";
 
 interface YearsViewProps {
@@ -30,9 +30,9 @@ interface YearsViewProps {
 
   updateOn: string;
 
-  setDate: SetDateFunc;
+  setViewDate: SetViewDateFunc;
 
-  updateSelectedDate: UpdateSelectedDateFunc;
+  setSelectedDate: SetSelectedDateFunc;
 }
 
 class YearsView extends React.Component<YearsViewProps, never> {
@@ -41,8 +41,8 @@ class YearsView extends React.Component<YearsViewProps, never> {
     moveTime: noop,
     showView: noop,
     updateOn: noop,
-    setDate: noop,
-    updateSelectedDate: noop
+    setViewDate: noop,
+    setSelectedDate: noop
   };
 
   constructor(props) {
@@ -90,15 +90,14 @@ class YearsView extends React.Component<YearsViewProps, never> {
     );
   }
 
-  renderYears(year: number): JSX.Element[] {
+  renderYears(startYear: number): JSX.Element[] {
     const renderer = this.props.renderYear || this.renderYear;
     const { selectedDate, viewDate } = this.props;
     const isValid = this.props.isValidDate || returnTrue;
     let years: JSX.Element[] = [];
     const rows: JSX.Element[] = [];
 
-    year--;
-    for (let yearIndex = -1; yearIndex < 11; yearIndex++, year++) {
+    for (let year = startYear - 1; year < startYear + 11; year++) {
       const currentYear = setYear(viewDate, year);
 
       const daysInYear = Array.from(
@@ -122,16 +121,16 @@ class YearsView extends React.Component<YearsViewProps, never> {
       if (!isDisabled) {
         props.onClick =
           this.props.updateOn === "years"
-            ? this.props.updateSelectedDate(
+            ? this.props.setSelectedDate(
                 setYear(selectedDate || viewDate, year)
               )
-            : this.props.setDate("years");
+            : this.props.setViewDate("months", setYear(viewDate, year));
       }
 
       years.push(renderer(props, year, selectedDate));
 
       if (years.length === 4) {
-        rows.push(<tr key={yearIndex}>{years}</tr>);
+        rows.push(<tr key={year}>{years}</tr>);
         years = [];
       }
     }
