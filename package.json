@@ -69,7 +69,7 @@
     ],
     "*.{ts,tsx}": [
       "prettier --write",
-      "tslint --fix",
+      "tslint --project tsconfig.json --fix",
       "git add",
       "cross-env CI=1 TZ=Europe/Stockholm jest --bail --findRelatedTests"
     ],

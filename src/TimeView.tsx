@@ -10,7 +10,7 @@ import addSeconds from "date-fns/add_seconds";
 import addMilliseconds from "date-fns/add_milliseconds";
 import setHours from "date-fns/set_hours";
 
-const allCounters: ("hours" | "minutes" | "seconds" | "milliseconds")[] = [
+const allCounters: Array<"hours" | "minutes" | "seconds" | "milliseconds"> = [
   "hours",
   "minutes",
   "seconds",
