@@ -20,11 +20,11 @@ export const triggerDocumentUp = () => {
   }
 };
 
-export const createDatetime = (props: object) => {
+export const createDatetime = (props: any) => {
   return mount(<DateTime {...props} />);
 };
 
-export const createDatetimeShallow = (props: object) => {
+export const createDatetimeShallow = (props: any) => {
   return shallow(<DateTime {...props} />);
 };
 
