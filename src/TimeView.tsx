@@ -1,7 +1,7 @@
 import * as React from "react";
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
-import { TimeConstraint, SetTimeFunc, TimeConstraints } from "./";
+import { TimeConstraint, SetTimeFunc, TimeConstraints, ShowFunc } from "./";
 import noop from "./noop";
 import disableContextMenu from "./disableContextMenu";
 import addHours from "date-fns/add_hours";
@@ -89,20 +89,18 @@ interface TimeViewProps {
 
   /*
   Defines the format for the date. It accepts any date-fns date format.
-  If true the date will be displayed using the defaults for the current locale.
   If false the datepicker is disabled and the component can be used as timepicker.
   */
   dateFormat?: string | false;
 
   /*
   Defines the format for the time. It accepts any date-fns time format.
-  If true the time will be displayed using the defaults for the current locale.
   If false the timepicker is disabled and the component can be used as datepicker.
   */
   timeFormat?: string | false;
 
   viewDate: Date;
-  showView?: any;
+  show: ShowFunc;
   selectedDate?: Date;
 
   formatOptions?: any;
@@ -271,7 +269,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                 <th
                   className="rdtSwitch"
                   colSpan={4}
-                  onClick={this.props.showView("days")}
+                  onClick={this.props.show("days")}
                 >
                   {format(this.state.timestamp, this.props.dateFormat)}
                 </th>

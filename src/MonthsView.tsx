@@ -7,7 +7,7 @@ import getDaysInMonth from "date-fns/get_days_in_month";
 import setDate from "date-fns/set_date";
 import cc from "classcat";
 import noop from "./noop";
-import { IsValidDateFunc, SetViewDateFunc, SetSelectedDateFunc } from ".";
+import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
 import returnTrue from "./returnTrue";
 
 interface MonthsViewProps {
@@ -18,8 +18,8 @@ interface MonthsViewProps {
   locale?: any;
 
   viewDate: Date;
-  moveTime?: any;
-  showView?: any;
+  shift: ShiftFunc;
+  show: ShowFunc;
   selectedDate?: Date;
 
   /*
@@ -41,10 +41,7 @@ interface MonthsViewProps {
     selectedDate?: Date
   ) => JSX.Element;
 
-  updateOn: string;
-
-  setViewDate: SetViewDateFunc;
-  setSelectedDate: SetSelectedDateFunc;
+  setDate: SetDateFunc;
 
   formatOptions?: any;
 }
@@ -52,11 +49,9 @@ interface MonthsViewProps {
 class MonthsView extends React.Component<MonthsViewProps, never> {
   static defaultProps = {
     viewDate: new Date(),
-    moveTime: noop,
-    showView: noop,
-    updateOn: noop,
-    setViewDate: noop,
-    setSelectedDate: noop
+    shift: noop,
+    show: noop,
+    setDate: noop
   };
 
   constructor(props) {
@@ -77,20 +72,20 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
             <tr>
               <th
                 className="rdtPrev"
-                onClick={this.props.moveTime("sub", 1, "years")}
+                onClick={this.props.shift("sub", 1, "years")}
               >
                 <span>‹</span>
               </th>
               <th
                 className="rdtSwitch"
-                onClick={this.props.showView("years")}
+                onClick={this.props.show("years")}
                 colSpan={2}
               >
                 {format(viewDate, "YYYY", this.props.formatOptions)}
               </th>
               <th
                 className="rdtNext"
-                onClick={this.props.moveTime("add", 1, "years")}
+                onClick={this.props.shift("add", 1, "years")}
               >
                 <span>›</span>
               </th>
@@ -134,12 +129,10 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
       };
 
       if (!isDisabled) {
-        props.onClick =
-          this.props.updateOn === "months"
-            ? this.props.setSelectedDate(
-                setMonth(selectedDate || viewDate, month)
-              )
-            : this.props.setViewDate("days", setMonth(viewDate, month));
+        props.onClick = this.props.setDate(
+          "months",
+          setMonth(selectedDate || viewDate, month)
+        );
       }
 
       months.push(renderer(props, month, year, selectedDate));

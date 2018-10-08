@@ -37,13 +37,23 @@ export type IsValidDateFunc = (
   selectedDate?: Date
 ) => boolean;
 
-export type SetViewDateFunc = (
-  newViewMode: "days" | "months",
-  date: Date
-) => void;
 export type SetTimeFunc = (date: Date) => void;
 
-export type SetSelectedDateFunc = (newDate: Date, close?: boolean) => void;
+export type ShiftFunc = (
+  op: "sub" | "add",
+  amount: number,
+  type: "months" | "years"
+) => (event: any) => void;
+
+export type ShowFunc = (
+  view: "days" | "months" | "years" | "time"
+) => (event: any) => void;
+
+export type SetDateFunc = (
+  type: "days" | "months" | "years",
+  newDate: Date,
+  close?: boolean
+) => (event: any) => void;
 
 interface DateTimeProps {
   /*
@@ -245,14 +255,20 @@ const componentProps = {
     "timeConstraints",
     "locale"
   ],
-  fromState: ["viewDate", "selectedDate", "updateOn"],
-  fromThis: [
-    "setViewDate",
-    "setTime",
-    "showView",
-    "moveTime",
-    "setSelectedDate"
-  ]
+  fromState: ["viewDate", "selectedDate"],
+  fromThis: ["setDate", "setTime", "show", "shift"]
+};
+
+interface NextViews {
+  days: "days";
+  months: "days";
+  years: "months";
+}
+
+const nextViews: NextViews = {
+  days: "days",
+  months: "days",
+  years: "months"
 };
 
 function getInitialState(props): any {
@@ -371,11 +387,10 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     // Bind functions
     this.onInputChange = this.onInputChange.bind(this);
     this.onInputKey = this.onInputKey.bind(this);
-    this.showView = this.showView.bind(this);
-    this.setViewDate = this.setViewDate.bind(this);
-    this.moveTime = this.moveTime.bind(this);
+    this.show = this.show.bind(this);
+    this.setDate = this.setDate.bind(this);
+    this.shift = this.shift.bind(this);
     this.setTime = this.setTime.bind(this);
-    this.setSelectedDate = this.setSelectedDate.bind(this);
     this.openCalendar = this.openCalendar.bind(this);
     this.closeCalendar = this.closeCalendar.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -450,7 +465,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
     if (date && !this.props.value) {
       update.selectedDate = date;
-      update.viewDate = startOfMonth(date);
+      update.viewDate = date;
     } else {
       update.selectedDate = null;
     }
@@ -464,7 +479,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     }
   }
 
-  showView(view: "days" | "months" | "years" | "time") {
+  show: ShowFunc = view => {
     return () => {
       if (this.state.currentView !== view) {
         this.props.onViewModeChange!(view);
@@ -472,20 +487,9 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
       this.setState({ currentView: view });
     };
-  }
-
-  setViewDate: SetViewDateFunc = (newViewMode, newDate) => {
-    return e => {
-      this.setState({
-        viewDate: newDate,
-        currentView: newViewMode
-      });
-
-      this.props.onViewModeChange!(newViewMode);
-    };
   };
 
-  moveTime(op: "sub" | "add", amount: number, type: "months" | "years") {
+  shift: ShiftFunc = (op, amount, type) => {
     return () => {
       const mult = op === "sub" ? -1 : 1;
       const workingDate = this.state.viewDate;
@@ -503,7 +507,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
             : addYears(workingDate, amount * mult)
       });
     };
-  }
+  };
 
   setTime: SetTimeFunc = date => {
     this.setState({
@@ -516,37 +520,48 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     });
   };
 
-  setSelectedDate: SetSelectedDateFunc = (newDate: Date, tryClose = false) => {
+  setDate: SetDateFunc = (type, newDate, tryClose = false) => {
     return () => {
-      const close = tryClose && this.props.closeOnSelect;
+      if (this.state.updateOn === type) {
+        const close = tryClose && this.props.closeOnSelect;
 
-      const { selectedDate, viewDate } = this.state;
-      const currentDate = selectedDate || viewDate;
-      const date = parse(
-        format(newDate, "YYYY-MM-DD") +
-          " " +
-          format(currentDate, "HH:mm:ss.SSSZ")
-      );
+        const { selectedDate, viewDate } = this.state;
+        const currentDate = selectedDate || viewDate;
+        const date = parse(
+          format(newDate, "YYYY-MM-DD") +
+            " " +
+            format(currentDate, "HH:mm:ss.SSSZ")
+        );
 
-      const readonly = this.props.value;
-      if (!readonly) {
-        const open = !close;
-        if (!open) {
-          this.props.onBlur!(date);
+        const readonly = this.props.value;
+        if (!readonly) {
+          const open = !close;
+          if (!open) {
+            this.props.onBlur!(date);
+          }
+
+          this.setState({
+            selectedDate: date,
+            viewDate: date,
+            inputValue: format(
+              date,
+              this.state.inputFormat,
+              getFormatOptions(this.props)
+            ),
+            open: open
+          });
+        } else if (close) {
+          this.closeCalendar();
         }
+      } else {
+        const newViewMode = nextViews[type];
 
         this.setState({
-          selectedDate: date,
-          viewDate: startOfMonth(date),
-          inputValue: format(
-            date,
-            this.state.inputFormat,
-            getFormatOptions(this.props)
-          ),
-          open: open
+          viewDate: newDate,
+          currentView: newViewMode
         });
-      } else if (close) {
-        this.closeCalendar();
+
+        this.props.onViewModeChange!(newViewMode);
       }
     };
   };

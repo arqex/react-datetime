@@ -5,13 +5,11 @@ import startOfWeek from "date-fns/start_of_week";
 import startOfMonth from "date-fns/start_of_month";
 import endOfMonth from "date-fns/end_of_month";
 import isSameDay from "date-fns/is_same_day";
-import isToday from "date-fns/is_today";
 import isBefore from "date-fns/is_before";
-import isAfter from "date-fns/is_after";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
 import cc from "classcat";
-import { IsValidDateFunc, SetSelectedDateFunc } from ".";
+import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
 
 import noop from "./noop";
 import returnTrue from "./returnTrue";
@@ -28,11 +26,11 @@ interface DaysViewProps {
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
   viewDate?: Date | string;
-  moveTime?: any;
-  showView?: any;
+  shift: ShiftFunc;
+  show: ShowFunc;
   selectedDate?: Date;
 
-  setSelectedDate: SetSelectedDateFunc;
+  setDate: SetDateFunc;
 
   /*
   Defines the format for the time. It accepts any date-fns time format.
@@ -63,9 +61,9 @@ interface DaysViewProps {
 
 class DaysView extends React.Component<DaysViewProps, never> {
   static defaultProps = {
-    moveTime: noop,
-    showView: noop,
-    setSelectedDate: noop
+    shift: noop,
+    show: noop,
+    setDate: noop
   };
 
   constructor(props) {
@@ -93,20 +91,20 @@ class DaysView extends React.Component<DaysViewProps, never> {
             <tr>
               <th
                 className="rdtPrev"
-                onClick={this.props.moveTime("sub", 1, "months")}
+                onClick={this.props.shift("sub", 1, "months")}
               >
                 <span>‹</span>
               </th>
               <th
                 className="rdtSwitch"
-                onClick={this.props.showView("months")}
+                onClick={this.props.show("months")}
                 colSpan={5}
               >
                 {format(viewDate, "MMMM YYYY", formatOptions)}
               </th>
               <th
                 className="rdtNext"
-                onClick={this.props.moveTime("add", 1, "months")}
+                onClick={this.props.shift("add", 1, "months")}
               >
                 <span>›</span>
               </th>
@@ -140,7 +138,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
             <tfoot>
               <tr>
                 <td
-                  onClick={this.props.showView("time")}
+                  onClick={this.props.show("time")}
                   colSpan={7}
                   className="rdtTimeToggle"
                 >
@@ -156,12 +154,12 @@ class DaysView extends React.Component<DaysViewProps, never> {
 
   renderDays(): JSX.Element[] {
     const { viewDate = new Date(), selectedDate } = this.props;
-    const prevMonth = subMonths(viewDate, 1);
     const weeks: JSX.Element[] = [];
     let days: JSX.Element[] = [];
     const renderer = this.props.renderDay || this.renderDay;
     const isValid = this.props.isValidDate || returnTrue;
 
+    const prevMonth = subMonths(viewDate, 1);
     const prevMonthLastWeekStart = startOfWeek(endOfMonth(prevMonth));
 
     for (let i = 0; i < 42; i++) {
@@ -174,16 +172,16 @@ class DaysView extends React.Component<DaysViewProps, never> {
           "rdtDay",
           {
             rdtOld: isBefore(workingDate, startOfMonth(viewDate)),
-            rdtNew: isAfter(workingDate, endOfMonth(viewDate)),
+            rdtNew: isBefore(endOfMonth(viewDate), workingDate),
             rdtActive: selectedDate && isSameDay(workingDate, selectedDate),
-            rdtToday: isToday(workingDate),
+            rdtToday: isSameDay(workingDate, new Date()),
             rdtDisabled: isDisabled
           }
         ])
       };
 
       if (!isDisabled) {
-        dayProps.onClick = this.props.setSelectedDate(workingDate, true);
+        dayProps.onClick = this.props.setDate("days", workingDate, true);
       }
 
       days.push(renderer(dayProps, workingDate, selectedDate));
@@ -197,9 +195,11 @@ class DaysView extends React.Component<DaysViewProps, never> {
     return weeks;
   }
 
-  renderDay(props, currentDate): JSX.Element {
+  renderDay(dayProps, currentDate): JSX.Element {
     return (
-      <td {...props}>{format(currentDate, "D", this.props.formatOptions)}</td>
+      <td {...dayProps}>
+        {format(currentDate, "D", this.props.formatOptions)}
+      </td>
     );
   }
 }

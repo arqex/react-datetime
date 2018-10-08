@@ -24,8 +24,8 @@ class CalendarContainer extends React.Component<CalendarContainerProps, never> {
     view: "days",
     onClickOutside: noop,
     viewProps: {
-      moveTime: noop,
-      showView: noop
+      shift: noop,
+      show: noop
     }
   };
 
