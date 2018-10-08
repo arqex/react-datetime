@@ -6,7 +6,7 @@ import Years from "./YearsView";
 import Time from "./TimeView";
 import noop from "./noop";
 
-const viewComponents = {
+const views = {
   days: Days,
   months: Months,
   years: Years,
@@ -35,7 +35,7 @@ class CalendarContainer extends React.Component<CalendarContainerProps, never> {
 
   render() {
     const { view, viewProps } = this.props;
-    const Component = viewComponents[view];
+    const Component = views[view];
 
     return <Component {...viewProps} readonly={!!viewProps.value} />;
   }

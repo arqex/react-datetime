@@ -8,10 +8,6 @@ import addHours from "date-fns/add_hours";
 import addMinutes from "date-fns/add_minutes";
 import addSeconds from "date-fns/add_seconds";
 import addMilliseconds from "date-fns/add_milliseconds";
-import subHours from "date-fns/sub_hours";
-import subMinutes from "date-fns/sub_minutes";
-import subSeconds from "date-fns/sub_seconds";
-import subMilliseconds from "date-fns/sub_milliseconds";
 import setHours from "date-fns/set_hours";
 
 const allCounters: ("hours" | "minutes" | "seconds" | "milliseconds")[] = [
@@ -142,8 +138,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     this.getStepSize = this.getStepSize.bind(this);
     this.onStartClicking = this.onStartClicking.bind(this);
     this.toggleDayPart = this.toggleDayPart.bind(this);
-    this.increase = this.increase.bind(this);
-    this.decrease = this.decrease.bind(this);
+    this.change = this.change.bind(this);
     this.getFormatted = this.getFormatted.bind(this);
   }
 
@@ -213,13 +208,13 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
 
       if (!readonly) {
         this.setState({
-          timestamp: this[action](type)
+          timestamp: this.change(action, type)
         });
 
         this.timer = setTimeout(() => {
           this.increaseTimer = setInterval(() => {
             this.setState({
-              timestamp: this[action](type)
+              timestamp: this.change(action, type)
             });
           }, 70);
         }, 500);
@@ -245,10 +240,14 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     this.props.setTime(setHours(this.state.timestamp, newHours));
   }
 
-  increase(type: "hours" | "minutes" | "seconds" | "milliseconds") {
+  change(
+    action: "up" | "down",
+    type: "hours" | "minutes" | "seconds" | "milliseconds"
+  ) {
     const { timestamp } = this.state;
+    const mult = action === "up" ? 1 : -1;
 
-    const step = this.getStepSize(type);
+    const step = this.getStepSize(type) * mult;
     if (type === "hours") {
       return addHours(timestamp, step);
     } else if (type === "minutes") {
@@ -257,21 +256,6 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
       return addSeconds(timestamp, step);
     } else {
       return addMilliseconds(timestamp, step);
-    }
-  }
-
-  decrease(type: "hours" | "minutes" | "seconds" | "milliseconds") {
-    const { timestamp } = this.state;
-
-    const step = this.getStepSize(type);
-    if (type === "hours") {
-      return subHours(timestamp, step);
-    } else if (type === "minutes") {
-      return subMinutes(timestamp, step);
-    } else if (type === "seconds") {
-      return subSeconds(timestamp, step);
-    } else {
-      return subMilliseconds(timestamp, step);
     }
   }
 
@@ -308,8 +292,8 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                       <TimePart
                         key={type}
                         showPrefix={numCounters > 1}
-                        onUp={this.onStartClicking("increase", type)}
-                        onDown={this.onStartClicking("decrease", type)}
+                        onUp={this.onStartClicking("up", type)}
+                        onDown={this.onStartClicking("down", type)}
                         value={val}
                       />
                     );

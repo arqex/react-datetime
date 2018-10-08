@@ -487,7 +487,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
 
   moveTime(op: "sub" | "add", amount: number, type: "months" | "years") {
     return () => {
-      const multiplier = op === "sub" ? -1 : 1;
+      const mult = op === "sub" ? -1 : 1;
       const workingDate = this.state.viewDate;
 
       if (op === "sub") {
@@ -499,8 +499,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       this.setState({
         viewDate:
           type === "months"
-            ? addMonths(workingDate, amount * multiplier)
-            : addYears(workingDate, amount * multiplier)
+            ? addMonths(workingDate, amount * mult)
+            : addYears(workingDate, amount * mult)
       });
     };
   }
