@@ -1,7 +1,6 @@
 import * as React from "react";
 import addDays from "date-fns/add_days";
 import format from "date-fns/format";
-import getMonth from "date-fns/get_month";
 import startOfWeek from "date-fns/start_of_week";
 import startOfMonth from "date-fns/start_of_month";
 import endOfMonth from "date-fns/end_of_month";
@@ -102,7 +101,6 @@ class DaysView extends React.Component<DaysViewProps, never> {
                 className="rdtSwitch"
                 onClick={this.props.showView("months")}
                 colSpan={5}
-                data-val={this.props.viewDate ? getMonth(viewDate) : 0}
               >
                 {format(viewDate, "MMMM YYYY", formatOptions)}
               </th>
@@ -181,8 +179,7 @@ class DaysView extends React.Component<DaysViewProps, never> {
             rdtToday: isToday(workingDate),
             rdtDisabled: isDisabled
           }
-        ]),
-        "data-val": getDate(workingDate)
+        ])
       };
 
       if (!isDisabled) {

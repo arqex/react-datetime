@@ -1,16 +1,16 @@
 import * as React from "react";
 import onClickOutside from "react-onclickoutside";
-import DaysView from "./DaysView";
-import MonthsView from "./MonthsView";
-import YearsView from "./YearsView";
-import TimeView from "./TimeView";
+import Days from "./DaysView";
+import Months from "./MonthsView";
+import Years from "./YearsView";
+import Time from "./TimeView";
 import noop from "./noop";
 
 const viewComponents = {
-  days: DaysView,
-  months: MonthsView,
-  years: YearsView,
-  time: TimeView
+  days: Days,
+  months: Months,
+  years: Years,
+  time: Time
 };
 
 interface CalendarContainerProps {

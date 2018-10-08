@@ -108,7 +108,6 @@ class YearsView extends React.Component<YearsViewProps, never> {
       const isDisabled = daysInYear.every(d => !isValid(d));
       const props: any = {
         key: year,
-        "data-val": year,
         className: cc([
           "rdtYear",
           {

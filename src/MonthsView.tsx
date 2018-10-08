@@ -68,7 +68,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
   }
 
   render() {
-    const date = this.props.viewDate;
+    const { viewDate } = this.props;
 
     return (
       <div className="rdtMonths">
@@ -85,9 +85,8 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
                 className="rdtSwitch"
                 onClick={this.props.showView("years")}
                 colSpan={2}
-                data-val={getYear(this.props.viewDate)}
               >
-                {format(date, "YYYY", this.props.formatOptions)}
+                {format(viewDate, "YYYY", this.props.formatOptions)}
               </th>
               <th
                 className="rdtNext"
@@ -117,20 +116,14 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     for (let month = 0; month < 12; month++) {
       const currentMonth = setMonth(viewDate, month);
 
-      const noOfDaysInMonth = getDaysInMonth(currentMonth);
-      const daysInMonth = Array.from({ length: noOfDaysInMonth }, (e, i) => {
-        return i + 1;
-      });
+      const daysInMonths = Array.from(
+        { length: getDaysInMonth(currentMonth) },
+        (e, i) => setDate(currentMonth, i + 1)
+      );
 
-      const validDay = daysInMonth.find(d => {
-        const day = setDate(currentMonth, d);
-        return isValid(day);
-      });
-
-      const isDisabled = validDay === undefined;
+      const isDisabled = daysInMonths.every(d => !isValid(d));
       const props: any = {
         key: month,
-        "data-val": month,
         className: cc([
           "rdtMonth",
           {

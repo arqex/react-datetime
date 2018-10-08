@@ -17,10 +17,7 @@ import noop from "./noop";
 /*
 The view mode can be any of the following strings.
 */
-export type DateViewMode = "years" | "months" | "days";
-export type ViewMode = DateViewMode | "time";
-
-export type AllowedSetTime = "hours" | "minutes" | "seconds" | "milliseconds";
+export type ViewMode = "years" | "months" | "days" | "time";
 
 export interface TimeConstraint {
   min: number;
