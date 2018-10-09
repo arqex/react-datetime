@@ -26,6 +26,6 @@
     "react-scripts": "^2.0.4"
   },
   "devDependencies": {
-    "gh-pages": "^2.0.0"
+    "gh-pages": "^2.0.1"
   }
 }
