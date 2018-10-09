@@ -363,6 +363,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   static defaultProps = {
     className: "",
     defaultValue: "",
+    viewDate: undefined,
     inputProps: {},
     input: true,
     onFocus: noop,
