@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.3.0
+
+- Internal refactor to shrink package size considerably.
+- Dependency bumps.
+
 ## 3.2.2
 
 - Enable usage in typescript projects without `"allowSyntheticDefaultImports": true` set. Thanks to @saiicharan for this fix!

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import DateTime from "react-datetime";
+import DateTime from "@nateradebaugh/react-datetime";
 import isBefore from "date-fns/is_before";
 import startOfMonth from "date-fns/start_of_month";
 
