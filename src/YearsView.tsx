@@ -5,18 +5,13 @@ import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
 import cc from "classcat";
 import noop from "./noop";
-import {
-  IsValidDateFunc,
-  SetDateFunc,
-  UpdateSelectedDateFunc,
-  viewModes
-} from ".";
+import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
+import returnTrue from "./returnTrue";
 
 interface YearsViewProps {
   viewDate: Date;
-  subtractTime?: any;
-  addTime?: any;
-  showView?: any;
+  shift: ShiftFunc;
+  show: ShowFunc;
   selectedDate?: Date;
 
   /*
@@ -33,22 +28,15 @@ interface YearsViewProps {
   */
   renderYear?: (props: any, year: number, selectedDate?: Date) => JSX.Element;
 
-  updateOn: string;
-
   setDate: SetDateFunc;
-
-  updateSelectedDate: UpdateSelectedDateFunc;
 }
 
 class YearsView extends React.Component<YearsViewProps, never> {
   static defaultProps = {
     viewDate: new Date(),
-    subtractTime: noop,
-    showView: noop,
-    addTime: noop,
-    updateOn: noop,
-    setDate: noop,
-    updateSelectedDate: noop
+    shift: noop,
+    show: noop,
+    setDate: noop
   };
 
   constructor(props) {
@@ -56,9 +44,7 @@ class YearsView extends React.Component<YearsViewProps, never> {
 
     // Bind functions
     this.renderYears = this.renderYears.bind(this);
-    this.updateSelectedYear = this.updateSelectedYear.bind(this);
     this.renderYear = this.renderYear.bind(this);
-    this.alwaysValidDate = this.alwaysValidDate.bind(this);
   }
 
   render() {
@@ -71,18 +57,21 @@ class YearsView extends React.Component<YearsViewProps, never> {
             <tr>
               <th
                 className="rdtPrev"
-                onClick={this.props.subtractTime(10, "years")}
+                onClick={this.props.shift("sub", 10, "years")}
               >
                 <span>‹</span>
               </th>
               <th
                 className="rdtSwitch"
-                onClick={this.props.showView("years")}
+                onClick={this.props.show("years")}
                 colSpan={2}
               >
                 {year}-{year + 9}
               </th>
-              <th className="rdtNext" onClick={this.props.addTime(10, "years")}>
+              <th
+                className="rdtNext"
+                onClick={this.props.shift("add", 10, "years")}
+              >
                 <span>›</span>
               </th>
             </tr>
@@ -95,32 +84,24 @@ class YearsView extends React.Component<YearsViewProps, never> {
     );
   }
 
-  renderYears(year) {
+  renderYears(startYear: number): JSX.Element[] {
     const renderer = this.props.renderYear || this.renderYear;
-    const selectedDate = this.props.selectedDate;
-    const date = this.props.viewDate;
-    const isValid = this.props.isValidDate || this.alwaysValidDate;
-    let years: any[] = [];
-    const rows: any[] = [];
+    const { selectedDate, viewDate } = this.props;
+    const isValid = this.props.isValidDate || returnTrue;
+    let years: JSX.Element[] = [];
+    const rows: JSX.Element[] = [];
 
-    year--;
-    for (let yearIndex = -1; yearIndex < 11; yearIndex++, year++) {
-      const currentYear = setYear(date, year);
+    for (let year = startYear - 1; year < startYear + 11; year++) {
+      const currentYear = setYear(viewDate, year);
 
-      const noOfDaysInYear = getDaysInYear(date);
-      const daysInYear = Array.from({ length: noOfDaysInYear }, (e, i) => {
-        return i + 1;
-      });
+      const daysInYear = Array.from(
+        { length: getDaysInYear(viewDate) },
+        (e, i) => setDayOfYear(currentYear, i + 1)
+      );
 
-      const validDay = daysInYear.find(d => {
-        const day = setDayOfYear(currentYear, d);
-        return isValid(day);
-      });
-
-      const isDisabled = validDay === undefined;
-      const props: any = {
+      const isDisabled = daysInYear.every(d => !isValid(d));
+      const yearProps: any = {
         key: year,
-        "data-value": year,
         className: cc([
           "rdtYear",
           {
@@ -131,18 +112,16 @@ class YearsView extends React.Component<YearsViewProps, never> {
       };
 
       if (!isDisabled) {
-        props.onClick =
-          this.props.updateOn === viewModes.YEARS
-            ? this.updateSelectedYear
-            : this.props.setDate(viewModes.YEARS);
+        yearProps.onClick = this.props.setDate(
+          "years",
+          setYear(selectedDate || viewDate, year)
+        );
       }
 
-      years.push(
-        renderer(props, year, selectedDate && new Date(selectedDate.getTime()))
-      );
+      years.push(renderer(yearProps, year, selectedDate));
 
       if (years.length === 4) {
-        rows.push(<tr key={yearIndex}>{years}</tr>);
+        rows.push(<tr key={year}>{years}</tr>);
         years = [];
       }
     }
@@ -150,16 +129,8 @@ class YearsView extends React.Component<YearsViewProps, never> {
     return rows;
   }
 
-  updateSelectedYear(event) {
-    this.props.updateSelectedDate(event);
-  }
-
-  renderYear(props, year) {
-    return <td {...props}>{year}</td>;
-  }
-
-  alwaysValidDate() {
-    return true;
+  renderYear(yearProps, year: number): JSX.Element {
+    return <td {...yearProps}>{year}</td>;
   }
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./react-datetime.css";
+import "@nateradebaugh/react-datetime/css/react-datetime.css";
 
 import SimpleExample from "./SimpleExample";
 import LocalizationExample from "./LocalizationExample";

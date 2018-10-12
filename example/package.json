@@ -23,9 +23,9 @@
     "react": "^16.5.2",
     "react-datetime": "link:..",
     "react-dom": "^16.5.2",
-    "react-scripts": "^2.0.3"
+    "react-scripts": "^2.0.4"
   },
   "devDependencies": {
-    "gh-pages": "^2.0.0"
+    "gh-pages": "^2.0.1"
   }
 }

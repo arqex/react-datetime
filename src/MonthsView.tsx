@@ -1,18 +1,14 @@
 import * as React from "react";
 import format from "date-fns/format";
-import getMonth from "date-fns/get_month";
+import isSameMonth from "date-fns/is_same_month";
 import setMonth from "date-fns/set_month";
 import getYear from "date-fns/get_year";
 import getDaysInMonth from "date-fns/get_days_in_month";
 import setDate from "date-fns/set_date";
 import cc from "classcat";
 import noop from "./noop";
-import {
-  IsValidDateFunc,
-  SetDateFunc,
-  UpdateSelectedDateFunc,
-  viewModes
-} from ".";
+import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
+import returnTrue from "./returnTrue";
 
 interface MonthsViewProps {
   /*
@@ -22,9 +18,8 @@ interface MonthsViewProps {
   locale?: any;
 
   viewDate: Date;
-  subtractTime?: any;
-  addTime?: any;
-  showView?: any;
+  shift: ShiftFunc;
+  show: ShowFunc;
   selectedDate?: Date;
 
   /*
@@ -46,21 +41,17 @@ interface MonthsViewProps {
     selectedDate?: Date
   ) => JSX.Element;
 
-  updateOn: string;
-
   setDate: SetDateFunc;
-  updateSelectedDate: UpdateSelectedDateFunc;
+
+  formatOptions?: any;
 }
 
 class MonthsView extends React.Component<MonthsViewProps, never> {
   static defaultProps = {
     viewDate: new Date(),
-    subtractTime: noop,
-    showView: noop,
-    addTime: noop,
-    updateOn: noop,
-    setDate: noop,
-    updateSelectedDate: noop
+    shift: noop,
+    show: noop,
+    setDate: noop
   };
 
   constructor(props) {
@@ -68,18 +59,11 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
 
     // Bind functions
     this.renderMonths = this.renderMonths.bind(this);
-    this.updateSelectedMonth = this.updateSelectedMonth.bind(this);
     this.renderMonth = this.renderMonth.bind(this);
-    this.alwaysValidDate = this.alwaysValidDate.bind(this);
-    this.getFormatOptions = this.getFormatOptions.bind(this);
-  }
-
-  getFormatOptions() {
-    return { locale: this.props.locale };
   }
 
   render() {
-    const date = this.props.viewDate;
+    const { viewDate } = this.props;
 
     return (
       <div className="rdtMonths">
@@ -88,19 +72,21 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
             <tr>
               <th
                 className="rdtPrev"
-                onClick={this.props.subtractTime(1, "years")}
+                onClick={this.props.shift("sub", 1, "years")}
               >
                 <span>‹</span>
               </th>
               <th
                 className="rdtSwitch"
-                onClick={this.props.showView("years")}
+                onClick={this.props.show("years")}
                 colSpan={2}
-                data-value={getYear(this.props.viewDate)}
               >
-                {format(date, "YYYY", this.getFormatOptions())}
+                {format(viewDate, "YYYY", this.props.formatOptions)}
               </th>
-              <th className="rdtNext" onClick={this.props.addTime(1, "years")}>
+              <th
+                className="rdtNext"
+                onClick={this.props.shift("add", 1, "years")}
+              >
                 <span>›</span>
               </th>
             </tr>
@@ -113,53 +99,46 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     );
   }
 
-  renderMonths() {
-    const date = this.props.selectedDate;
-    const year = getYear(this.props.viewDate);
+  renderMonths(): JSX.Element[] {
+    const { selectedDate, viewDate } = this.props;
+    const year = getYear(viewDate);
     const renderer = this.props.renderMonth || this.renderMonth;
-    const isValid = this.props.isValidDate || this.alwaysValidDate;
+    const isValid = this.props.isValidDate || returnTrue;
 
     const rows: any[] = [];
     let months: any[] = [];
 
-    for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
-      const currentMonth = setMonth(this.props.viewDate, monthIndex);
+    for (let month = 0; month < 12; month++) {
+      const currentMonth = setMonth(viewDate, month);
 
-      const noOfDaysInMonth = getDaysInMonth(currentMonth);
-      const daysInMonth = Array.from({ length: noOfDaysInMonth }, (e, i) => {
-        return i + 1;
-      });
+      const daysInMonths = Array.from(
+        { length: getDaysInMonth(currentMonth) },
+        (e, i) => setDate(currentMonth, i + 1)
+      );
 
-      const validDay = daysInMonth.find(d => {
-        const day = setDate(currentMonth, d);
-        return isValid(day);
-      });
-
-      const isDisabled = validDay === undefined;
+      const isDisabled = daysInMonths.every(d => !isValid(d));
       const props: any = {
-        key: monthIndex,
-        "data-value": monthIndex,
+        key: month,
         className: cc([
           "rdtMonth",
           {
             rdtDisabled: isDisabled,
-            rdtActive:
-              date && monthIndex === getMonth(date) && year === getYear(date)
+            rdtActive: selectedDate && isSameMonth(selectedDate, currentMonth)
           }
         ])
       };
 
       if (!isDisabled) {
-        props.onClick =
-          this.props.updateOn === viewModes.MONTHS
-            ? this.updateSelectedMonth
-            : this.props.setDate(viewModes.MONTHS);
+        props.onClick = this.props.setDate(
+          "months",
+          setMonth(selectedDate || viewDate, month)
+        );
       }
 
-      months.push(renderer(props, monthIndex, year, date));
+      months.push(renderer(props, month, year, selectedDate));
 
       if (months.length === 4) {
-        rows.push(<tr key={monthIndex}>{months}</tr>);
+        rows.push(<tr key={month}>{months}</tr>);
 
         months = [];
       }
@@ -168,19 +147,11 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
     return rows;
   }
 
-  updateSelectedMonth(event) {
-    this.props.updateSelectedDate(event);
-  }
-
-  renderMonth(props, month, year, selected) {
+  renderMonth(props, month, year, selected): JSX.Element {
     const monthDate = setMonth(new Date(), month);
     return (
-      <td {...props}>{format(monthDate, "MMM", this.getFormatOptions())}</td>
+      <td {...props}>{format(monthDate, "MMM", this.props.formatOptions)}</td>
     );
-  }
-
-  alwaysValidDate() {
-    return true;
   }
 }
 

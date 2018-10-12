@@ -1,5 +1,5 @@
-const disableContextMenu = event => {
-  event.preventDefault();
+const disableContextMenu = e => {
+  e.preventDefault();
   return false;
 };
 

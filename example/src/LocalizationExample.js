@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import DateTime from "react-datetime";
+import DateTime from "@nateradebaugh/react-datetime";
 import nl from "date-fns/locale/nl";
 import es from "date-fns/locale/es";
 import fr from "date-fns/locale/fr";

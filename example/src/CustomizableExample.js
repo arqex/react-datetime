@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import DateTime from "react-datetime";
+import DateTime from "@nateradebaugh/react-datetime";
 
 export default class CustomizableExample extends Component {
   state = {

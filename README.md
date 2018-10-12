@@ -15,7 +15,7 @@
 ![David](https://img.shields.io/david/optional/nateradebaugh/react-datetime.svg)
 
 
-A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable** and it even allows to edit date's milliseconds.
+A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable**.
 
 This project started as a fork of https://github.com/YouCanBookMe/react-datetime which itself was a fork of https://github.com/quri/react-bootstrap-datetimepicker but the code and the API has changed a lot.
 

@@ -1,6 +1,6 @@
 {
   "name": "@nateradebaugh/react-datetime",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "description": "A lightweight but complete datetime picker React.js component",
   "license": "MIT",
   "homepage": "https://github.com/NateRadebaugh/react-datetime",
@@ -17,18 +17,17 @@
   "jsnext:main": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
-    "src",
     "css",
     "dist"
   ],
   "bundlesize": [
     {
       "path": "dist/index.js",
-      "maxSize": "11 kB"
+      "maxSize": "8.9 kB"
     },
     {
       "path": "dist/index.es.js",
-      "maxSize": "11 kB"
+      "maxSize": "8.9 kB"
     }
   ],
   "keywords": [
@@ -41,6 +40,7 @@
   ],
   "scripts": {
     "build": "rollup -c",
+    "build:size": "rollup -c && yarn bundlesize",
     "dev": "rollup -c -w",
     "start": "rollup -c -w",
     "lint": "yarn tslint",
@@ -68,7 +68,7 @@
     ],
     "*.{ts,tsx}": [
       "prettier --write",
-      "tslint --fix",
+      "tslint --project tsconfig.json --fix",
       "git add",
       "cross-env CI=1 TZ=Europe/Stockholm jest --bail --findRelatedTests"
     ],

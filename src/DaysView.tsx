@@ -1,18 +1,18 @@
 import * as React from "react";
 import addDays from "date-fns/add_days";
 import format from "date-fns/format";
-import getDaysInMonth from "date-fns/get_days_in_month";
-import getMonth from "date-fns/get_month";
-import getYear from "date-fns/get_year";
 import startOfWeek from "date-fns/start_of_week";
+import startOfMonth from "date-fns/start_of_month";
+import endOfMonth from "date-fns/end_of_month";
 import isSameDay from "date-fns/is_same_day";
-import isToday from "date-fns/is_today";
-import setDate from "date-fns/set_date";
+import isBefore from "date-fns/is_before";
 import subMonths from "date-fns/sub_months";
 import getDate from "date-fns/get_date";
 import cc from "classcat";
-import { IsValidDateFunc, UpdateSelectedDateFunc } from ".";
+import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
+
 import noop from "./noop";
+import returnTrue from "./returnTrue";
 
 interface DaysViewProps {
   /*
@@ -26,12 +26,11 @@ interface DaysViewProps {
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
   viewDate?: Date | string;
-  subtractTime?: any;
-  addTime?: any;
-  showView?: any;
+  shift: ShiftFunc;
+  show: ShowFunc;
   selectedDate?: Date;
 
-  updateSelectedDate: UpdateSelectedDateFunc;
+  setDate: SetDateFunc;
 
   /*
   Defines the format for the time. It accepts any date-fns time format.
@@ -56,14 +55,15 @@ interface DaysViewProps {
     currentDate: any,
     selectedDate?: Date
   ) => JSX.Element;
+
+  formatOptions?: any;
 }
 
 class DaysView extends React.Component<DaysViewProps, never> {
   static defaultProps = {
-    subtractTime: noop,
-    showView: noop,
-    addTime: noop,
-    updateSelectedDate: noop
+    shift: noop,
+    show: noop,
+    setDate: noop
   };
 
   constructor(props) {
@@ -71,20 +71,18 @@ class DaysView extends React.Component<DaysViewProps, never> {
 
     // Bind functions
     this.renderDays = this.renderDays.bind(this);
-    this.updateSelectedDate = this.updateSelectedDate.bind(this);
     this.renderDay = this.renderDay.bind(this);
-    this.renderFooter = this.renderFooter.bind(this);
-    this.alwaysValidDate = this.alwaysValidDate.bind(this);
-    this.getFormatOptions = this.getFormatOptions.bind(this);
-  }
-
-  getFormatOptions(): any {
-    return { locale: this.props.locale };
   }
 
   render() {
-    const date = this.props.viewDate || new Date();
-    const theStartOfWeek = startOfWeek(date);
+    const {
+      viewDate = new Date(),
+      selectedDate,
+      timeFormat,
+      formatOptions
+    } = this.props;
+    const dateTime = selectedDate || viewDate;
+    const theStartOfWeek = startOfWeek(viewDate);
 
     return (
       <div className="rdtDays">
@@ -93,107 +91,79 @@ class DaysView extends React.Component<DaysViewProps, never> {
             <tr>
               <th
                 className="rdtPrev"
-                onClick={this.props.subtractTime(1, "months")}
+                onClick={this.props.shift("sub", 1, "months")}
               >
                 <span>‹</span>
               </th>
               <th
                 className="rdtSwitch"
-                onClick={this.props.showView("months")}
+                onClick={this.props.show("months")}
                 colSpan={5}
-                data-value={
-                  this.props.viewDate ? getMonth(this.props.viewDate) : 0
-                }
               >
-                {format(date, "MMMM YYYY", this.getFormatOptions())}
+                {format(viewDate, "MMMM YYYY", formatOptions)}
               </th>
-              <th className="rdtNext" onClick={this.props.addTime(1, "months")}>
+              <th
+                className="rdtNext"
+                onClick={this.props.shift("add", 1, "months")}
+              >
                 <span>›</span>
               </th>
             </tr>
             <tr>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 0),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(theStartOfWeek, "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 1),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 1), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 2),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 2), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 3),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 3), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 4),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 4), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 5),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 5), "dd", formatOptions)}
               </th>
               <th className="dow">
-                {format(
-                  addDays(theStartOfWeek, 6),
-                  "dd",
-                  this.getFormatOptions()
-                )}
+                {format(addDays(theStartOfWeek, 6), "dd", formatOptions)}
               </th>
             </tr>
           </thead>
           <tbody>{this.renderDays()}</tbody>
-          {this.renderFooter()}
+          {typeof timeFormat === "string" && timeFormat.trim() && dateTime ? (
+            <tfoot>
+              <tr>
+                <td
+                  onClick={this.props.show("time")}
+                  colSpan={7}
+                  className="rdtTimeToggle"
+                >
+                  {format(dateTime, timeFormat, formatOptions)}
+                </td>
+              </tr>
+            </tfoot>
+          ) : null}
         </table>
       </div>
     );
   }
 
-  renderDays() {
-    const date = this.props.viewDate || new Date();
-    const selectedDate = this.props.selectedDate
-      ? this.props.selectedDate
-      : undefined;
-    const prevMonth = subMonths(date, 1);
-    const currentYear = getYear(date);
-    const currentMonth = getMonth(date);
-    const weeks: any[] = [];
-    let days: any[] = [];
+  renderDays(): JSX.Element[] {
+    const { viewDate = new Date(), selectedDate } = this.props;
+    const weeks: JSX.Element[] = [];
+    let days: JSX.Element[] = [];
     const renderer = this.props.renderDay || this.renderDay;
-    const isValid = this.props.isValidDate || this.alwaysValidDate;
+    const isValid = this.props.isValidDate || returnTrue;
 
-    const prevMonthLastWeekStart = startOfWeek(
-      setDate(prevMonth, getDaysInMonth(prevMonth))
-    );
-    const lastDay = addDays(prevMonthLastWeekStart, 42);
-    for (
-      let workingDate = prevMonthLastWeekStart;
-      workingDate < lastDay;
-      workingDate = addDays(workingDate, 1)
-    ) {
-      const workingYear = getYear(workingDate);
-      const workingMonth = getMonth(workingDate);
+    const prevMonth = subMonths(viewDate, 1);
+    const prevMonthLastWeekStart = startOfWeek(endOfMonth(prevMonth));
+
+    for (let i = 0; i < 42; i++) {
+      const workingDate = addDays(prevMonthLastWeekStart, i);
       const isDisabled = !isValid(workingDate, selectedDate);
 
       const dayProps: any = {
@@ -201,22 +171,17 @@ class DaysView extends React.Component<DaysViewProps, never> {
         className: cc([
           "rdtDay",
           {
-            rdtOld:
-              (workingYear === currentYear && workingMonth < currentMonth) ||
-              workingYear < currentYear,
-            rdtNew:
-              (workingYear === currentYear && workingMonth > currentMonth) ||
-              workingYear > currentYear,
+            rdtOld: isBefore(workingDate, startOfMonth(viewDate)),
+            rdtNew: isBefore(endOfMonth(viewDate), workingDate),
             rdtActive: selectedDate && isSameDay(workingDate, selectedDate),
-            rdtToday: isToday(workingDate),
+            rdtToday: isSameDay(workingDate, new Date()),
             rdtDisabled: isDisabled
           }
-        ]),
-        "data-value": getDate(workingDate)
+        ])
       };
 
       if (!isDisabled) {
-        dayProps.onClick = this.updateSelectedDate;
+        dayProps.onClick = this.props.setDate("days", workingDate, true);
       }
 
       days.push(renderer(dayProps, workingDate, selectedDate));
@@ -230,44 +195,12 @@ class DaysView extends React.Component<DaysViewProps, never> {
     return weeks;
   }
 
-  updateSelectedDate(event) {
-    this.props.updateSelectedDate(event, true);
-  }
-
-  renderDay(props, currentDate) {
+  renderDay(dayProps, currentDate): JSX.Element {
     return (
-      <td {...props}>{format(currentDate, "D", this.getFormatOptions())}</td>
+      <td {...dayProps}>
+        {format(currentDate, "D", this.props.formatOptions)}
+      </td>
     );
-  }
-
-  renderFooter() {
-    const date = this.props.selectedDate || this.props.viewDate;
-
-    if (
-      typeof this.props.timeFormat !== "string" ||
-      !this.props.timeFormat.trim() ||
-      !date
-    ) {
-      return null;
-    }
-
-    return (
-      <tfoot>
-        <tr>
-          <td
-            onClick={this.props.showView("time")}
-            colSpan={7}
-            className="rdtTimeToggle"
-          >
-            {format(date, this.props.timeFormat, this.getFormatOptions())}
-          </td>
-        </tr>
-      </tfoot>
-    );
-  }
-
-  alwaysValidDate() {
-    return true;
   }
 }
 

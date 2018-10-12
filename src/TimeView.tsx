@@ -1,24 +1,21 @@
 import * as React from "react";
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
-import { TimeConstraint, SetTimeFunc, TimeConstraints } from "./";
+import { TimeConstraint, SetTimeFunc, TimeConstraints, ShowFunc } from "./";
 import noop from "./noop";
 import disableContextMenu from "./disableContextMenu";
 import addHours from "date-fns/add_hours";
 import addMinutes from "date-fns/add_minutes";
 import addSeconds from "date-fns/add_seconds";
 import addMilliseconds from "date-fns/add_milliseconds";
-import subHours from "date-fns/sub_hours";
-import subMinutes from "date-fns/sub_minutes";
-import subSeconds from "date-fns/sub_seconds";
-import subMilliseconds from "date-fns/sub_milliseconds";
 import setHours from "date-fns/set_hours";
 
-const HOURS: "hours" = "hours";
-const MINUTES: "minutes" = "minutes";
-const SECONDS: "seconds" = "seconds";
-const MILLISECONDS: "milliseconds" = "milliseconds";
-const allCounters = [HOURS, MINUTES, SECONDS, MILLISECONDS];
+const allCounters: Array<"hours" | "minutes" | "seconds" | "milliseconds"> = [
+  "hours",
+  "minutes",
+  "seconds",
+  "milliseconds"
+];
 
 const defaultTimeConstraints: AlwaysTimeConstraints = {
   hours: {
@@ -43,7 +40,7 @@ const defaultTimeConstraints: AlwaysTimeConstraints = {
   }
 };
 
-const CounterComponent = props => {
+const TimePart = props => {
   const { showPrefix, onUp, onDown, value } = props;
 
   return value !== null && value !== undefined ? (
@@ -92,32 +89,39 @@ interface TimeViewProps {
 
   /*
   Defines the format for the date. It accepts any date-fns date format.
-  If true the date will be displayed using the defaults for the current locale.
   If false the datepicker is disabled and the component can be used as timepicker.
   */
   dateFormat?: string | false;
 
   /*
   Defines the format for the time. It accepts any date-fns time format.
-  If true the time will be displayed using the defaults for the current locale.
   If false the timepicker is disabled and the component can be used as datepicker.
   */
   timeFormat?: string | false;
 
   viewDate: Date;
-  showView?: any;
+  show: ShowFunc;
   selectedDate?: Date;
+
+  formatOptions?: any;
 }
 
 interface TimeViewState {
   timestamp: Date;
 }
 
+function calculateState(props): TimeViewState {
+  return {
+    timestamp: props.selectedDate || props.viewDate
+  };
+}
+
 class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   static defaultProps = {
     viewDate: new Date(),
     readonly: false,
-    setTime: noop
+    setTime: noop,
+    show: noop
   };
 
   timer: any;
@@ -127,17 +131,14 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   constructor(props) {
     super(props);
 
-    this.state = this.calculateState(props);
+    this.state = calculateState(props);
 
     // Bind functions
     this.getStepSize = this.getStepSize.bind(this);
     this.onStartClicking = this.onStartClicking.bind(this);
     this.toggleDayPart = this.toggleDayPart.bind(this);
-    this.increase = this.increase.bind(this);
-    this.decrease = this.decrease.bind(this);
-    this.calculateState = this.calculateState.bind(this);
+    this.change = this.change.bind(this);
     this.getFormatted = this.getFormatted.bind(this);
-    this.getFormatOptions = this.getFormatOptions.bind(this);
   }
 
   getStepSize(type: "hours" | "minutes" | "seconds" | "milliseconds") {
@@ -155,17 +156,17 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   getFormatted(
     type: "hours" | "minutes" | "seconds" | "milliseconds" | "daypart"
   ) {
+    const { timeFormat, formatOptions } = this.props;
     const { timestamp } = this.state;
-    const timeFormat =
-      typeof this.props.timeFormat === "string" ? this.props.timeFormat : "";
+    const fmt = typeof timeFormat === "string" ? timeFormat : "";
 
-    const hasHours = timeFormat.toLowerCase().indexOf("h") !== -1;
-    const hasMinutes = timeFormat.indexOf("m") !== -1;
-    const hasSeconds = timeFormat.indexOf("s") !== -1;
-    const hasMilliseconds = timeFormat.indexOf("S") !== -1;
+    const hasHours = fmt.toLowerCase().indexOf("h") !== -1;
+    const hasMinutes = fmt.indexOf("m") !== -1;
+    const hasSeconds = fmt.indexOf("s") !== -1;
+    const hasMilliseconds = fmt.indexOf("S") !== -1;
 
-    const hasUpperDayPart = timeFormat.indexOf("A") !== -1;
-    const hasLowerDayPart = timeFormat.indexOf("a") !== -1;
+    const hasUpperDayPart = fmt.indexOf("A") !== -1;
+    const hasLowerDayPart = fmt.indexOf("a") !== -1;
     const hasDayPart = hasUpperDayPart || hasLowerDayPart;
 
     const typeFormat =
@@ -186,22 +187,18 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                   : undefined;
 
     if (typeFormat) {
-      return format(timestamp, typeFormat, this.getFormatOptions());
+      return format(timestamp, typeFormat, formatOptions);
     }
 
     return undefined;
   }
 
-  getFormatOptions() {
-    return { locale: this.props.locale };
-  }
-
   componentDidMount() {
-    this.setState(this.calculateState(this.props));
+    this.setState(calculateState(this.props));
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState(this.calculateState(nextProps));
+    this.setState(calculateState(nextProps));
   }
 
   onStartClicking(action, type) {
@@ -210,13 +207,13 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
 
       if (!readonly) {
         this.setState({
-          timestamp: this[action](type)
+          timestamp: this.change(action, type)
         });
 
         this.timer = setTimeout(() => {
           this.increaseTimer = setInterval(() => {
             this.setState({
-              timestamp: this[action](type)
+              timestamp: this.change(action, type)
             });
           }, 70);
         }, 500);
@@ -242,10 +239,14 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     this.props.setTime(setHours(this.state.timestamp, newHours));
   }
 
-  increase(type: "hours" | "minutes" | "seconds" | "milliseconds") {
+  change(
+    action: "up" | "down",
+    type: "hours" | "minutes" | "seconds" | "milliseconds"
+  ) {
     const { timestamp } = this.state;
+    const mult = action === "up" ? 1 : -1;
 
-    const step = this.getStepSize(type);
+    const step = this.getStepSize(type) * mult;
     if (type === "hours") {
       return addHours(timestamp, step);
     } else if (type === "minutes") {
@@ -255,27 +256,6 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     } else {
       return addMilliseconds(timestamp, step);
     }
-  }
-
-  decrease(type: "hours" | "minutes" | "seconds" | "milliseconds") {
-    const { timestamp } = this.state;
-
-    const step = this.getStepSize(type);
-    if (type === "hours") {
-      return subHours(timestamp, step);
-    } else if (type === "minutes") {
-      return subMinutes(timestamp, step);
-    } else if (type === "seconds") {
-      return subSeconds(timestamp, step);
-    } else {
-      return subMilliseconds(timestamp, step);
-    }
-  }
-
-  calculateState(props): TimeViewState {
-    return {
-      timestamp: props.selectedDate || props.viewDate
-    };
   }
 
   render() {
@@ -290,7 +270,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                 <th
                   className="rdtSwitch"
                   colSpan={4}
-                  onClick={this.props.showView("days")}
+                  onClick={this.props.show("days")}
                 >
                   {format(this.state.timestamp, this.props.dateFormat)}
                 </th>
@@ -308,16 +288,16 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                     }
 
                     return (
-                      <CounterComponent
+                      <TimePart
                         key={type}
                         showPrefix={numCounters > 1}
-                        onUp={this.onStartClicking("increase", type)}
-                        onDown={this.onStartClicking("decrease", type)}
+                        onUp={this.onStartClicking("up", type)}
+                        onDown={this.onStartClicking("down", type)}
                         value={val}
                       />
                     );
                   })}
-                  <CounterComponent
+                  <TimePart
                     onUp={this.toggleDayPart}
                     onDown={this.toggleDayPart}
                     value={this.getFormatted("daypart")}

@@ -194,12 +194,6 @@ describe("DateTime", () => {
     // Click any month to enter day view
     utils.clickNthMonth(component, 1);
     expect(utils.isDayView(component)).toBeTruthy();
-    expect(
-      component
-        .find(".rdtSwitch")
-        .getDOMNode()
-        .getAttribute("data-value")
-    ).toEqual("1");
   });
 
   it("increase year", () => {
@@ -235,28 +229,10 @@ describe("DateTime", () => {
     const component = utils.createDatetime({ defaultValue: date });
 
     expect(component.find(".rdtSwitch").text()).toEqual("January 2000");
-    expect(
-      component
-        .find(".rdtSwitch")
-        .getDOMNode()
-        .getAttribute("data-value")
-    ).toEqual("0");
     utils.clickOnElement(component.find(".rdtNext span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
-    expect(
-      component
-        .find(".rdtSwitch")
-        .getDOMNode()
-        .getAttribute("data-value")
-    ).toEqual("1");
     utils.clickOnElement(component.find(".rdtNext span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("March 2000");
-    expect(
-      component
-        .find(".rdtSwitch")
-        .getDOMNode()
-        .getAttribute("data-value")
-    ).toEqual("2");
   });
 
   it("decrease month", () => {
@@ -264,28 +240,10 @@ describe("DateTime", () => {
     const component = utils.createDatetime({ defaultValue: date });
 
     expect(component.find(".rdtSwitch").text()).toEqual("January 2000");
-    expect(
-      component
-        .find(".rdtSwitch")
-        .getDOMNode()
-        .getAttribute("data-value")
-    ).toEqual("0");
     utils.clickOnElement(component.find(".rdtPrev span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("December 1999");
-    expect(
-      component
-        .find(".rdtSwitch")
-        .getDOMNode()
-        .getAttribute("data-value")
-    ).toEqual("11");
     utils.clickOnElement(component.find(".rdtPrev span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("November 1999");
-    expect(
-      component
-        .find(".rdtSwitch")
-        .getDOMNode()
-        .getAttribute("data-value")
-    ).toEqual("10");
   });
 
   it("should switch to previous month's view when clicking a day in the previous month", () => {
