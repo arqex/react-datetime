@@ -271,6 +271,12 @@ const nextViews: NextViews = {
   years: "months"
 };
 
+const fmtParts = {
+  days: { sel: "-MM-DD", rest: "" },
+  months: { sel: "-MM", rest: "-DD" },
+  years: { sel: "", rest: "-MM-DD" }
+};
+
 function getInitialState(props): any {
   const state = getStateFromProps(props);
 
@@ -526,12 +532,12 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       if (this.state.updateOn === type) {
         const close = tryClose && this.props.closeOnSelect;
 
+        const fmt = fmtParts[type];
         const { selectedDate, viewDate } = this.state;
         const currentDate = selectedDate || viewDate;
         const date = parse(
-          format(newDate, "YYYY-MM-DD") +
-            " " +
-            format(currentDate, "HH:mm:ss.SSSZ")
+          format(newDate, `YYYY${fmt.sel}`) +
+            format(currentDate, `${fmt.rest} HH:mm:ss.SSSZ`)
         );
 
         const readonly = this.props.value;

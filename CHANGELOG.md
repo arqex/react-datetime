@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.3.2
+
+- Fix regression for selecting when date format is YYYY or YYYY-MM.
+
+## 3.3.1
+
+- Avoid publishing src dir.
+
 ## 3.3.0
 
 - Internal refactor to shrink package size considerably.
