@@ -2138,7 +2138,6 @@ describe("DateTime", () => {
         );
       });
 
-      // Passes locally but not on Travis
       it("when selecting year", () => {
         const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2);
         const onChangeFn = jest.fn();

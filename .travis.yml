@@ -1,15 +1,15 @@
 language: node_js
 sudo: false
 os:
-- linux
+  - linux
 node_js:
-- '6'
-- '8'
-- '9'
-- stable
+  - "6"
+  - "8"
+  - "9"
+  - stable
 script:
-- npm run lint
-- npm run test:all
+  - yarn lint
+  - yarn test:all
 notifications:
   email: false
 before_install: yarn global add greenkeeper-lockfile@1

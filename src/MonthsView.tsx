@@ -129,10 +129,7 @@ class MonthsView extends React.Component<MonthsViewProps, never> {
       };
 
       if (!isDisabled) {
-        props.onClick = this.props.setDate(
-          "months",
-          setMonth(selectedDate || viewDate, month)
-        );
+        props.onClick = this.props.setDate("months", setMonth(viewDate, month));
       }
 
       months.push(renderer(props, month, year, selectedDate));
