@@ -2153,67 +2153,6 @@ describe("DateTime", () => {
           "2001-01-15T02:02:02.002Z"
         );
       });
-
-      it("when selecting year then month", () => {
-        const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2);
-        const onChangeFn = jest.fn();
-        const component = utils.createDatetime({
-          defaultValue: date,
-          dateFormat: "YYYY-MM",
-          onChange: onChangeFn
-        });
-
-        utils.openDatepicker(component);
-
-        // Go to year view
-        utils.clickOnElement(component.find(".rdtSwitch"));
-        expect(utils.isYearView(component)).toBeTruthy();
-
-        // Change ViewDate to a different year
-        utils.clickNthYear(component, 6);
-        expect(component.find(".rdtSwitch").text()).toEqual("2005");
-
-        // Click a month
-        utils.clickNthMonth(component, 5);
-
-        expect(onChangeFn).toHaveBeenCalledTimes(1);
-        expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual(
-          "2005-06-15T02:02:02.002Z"
-        );
-      });
-
-      it("when selecting year then month then day", () => {
-        const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2);
-        const onChangeFn = jest.fn();
-        const component = utils.createDatetime({
-          defaultValue: date,
-          dateFormat: "YYYY-MM-DD",
-          onChange: onChangeFn
-        });
-
-        utils.openDatepicker(component);
-
-        // Go to year view
-        utils.clickOnElement(component.find(".rdtSwitch"));
-        utils.clickOnElement(component.find(".rdtSwitch"));
-        expect(utils.isYearView(component)).toBeTruthy();
-
-        // Change ViewDate to a different year
-        utils.clickNthYear(component, 6);
-        expect(component.find(".rdtSwitch").text()).toEqual("2005");
-
-        // Click a month
-        utils.clickNthMonth(component, 5);
-        expect(component.find(".rdtSwitch").text()).toEqual("June 2005");
-
-        // Click a day
-        utils.clickNthDay(component, 12);
-
-        expect(onChangeFn).toHaveBeenCalledTimes(1);
-        expect(onChangeFn.mock.calls[0][0].toJSON()).toEqual(
-          "2005-06-11T02:02:02.002Z"
-        );
-      });
     });
   });
 
