@@ -2,7 +2,7 @@
 
 var React = require('react'),
 	createClass = require('create-react-class')
-	;
+;
 
 var DateTimePickerYears = createClass({
 	render: function() {
