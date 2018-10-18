@@ -381,7 +381,7 @@ describe('Datetime', () => {
 		});
 
 		it('className -> type string array', () => {
-			const component = utils.createDatetime({ className: ['custom-class1', 'custom-class2'] });
+			const component = utils.createDatetimeShallow({ className: ['custom-class1', 'custom-class2'] });
 			expect(component.find('.custom-class1').length).toEqual(1);
 			expect(component.find('.custom-class2').length).toEqual(1);
 		});
@@ -523,9 +523,9 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
-		it('disableOnClickOutside=true', () => {
+		it('disableCloseOnClickOutside=true', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ value: date, disableOnClickOutside: true });
+				component = utils.createDatetime({ value: date, disableCloseOnClickOutside: true });
 
 			expect(utils.isOpen(component)).toBeFalsy();
 			utils.openDatepicker(component);
@@ -535,9 +535,9 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
-    it('disableOnClickOutside=false', () => {
+    it('disableCloseOnClickOutside=false', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ value: date, disableOnClickOutside: false });
+				component = utils.createDatetime({ value: date, disableCloseOnClickOutside: false });
 
 			expect(utils.isOpen(component)).toBeFalsy();
 			utils.openDatepicker(component);

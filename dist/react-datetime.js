@@ -1,5 +1,5 @@
 /*
-react-datetime v2.15.0
+react-datetime v2.16.0
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -12,7 +12,7 @@ MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 		exports["Datetime"] = factory(require("React"), require("moment"), require("ReactDOM"));
 	else
 		root["Datetime"] = factory(root["React"], root["moment"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_12__, __WEBPACK_EXTERNAL_MODULE_15__, __WEBPACK_EXTERNAL_MODULE_19__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_12__, __WEBPACK_EXTERNAL_MODULE_16__, __WEBPACK_EXTERNAL_MODULE_23__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,9 +64,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var assign = __webpack_require__(1),
 		PropTypes = __webpack_require__(2),
 		createClass = __webpack_require__(11),
-		moment = __webpack_require__(15),
+		moment = __webpack_require__(16),
 		React = __webpack_require__(12),
-		CalendarContainer = __webpack_require__(16)
+		CalendarContainer = __webpack_require__(17),
+		onClickOutside = __webpack_require__(22).default
 		;
 
 	var viewModes = Object.freeze({
@@ -91,6 +92,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			onNavigateForward: TYPES.func,
 			locale: TYPES.string,
 			utc: TYPES.bool,
+			displayTimeZone: TYPES.string,
 			input: TYPES.bool,
 			// dateFormat: TYPES.string | TYPES.bool,
 			// timeFormat: TYPES.string | TYPES.bool,
@@ -238,13 +240,20 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			}
 
-			if ( nextProps.utc !== this.props.utc ) {
+			if ( nextProps.utc !== this.props.utc || nextProps.displayTimeZone !== this.props.displayTimeZone ) {
 				if ( nextProps.utc ) {
 					if ( this.state.viewDate )
 						updatedState.viewDate = this.state.viewDate.clone().utc();
 					if ( this.state.selectedDate ) {
 						updatedState.selectedDate = this.state.selectedDate.clone().utc();
 						updatedState.inputValue = updatedState.selectedDate.format( formats.datetime );
+					}
+				} else if ( nextProps.displayTimeZone ) {
+					if ( this.state.viewDate )
+						updatedState.viewDate = this.state.viewDate.clone().tz(nextProps.displayTimeZone);
+					if ( this.state.selectedDate ) {
+						updatedState.selectedDate = this.state.selectedDate.clone().tz(nextProps.displayTimeZone);
+						updatedState.inputValue = updatedState.selectedDate.tz(nextProps.displayTimeZone).format( formats.datetime );
 					}
 				} else {
 					if ( this.state.viewDate )
@@ -368,7 +377,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		updateSelectedDate: function( e, close ) {
-			var target = e.target,
+			var target = e.currentTarget,
 				modifier = 0,
 				viewDate = this.state.viewDate,
 				currentDate = this.state.selectedDate || viewDate,
@@ -436,7 +445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		handleClickOutside: function() {
-			if ( this.props.input && this.state.open && !this.props.open && !this.props.disableOnClickOutside ) {
+			if ( this.props.input && this.state.open && this.props.open === undefined && !this.props.disableCloseOnClickOutside ) {
 				this.setState({ open: false }, function() {
 					this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 				});
@@ -445,8 +454,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		localMoment: function( date, format, props ) {
 			props = props || this.props;
-			var momentFn = props.utc ? moment.utc : moment;
-			var m = momentFn( date, format, props.strictParsing );
+			var m = null;
+
+			if (props.utc) {
+				m = moment.utc(date, format, props.strictParsing);
+			} else if (props.displayTimeZone) {
+				m = moment.tz(date, format, props.displayTimeZone);
+			} else {
+				m = moment(date, format, props.strictParsing);
+			}
+
 			if ( props.locale )
 				m.locale( props.locale );
 			return m;
@@ -477,22 +494,43 @@ return /******/ (function(modules) { // webpackBootstrap
 			return props;
 		},
 
+		overrideEvent: function( handler, action ) {
+			if ( !this.overridenEvents ) {
+				this.overridenEvents = {};
+			}
+
+			if ( !this.overridenEvents[handler] ) {
+				var me = this;
+				this.overridenEvents[handler] = function( e ) {
+					var result;
+					if ( me.props.inputProps && me.props.inputProps[handler] ) {
+						result = me.props.inputProps[handler]( e );
+					}
+					if ( result !== false ) {
+						action( e );
+					}
+				};
+			}
+
+			return this.overridenEvents[handler];
+		},
+
 		render: function() {
 			// TODO: Make a function or clean up this code,
 			// logic right now is really hard to follow
 			var className = 'rdt' + (this.props.className ?
-	                  ( Array.isArray( this.props.className ) ?
-	                  ' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
+										( Array.isArray( this.props.className ) ?
+										' ' + this.props.className.join( ' ' ) : ' ' + this.props.className) : ''),
 				children = [];
 
 			if ( this.props.input ) {
 				var finalInputProps = assign({
 					type: 'text',
 					className: 'form-control',
-					onClick: this.openCalendar,
-					onFocus: this.openCalendar,
-					onChange: this.onInputChange,
-					onKeyDown: this.onInputKey,
+					onClick: this.overrideEvent( 'onClick', this.openCalendar ),
+					onFocus: this.overrideEvent( 'onFocus', this.openCalendar ),
+					onChange: this.overrideEvent( 'onChange', this.onInputChange ),
+					onKeyDown: this.overrideEvent( 'onKeyDown', this.onInputKey ),
 					value: this.state.inputValue,
 				}, this.props.inputProps);
 				if ( this.props.renderInput ) {
@@ -504,17 +542,26 @@ return /******/ (function(modules) { // webpackBootstrap
 				className += ' rdtStatic';
 			}
 
-			if ( this.state.open )
+			if ( this.props.open || (this.props.open === undefined && this.state.open ) )
 				className += ' rdtOpen';
 
-			return React.createElement( 'div', { className: className }, children.concat(
+			return React.createElement( ClickableWrapper, {className: className, onClickOut: this.handleClickOutside}, children.concat(
 				React.createElement( 'div',
 					{ key: 'dt', className: 'rdtPicker' },
-					React.createElement( CalendarContainer, { view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
+					React.createElement( CalendarContainer, { view: this.state.currentView, viewProps: this.getComponentProps() })
 				)
 			));
 		}
 	});
+
+	var ClickableWrapper = onClickOutside( createClass({
+		render: function() {
+			return React.createElement( 'div', { className: this.props.className }, this.props.children );
+		},
+		handleClickOutside: function( e ) {
+			this.props.onClickOut( e );
+		}
+	}));
 
 	Datetime.defaultProps = {
 		className: '',
@@ -1720,9 +1767,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _assign = __webpack_require__(1);
+	var _assign = __webpack_require__(14);
 
-	var emptyObject = __webpack_require__(14);
+	var emptyObject = __webpack_require__(15);
 	var _invariant = __webpack_require__(6);
 
 	if (process.env.NODE_ENV !== 'production') {
@@ -2585,6 +2632,102 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 14 */
+/***/ (function(module, exports) {
+
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+
+	'use strict';
+	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+	function toObject(val) {
+		if (val === null || val === undefined) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+
+		return Object(val);
+	}
+
+	function shouldUseNative() {
+		try {
+			if (!Object.assign) {
+				return false;
+			}
+
+			// Detect buggy property enumeration order in older V8 versions.
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+			test1[5] = 'de';
+			if (Object.getOwnPropertyNames(test1)[0] === '5') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test2 = {};
+			for (var i = 0; i < 10; i++) {
+				test2['_' + String.fromCharCode(i)] = i;
+			}
+			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+				return test2[n];
+			});
+			if (order2.join('') !== '0123456789') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test3 = {};
+			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+				test3[letter] = letter;
+			});
+			if (Object.keys(Object.assign({}, test3)).join('') !==
+					'abcdefghijklmnopqrst') {
+				return false;
+			}
+
+			return true;
+		} catch (err) {
+			// We don't expect any of the above to throw, but better to be safe.
+			return false;
+		}
+	}
+
+	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+		var from;
+		var to = toObject(target);
+		var symbols;
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = Object(arguments[s]);
+
+			for (var key in from) {
+				if (hasOwnProperty.call(from, key)) {
+					to[key] = from[key];
+				}
+			}
+
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
+				for (var i = 0; i < symbols.length; i++) {
+					if (propIsEnumerable.call(from, symbols[i])) {
+						to[symbols[i]] = from[symbols[i]];
+					}
+				}
+			}
+		}
+
+		return to;
+	};
+
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -2609,23 +2752,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_15__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_16__;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(12),
 		createClass = __webpack_require__(11),
-		DaysView = __webpack_require__(17),
-		MonthsView = __webpack_require__(21),
-		YearsView = __webpack_require__(22),
-		TimeView = __webpack_require__(23)
+		DaysView = __webpack_require__(18),
+		MonthsView = __webpack_require__(19),
+		YearsView = __webpack_require__(20),
+		TimeView = __webpack_require__(21)
 		;
 
 	var CalendarContainer = createClass({
@@ -2645,18 +2788,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(12),
 		createClass = __webpack_require__(11),
-		moment = __webpack_require__(15),
-		onClickOutside = __webpack_require__(18).default
-		;
+		moment = __webpack_require__(16)
+	;
 
-	var DateTimePickerDays = onClickOutside( createClass({
+	var DateTimePickerDays = createClass({
 		render: function() {
 			var footer = this.renderFooter(),
 				date = this.props.viewDate,
@@ -2784,18 +2926,466 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		alwaysValidDate: function() {
 			return 1;
-		},
-
-		handleClickOutside: function() {
-			this.props.handleClickOutside();
 		}
-	}));
+	});
 
 	module.exports = DateTimePickerDays;
 
 
 /***/ }),
-/* 18 */
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(12),
+		createClass = __webpack_require__(11)
+		;
+
+	var DateTimePickerMonths = createClass({
+		render: function() {
+			return React.createElement('div', { className: 'rdtMonths' }, [
+				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
+				]))),
+				React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
+			]);
+		},
+
+		renderMonths: function() {
+			var date = this.props.selectedDate,
+				month = this.props.viewDate.month(),
+				year = this.props.viewDate.year(),
+				rows = [],
+				i = 0,
+				months = [],
+				renderer = this.props.renderMonth || this.renderMonth,
+				isValid = this.props.isValidDate || this.alwaysValidDate,
+				classes, props, currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
+				// Date is irrelevant because we're only interested in month
+				irrelevantDate = 1
+				;
+
+			while (i < 12) {
+				classes = 'rdtMonth';
+				currentMonth =
+					this.props.viewDate.clone().set({ year: year, month: i, date: irrelevantDate });
+
+				noOfDaysInMonth = currentMonth.endOf( 'month' ).format( 'D' );
+				daysInMonth = Array.from({ length: noOfDaysInMonth }, function( e, i ) {
+					return i + 1;
+				});
+
+				validDay = daysInMonth.find(function( d ) {
+					var day = currentMonth.clone().set( 'date', d );
+					return isValid( day );
+				});
+
+				isDisabled = ( validDay === undefined );
+
+				if ( isDisabled )
+					classes += ' rdtDisabled';
+
+				if ( date && i === date.month() && year === date.year() )
+					classes += ' rdtActive';
+
+				props = {
+					key: i,
+					'data-value': i,
+					className: classes
+				};
+
+				if ( !isDisabled )
+					props.onClick = ( this.props.updateOn === 'months' ?
+						this.updateSelectedMonth : this.props.setDate( 'month' ) );
+
+				months.push( renderer( props, i, year, date && date.clone() ) );
+
+				if ( months.length === 4 ) {
+					rows.push( React.createElement('tr', { key: month + '_' + rows.length }, months ) );
+					months = [];
+				}
+
+				i++;
+			}
+
+			return rows;
+		},
+
+		updateSelectedMonth: function( event ) {
+			this.props.updateSelectedDate( event );
+		},
+
+		renderMonth: function( props, month ) {
+			var localMoment = this.props.viewDate;
+			var monthStr = localMoment.localeData().monthsShort( localMoment.month( month ) );
+			var strLength = 3;
+			// Because some months are up to 5 characters long, we want to
+			// use a fixed string length for consistency
+			var monthStrFixedLength = monthStr.substring( 0, strLength );
+			return React.createElement('td', props, capitalize( monthStrFixedLength ) );
+		},
+
+		alwaysValidDate: function() {
+			return 1;
+		},
+	});
+
+	function capitalize( str ) {
+		return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
+	}
+
+	module.exports = DateTimePickerMonths;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(12),
+		createClass = __webpack_require__(11)
+		;
+
+	var DateTimePickerYears = createClass({
+		render: function() {
+			var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
+
+			return React.createElement('div', { className: 'rdtYears' }, [
+				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
+					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
+					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
+					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
+				]))),
+				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
+			]);
+		},
+
+		renderYears: function( year ) {
+			var years = [],
+				i = -1,
+				rows = [],
+				renderer = this.props.renderYear || this.renderYear,
+				selectedDate = this.props.selectedDate,
+				isValid = this.props.isValidDate || this.alwaysValidDate,
+				classes, props, currentYear, isDisabled, noOfDaysInYear, daysInYear, validDay,
+				// Month and date are irrelevant here because
+				// we're only interested in the year
+				irrelevantMonth = 0,
+				irrelevantDate = 1
+				;
+
+			year--;
+			while (i < 11) {
+				classes = 'rdtYear';
+				currentYear = this.props.viewDate.clone().set(
+					{ year: year, month: irrelevantMonth, date: irrelevantDate } );
+
+				// Not sure what 'rdtOld' is for, commenting out for now as it's not working properly
+				// if ( i === -1 | i === 10 )
+					// classes += ' rdtOld';
+
+				noOfDaysInYear = currentYear.endOf( 'year' ).format( 'DDD' );
+				daysInYear = Array.from({ length: noOfDaysInYear }, function( e, i ) {
+					return i + 1;
+				});
+
+				validDay = daysInYear.find(function( d ) {
+					var day = currentYear.clone().dayOfYear( d );
+					return isValid( day );
+				});
+
+				isDisabled = ( validDay === undefined );
+
+				if ( isDisabled )
+					classes += ' rdtDisabled';
+
+				if ( selectedDate && selectedDate.year() === year )
+					classes += ' rdtActive';
+
+				props = {
+					key: year,
+					'data-value': year,
+					className: classes
+				};
+
+				if ( !isDisabled )
+					props.onClick = ( this.props.updateOn === 'years' ?
+						this.updateSelectedYear : this.props.setDate('year') );
+
+				years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
+
+				if ( years.length === 4 ) {
+					rows.push( React.createElement('tr', { key: i }, years ) );
+					years = [];
+				}
+
+				year++;
+				i++;
+			}
+
+			return rows;
+		},
+
+		updateSelectedYear: function( event ) {
+			this.props.updateSelectedDate( event );
+		},
+
+		renderYear: function( props, year ) {
+			return React.createElement('td',  props, year );
+		},
+
+		alwaysValidDate: function() {
+			return 1;
+		},
+	});
+
+	module.exports = DateTimePickerYears;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(12),
+		createClass = __webpack_require__(11),
+		assign = __webpack_require__(1)
+		;
+
+	var DateTimePickerTime = createClass({
+		getInitialState: function() {
+			return this.calculateState( this.props );
+		},
+
+		calculateState: function( props ) {
+			var date = props.selectedDate || props.viewDate,
+				format = props.timeFormat,
+				counters = []
+				;
+
+			if ( format.toLowerCase().indexOf('h') !== -1 ) {
+				counters.push('hours');
+				if ( format.indexOf('m') !== -1 ) {
+					counters.push('minutes');
+					if ( format.indexOf('s') !== -1 ) {
+						counters.push('seconds');
+					}
+				}
+			}
+
+			var hours = date.format( 'H' );
+
+			var daypart = false;
+			if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
+				if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
+					daypart = ( hours >= 12 ) ? 'PM' : 'AM';
+				} else {
+					daypart = ( hours >= 12 ) ? 'pm' : 'am';
+				}
+			}
+
+			return {
+				hours: hours,
+				minutes: date.format( 'mm' ),
+				seconds: date.format( 'ss' ),
+				milliseconds: date.format( 'SSS' ),
+				daypart: daypart,
+				counters: counters
+			};
+		},
+
+		renderCounter: function( type ) {
+			if ( type !== 'daypart' ) {
+				var value = this.state[ type ];
+				if ( type === 'hours' && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
+					value = ( value - 1 ) % 12 + 1;
+
+					if ( value === 0 ) {
+						value = 12;
+					}
+				}
+				return React.createElement('div', { key: type, className: 'rdtCounter' }, [
+					React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
+					React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
+					React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
+				]);
+			}
+			return '';
+		},
+
+		renderDayPart: function() {
+			return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
+				React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
+			]);
+		},
+
+		render: function() {
+			var me = this,
+				counters = []
+			;
+
+			this.state.counters.forEach( function( c ) {
+				if ( counters.length )
+					counters.push( React.createElement('div', { key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
+				counters.push( me.renderCounter( c ) );
+			});
+
+			if ( this.state.daypart !== false ) {
+				counters.push( me.renderDayPart() );
+			}
+
+			if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf( 'S' ) !== -1 ) {
+				counters.push( React.createElement('div', { className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
+				counters.push(
+					React.createElement('div', { className: 'rdtCounter rdtMilli', key: 'm' },
+						React.createElement('input', { value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
+						)
+					);
+			}
+
+			return React.createElement('div', { className: 'rdtTime' },
+				React.createElement('table', {}, [
+					this.renderHeader(),
+					React.createElement('tbody', { key: 'b'}, React.createElement('tr', {}, React.createElement('td', {},
+						React.createElement('div', { className: 'rdtCounters' }, counters )
+					)))
+				])
+			);
+		},
+
+		componentWillMount: function() {
+			var me = this;
+			me.timeConstraints = {
+				hours: {
+					min: 0,
+					max: 23,
+					step: 1
+				},
+				minutes: {
+					min: 0,
+					max: 59,
+					step: 1
+				},
+				seconds: {
+					min: 0,
+					max: 59,
+					step: 1
+				},
+				milliseconds: {
+					min: 0,
+					max: 999,
+					step: 1
+				}
+			};
+			['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
+				assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
+			});
+			this.setState( this.calculateState( this.props ) );
+		},
+
+		componentWillReceiveProps: function( nextProps ) {
+			this.setState( this.calculateState( nextProps ) );
+		},
+
+		updateMilli: function( e ) {
+			var milli = parseInt( e.target.value, 10 );
+			if ( milli === e.target.value && milli >= 0 && milli < 1000 ) {
+				this.props.setTime( 'milliseconds', milli );
+				this.setState( { milliseconds: milli } );
+			}
+		},
+
+		renderHeader: function() {
+			if ( !this.props.dateFormat )
+				return null;
+
+			var date = this.props.selectedDate || this.props.viewDate;
+			return React.createElement('thead', { key: 'h' }, React.createElement('tr', {},
+				React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
+			));
+		},
+
+		onStartClicking: function( action, type ) {
+			var me = this;
+
+			return function() {
+				var update = {};
+				update[ type ] = me[ action ]( type );
+				me.setState( update );
+
+				me.timer = setTimeout( function() {
+					me.increaseTimer = setInterval( function() {
+						update[ type ] = me[ action ]( type );
+						me.setState( update );
+					}, 70);
+				}, 500);
+
+				me.mouseUpListener = function() {
+					clearTimeout( me.timer );
+					clearInterval( me.increaseTimer );
+					me.props.setTime( type, me.state[ type ] );
+					document.body.removeEventListener( 'mouseup', me.mouseUpListener );
+					document.body.removeEventListener( 'touchend', me.mouseUpListener );
+				};
+
+				document.body.addEventListener( 'mouseup', me.mouseUpListener );
+				document.body.addEventListener( 'touchend', me.mouseUpListener );
+			};
+		},
+
+		disableContextMenu: function( event ) {
+			event.preventDefault();
+			return false;
+		},
+
+		padValues: {
+			hours: 1,
+			minutes: 2,
+			seconds: 2,
+			milliseconds: 3
+		},
+
+		toggleDayPart: function( type ) { // type is always 'hours'
+			var value = parseInt( this.state[ type ], 10) + 12;
+			if ( value > this.timeConstraints[ type ].max )
+				value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
+			return this.pad( type, value );
+		},
+
+		increase: function( type ) {
+			var value = parseInt( this.state[ type ], 10) + this.timeConstraints[ type ].step;
+			if ( value > this.timeConstraints[ type ].max )
+				value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
+			return this.pad( type, value );
+		},
+
+		decrease: function( type ) {
+			var value = parseInt( this.state[ type ], 10) - this.timeConstraints[ type ].step;
+			if ( value < this.timeConstraints[ type ].min )
+				value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
+			return this.pad( type, value );
+		},
+
+		pad: function( type, value ) {
+			var str = value + '';
+			while ( str.length < this.padValues[ type ] )
+				str = '0' + str;
+			return str;
+		},
+	});
+
+	module.exports = DateTimePickerTime;
+
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2806,9 +3396,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react = __webpack_require__(12);
 
-	var _reactDom = __webpack_require__(19);
+	var _reactDom = __webpack_require__(23);
 
-	var _generateOutsideCheck = __webpack_require__(20);
+	var _generateOutsideCheck = __webpack_require__(24);
 
 	var _generateOutsideCheck2 = _interopRequireDefault(_generateOutsideCheck);
 
@@ -3054,13 +3644,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 19 */
+/* 23 */
 /***/ (function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_19__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_23__;
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -3135,473 +3725,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    eventHandler(evt);
 	  };
 	}
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(12),
-		createClass = __webpack_require__(11),
-		onClickOutside = __webpack_require__(18).default
-		;
-
-	var DateTimePickerMonths = onClickOutside( createClass({
-		render: function() {
-			return React.createElement('div', { className: 'rdtMonths' }, [
-				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
-				]))),
-				React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
-			]);
-		},
-
-		renderMonths: function() {
-			var date = this.props.selectedDate,
-				month = this.props.viewDate.month(),
-				year = this.props.viewDate.year(),
-				rows = [],
-				i = 0,
-				months = [],
-				renderer = this.props.renderMonth || this.renderMonth,
-				isValid = this.props.isValidDate || this.alwaysValidDate,
-				classes, props, currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
-				// Date is irrelevant because we're only interested in month
-				irrelevantDate = 1
-				;
-
-			while (i < 12) {
-				classes = 'rdtMonth';
-				currentMonth =
-					this.props.viewDate.clone().set({ year: year, month: i, date: irrelevantDate });
-
-				noOfDaysInMonth = currentMonth.endOf( 'month' ).format( 'D' );
-				daysInMonth = Array.from({ length: noOfDaysInMonth }, function( e, i ) {
-					return i + 1;
-				});
-
-				validDay = daysInMonth.find(function( d ) {
-					var day = currentMonth.clone().set( 'date', d );
-					return isValid( day );
-				});
-
-				isDisabled = ( validDay === undefined );
-
-				if ( isDisabled )
-					classes += ' rdtDisabled';
-
-				if ( date && i === date.month() && year === date.year() )
-					classes += ' rdtActive';
-
-				props = {
-					key: i,
-					'data-value': i,
-					className: classes
-				};
-
-				if ( !isDisabled )
-					props.onClick = ( this.props.updateOn === 'months' ?
-						this.updateSelectedMonth : this.props.setDate( 'month' ) );
-
-				months.push( renderer( props, i, year, date && date.clone() ) );
-
-				if ( months.length === 4 ) {
-					rows.push( React.createElement('tr', { key: month + '_' + rows.length }, months ) );
-					months = [];
-				}
-
-				i++;
-			}
-
-			return rows;
-		},
-
-		updateSelectedMonth: function( event ) {
-			this.props.updateSelectedDate( event );
-		},
-
-		renderMonth: function( props, month ) {
-			var localMoment = this.props.viewDate;
-			var monthStr = localMoment.localeData().monthsShort( localMoment.month( month ) );
-			var strLength = 3;
-			// Because some months are up to 5 characters long, we want to
-			// use a fixed string length for consistency
-			var monthStrFixedLength = monthStr.substring( 0, strLength );
-			return React.createElement('td', props, capitalize( monthStrFixedLength ) );
-		},
-
-		alwaysValidDate: function() {
-			return 1;
-		},
-
-		handleClickOutside: function() {
-			this.props.handleClickOutside();
-		}
-	}));
-
-	function capitalize( str ) {
-		return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
-	}
-
-	module.exports = DateTimePickerMonths;
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(12),
-		createClass = __webpack_require__(11),
-		onClickOutside = __webpack_require__(18).default
-		;
-
-	var DateTimePickerYears = onClickOutside( createClass({
-		render: function() {
-			var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
-
-			return React.createElement('div', { className: 'rdtYears' }, [
-				React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-					React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-					React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
-				]))),
-				React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
-			]);
-		},
-
-		renderYears: function( year ) {
-			var years = [],
-				i = -1,
-				rows = [],
-				renderer = this.props.renderYear || this.renderYear,
-				selectedDate = this.props.selectedDate,
-				isValid = this.props.isValidDate || this.alwaysValidDate,
-				classes, props, currentYear, isDisabled, noOfDaysInYear, daysInYear, validDay,
-				// Month and date are irrelevant here because
-				// we're only interested in the year
-				irrelevantMonth = 0,
-				irrelevantDate = 1
-				;
-
-			year--;
-			while (i < 11) {
-				classes = 'rdtYear';
-				currentYear = this.props.viewDate.clone().set(
-					{ year: year, month: irrelevantMonth, date: irrelevantDate } );
-
-				// Not sure what 'rdtOld' is for, commenting out for now as it's not working properly
-				// if ( i === -1 | i === 10 )
-					// classes += ' rdtOld';
-
-				noOfDaysInYear = currentYear.endOf( 'year' ).format( 'DDD' );
-				daysInYear = Array.from({ length: noOfDaysInYear }, function( e, i ) {
-					return i + 1;
-				});
-
-				validDay = daysInYear.find(function( d ) {
-					var day = currentYear.clone().dayOfYear( d );
-					return isValid( day );
-				});
-
-				isDisabled = ( validDay === undefined );
-
-				if ( isDisabled )
-					classes += ' rdtDisabled';
-
-				if ( selectedDate && selectedDate.year() === year )
-					classes += ' rdtActive';
-
-				props = {
-					key: year,
-					'data-value': year,
-					className: classes
-				};
-
-				if ( !isDisabled )
-					props.onClick = ( this.props.updateOn === 'years' ?
-						this.updateSelectedYear : this.props.setDate('year') );
-
-				years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
-
-				if ( years.length === 4 ) {
-					rows.push( React.createElement('tr', { key: i }, years ) );
-					years = [];
-				}
-
-				year++;
-				i++;
-			}
-
-			return rows;
-		},
-
-		updateSelectedYear: function( event ) {
-			this.props.updateSelectedDate( event );
-		},
-
-		renderYear: function( props, year ) {
-			return React.createElement('td',  props, year );
-		},
-
-		alwaysValidDate: function() {
-			return 1;
-		},
-
-		handleClickOutside: function() {
-			this.props.handleClickOutside();
-		}
-	}));
-
-	module.exports = DateTimePickerYears;
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(12),
-		createClass = __webpack_require__(11),
-		assign = __webpack_require__(1),
-		onClickOutside = __webpack_require__(18).default
-		;
-
-	var DateTimePickerTime = onClickOutside( createClass({
-		getInitialState: function() {
-			return this.calculateState( this.props );
-		},
-
-		calculateState: function( props ) {
-			var date = props.selectedDate || props.viewDate,
-				format = props.timeFormat,
-				counters = []
-				;
-
-			if ( format.toLowerCase().indexOf('h') !== -1 ) {
-				counters.push('hours');
-				if ( format.indexOf('m') !== -1 ) {
-					counters.push('minutes');
-					if ( format.indexOf('s') !== -1 ) {
-						counters.push('seconds');
-					}
-				}
-			}
-
-			var hours = date.format( 'H' );
-			
-			var daypart = false;
-			if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
-				if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
-					daypart = ( hours >= 12 ) ? 'PM' : 'AM';
-				} else {
-					daypart = ( hours >= 12 ) ? 'pm' : 'am';
-				}
-			}
-
-			return {
-				hours: hours,
-				minutes: date.format( 'mm' ),
-				seconds: date.format( 'ss' ),
-				milliseconds: date.format( 'SSS' ),
-				daypart: daypart,
-				counters: counters
-			};
-		},
-
-		renderCounter: function( type ) {
-			if ( type !== 'daypart' ) {
-				var value = this.state[ type ];
-				if ( type === 'hours' && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
-					value = ( value - 1 ) % 12 + 1;
-
-					if ( value === 0 ) {
-						value = 12;
-					}
-				}
-				return React.createElement('div', { key: type, className: 'rdtCounter' }, [
-					React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
-					React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
-					React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
-				]);
-			}
-			return '';
-		},
-
-		renderDayPart: function() {
-			return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
-				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
-				React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
-			]);
-		},
-
-		render: function() {
-			var me = this,
-				counters = []
-			;
-
-			this.state.counters.forEach( function( c ) {
-				if ( counters.length )
-					counters.push( React.createElement('div', { key: 'sep' + counters.length, className: 'rdtCounterSeparator' }, ':' ) );
-				counters.push( me.renderCounter( c ) );
-			});
-
-			if ( this.state.daypart !== false ) {
-				counters.push( me.renderDayPart() );
-			}
-
-			if ( this.state.counters.length === 3 && this.props.timeFormat.indexOf( 'S' ) !== -1 ) {
-				counters.push( React.createElement('div', { className: 'rdtCounterSeparator', key: 'sep5' }, ':' ) );
-				counters.push(
-					React.createElement('div', { className: 'rdtCounter rdtMilli', key: 'm' },
-						React.createElement('input', { value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
-						)
-					);
-			}
-
-			return React.createElement('div', { className: 'rdtTime' },
-				React.createElement('table', {}, [
-					this.renderHeader(),
-					React.createElement('tbody', { key: 'b'}, React.createElement('tr', {}, React.createElement('td', {},
-						React.createElement('div', { className: 'rdtCounters' }, counters )
-					)))
-				])
-			);
-		},
-
-		componentWillMount: function() {
-			var me = this;
-			me.timeConstraints = {
-				hours: {
-					min: 0,
-					max: 23,
-					step: 1
-				},
-				minutes: {
-					min: 0,
-					max: 59,
-					step: 1
-				},
-				seconds: {
-					min: 0,
-					max: 59,
-					step: 1
-				},
-				milliseconds: {
-					min: 0,
-					max: 999,
-					step: 1
-				}
-			};
-			['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
-				assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
-			});
-			this.setState( this.calculateState( this.props ) );
-		},
-
-		componentWillReceiveProps: function( nextProps ) {
-			this.setState( this.calculateState( nextProps ) );
-		},
-
-		updateMilli: function( e ) {
-			var milli = parseInt( e.target.value, 10 );
-			if ( milli === e.target.value && milli >= 0 && milli < 1000 ) {
-				this.props.setTime( 'milliseconds', milli );
-				this.setState( { milliseconds: milli } );
-			}
-		},
-
-		renderHeader: function() {
-			if ( !this.props.dateFormat )
-				return null;
-
-			var date = this.props.selectedDate || this.props.viewDate;
-			return React.createElement('thead', { key: 'h' }, React.createElement('tr', {},
-				React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
-			));
-		},
-
-		onStartClicking: function( action, type ) {
-			var me = this;
-
-			return function() {
-				var update = {};
-				update[ type ] = me[ action ]( type );
-				me.setState( update );
-
-				me.timer = setTimeout( function() {
-					me.increaseTimer = setInterval( function() {
-						update[ type ] = me[ action ]( type );
-						me.setState( update );
-					}, 70);
-				}, 500);
-
-				me.mouseUpListener = function() {
-					clearTimeout( me.timer );
-					clearInterval( me.increaseTimer );
-					me.props.setTime( type, me.state[ type ] );
-					document.body.removeEventListener( 'mouseup', me.mouseUpListener );
-					document.body.removeEventListener( 'touchend', me.mouseUpListener );
-				};
-
-				document.body.addEventListener( 'mouseup', me.mouseUpListener );
-				document.body.addEventListener( 'touchend', me.mouseUpListener );
-			};
-		},
-
-		disableContextMenu: function( event ) {
-			event.preventDefault();
-			return false;
-		},
-
-		padValues: {
-			hours: 1,
-			minutes: 2,
-			seconds: 2,
-			milliseconds: 3
-		},
-
-		toggleDayPart: function( type ) { // type is always 'hours'
-			var value = parseInt( this.state[ type ], 10) + 12;
-			if ( value > this.timeConstraints[ type ].max )
-				value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
-			return this.pad( type, value );
-		},
-
-		increase: function( type ) {
-			var value = parseInt( this.state[ type ], 10) + this.timeConstraints[ type ].step;
-			if ( value > this.timeConstraints[ type ].max )
-				value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
-			return this.pad( type, value );
-		},
-
-		decrease: function( type ) {
-			var value = parseInt( this.state[ type ], 10) - this.timeConstraints[ type ].step;
-			if ( value < this.timeConstraints[ type ].min )
-				value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
-			return this.pad( type, value );
-		},
-
-		pad: function( type, value ) {
-			var str = value + '';
-			while ( str.length < this.padValues[ type ] )
-				str = '0' + str;
-			return str;
-		},
-
-		handleClickOutside: function() {
-			this.props.handleClickOutside();
-		}
-	}));
-
-	module.exports = DateTimePickerTime;
-
 
 /***/ })
 /******/ ])

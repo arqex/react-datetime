@@ -2,11 +2,10 @@
 
 var React = require('react'),
 	createClass = require('create-react-class'),
-	assign = require('object-assign'),
-	onClickOutside = require('react-onclickoutside').default
+	assign = require('object-assign')
 	;
 
-var DateTimePickerTime = onClickOutside( createClass({
+var DateTimePickerTime = createClass({
 	getInitialState: function() {
 		return this.calculateState( this.props );
 	},
@@ -28,7 +27,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 		}
 
 		var hours = date.format( 'H' );
-		
+
 		var daypart = false;
 		if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
 			if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
@@ -228,10 +227,6 @@ var DateTimePickerTime = onClickOutside( createClass({
 			str = '0' + str;
 		return str;
 	},
-
-	handleClickOutside: function() {
-		this.props.handleClickOutside();
-	}
-}));
+});
 
 module.exports = DateTimePickerTime;

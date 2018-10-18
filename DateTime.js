@@ -5,7 +5,8 @@ var assign = require('object-assign'),
 	createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
-	CalendarContainer = require('./src/CalendarContainer')
+	CalendarContainer = require('./src/CalendarContainer'),
+	onClickOutside = require('react-onclickoutside').default
 	;
 
 var viewModes = Object.freeze({
@@ -315,7 +316,7 @@ var Datetime = createClass({
 	},
 
 	updateSelectedDate: function( e, close ) {
-		var target = e.target,
+		var target = e.currentTarget,
 			modifier = 0,
 			viewDate = this.state.viewDate,
 			currentDate = this.state.selectedDate || viewDate,
@@ -383,7 +384,7 @@ var Datetime = createClass({
 	},
 
 	handleClickOutside: function() {
-		if ( this.props.input && this.state.open && !this.props.open && !this.props.disableOnClickOutside ) {
+		if ( this.props.input && this.state.open && this.props.open === undefined && !this.props.disableCloseOnClickOutside ) {
 			this.setState({ open: false }, function() {
 				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 			});
@@ -432,6 +433,27 @@ var Datetime = createClass({
 		return props;
 	},
 
+	overrideEvent: function( handler, action ) {
+		if ( !this.overridenEvents ) {
+			this.overridenEvents = {};
+		}
+
+		if ( !this.overridenEvents[handler] ) {
+			var me = this;
+			this.overridenEvents[handler] = function( e ) {
+				var result;
+				if ( me.props.inputProps && me.props.inputProps[handler] ) {
+					result = me.props.inputProps[handler]( e );
+				}
+				if ( result !== false ) {
+					action( e );
+				}
+			};
+		}
+
+		return this.overridenEvents[handler];
+	},
+
 	render: function() {
 		// TODO: Make a function or clean up this code,
 		// logic right now is really hard to follow
@@ -444,10 +466,10 @@ var Datetime = createClass({
 			var finalInputProps = assign({
 				type: 'text',
 				className: 'form-control',
-				onClick: this.openCalendar,
-				onFocus: this.openCalendar,
-				onChange: this.onInputChange,
-				onKeyDown: this.onInputKey,
+				onClick: this.overrideEvent( 'onClick', this.openCalendar ),
+				onFocus: this.overrideEvent( 'onFocus', this.openCalendar ),
+				onChange: this.overrideEvent( 'onChange', this.onInputChange ),
+				onKeyDown: this.overrideEvent( 'onKeyDown', this.onInputKey ),
 				value: this.state.inputValue,
 			}, this.props.inputProps);
 			if ( this.props.renderInput ) {
@@ -459,17 +481,26 @@ var Datetime = createClass({
 			className += ' rdtStatic';
 		}
 
-		if ( this.state.open )
+		if ( this.props.open || (this.props.open === undefined && this.state.open ) )
 			className += ' rdtOpen';
 
-		return React.createElement( 'div', { className: className }, children.concat(
+		return React.createElement( ClickableWrapper, {className: className, onClickOut: this.handleClickOutside}, children.concat(
 			React.createElement( 'div',
 				{ key: 'dt', className: 'rdtPicker' },
-				React.createElement( CalendarContainer, { view: this.state.currentView, viewProps: this.getComponentProps(), onClickOutside: this.handleClickOutside })
+				React.createElement( CalendarContainer, { view: this.state.currentView, viewProps: this.getComponentProps() })
 			)
 		));
 	}
 });
+
+var ClickableWrapper = onClickOutside( createClass({
+	render: function() {
+		return React.createElement( 'div', { className: this.props.className }, this.props.children );
+	},
+	handleClickOutside: function( e ) {
+		this.props.onClickOut( e );
+	}
+}));
 
 Datetime.defaultProps = {
 	className: '',

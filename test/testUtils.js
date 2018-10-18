@@ -47,23 +47,23 @@ module.exports = {
 	 * Boolean Checks
 	 */
 	isOpen: (datetime) => {
-		return datetime.find('.rdt.rdtOpen').length === 1;
+		return datetime.find('.rdt.rdtOpen').length > 0;
 	},
 
 	isDayView: (datetime) => {
-		return datetime.find('.rdtPicker .rdtDays').length === 1;
+		return datetime.find('.rdtPicker .rdtDays').length > 0;
 	},
 
 	isMonthView: (datetime) => {
-		return datetime.find('.rdtPicker .rdtMonths').length === 1;
+		return datetime.find('.rdtPicker .rdtMonths').length > 0;
 	},
 
 	isYearView: (datetime) => {
-		return datetime.find('.rdtPicker .rdtYears').length === 1;
+		return datetime.find('.rdtPicker .rdtYears').length > 0;
 	},
 
 	isTimeView: (datetime) => {
-		return datetime.find('.rdtPicker .rdtTime').length === 1;
+		return datetime.find('.rdtPicker .rdtTime').length > 0;
 	},
 
 	/*

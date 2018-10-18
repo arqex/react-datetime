@@ -1,5 +1,11 @@
 Changelog
 =========
+## 2.16.0
+* The prop `disableOnClickOutside` has been renamed to `disableCloseOnClickOutside`
+* The calendar doesn't get closed an open when clicking in the input anymore.
+* Fixes errors not finding dates when customizing day rendering.
+* Event listeners in `inputProps` now only override default behaviour when returning `false`.
+
 ## 2.15.0
 * New `onNavigateBack` and `onNavigateForward` hooks thanks to @DaanDD and @simeg.
 * Touch improvements by @NicoDos
