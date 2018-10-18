@@ -170,6 +170,10 @@ declare namespace ReactDatetimeClass {
          close it.
          */
         disableOnClickOutside?: boolean;
+        /*
+         Explicitly set rdtPicker's position style attribute
+         */
+        calendarPosition?: string
     }
 
     export interface DatetimepickerState {

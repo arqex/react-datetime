@@ -157,6 +157,10 @@ declare module ReactDatetime {
      close it.
     */
     disableOnClickOutside?: boolean;
+    /*
+     Explicitly set rdtPicker's position style attribute
+    */
+    calendarPosition?: string
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {

@@ -42,7 +42,8 @@ var Datetime = createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		calendarPosition: TYPES.string,
 	},
 
 	getInitialState: function() {
@@ -484,9 +485,13 @@ var Datetime = createClass({
 		if ( this.props.open || (this.props.open === undefined && this.state.open ) )
 			className += ' rdtOpen';
 
+		var calendarProps = { key: 'dt', className: 'rdtPicker' };
+		if (this.props.calendarPosition) {
+			calendarProps.style = { position: this.props.calendarPosition };
+		}
 		return React.createElement( ClickableWrapper, {className: className, onClickOut: this.handleClickOutside}, children.concat(
 			React.createElement( 'div',
-				{ key: 'dt', className: 'rdtPicker' },
+				calendarProps,
 				React.createElement( CalendarContainer, { view: this.state.currentView, viewProps: this.getComponentProps() })
 			)
 		));

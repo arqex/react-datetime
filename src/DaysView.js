@@ -3,7 +3,7 @@
 var React = require('react'),
 	createClass = require('create-react-class'),
 	moment = require('moment')
-;
+	;
 
 var DateTimePickerDays = createClass({
 	render: function() {
