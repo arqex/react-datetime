@@ -463,15 +463,17 @@ var Datetime = createClass({
 			children = [];
 
 		if ( this.props.input ) {
-			var finalInputProps = assign({
-				type: 'text',
-				className: 'form-control',
-				onClick: this.overrideEvent( 'onClick', this.openCalendar ),
-				onFocus: this.overrideEvent( 'onFocus', this.openCalendar ),
-				onChange: this.overrideEvent( 'onChange', this.onInputChange ),
-				onKeyDown: this.overrideEvent( 'onKeyDown', this.onInputKey ),
-				value: this.state.inputValue,
-			}, this.props.inputProps);
+			var finalInputProps = assign(
+				{ type: 'text', className: 'form-control', value: this.state.inputValue },
+				this.props.inputProps,
+				{
+					onClick: this.overrideEvent( 'onClick', this.openCalendar ),
+					onFocus: this.overrideEvent( 'onFocus', this.openCalendar ),
+					onChange: this.overrideEvent( 'onChange', this.onInputChange ),
+					onKeyDown: this.overrideEvent( 'onKeyDown', this.onInputKey ),
+				}
+			);
+			
 			if ( this.props.renderInput ) {
 				children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar, this.closeCalendar )) ];
 			} else {

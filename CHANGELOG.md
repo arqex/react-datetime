@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.16.1
+* Fixes input event overriding
+
 ## 2.16.0
 * The prop `disableOnClickOutside` has been renamed to `disableCloseOnClickOutside`
 * The calendar doesn't get closed an open when clicking in the input anymore.
