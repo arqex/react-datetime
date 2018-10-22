@@ -1,5 +1,8 @@
 Changelog
 =========
+## 2.16.2
+* Turns moment timezone peer dependency in a runtime error when missing using `displayTimezone`.
+
 ## 2.16.1
 * Fixes input event overriding
 
