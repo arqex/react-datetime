@@ -144,7 +144,7 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-postcss": "^1.6.2",
-    "rollup-plugin-typescript2": "^0.17.1",
+    "rollup-plugin-typescript2": "^0.17.2",
     "rollup-plugin-url": "^2.0.1",
     "ts-jest": "^23.10.4",
     "tslint": "^5.11.0",
