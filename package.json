@@ -1,6 +1,6 @@
 {
   "name": "react-datetime",
-  "version": "2.16.1",
+  "version": "2.16.2",
   "description": "A lightweight but complete datetime picker React.js component",
   "homepage": "https://github.com/YouCanBookMe/react-datetime",
   "repository": {
@@ -41,7 +41,6 @@
   "license": "MIT",
   "peerDependencies": {
     "moment": ">=2.16.0",
-    "moment-timezone": "^0.5.13",
     "react": ">=0.13",
     "react-dom": ">=0.13"
   },

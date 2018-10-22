@@ -1,5 +1,5 @@
 /*
-react-datetime v2.16.1
+react-datetime v2.16.2
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -114,6 +114,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			state.currentView = this.props.dateFormat ?
 				(this.props.viewMode || state.updateOn || viewModes.DAYS) : viewModes.TIME;
+
+			this.checkTZ( this.props );
 
 			return state;
 		},
@@ -268,13 +270,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			if ( nextProps.viewDate !== this.props.viewDate ) {
 				updatedState.viewDate = moment(nextProps.viewDate);
 			}
-			//we should only show a valid date if we are provided a isValidDate function. Removed in 2.10.3
-			/*if (this.props.isValidDate) {
-				updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
-				while (!this.props.isValidDate(updatedState.viewDate)) {
-					updatedState.viewDate = updatedState.viewDate.add(1, 'day');
-				}
-			}*/
+
+			this.checkTZ( nextProps );
+
 			this.setState( updatedState );
 		},
 
@@ -469,6 +467,15 @@ return /******/ (function(modules) { // webpackBootstrap
 			return m;
 		},
 
+		checkTZ: function( props ) {
+			var con = console;
+
+			if ( props.displayTimeZone && !this.tzWarning && !moment.tz ) {
+				this.tzWarning = true;
+				con && con.error('react-datetime: displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.');
+			}
+		},
+
 		componentProps: {
 			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
 			fromState: ['viewDate', 'selectedDate', 'updateOn'],
@@ -534,7 +541,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						onKeyDown: this.overrideEvent( 'onKeyDown', this.onInputKey ),
 					}
 				);
-				
+
 				if ( this.props.renderInput ) {
 					children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar, this.closeCalendar )) ];
 				} else {

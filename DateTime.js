@@ -46,6 +46,8 @@ var Datetime = createClass({
 	},
 
 	getInitialState: function() {
+		this.checkTZ( this.props );
+		
 		var state = this.getStateFromProps( this.props );
 
 		if ( state.open === undefined )
@@ -207,13 +209,9 @@ var Datetime = createClass({
 		if ( nextProps.viewDate !== this.props.viewDate ) {
 			updatedState.viewDate = moment(nextProps.viewDate);
 		}
-		//we should only show a valid date if we are provided a isValidDate function. Removed in 2.10.3
-		/*if (this.props.isValidDate) {
-			updatedState.viewDate = updatedState.viewDate || this.state.viewDate;
-			while (!this.props.isValidDate(updatedState.viewDate)) {
-				updatedState.viewDate = updatedState.viewDate.add(1, 'day');
-			}
-		}*/
+
+		this.checkTZ( nextProps );
+
 		this.setState( updatedState );
 	},
 
@@ -408,6 +406,15 @@ var Datetime = createClass({
 		return m;
 	},
 
+	checkTZ: function( props ) {
+		var con = console;
+
+		if ( props.displayTimeZone && !this.tzWarning && !moment.tz ) {
+			this.tzWarning = true;
+			con && con.error('react-datetime: displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.');
+		}
+	},
+
 	componentProps: {
 		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
@@ -473,7 +480,7 @@ var Datetime = createClass({
 					onKeyDown: this.overrideEvent( 'onKeyDown', this.onInputKey ),
 				}
 			);
-			
+
 			if ( this.props.renderInput ) {
 				children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar, this.closeCalendar )) ];
 			} else {
