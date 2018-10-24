@@ -11,6 +11,21 @@ class LocalizationExample extends Component {
     this.state = {
       currentLocale: undefined
     };
+
+    // Bind functions
+    this.renderButton = this.renderButton.bind(this);
+  }
+
+  renderButton(text, newLocale) {
+    return (
+      <button
+        type="button"
+        onClick={() => this.setState({ currentLocale: newLocale })}
+        disabled={this.state.currentLocale === newLocale}
+      >
+        {text}
+      </button>
+    );
   }
 
   render() {
@@ -19,34 +34,10 @@ class LocalizationExample extends Component {
         <h2>Locale props</h2>
         <p>Try out various locales and see how they affect the component.</p>
         <p>
-          <button
-            type="button"
-            onClick={() => this.setState({ currentLocale: undefined })}
-            disabled={this.state.currentLocale === undefined}
-          >
-            EN - undefined
-          </button>
-          <button
-            type="button"
-            onClick={() => this.setState({ currentLocale: nl })}
-            disabled={this.state.currentLocale === nl}
-          >
-            NL - nl
-          </button>
-          <button
-            type="button"
-            onClick={() => this.setState({ currentLocale: es })}
-            disabled={this.state.currentLocale === es}
-          >
-            ES - es
-          </button>
-          <button
-            type="button"
-            onClick={() => this.setState({ currentLocale: fr })}
-            disabled={this.state.currentLocale === fr}
-          >
-            FR - fr
-          </button>
+          {this.renderButton("EN - undefined", undefined)}
+          {this.renderButton("NL - nl", nl)}
+          {this.renderButton("ES - es", es)}
+          {this.renderButton("FR - fr", fr)}
         </p>
 
         <DateTime

@@ -20,10 +20,10 @@
   ],
   "dependencies": {
     "@nateradebaugh/react-datetime": "link:..",
-    "react": "^16.5.2",
+    "react": "^16.6.0",
     "react-datetime": "link:..",
-    "react-dom": "^16.5.2",
-    "react-scripts": "^2.0.4"
+    "react-dom": "^16.6.0",
+    "react-scripts": "^2.0.5"
   },
   "devDependencies": {
     "gh-pages": "^2.0.1"

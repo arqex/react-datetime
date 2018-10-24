@@ -8,6 +8,21 @@ export default class OpenExample extends Component {
     this.state = {
       viewMode: undefined
     };
+
+    // Bind functions
+    this.renderButton = this.renderButton.bind(this);
+  }
+
+  renderButton(text, viewMode) {
+    return (
+      <button
+        type="button"
+        onClick={() => this.setState({ viewMode: viewMode })}
+        disabled={this.state.viewMode === viewMode}
+      >
+        {text}
+      </button>
+    );
   }
 
   render() {
@@ -20,42 +35,13 @@ export default class OpenExample extends Component {
         </p>
         <p>Try out various viewModes and see how they affect the component.</p>
         <p>
-          <button
-            type="button"
-            onClick={() => this.setState({ viewMode: undefined })}
-            disabled={this.state.viewMode === undefined}
-          >
-            Default - undefined
-          </button>
-          <button
-            type="button"
-            onClick={() => this.setState({ viewMode: "years" })}
-            disabled={this.state.viewMode === "years"}
-          >
-            Years
-          </button>
-          <button
-            type="button"
-            onClick={() => this.setState({ viewMode: "months" })}
-            disabled={this.state.viewMode === "months"}
-          >
-            Months
-          </button>
-          <button
-            type="button"
-            onClick={() => this.setState({ viewMode: "days" })}
-            disabled={this.state.viewMode === "days"}
-          >
-            Days
-          </button>
-          <button
-            type="button"
-            onClick={() => this.setState({ viewMode: "time" })}
-            disabled={this.state.viewMode === "time"}
-          >
-            Time
-          </button>
+          {this.renderButton("Default - undefined", undefined)}
+          {this.renderButton("Years", "years")}
+          {this.renderButton("Months", "months")}
+          {this.renderButton("Days", "days")}
+          {this.renderButton("Time", "time")}
         </p>
+
         <DateTime
           open
           input={false}
