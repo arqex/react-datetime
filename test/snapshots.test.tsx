@@ -1,10 +1,10 @@
 import React from "react";
-import DateTime from "../";
-import CalendarContainer from "../CalendarContainer";
-import TimeView from "../TimeView";
-import DaysView from "../DaysView";
-import MonthsView from "../MonthsView";
-import YearsView from "../YearsView";
+import DateTime from "../src/";
+import CalendarContainer from "../src/CalendarContainer";
+import TimeView from "../src/TimeView";
+import DaysView from "../src/DaysView";
+import MonthsView from "../src/MonthsView";
+import YearsView from "../src/YearsView";
 import renderer from "react-test-renderer";
 import { advanceTo as mockDateTo } from "jest-date-mock";
 

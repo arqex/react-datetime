@@ -41,16 +41,16 @@
 .rdtPicker td {
   cursor: pointer;
 }
-.rdtPicker td.rdtDay:hover,
-.rdtPicker td.rdtHour:hover,
-.rdtPicker td.rdtMinute:hover,
-.rdtPicker td.rdtSecond:hover,
+.rdtPicker .rdtDay:hover,
+.rdtPicker .rdtHour:hover,
+.rdtPicker .rdtMinute:hover,
+.rdtPicker .rdtSecond:hover,
 .rdtPicker .rdtTimeToggle:hover {
   background: #eeeeee;
   cursor: pointer;
 }
 .rdtPicker td.rdtOld,
-.rdtPicker td.rdtNew {
+.rdtPicker .rdtNew {
   color: #999999;
 }
 .rdtPicker td.rdtToday {
@@ -99,7 +99,7 @@
   border-bottom: none;
   cursor: default;
 }
-.rdtPicker th.rdtSwitch {
+.rdtPicker .rdtSwitch {
   width: 100px;
 }
 .rdtPicker th.rdtNext,
@@ -109,7 +109,8 @@
 }
 
 .rdtPrev span,
-.rdtNext span {
+.rdtNext span,
+.rdtCounter .rdtBtn {
   display: block;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Chrome/Safari/Opera */
@@ -185,14 +186,6 @@ td.rdtYear:hover {
   height: 40%;
   line-height: 40px;
   cursor: pointer;
-  display: block;
-
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Chrome/Safari/Opera */
-  -khtml-user-select: none; /* Konqueror */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none;
 }
 .rdtCounter .rdtBtn:hover {
   background: #eee;

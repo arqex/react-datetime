@@ -12,13 +12,16 @@ script:
   - yarn test:all
 notifications:
   email: false
-before_install: yarn global add greenkeeper-lockfile@1
+before_install:
+  - yarn global add greenkeeper-lockfile@1
+  - yarn global add codecov
 before_script:
   - export PATH=$(yarn global bin):$PATH
   - greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 after_success:
   - yarn report-coverage
+  - codecov
 env:
   global:
     secure: SSs3jgNRFsfKMgbdzxUVJ0iJW2H7kJbEapo2vBbXIuMepsVh0PdGyxFk6Fuq1qKjpH2rkMnxGgC87oX4oMfS3cQsjaRTmsFRHbT/lWObim7C7NnwF3Kiu94OJd3E3mbA+LppA+3Gl8lQpDnaXFQc4OJl/s20EfMjycb6TtiWdXEaBXC7ERtSP9udmJhzo8LeFRUAPDglNhd2xwStJiheniRb3w6HV7Zsvu2Fwjio/uXttG7oea1VRjfZ7EaPXrCygVgaa12FiH1XYVeKgDurM4BHAIk83GKNPGqrlEIi8QnfwpZ2zaG9gW5KMtutzZwZ1QWfNJevN5QE6OU3hQPODrQyjeFNiWDJSwOtDvx0tn/A7eFRRs8klchuDKpFASqUIsS7Y/BVE07yIVCqExWYFG1Ur0yHouBuarmPef8nQ/+sk1NW6EZND++5ta35DfA//6+jnbEZCh/4DYUtfc1AczIOm2VIxQHye+cXqwEMr3uC/l1ONCV2j5/14MwNfv73v2MCPPPw3MvgIVADHv8dBqZT34GJwHjH3ASD98Gl/YM9D2k4gL1j1Uxq4jwMB6XJVWKwtxRqNMjsskuEHILlc/ECJi6BPo1c2AHjVCgmh77fvnskmTX+u18wfmCWmREjBX/Mc85SxX4c/AQMQXlUwf6Q0mLdYN7b2+lqFdcp+y0=

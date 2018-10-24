@@ -2,18 +2,26 @@ import React, { Component } from "react";
 import DateTime from "@nateradebaugh/react-datetime";
 
 export default class CustomizableExample extends Component {
-  state = {
-    viewMode: "days",
-    dateFormat: "MM/DD/YYYY",
-    timeFormat: "HH:mm A",
-    input: true,
-    utc: false,
-    closeOnSelect: false,
-    closeOnTab: true
-  };
+  constructor(props) {
+    super(props);
 
-  render() {
-    const Select = ({ name, children }) => (
+    this.state = {
+      viewMode: "days",
+      dateFormat: "MM/DD/YYYY",
+      timeFormat: "HH:mm A",
+      input: true,
+      utc: false,
+      closeOnSelect: false,
+      closeOnTab: true
+    };
+
+    // Bind functions
+    this.renderSelect = this.renderSelect.bind(this);
+    this.renderCheckbox = this.renderCheckbox.bind(this);
+  }
+
+  renderSelect({ name, children }) {
+    return (
       <div className="form-group">
         <label className="control-label col-xs-6">{name}</label>
 
@@ -28,8 +36,10 @@ export default class CustomizableExample extends Component {
         </div>
       </div>
     );
+  }
 
-    const Checkbox = ({ name }) => (
+  renderCheckbox({ name }) {
+    return (
       <div className="form-group">
         <label className="control-label col-xs-6">{name}</label>
 
@@ -42,6 +52,11 @@ export default class CustomizableExample extends Component {
         </div>
       </div>
     );
+  }
+
+  render() {
+    const Select = this.renderSelect;
+    const Checkbox = this.renderCheckbox;
 
     return (
       <div className="form-horizontal">
@@ -87,9 +102,7 @@ export default class CustomizableExample extends Component {
         </Select>
 
         <Checkbox name="utc" />
-
         <Checkbox name="closeOnSelect" />
-
         <Checkbox name="closeOnTab" />
       </div>
     );
