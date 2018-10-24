@@ -7,6 +7,7 @@ node_modules
 # builds
 build
 dist
+reports
 
 # typescript builds
 .rpt2_cache
