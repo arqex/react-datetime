@@ -1,5 +1,6 @@
 # react-datetime
 
+[![CircleCI](https://circleci.com/gh/NateRadebaugh/react-datetime.svg?style=svg)](https://circleci.com/gh/NateRadebaugh/react-datetime)
 [![Build Status](https://secure.travis-ci.org/NateRadebaugh/react-datetime.svg)](https://travis-ci.org/NateRadebaugh/react-datetime)
 [![npm version](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime.svg)](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime)
 [![Greenkeeper badge](https://badges.greenkeeper.io/NateRadebaugh/react-datetime.svg)](https://greenkeeper.io/)
@@ -13,7 +14,6 @@
 ![David](https://img.shields.io/david/dev/nateradebaugh/react-datetime.svg)
 ![David](https://img.shields.io/david/peer/nateradebaugh/react-datetime.svg)
 ![David](https://img.shields.io/david/optional/nateradebaugh/react-datetime.svg)
-
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable**.
 
@@ -38,7 +38,7 @@ yarn add @nateradebaugh/react-datetime
 [React.js](http://facebook.github.io/react/) and [date-fns](https://date-fns.org/) are peer dependencies for react-datetime. These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datepicker work. You can then use the datepicker like in the example below.
 
 ```js
-import DateTime from "react-datetime";
+import DateTime from "@nateradebaugh/react-datetime";
 import "@nateradebaugh/react-datetime/css/react-datetime.css";
 
 ...
@@ -252,16 +252,16 @@ const valid = function(current) {
 This project includes typings. Additional typings are not
 required.
 
-Typings are bundled with the project and should *just work*.
+Typings are bundled with the project and should _just work_.
 
 ```js
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 import DateTime from "@nateradebaugh/react-datetime";
 import "@nateradebaugh/react-datetime/css/react-datetime.css";
 
-interface AppProps { }
-interface AppState { }
+interface AppProps {}
+interface AppState {}
 
 class App extends Component<AppProps, AppState> {
   constructor(props) {
@@ -288,11 +288,13 @@ For information about how to contribute, see the [CONTRIBUTING](.github/CONTRIBU
 ## Development
 
 From `./`
+
 ```sh
 yarn start
 ```
 
 In another terminal window/tab from `./example`
+
 ```sh
 yarn start
 ```
