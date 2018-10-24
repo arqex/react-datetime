@@ -1,6 +1,6 @@
 import React from "react";
 import { mount, shallow } from "enzyme";
-import DateTime from "../";
+import DateTime from "../src/";
 
 const _simulateClickOnElement = element => {
   return element.simulate("click");
