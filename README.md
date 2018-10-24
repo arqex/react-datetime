@@ -1,5 +1,6 @@
 # react-datetime
 
+[![CircleCI](https://circleci.com/gh/NateRadebaugh/react-datetime.svg?style=svg)](https://circleci.com/gh/NateRadebaugh/react-datetime)
 [![Build Status](https://secure.travis-ci.org/NateRadebaugh/react-datetime.svg)](https://travis-ci.org/NateRadebaugh/react-datetime)
 [![npm version](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime.svg)](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime)
 
@@ -42,7 +43,7 @@ yarn add @nateradebaugh/react-datetime
 [React.js](http://facebook.github.io/react/) and [date-fns](https://date-fns.org/) are peer dependencies for react-datetime. These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datepicker work. You can then use the datepicker like in the example below.
 
 ```js
-import DateTime from "react-datetime";
+import DateTime from "@nateradebaugh/react-datetime";
 import "@nateradebaugh/react-datetime/css/react-datetime.css";
 
 ...
