@@ -2,18 +2,22 @@
 
 [![Build Status](https://secure.travis-ci.org/NateRadebaugh/react-datetime.svg)](https://travis-ci.org/NateRadebaugh/react-datetime)
 [![npm version](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime.svg)](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime)
-[![Greenkeeper badge](https://badges.greenkeeper.io/NateRadebaugh/react-datetime.svg)](https://greenkeeper.io/)
+
+[![codecov](https://codecov.io/gh/NateRadebaugh/react-datetime/branch/master/graph/badge.svg)](https://codecov.io/gh/NateRadebaugh/react-datetime)
 [![Coverage Status](https://coveralls.io/repos/github/NateRadebaugh/react-datetime/badge.svg?branch=master)](https://coveralls.io/github/NateRadebaugh/react-datetime?branch=master)
+[![BCH compliance](https://bettercodehub.com/edge/badge/NateRadebaugh/react-datetime)](https://bettercodehub.com/results/NateRadebaugh/react-datetime)
+[![CodeFactor](https://www.codefactor.io/repository/github/NateRadebaugh/react-datetime/badge)](https://www.codefactor.io/repository/github/NateRadebaugh/react-datetime)
 
 [![install size](https://packagephobia.now.sh/badge?p=@nateradebaugh/react-datetime)](https://packagephobia.now.sh/result?p=@nateradebaugh/react-datetime)
 ![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/@nateradebaugh/react-datetime.svg)
 ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@nateradebaugh/react-datetime.svg)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/NateRadebaugh/react-datetime.svg)](https://greenkeeper.io/)
+[![Known Vulnerabilities](https://snyk.io/test/github/NateRadebaugh/react-datetime/badge.svg)](https://snyk.io/test/github/NateRadebaugh/react-datetime)
 ![David](https://img.shields.io/david/nateradebaugh/react-datetime.svg)
 ![David](https://img.shields.io/david/dev/nateradebaugh/react-datetime.svg)
 ![David](https://img.shields.io/david/peer/nateradebaugh/react-datetime.svg)
 ![David](https://img.shields.io/david/optional/nateradebaugh/react-datetime.svg)
-
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable**.
 
@@ -252,16 +256,16 @@ const valid = function(current) {
 This project includes typings. Additional typings are not
 required.
 
-Typings are bundled with the project and should *just work*.
+Typings are bundled with the project and should _just work_.
 
 ```js
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 import DateTime from "@nateradebaugh/react-datetime";
 import "@nateradebaugh/react-datetime/css/react-datetime.css";
 
-interface AppProps { }
-interface AppState { }
+interface AppProps {}
+interface AppState {}
 
 class App extends Component<AppProps, AppState> {
   constructor(props) {
@@ -288,11 +292,13 @@ For information about how to contribute, see the [CONTRIBUTING](.github/CONTRIBU
 ## Development
 
 From `./`
+
 ```sh
 yarn start
 ```
 
 In another terminal window/tab from `./example`
+
 ```sh
 yarn start
 ```
