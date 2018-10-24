@@ -5705,9 +5705,9 @@ rollup-plugin-postcss@^1.6.2:
     rollup-pluginutils "^2.0.1"
     style-inject "^0.3.0"
 
-rollup-plugin-typescript2@^0.17.1:
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.17.1.tgz#298099f372270ae3f41fa63188400c3df2dbdb2b"
+rollup-plugin-typescript2@^0.17.2:
+  version "0.17.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.17.2.tgz#7d18a94b74993307ec69b7c2f571c12b51561a14"
   dependencies:
     fs-extra "7.0.0"
     resolve "1.8.1"
