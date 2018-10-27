@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.3
+
+- Updated Days/Months/Years views to be functional components. Should have perf/size improvements.
+
 ## 3.3.2
 
 - Fix regression for selecting when date format is YYYY or YYYY-MM.
