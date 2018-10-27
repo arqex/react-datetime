@@ -6,7 +6,6 @@ import getYear from "date-fns/get_year";
 import getDaysInMonth from "date-fns/get_days_in_month";
 import rawSetDate from "date-fns/set_date";
 import cc from "classcat";
-import noop from "./noop";
 import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
 import returnTrue from "./returnTrue";
 
@@ -17,9 +16,9 @@ interface MonthsViewProps {
   */
   locale?: any;
 
-  viewDate: Date;
-  shift: ShiftFunc;
-  show: ShowFunc;
+  viewDate?: Date;
+  shift?: ShiftFunc;
+  show?: ShowFunc;
   selectedDate?: Date;
 
   /*
@@ -41,7 +40,7 @@ interface MonthsViewProps {
     selectedDate?: Date
   ) => JSX.Element;
 
-  setDate: SetDateFunc;
+  setDate?: SetDateFunc;
 
   formatOptions?: any;
 }
@@ -57,17 +56,16 @@ function defaultRenderMonth(
   return <td {...props}>{format(monthDate, "MMM", formatOptions)}</td>;
 }
 
-function MonthsView(props: MonthsViewProps) {
-  const {
-    selectedDate,
-    viewDate,
-    renderMonth,
-    isValidDate,
-    shift,
-    show,
-    setDate,
-    formatOptions
-  } = props;
+function MonthsView({
+  selectedDate,
+  viewDate = new Date(),
+  renderMonth,
+  isValidDate,
+  shift,
+  show,
+  setDate,
+  formatOptions
+}: MonthsViewProps) {
   const year = getYear(viewDate);
   const renderer = renderMonth || defaultRenderMonth;
   const isValid = isValidDate || returnTrue;
@@ -77,13 +75,17 @@ function MonthsView(props: MonthsViewProps) {
       <table>
         <thead>
           <tr>
-            <th className="rdtPrev" onClick={shift("sub", 1, "years")}>
+            <th className="rdtPrev" onClick={shift && shift("sub", 1, "years")}>
               <span>‹</span>
             </th>
-            <th className="rdtSwitch" onClick={show("years")} colSpan={2}>
+            <th
+              className="rdtSwitch"
+              onClick={show && show("years")}
+              colSpan={2}
+            >
               {format(viewDate, "YYYY", formatOptions)}
             </th>
-            <th className="rdtNext" onClick={shift("add", 1, "years")}>
+            <th className="rdtNext" onClick={shift && shift("add", 1, "years")}>
               <span>›</span>
             </th>
           </tr>
@@ -107,7 +109,7 @@ function MonthsView(props: MonthsViewProps) {
                   );
 
                   const isDisabled = daysInMonths.every(d => !isValid(d));
-                  const props: any = {
+                  const monthProps: any = {
                     key: month,
                     className: cc([
                       "rdtMonth",
@@ -120,15 +122,15 @@ function MonthsView(props: MonthsViewProps) {
                     ])
                   };
 
-                  if (!isDisabled) {
-                    props.onClick = setDate(
+                  if (!isDisabled && setDate) {
+                    monthProps.onClick = setDate(
                       "months",
                       setMonth(viewDate, month)
                     );
                   }
 
                   return renderer(
-                    props,
+                    monthProps,
                     month,
                     year,
                     selectedDate,
@@ -143,12 +145,5 @@ function MonthsView(props: MonthsViewProps) {
     </div>
   );
 }
-
-MonthsView.defaultProps = {
-  viewDate: new Date(),
-  shift: noop,
-  show: noop,
-  setDate: noop
-};
 
 export default MonthsView;

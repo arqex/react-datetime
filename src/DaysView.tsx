@@ -11,7 +11,6 @@ import getDate from "date-fns/get_date";
 import cc from "classcat";
 import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
 
-import noop from "./noop";
 import returnTrue from "./returnTrue";
 
 interface DaysViewProps {
@@ -26,11 +25,11 @@ interface DaysViewProps {
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
   viewDate?: Date | string;
-  shift: ShiftFunc;
-  show: ShowFunc;
+  shift?: ShiftFunc;
+  show?: ShowFunc;
   selectedDate?: Date;
 
-  setDate: SetDateFunc;
+  setDate?: SetDateFunc;
 
   /*
   Defines the format for the time. It accepts any date-fns time format.
@@ -68,18 +67,17 @@ function defaultRenderDay(
   return <td {...dayProps}>{format(currentDate, "D", formatOptions)}</td>;
 }
 
-function DaysView(props: DaysViewProps): JSX.Element {
-  const {
-    viewDate = new Date(),
-    selectedDate,
-    renderDay,
-    isValidDate,
-    setDate,
-    timeFormat,
-    formatOptions,
-    shift,
-    show
-  } = props;
+function DaysView({
+  viewDate = new Date(),
+  selectedDate,
+  renderDay,
+  isValidDate,
+  setDate,
+  timeFormat,
+  formatOptions,
+  shift,
+  show
+}: DaysViewProps): JSX.Element {
   const dateTime = selectedDate || viewDate;
   const renderer = renderDay || defaultRenderDay;
   const isValid = isValidDate || returnTrue;
@@ -93,13 +91,23 @@ function DaysView(props: DaysViewProps): JSX.Element {
       <table>
         <thead>
           <tr>
-            <th className="rdtPrev" onClick={shift("sub", 1, "months")}>
+            <th
+              className="rdtPrev"
+              onClick={shift && shift("sub", 1, "months")}
+            >
               <span>‹</span>
             </th>
-            <th className="rdtSwitch" onClick={show("months")} colSpan={5}>
+            <th
+              className="rdtSwitch"
+              onClick={show && show("months")}
+              colSpan={5}
+            >
               {format(viewDate, "MMMM YYYY", formatOptions)}
             </th>
-            <th className="rdtNext" onClick={shift("add", 1, "months")}>
+            <th
+              className="rdtNext"
+              onClick={shift && shift("add", 1, "months")}
+            >
               <span>›</span>
             </th>
           </tr>
@@ -152,7 +160,7 @@ function DaysView(props: DaysViewProps): JSX.Element {
                     ])
                   };
 
-                  if (!isDisabled) {
+                  if (!isDisabled && setDate) {
                     dayProps.onClick = setDate("days", workingDate, true);
                   }
 
@@ -170,7 +178,11 @@ function DaysView(props: DaysViewProps): JSX.Element {
         {typeof timeFormat === "string" && timeFormat.trim() && dateTime ? (
           <tfoot>
             <tr>
-              <td onClick={show("time")} colSpan={7} className="rdtTimeToggle">
+              <td
+                onClick={show && show("time")}
+                colSpan={7}
+                className="rdtTimeToggle"
+              >
                 {format(dateTime, timeFormat, formatOptions)}
               </td>
             </tr>
@@ -180,11 +192,5 @@ function DaysView(props: DaysViewProps): JSX.Element {
     </div>
   );
 }
-
-DaysView.defaultProps = {
-  shift: noop,
-  show: noop,
-  setDate: noop
-};
 
 export default DaysView;

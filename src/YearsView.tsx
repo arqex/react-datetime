@@ -4,14 +4,13 @@ import setYear from "date-fns/set_year";
 import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
 import cc from "classcat";
-import noop from "./noop";
 import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
 import returnTrue from "./returnTrue";
 
 interface YearsViewProps {
-  viewDate: Date;
-  shift: ShiftFunc;
-  show: ShowFunc;
+  viewDate?: Date;
+  shift?: ShiftFunc;
+  show?: ShowFunc;
   selectedDate?: Date;
 
   /*
@@ -28,23 +27,22 @@ interface YearsViewProps {
   */
   renderYear?: (props: any, year: number, selectedDate?: Date) => JSX.Element;
 
-  setDate: SetDateFunc;
+  setDate?: SetDateFunc;
 }
 
 function defaultRenderYear(yearProps: any, year: number): JSX.Element {
   return <td {...yearProps}>{year}</td>;
 }
 
-function YearsView(props: YearsViewProps): JSX.Element {
-  const {
-    selectedDate,
-    viewDate = new Date(),
-    renderYear,
-    isValidDate,
-    shift,
-    show,
-    setDate
-  } = props;
+function YearsView({
+  selectedDate,
+  viewDate = new Date(),
+  renderYear,
+  isValidDate,
+  shift,
+  show,
+  setDate
+}: YearsViewProps): JSX.Element {
   const renderer = renderYear || defaultRenderYear;
   const isValid = isValidDate || returnTrue;
 
@@ -55,13 +53,23 @@ function YearsView(props: YearsViewProps): JSX.Element {
       <table>
         <thead>
           <tr>
-            <th className="rdtPrev" onClick={shift("sub", 10, "years")}>
+            <th
+              className="rdtPrev"
+              onClick={shift && shift("sub", 10, "years")}
+            >
               <span>‹</span>
             </th>
-            <th className="rdtSwitch" onClick={show("years")} colSpan={2}>
+            <th
+              className="rdtSwitch"
+              onClick={show && show("years")}
+              colSpan={2}
+            >
               {startYear}-{startYear + 9}
             </th>
-            <th className="rdtNext" onClick={shift("add", 10, "years")}>
+            <th
+              className="rdtNext"
+              onClick={shift && shift("add", 10, "years")}
+            >
               <span>›</span>
             </th>
           </tr>
@@ -97,7 +105,7 @@ function YearsView(props: YearsViewProps): JSX.Element {
                     ])
                   };
 
-                  if (!isDisabled) {
+                  if (!isDisabled && setDate) {
                     yearProps.onClick = setDate(
                       "years",
                       setYear(viewDate, year)
@@ -114,12 +122,5 @@ function YearsView(props: YearsViewProps): JSX.Element {
     </div>
   );
 }
-
-YearsView.defaultProps = {
-  viewDate: new Date(),
-  shift: noop,
-  show: noop,
-  setDate: noop
-};
 
 export default YearsView;
