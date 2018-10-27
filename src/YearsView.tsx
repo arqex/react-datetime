@@ -4,14 +4,13 @@ import setYear from "date-fns/set_year";
 import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
 import cc from "classcat";
-import noop from "./noop";
 import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
 import returnTrue from "./returnTrue";
 
 interface YearsViewProps {
-  viewDate: Date;
-  shift: ShiftFunc;
-  show: ShowFunc;
+  viewDate?: Date;
+  shift?: ShiftFunc;
+  show?: ShowFunc;
   selectedDate?: Date;
 
   /*
@@ -28,110 +27,100 @@ interface YearsViewProps {
   */
   renderYear?: (props: any, year: number, selectedDate?: Date) => JSX.Element;
 
-  setDate: SetDateFunc;
+  setDate?: SetDateFunc;
 }
 
-class YearsView extends React.Component<YearsViewProps, never> {
-  static defaultProps = {
-    viewDate: new Date(),
-    shift: noop,
-    show: noop,
-    setDate: noop
-  };
+function defaultRenderYear(yearProps: any, year: number): JSX.Element {
+  return <td {...yearProps}>{year}</td>;
+}
 
-  constructor(props) {
-    super(props);
+function YearsView({
+  selectedDate,
+  viewDate = new Date(),
+  renderYear,
+  isValidDate,
+  shift,
+  show,
+  setDate
+}: YearsViewProps): JSX.Element {
+  const renderer = renderYear || defaultRenderYear;
+  const isValid = isValidDate || returnTrue;
 
-    // Bind functions
-    this.renderYears = this.renderYears.bind(this);
-    this.renderYear = this.renderYear.bind(this);
-  }
+  const startYear = Math.floor(getYear(viewDate) / 10) * 10;
 
-  render() {
-    const year = Math.floor(getYear(this.props.viewDate) / 10) * 10;
+  return (
+    <div className="rdtYears">
+      <table>
+        <thead>
+          <tr>
+            <th
+              className="rdtPrev"
+              onClick={shift && shift("sub", 10, "years")}
+            >
+              <span>‹</span>
+            </th>
+            <th
+              className="rdtSwitch"
+              onClick={show && show("years")}
+              colSpan={2}
+            >
+              {startYear}-{startYear + 9}
+            </th>
+            <th
+              className="rdtNext"
+              onClick={shift && shift("add", 10, "years")}
+            >
+              <span>›</span>
+            </th>
+          </tr>
+        </thead>
+      </table>
+      <table>
+        <tbody>
+          {[0, 1, 2].map(rowNum => {
+            // Use 4 columns per row
+            const rowStartYear = startYear - 1 + rowNum * 4;
 
-    return (
-      <div className="rdtYears">
-        <table>
-          <thead>
-            <tr>
-              <th
-                className="rdtPrev"
-                onClick={this.props.shift("sub", 10, "years")}
-              >
-                <span>‹</span>
-              </th>
-              <th
-                className="rdtSwitch"
-                onClick={this.props.show("years")}
-                colSpan={2}
-              >
-                {year}-{year + 9}
-              </th>
-              <th
-                className="rdtNext"
-                onClick={this.props.shift("add", 10, "years")}
-              >
-                <span>›</span>
-              </th>
-            </tr>
-          </thead>
-        </table>
-        <table>
-          <tbody>{this.renderYears(year)}</tbody>
-        </table>
-      </div>
-    );
-  }
+            return (
+              <tr key={rowStartYear}>
+                {[0, 1, 2, 3].map(y => {
+                  const year = y + rowStartYear;
+                  const currentYear = setYear(viewDate, year);
 
-  renderYears(startYear: number): JSX.Element[] {
-    const renderer = this.props.renderYear || this.renderYear;
-    const { selectedDate, viewDate } = this.props;
-    const isValid = this.props.isValidDate || returnTrue;
-    let years: JSX.Element[] = [];
-    const rows: JSX.Element[] = [];
+                  const daysInYear = Array.from(
+                    { length: getDaysInYear(viewDate) },
+                    (e, i) => setDayOfYear(currentYear, i + 1)
+                  );
 
-    for (let year = startYear - 1; year < startYear + 11; year++) {
-      const currentYear = setYear(viewDate, year);
+                  const isDisabled = daysInYear.every(d => !isValid(d));
+                  const yearProps: any = {
+                    key: year,
+                    className: cc([
+                      "rdtYear",
+                      {
+                        rdtDisabled: isDisabled,
+                        rdtActive:
+                          selectedDate && getYear(selectedDate) === year
+                      }
+                    ])
+                  };
 
-      const daysInYear = Array.from(
-        { length: getDaysInYear(viewDate) },
-        (e, i) => setDayOfYear(currentYear, i + 1)
-      );
+                  if (!isDisabled && setDate) {
+                    yearProps.onClick = setDate(
+                      "years",
+                      setYear(viewDate, year)
+                    );
+                  }
 
-      const isDisabled = daysInYear.every(d => !isValid(d));
-      const yearProps: any = {
-        key: year,
-        className: cc([
-          "rdtYear",
-          {
-            rdtDisabled: isDisabled,
-            rdtActive: selectedDate && getYear(selectedDate) === year
-          }
-        ])
-      };
-
-      if (!isDisabled) {
-        yearProps.onClick = this.props.setDate(
-          "years",
-          setYear(viewDate, year)
-        );
-      }
-
-      years.push(renderer(yearProps, year, selectedDate));
-
-      if (years.length === 4) {
-        rows.push(<tr key={year}>{years}</tr>);
-        years = [];
-      }
-    }
-
-    return rows;
-  }
-
-  renderYear(yearProps, year: number): JSX.Element {
-    return <td {...yearProps}>{year}</td>;
-  }
+                  return renderer(yearProps, year, selectedDate);
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default YearsView;

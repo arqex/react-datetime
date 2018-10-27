@@ -4,9 +4,8 @@ import isSameMonth from "date-fns/is_same_month";
 import setMonth from "date-fns/set_month";
 import getYear from "date-fns/get_year";
 import getDaysInMonth from "date-fns/get_days_in_month";
-import setDate from "date-fns/set_date";
+import rawSetDate from "date-fns/set_date";
 import cc from "classcat";
-import noop from "./noop";
 import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
 import returnTrue from "./returnTrue";
 
@@ -17,9 +16,9 @@ interface MonthsViewProps {
   */
   locale?: any;
 
-  viewDate: Date;
-  shift: ShiftFunc;
-  show: ShowFunc;
+  viewDate?: Date;
+  shift?: ShiftFunc;
+  show?: ShowFunc;
   selectedDate?: Date;
 
   /*
@@ -41,115 +40,110 @@ interface MonthsViewProps {
     selectedDate?: Date
   ) => JSX.Element;
 
-  setDate: SetDateFunc;
+  setDate?: SetDateFunc;
 
   formatOptions?: any;
 }
 
-class MonthsView extends React.Component<MonthsViewProps, never> {
-  static defaultProps = {
-    viewDate: new Date(),
-    shift: noop,
-    show: noop,
-    setDate: noop
-  };
+function defaultRenderMonth(
+  props,
+  month,
+  year,
+  selected,
+  formatOptions
+): JSX.Element {
+  const monthDate = setMonth(new Date(), month);
+  return <td {...props}>{format(monthDate, "MMM", formatOptions)}</td>;
+}
 
-  constructor(props) {
-    super(props);
+function MonthsView({
+  selectedDate,
+  viewDate = new Date(),
+  renderMonth,
+  isValidDate,
+  shift,
+  show,
+  setDate,
+  formatOptions
+}: MonthsViewProps) {
+  const year = getYear(viewDate);
+  const renderer = renderMonth || defaultRenderMonth;
+  const isValid = isValidDate || returnTrue;
 
-    // Bind functions
-    this.renderMonths = this.renderMonths.bind(this);
-    this.renderMonth = this.renderMonth.bind(this);
-  }
+  return (
+    <div className="rdtMonths">
+      <table>
+        <thead>
+          <tr>
+            <th className="rdtPrev" onClick={shift && shift("sub", 1, "years")}>
+              <span>‹</span>
+            </th>
+            <th
+              className="rdtSwitch"
+              onClick={show && show("years")}
+              colSpan={2}
+            >
+              {format(viewDate, "YYYY", formatOptions)}
+            </th>
+            <th className="rdtNext" onClick={shift && shift("add", 1, "years")}>
+              <span>›</span>
+            </th>
+          </tr>
+        </thead>
+      </table>
+      <table>
+        <tbody>
+          {[0, 1, 2].map(rowNum => {
+            // Use 4 columns per row
+            const rowStartMonth = rowNum * 4;
 
-  render() {
-    const { viewDate } = this.props;
+            return (
+              <tr key={rowStartMonth}>
+                {[0, 1, 2, 3].map(m => {
+                  const month = m + rowStartMonth;
+                  const currentMonth = setMonth(viewDate, month);
 
-    return (
-      <div className="rdtMonths">
-        <table>
-          <thead>
-            <tr>
-              <th
-                className="rdtPrev"
-                onClick={this.props.shift("sub", 1, "years")}
-              >
-                <span>‹</span>
-              </th>
-              <th
-                className="rdtSwitch"
-                onClick={this.props.show("years")}
-                colSpan={2}
-              >
-                {format(viewDate, "YYYY", this.props.formatOptions)}
-              </th>
-              <th
-                className="rdtNext"
-                onClick={this.props.shift("add", 1, "years")}
-              >
-                <span>›</span>
-              </th>
-            </tr>
-          </thead>
-        </table>
-        <table>
-          <tbody>{this.renderMonths()}</tbody>
-        </table>
-      </div>
-    );
-  }
+                  const daysInMonths = Array.from(
+                    { length: getDaysInMonth(currentMonth) },
+                    (e, i) => rawSetDate(currentMonth, i + 1)
+                  );
 
-  renderMonths(): JSX.Element[] {
-    const { selectedDate, viewDate } = this.props;
-    const year = getYear(viewDate);
-    const renderer = this.props.renderMonth || this.renderMonth;
-    const isValid = this.props.isValidDate || returnTrue;
+                  const isDisabled = daysInMonths.every(d => !isValid(d));
+                  const monthProps: any = {
+                    key: month,
+                    className: cc([
+                      "rdtMonth",
+                      {
+                        rdtDisabled: isDisabled,
+                        rdtActive:
+                          selectedDate &&
+                          isSameMonth(selectedDate, currentMonth)
+                      }
+                    ])
+                  };
 
-    const rows: any[] = [];
-    let months: any[] = [];
+                  if (!isDisabled && setDate) {
+                    monthProps.onClick = setDate(
+                      "months",
+                      setMonth(viewDate, month)
+                    );
+                  }
 
-    for (let month = 0; month < 12; month++) {
-      const currentMonth = setMonth(viewDate, month);
-
-      const daysInMonths = Array.from(
-        { length: getDaysInMonth(currentMonth) },
-        (e, i) => setDate(currentMonth, i + 1)
-      );
-
-      const isDisabled = daysInMonths.every(d => !isValid(d));
-      const props: any = {
-        key: month,
-        className: cc([
-          "rdtMonth",
-          {
-            rdtDisabled: isDisabled,
-            rdtActive: selectedDate && isSameMonth(selectedDate, currentMonth)
-          }
-        ])
-      };
-
-      if (!isDisabled) {
-        props.onClick = this.props.setDate("months", setMonth(viewDate, month));
-      }
-
-      months.push(renderer(props, month, year, selectedDate));
-
-      if (months.length === 4) {
-        rows.push(<tr key={month}>{months}</tr>);
-
-        months = [];
-      }
-    }
-
-    return rows;
-  }
-
-  renderMonth(props, month, year, selected): JSX.Element {
-    const monthDate = setMonth(new Date(), month);
-    return (
-      <td {...props}>{format(monthDate, "MMM", this.props.formatOptions)}</td>
-    );
-  }
+                  return renderer(
+                    monthProps,
+                    month,
+                    year,
+                    selectedDate,
+                    formatOptions
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default MonthsView;
