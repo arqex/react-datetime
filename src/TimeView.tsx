@@ -142,10 +142,10 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   }
 
   getStepSize(type: "hours" | "minutes" | "seconds" | "milliseconds") {
+    const { timeConstraints } = this.props;
+
     let step = defaultTimeConstraints[type].step;
-    const config = this.props.timeConstraints
-      ? this.props.timeConstraints[type]
-      : undefined;
+    const config = timeConstraints ? timeConstraints[type] : undefined;
     if (config && config.step) {
       step = config.step;
     }
@@ -259,20 +259,23 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   }
 
   render() {
+    const { dateFormat, show} = this.props;
+    const { timestamp } = this.state;
+
     let numCounters = 0;
 
     return (
       <div className="rdtTime">
         <table>
-          {this.props.dateFormat ? (
+          {dateFormat ? (
             <thead>
               <tr>
                 <th
                   className="rdtSwitch"
                   colSpan={4}
-                  onClick={this.props.show("days")}
+                  onClick={show("days")}
                 >
-                  {format(this.state.timestamp, this.props.dateFormat)}
+                  {format(timestamp, dateFormat)}
                 </th>
               </tr>
             </thead>
