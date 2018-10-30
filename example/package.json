@@ -23,7 +23,7 @@
     "react": "^16.6.0",
     "react-datetime": "link:..",
     "react-dom": "^16.6.0",
-    "react-scripts": "^2.0.5"
+    "react-scripts": "^2.1.0"
   },
   "devDependencies": {
     "gh-pages": "^2.0.1"
