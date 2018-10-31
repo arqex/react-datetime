@@ -110,11 +110,98 @@ interface TimeViewState {
   timestamp: Date;
 }
 
-function calculateState(props): TimeViewState {
+function calculateState(viewDate: Date, selectedDate?: Date): TimeViewState {
   return {
-    timestamp: props.selectedDate || props.viewDate
+    timestamp: selectedDate || viewDate
   };
 }
+
+function getStepSize(
+  type: "hours" | "minutes" | "seconds" | "milliseconds",
+  timeConstraints?: TimeConstraints
+) {
+  let step = defaultTimeConstraints[type].step;
+  const config = timeConstraints ? timeConstraints[type] : undefined;
+  if (config && config.step) {
+    step = config.step;
+  }
+
+  return step;
+}
+
+function change(
+  action: "up" | "down",
+  type: "hours" | "minutes" | "seconds" | "milliseconds",
+  timestamp: Date,
+  timeConstraints?: TimeConstraints
+) {
+  const mult = action === "up" ? 1 : -1;
+
+  const step = getStepSize(type, timeConstraints) * mult;
+  if (type === "hours") {
+    return addHours(timestamp, step);
+  } else if (type === "minutes") {
+    return addMinutes(timestamp, step);
+  } else if (type === "seconds") {
+    return addSeconds(timestamp, step);
+  } else {
+    return addMilliseconds(timestamp, step);
+  }
+}
+
+function getFormatted(
+  type: "hours" | "minutes" | "seconds" | "milliseconds" | "daypart",
+  timestamp: Date,
+  timeFormat?: string | false,
+  formatOptions?: any
+) {
+  const fmt = typeof timeFormat === "string" ? timeFormat : "";
+
+  const hasHours = fmt.toLowerCase().indexOf("h") !== -1;
+  const hasMinutes = fmt.indexOf("m") !== -1;
+  const hasSeconds = fmt.indexOf("s") !== -1;
+  const hasMilliseconds = fmt.indexOf("S") !== -1;
+
+  const hasUpperDayPart = fmt.indexOf("A") !== -1;
+  const hasLowerDayPart = fmt.indexOf("a") !== -1;
+  const hasDayPart = hasUpperDayPart || hasLowerDayPart;
+
+  const typeFormat =
+    type === "hours" && hasHours
+      ? hasDayPart
+        ? "h"
+        : "H"
+      : type === "minutes" && hasMinutes
+        ? "mm"
+        : type === "seconds" && hasSeconds
+          ? "ss"
+          : type === "milliseconds" && hasMilliseconds
+            ? "SSS"
+            : type === "daypart" && hasLowerDayPart
+              ? "a"
+              : type === "daypart" && hasUpperDayPart
+                ? "A"
+                : undefined;
+
+  if (typeFormat) {
+    return format(timestamp, typeFormat, formatOptions);
+  }
+
+  return undefined;
+}
+
+function toggleDayPart(timestamp, setTime) {
+  return () => {
+    const hours = getHours(timestamp);
+    const newHours = hours >= 12 ? hours - 12 : hours + 12;
+
+    setTime(setHours(timestamp, newHours));
+  };
+}
+
+let timer: any;
+let increaseTimer: any;
+let mouseUpListener: any;
 
 class TimeView extends React.Component<TimeViewProps, TimeViewState> {
   static defaultProps = {
@@ -124,142 +211,65 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
     show: noop
   };
 
-  timer: any;
-  increaseTimer: any;
-  mouseUpListener: any;
-
   constructor(props) {
     super(props);
 
-    this.state = calculateState(props);
+    this.state = calculateState(props.viewDate, props.selectedDate);
 
     // Bind functions
-    this.getStepSize = this.getStepSize.bind(this);
     this.onStartClicking = this.onStartClicking.bind(this);
-    this.toggleDayPart = this.toggleDayPart.bind(this);
-    this.change = this.change.bind(this);
-    this.getFormatted = this.getFormatted.bind(this);
-  }
-
-  getStepSize(type: "hours" | "minutes" | "seconds" | "milliseconds") {
-    const { timeConstraints } = this.props;
-
-    let step = defaultTimeConstraints[type].step;
-    const config = timeConstraints ? timeConstraints[type] : undefined;
-    if (config && config.step) {
-      step = config.step;
-    }
-
-    return step;
-  }
-
-  getFormatted(
-    type: "hours" | "minutes" | "seconds" | "milliseconds" | "daypart"
-  ) {
-    const { timeFormat, formatOptions } = this.props;
-    const { timestamp } = this.state;
-    const fmt = typeof timeFormat === "string" ? timeFormat : "";
-
-    const hasHours = fmt.toLowerCase().indexOf("h") !== -1;
-    const hasMinutes = fmt.indexOf("m") !== -1;
-    const hasSeconds = fmt.indexOf("s") !== -1;
-    const hasMilliseconds = fmt.indexOf("S") !== -1;
-
-    const hasUpperDayPart = fmt.indexOf("A") !== -1;
-    const hasLowerDayPart = fmt.indexOf("a") !== -1;
-    const hasDayPart = hasUpperDayPart || hasLowerDayPart;
-
-    const typeFormat =
-      type === "hours" && hasHours
-        ? hasDayPart
-          ? "h"
-          : "H"
-        : type === "minutes" && hasMinutes
-          ? "mm"
-          : type === "seconds" && hasSeconds
-            ? "ss"
-            : type === "milliseconds" && hasMilliseconds
-              ? "SSS"
-              : type === "daypart" && hasLowerDayPart
-                ? "a"
-                : type === "daypart" && hasUpperDayPart
-                  ? "A"
-                  : undefined;
-
-    if (typeFormat) {
-      return format(timestamp, typeFormat, formatOptions);
-    }
-
-    return undefined;
   }
 
   componentDidMount() {
-    this.setState(calculateState(this.props));
+    this.setState(calculateState(this.props.viewDate, this.props.selectedDate));
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState(calculateState(nextProps));
+    this.setState(calculateState(nextProps.viewDate, nextProps.selectedDate));
   }
 
   onStartClicking(action, type) {
     return () => {
       const { readonly } = this.props;
-
       if (!readonly) {
         this.setState({
-          timestamp: this.change(action, type)
+          timestamp: change(
+            action,
+            type,
+            this.state.timestamp,
+            this.props.timeConstraints
+          )
         });
 
-        this.timer = setTimeout(() => {
-          this.increaseTimer = setInterval(() => {
+        timer = setTimeout(() => {
+          increaseTimer = setInterval(() => {
             this.setState({
-              timestamp: this.change(action, type)
+              timestamp: change(
+                action,
+                type,
+                this.state.timestamp,
+                this.props.timeConstraints
+              )
             });
           }, 70);
         }, 500);
 
-        this.mouseUpListener = () => {
-          clearTimeout(this.timer);
-          clearInterval(this.increaseTimer);
+        mouseUpListener = () => {
+          clearTimeout(timer);
+          clearInterval(increaseTimer);
           this.props.setTime(this.state.timestamp);
-          document.body.removeEventListener("mouseup", this.mouseUpListener);
-          document.body.removeEventListener("touchend", this.mouseUpListener);
+          document.body.removeEventListener("mouseup", mouseUpListener);
+          document.body.removeEventListener("touchend", mouseUpListener);
         };
 
-        document.body.addEventListener("mouseup", this.mouseUpListener);
-        document.body.addEventListener("touchend", this.mouseUpListener);
+        document.body.addEventListener("mouseup", mouseUpListener);
+        document.body.addEventListener("touchend", mouseUpListener);
       }
     };
   }
 
-  toggleDayPart() {
-    const hours = getHours(this.state.timestamp);
-    const newHours = hours >= 12 ? hours - 12 : hours + 12;
-
-    this.props.setTime(setHours(this.state.timestamp, newHours));
-  }
-
-  change(
-    action: "up" | "down",
-    type: "hours" | "minutes" | "seconds" | "milliseconds"
-  ) {
-    const { timestamp } = this.state;
-    const mult = action === "up" ? 1 : -1;
-
-    const step = this.getStepSize(type) * mult;
-    if (type === "hours") {
-      return addHours(timestamp, step);
-    } else if (type === "minutes") {
-      return addMinutes(timestamp, step);
-    } else if (type === "seconds") {
-      return addSeconds(timestamp, step);
-    } else {
-      return addMilliseconds(timestamp, step);
-    }
-  }
-
   render() {
-    const { dateFormat, show} = this.props;
+    const { dateFormat, show, timeFormat, formatOptions, setTime } = this.props;
     const { timestamp } = this.state;
 
     let numCounters = 0;
@@ -270,11 +280,7 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
           {dateFormat ? (
             <thead>
               <tr>
-                <th
-                  className="rdtSwitch"
-                  colSpan={4}
-                  onClick={show("days")}
-                >
+                <th className="rdtSwitch" colSpan={4} onClick={show("days")}>
                   {format(timestamp, dateFormat)}
                 </th>
               </tr>
@@ -285,7 +291,12 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
               <td>
                 <div className="rdtCounters">
                   {allCounters.map(type => {
-                    const val = this.getFormatted(type);
+                    const val = getFormatted(
+                      type,
+                      timestamp,
+                      timeFormat,
+                      formatOptions
+                    );
                     if (val) {
                       numCounters++;
                     }
@@ -301,9 +312,14 @@ class TimeView extends React.Component<TimeViewProps, TimeViewState> {
                     );
                   })}
                   <TimePart
-                    onUp={this.toggleDayPart}
-                    onDown={this.toggleDayPart}
-                    value={this.getFormatted("daypart")}
+                    onUp={toggleDayPart(timestamp, setTime)}
+                    onDown={toggleDayPart(timestamp, setTime)}
+                    value={getFormatted(
+                      "daypart",
+                      timestamp,
+                      timeFormat,
+                      formatOptions
+                    )}
                   />
                 </div>
               </td>
