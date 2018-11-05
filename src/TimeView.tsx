@@ -1,7 +1,13 @@
 import * as React from "react";
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
-import { TimeConstraint, SetTimeFunc, TimeConstraints, ShowFunc } from "./";
+import {
+  TimeConstraint,
+  SetTimeFunc,
+  TimeConstraints,
+  ShowFunc,
+  SetViewTimestampFunc
+} from "./";
 import noop from "./noop";
 import disableContextMenu from "./disableContextMenu";
 import addHours from "date-fns/add_hours";
@@ -86,6 +92,7 @@ interface TimeViewProps {
   timeConstraints?: TimeConstraints;
 
   setTime: SetTimeFunc;
+  setViewTimestamp: SetViewTimestampFunc;
 
   /*
   Defines the format for the date. It accepts any date-fns date format.
@@ -99,21 +106,10 @@ interface TimeViewProps {
   */
   timeFormat?: string | false;
 
-  viewDate: Date;
+  viewTimestamp: Date;
   show: ShowFunc;
-  selectedDate?: Date;
 
   formatOptions?: any;
-}
-
-interface TimeViewState {
-  timestamp: Date;
-}
-
-function calculateState(viewDate: Date, selectedDate?: Date): TimeViewState {
-  return {
-    timestamp: selectedDate || viewDate
-  };
 }
 
 function getStepSize(
@@ -130,12 +126,12 @@ function getStepSize(
 }
 
 function change(
-  action: "up" | "down",
+  op: "add" | "sub",
   type: "hours" | "minutes" | "seconds" | "milliseconds",
   timestamp: Date,
   timeConstraints?: TimeConstraints
 ) {
-  const mult = action === "up" ? 1 : -1;
+  const mult = op === "sub" ? -1 : 1;
 
   const step = getStepSize(type, timeConstraints) * mult;
   if (type === "hours") {
@@ -203,132 +199,119 @@ let timer: any;
 let increaseTimer: any;
 let mouseUpListener: any;
 
-class TimeView extends React.Component<TimeViewProps, TimeViewState> {
-  static defaultProps = {
-    viewDate: new Date(),
-    readonly: false,
-    setTime: noop,
-    show: noop
+function onStartClicking(action, type, props) {
+  return () => {
+    const {
+      readonly,
+      viewTimestamp: origViewTimestamp,
+      timeConstraints,
+      setViewTimestamp,
+      setTime
+    } = props;
+    if (!readonly) {
+      let viewTimestamp = change(
+        action,
+        type,
+        origViewTimestamp,
+        timeConstraints
+      );
+      setViewTimestamp(viewTimestamp);
+
+      timer = setTimeout(() => {
+        increaseTimer = setInterval(() => {
+          viewTimestamp = change(action, type, viewTimestamp, timeConstraints);
+          setViewTimestamp(viewTimestamp);
+        }, 70);
+      }, 500);
+
+      mouseUpListener = () => {
+        clearTimeout(timer);
+        clearInterval(increaseTimer);
+        setTime(viewTimestamp);
+        document.body.removeEventListener("mouseup", mouseUpListener);
+        document.body.removeEventListener("touchend", mouseUpListener);
+      };
+
+      document.body.addEventListener("mouseup", mouseUpListener);
+      document.body.addEventListener("touchend", mouseUpListener);
+    }
   };
-
-  constructor(props) {
-    super(props);
-
-    this.state = calculateState(props.viewDate, props.selectedDate);
-
-    // Bind functions
-    this.onStartClicking = this.onStartClicking.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState(calculateState(this.props.viewDate, this.props.selectedDate));
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState(calculateState(nextProps.viewDate, nextProps.selectedDate));
-  }
-
-  onStartClicking(action, type) {
-    return () => {
-      const { readonly } = this.props;
-      if (!readonly) {
-        this.setState({
-          timestamp: change(
-            action,
-            type,
-            this.state.timestamp,
-            this.props.timeConstraints
-          )
-        });
-
-        timer = setTimeout(() => {
-          increaseTimer = setInterval(() => {
-            this.setState({
-              timestamp: change(
-                action,
-                type,
-                this.state.timestamp,
-                this.props.timeConstraints
-              )
-            });
-          }, 70);
-        }, 500);
-
-        mouseUpListener = () => {
-          clearTimeout(timer);
-          clearInterval(increaseTimer);
-          this.props.setTime(this.state.timestamp);
-          document.body.removeEventListener("mouseup", mouseUpListener);
-          document.body.removeEventListener("touchend", mouseUpListener);
-        };
-
-        document.body.addEventListener("mouseup", mouseUpListener);
-        document.body.addEventListener("touchend", mouseUpListener);
-      }
-    };
-  }
-
-  render() {
-    const { dateFormat, show, timeFormat, formatOptions, setTime } = this.props;
-    const { timestamp } = this.state;
-
-    let numCounters = 0;
-
-    return (
-      <div className="rdtTime">
-        <table>
-          {dateFormat ? (
-            <thead>
-              <tr>
-                <th className="rdtSwitch" colSpan={4} onClick={show("days")}>
-                  {format(timestamp, dateFormat)}
-                </th>
-              </tr>
-            </thead>
-          ) : null}
-          <tbody>
-            <tr>
-              <td>
-                <div className="rdtCounters">
-                  {allCounters.map(type => {
-                    const val = getFormatted(
-                      type,
-                      timestamp,
-                      timeFormat,
-                      formatOptions
-                    );
-                    if (val) {
-                      numCounters++;
-                    }
-
-                    return (
-                      <TimePart
-                        key={type}
-                        showPrefix={numCounters > 1}
-                        onUp={this.onStartClicking("up", type)}
-                        onDown={this.onStartClicking("down", type)}
-                        value={val}
-                      />
-                    );
-                  })}
-                  <TimePart
-                    onUp={toggleDayPart(timestamp, setTime)}
-                    onDown={toggleDayPart(timestamp, setTime)}
-                    value={getFormatted(
-                      "daypart",
-                      timestamp,
-                      timeFormat,
-                      formatOptions
-                    )}
-                  />
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  }
 }
+
+function TimeView(props: TimeViewProps) {
+  const {
+    viewTimestamp,
+    dateFormat,
+    show,
+    timeFormat,
+    formatOptions,
+    setTime
+  } = props;
+
+  let numCounters = 0;
+
+  return (
+    <div className="rdtTime">
+      <table>
+        {dateFormat ? (
+          <thead>
+            <tr>
+              <th className="rdtSwitch" colSpan={4} onClick={show("days")}>
+                {format(viewTimestamp, dateFormat)}
+              </th>
+            </tr>
+          </thead>
+        ) : null}
+        <tbody>
+          <tr>
+            <td>
+              <div className="rdtCounters">
+                {allCounters.map(type => {
+                  const val = getFormatted(
+                    type,
+                    viewTimestamp,
+                    timeFormat,
+                    formatOptions
+                  );
+                  if (val) {
+                    numCounters++;
+                  }
+
+                  return (
+                    <TimePart
+                      key={type}
+                      showPrefix={numCounters > 1}
+                      onUp={onStartClicking("add", type, props)}
+                      onDown={onStartClicking("sub", type, props)}
+                      value={val}
+                    />
+                  );
+                })}
+                <TimePart
+                  onUp={toggleDayPart(viewTimestamp, setTime)}
+                  onDown={toggleDayPart(viewTimestamp, setTime)}
+                  value={getFormatted(
+                    "daypart",
+                    viewTimestamp,
+                    timeFormat,
+                    formatOptions
+                  )}
+                />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+TimeView.defaultProps = {
+  viewTimestamp: new Date(),
+  readonly: false,
+  setTime: noop,
+  setViewTimestamp: noop,
+  show: noop
+};
 
 export default TimeView;
