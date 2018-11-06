@@ -81,7 +81,7 @@ interface AlwaysTimeConstraints {
 }
 
 interface TimeViewProps {
-  readonly: boolean;
+  readonly?: boolean;
 
   /*
   Manually set the locale for the react-datetime instance.
@@ -91,8 +91,8 @@ interface TimeViewProps {
 
   timeConstraints?: TimeConstraints;
 
-  setTime: SetTimeFunc;
-  setViewTimestamp: SetViewTimestampFunc;
+  setTime?: SetTimeFunc;
+  setViewTimestamp?: SetViewTimestampFunc;
 
   /*
   Defines the format for the date. It accepts any date-fns date format.
@@ -106,8 +106,8 @@ interface TimeViewProps {
   */
   timeFormat?: string | false;
 
-  viewTimestamp: Date;
-  show: ShowFunc;
+  viewTimestamp?: Date;
+  show?: ShowFunc;
 
   formatOptions?: any;
 }
@@ -256,8 +256,12 @@ function TimeView(props: TimeViewProps) {
         {dateFormat ? (
           <thead>
             <tr>
-              <th className="rdtSwitch" colSpan={4} onClick={show("days")}>
-                {format(viewTimestamp, dateFormat)}
+              <th
+                className="rdtSwitch"
+                colSpan={4}
+                onClick={show && show("days")}
+              >
+                {format(viewTimestamp!, dateFormat)}
               </th>
             </tr>
           </thead>
@@ -269,7 +273,7 @@ function TimeView(props: TimeViewProps) {
                 {allCounters.map(type => {
                   const val = getFormatted(
                     type,
-                    viewTimestamp,
+                    viewTimestamp!,
                     timeFormat,
                     formatOptions
                   );
@@ -292,7 +296,7 @@ function TimeView(props: TimeViewProps) {
                   onDown={toggleDayPart(viewTimestamp, setTime)}
                   value={getFormatted(
                     "daypart",
-                    viewTimestamp,
+                    viewTimestamp!,
                     timeFormat,
                     formatOptions
                   )}
