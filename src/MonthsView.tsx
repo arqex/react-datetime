@@ -10,12 +10,6 @@ import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
 import returnTrue from "./returnTrue";
 
 interface MonthsViewProps {
-  /*
-  Manually set the locale for the react-datetime instance.
-  date-fns locale needs to be loaded to be used, see i18n docs.
-  */
-  locale?: any;
-
   viewDate?: Date;
   shift?: ShiftFunc;
   show?: ShowFunc;

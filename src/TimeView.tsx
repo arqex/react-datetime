@@ -83,12 +83,6 @@ interface AlwaysTimeConstraints {
 interface TimeViewProps {
   readonly?: boolean;
 
-  /*
-  Manually set the locale for the react-datetime instance.
-  date-fns locale needs to be loaded to be used, see i18n docs.
-  */
-  locale?: any;
-
   timeConstraints?: TimeConstraints;
 
   setTime?: SetTimeFunc;
@@ -153,13 +147,17 @@ function getFormatted(
 ) {
   const fmt = typeof timeFormat === "string" ? timeFormat : "";
 
-  const hasHours = fmt.toLowerCase().indexOf("h") !== -1;
-  const hasMinutes = fmt.indexOf("m") !== -1;
-  const hasSeconds = fmt.indexOf("s") !== -1;
-  const hasMilliseconds = fmt.indexOf("S") !== -1;
+  function has(fmt, val) {
+    return fmt.indexOf(val) !== -1;
+  }
 
-  const hasUpperDayPart = fmt.indexOf("A") !== -1;
-  const hasLowerDayPart = fmt.indexOf("a") !== -1;
+  const hasHours = has(fmt.toLowerCase(), "h");
+  const hasMinutes = has(fmt, "m");
+  const hasSeconds = has(fmt, "s");
+  const hasMilliseconds = has(fmt, "S");
+
+  const hasUpperDayPart = has(fmt, "A");
+  const hasLowerDayPart = has(fmt, "a");
   const hasDayPart = hasUpperDayPart || hasLowerDayPart;
 
   const typeFormat =

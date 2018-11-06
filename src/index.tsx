@@ -254,8 +254,7 @@ const componentProps = {
     "renderDay",
     "renderMonth",
     "renderYear",
-    "timeConstraints",
-    "locale"
+    "timeConstraints"
   ],
   fromState: ["viewDate", "selectedDate", "viewTimestamp"],
   fromThis: ["setDate", "setTime", "setViewTimestamp", "show", "shift"]
@@ -503,7 +502,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   shift: ShiftFunc = (op, amount, type) => {
     return () => {
       const mult = op === "sub" ? -1 : 1;
-      const workingDate = this.state.viewDate;
+      const { viewDate } = this.state;
 
       if (op === "sub") {
         this.props.onNavigateBack!(amount, type);
@@ -514,8 +513,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       this.setState({
         viewDate:
           type === "months"
-            ? addMonths(workingDate, amount * mult)
-            : addYears(workingDate, amount * mult)
+            ? addMonths(viewDate, amount * mult)
+            : addYears(viewDate, amount * mult)
       });
     };
   };
