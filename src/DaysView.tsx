@@ -107,7 +107,7 @@ function DaysView({
           </tr>
           <tr>
             {[0, 1, 2, 3, 4, 5, 6].map(colNum => (
-              <th className="dow">
+              <th key={colNum} className="dow">
                 {format(addDays(sunday, colNum), "dd", formatOptions)}
               </th>
             ))}
