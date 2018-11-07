@@ -15,12 +15,6 @@ import returnTrue from "./returnTrue";
 
 interface DaysViewProps {
   /*
-  Manually set the locale for the react-datetime instance.
-  date-fns locale needs to be loaded to be used, see i18n docs.
-  */
-  locale?: any;
-
-  /*
   Represents the month which is viewed on opening the calendar when there is no selected date.
   This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.
   */
@@ -112,25 +106,11 @@ function DaysView({
             </th>
           </tr>
           <tr>
-            <th className="dow">{format(sunday, "dd", formatOptions)}</th>
-            <th className="dow">
-              {format(addDays(sunday, 1), "dd", formatOptions)}
-            </th>
-            <th className="dow">
-              {format(addDays(sunday, 2), "dd", formatOptions)}
-            </th>
-            <th className="dow">
-              {format(addDays(sunday, 3), "dd", formatOptions)}
-            </th>
-            <th className="dow">
-              {format(addDays(sunday, 4), "dd", formatOptions)}
-            </th>
-            <th className="dow">
-              {format(addDays(sunday, 5), "dd", formatOptions)}
-            </th>
-            <th className="dow">
-              {format(addDays(sunday, 6), "dd", formatOptions)}
-            </th>
+            {[0, 1, 2, 3, 4, 5, 6].map(colNum => (
+              <th key={colNum} className="dow">
+                {format(addDays(sunday, colNum), "dd", formatOptions)}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
