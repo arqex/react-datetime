@@ -38,19 +38,20 @@ export type IsValidDateFunc = (
 ) => boolean;
 
 export type SetTimeFunc = (date: Date) => void;
+export type SetViewTimestampFunc = (viewTimestamp: Date) => void;
 
 export type ShiftFunc = (
   op: "sub" | "add",
   amount: number,
-  type: "months" | "years"
+  type: "years" | "months"
 ) => (event: any) => void;
 
 export type ShowFunc = (
-  view: "days" | "months" | "years" | "time"
+  view: "years" | "months" | "days" | "time"
 ) => (event: any) => void;
 
 export type SetDateFunc = (
-  type: "days" | "months" | "years",
+  type: "years" | "months" | "days",
   newDate: Date,
   close?: boolean
 ) => (event: any) => void;
@@ -241,6 +242,7 @@ interface DateTimeState {
   inputFormat: string;
   viewDate: Date;
   selectedDate?: Date;
+  viewTimestamp: Date;
   inputValue: string;
   open: boolean;
 }
@@ -252,11 +254,10 @@ const componentProps = {
     "renderDay",
     "renderMonth",
     "renderYear",
-    "timeConstraints",
-    "locale"
+    "timeConstraints"
   ],
-  fromState: ["viewDate", "selectedDate"],
-  fromThis: ["setDate", "setTime", "show", "shift"]
+  fromState: ["viewDate", "selectedDate", "viewTimestamp"],
+  fromThis: ["setDate", "setTime", "setViewTimestamp", "show", "shift"]
 };
 
 interface NextViews {
@@ -320,6 +321,7 @@ function getStateFromProps(props): any {
     inputFormat: formats.datetime,
     viewDate: viewDate,
     selectedDate: selectedDate,
+    viewTimestamp: selectedDate || viewDate,
     inputValue: inputValue,
     open: props.open
   };
@@ -398,6 +400,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     this.setDate = this.setDate.bind(this);
     this.shift = this.shift.bind(this);
     this.setTime = this.setTime.bind(this);
+    this.setViewTimestamp = this.setViewTimestamp.bind(this);
     this.openCalendar = this.openCalendar.bind(this);
     this.closeCalendar = this.closeCalendar.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -499,7 +502,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   shift: ShiftFunc = (op, amount, type) => {
     return () => {
       const mult = op === "sub" ? -1 : 1;
-      const workingDate = this.state.viewDate;
+      const { viewDate } = this.state;
 
       if (op === "sub") {
         this.props.onNavigateBack!(amount, type);
@@ -510,8 +513,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       this.setState({
         viewDate:
           type === "months"
-            ? addMonths(workingDate, amount * mult)
-            : addYears(workingDate, amount * mult)
+            ? addMonths(viewDate, amount * mult)
+            : addYears(viewDate, amount * mult)
       });
     };
   };
@@ -519,11 +522,19 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   setTime: SetTimeFunc = date => {
     this.setState({
       selectedDate: date,
+      viewDate: date,
+      viewTimestamp: date,
       inputValue: format(
         date,
         this.state.inputFormat,
         getFormatOptions(this.props)
       )
+    });
+  };
+
+  setViewTimestamp: SetViewTimestampFunc = viewTimestamp => {
+    this.setState({
+      viewTimestamp: viewTimestamp
     });
   };
 
