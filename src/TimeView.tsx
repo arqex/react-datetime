@@ -147,8 +147,8 @@ function getFormatted(
 ) {
   const fmt = typeof timeFormat === "string" ? timeFormat : "";
 
-  function has(fmt, val) {
-    return fmt.indexOf(val) !== -1;
+  function has(f, val) {
+    return f.indexOf(val) !== -1;
   }
 
   const hasHours = has(fmt.toLowerCase(), "h");
