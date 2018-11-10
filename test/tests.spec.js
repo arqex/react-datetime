@@ -759,6 +759,26 @@ describe('Datetime', () => {
 			}, 0);
 		});
 
+		it('firstDayOfWeek=monday', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+			component = utils.createDatetime({ value: date, firstDayOfWeek: 'monday' });
+			expect(utils.getNthDay(component, 0).text()).toEqual('27');
+			expect(utils.getNthDay(component, 0).hasClass('rdtOld')).toBeTruthy();
+			expect(utils.getNthDay(component, 41).text()).toEqual('6');
+			expect(utils.getNthDay(component, 41).hasClass('rdtNew')).toBeTruthy();
+			expect(component.find('.rdtDays .dow').at(0).text()).toEqual('Mo')
+		});
+
+		it('firstDayOfWeek=thursday', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+			component = utils.createDatetime({ value: date, firstDayOfWeek: 'thursday' });
+			expect(utils.getNthDay(component, 0).text()).toEqual('30');
+			expect(utils.getNthDay(component, 0).hasClass('rdtOld')).toBeTruthy();
+			expect(utils.getNthDay(component, 41).text()).toEqual('9');
+			expect(utils.getNthDay(component, 41).hasClass('rdtNew')).toBeTruthy();
+			expect(component.find('.rdtDays .dow').at(0).text()).toEqual('Th')
+		});
+
 		describe('defaultValue of type', () => {
 			it('date', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
