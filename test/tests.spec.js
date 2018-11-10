@@ -766,7 +766,7 @@ describe('Datetime', () => {
 			expect(utils.getNthDay(component, 0).hasClass('rdtOld')).toBeTruthy();
 			expect(utils.getNthDay(component, 41).text()).toEqual('6');
 			expect(utils.getNthDay(component, 41).hasClass('rdtNew')).toBeTruthy();
-			expect(component.find('.rdtDays .dow').at(0).text()).toEqual('Mo')
+			expect(component.find('.rdtDays .dow').at(0).text()).toEqual('Mo');
 		});
 
 		it('firstDayOfWeek=thursday', () => {
@@ -776,7 +776,7 @@ describe('Datetime', () => {
 			expect(utils.getNthDay(component, 0).hasClass('rdtOld')).toBeTruthy();
 			expect(utils.getNthDay(component, 41).text()).toEqual('9');
 			expect(utils.getNthDay(component, 41).hasClass('rdtNew')).toBeTruthy();
-			expect(component.find('.rdtDays .dow').at(0).text()).toEqual('Th')
+			expect(component.find('.rdtDays .dow').at(0).text()).toEqual('Th');
 		});
 
 		describe('defaultValue of type', () => {
