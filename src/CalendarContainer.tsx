@@ -14,7 +14,7 @@ const views = {
 };
 
 interface CalendarContainerProps {
-  view: string;
+  view: "years" | "months" | "days" | "time";
   viewProps: any;
   onClickOutside: any;
 }
@@ -23,10 +23,7 @@ class CalendarContainer extends React.Component<CalendarContainerProps, never> {
   static defaultProps = {
     view: "days",
     onClickOutside: noop,
-    viewProps: {
-      shift: noop,
-      show: noop
-    }
+    viewProps: {}
   };
 
   handleClickOutside() {
