@@ -43,15 +43,15 @@ export type SetViewTimestampFunc = (viewTimestamp: Date) => void;
 export type ShiftFunc = (
   op: "sub" | "add",
   amount: number,
-  type: "months" | "years"
+  type: "years" | "months"
 ) => (event: any) => void;
 
 export type ShowFunc = (
-  view: "days" | "months" | "years" | "time"
+  view: "years" | "months" | "days" | "time"
 ) => (event: any) => void;
 
 export type SetDateFunc = (
-  type: "days" | "months" | "years",
+  type: "years" | "months" | "days",
   newDate: Date,
   close?: boolean
 ) => (event: any) => void;
