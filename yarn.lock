@@ -5796,9 +5796,9 @@ rollup-plugin-terser@2.0.2:
     jest-worker "^23.2.0"
     terser "^3.8.2"
 
-rollup-plugin-typescript2@^0.17.2:
-  version "0.17.2"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.17.2.tgz#7d18a94b74993307ec69b7c2f571c12b51561a14"
+rollup-plugin-typescript2@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.18.0.tgz#ab3f7003f47c3858810d516e4d3fada546bfb1df"
   dependencies:
     fs-extra "7.0.0"
     resolve "1.8.1"
