@@ -16,9 +16,9 @@ declare namespace ReactDatetimeClass {
     export type ViewMode = "years" | "months" | "days" | "time";
 
     export interface TimeConstraint {
-        min: number;
-        max: number;
-        step: number;
+        min?: number;
+        max?: number;
+        step?: number;
     }
 
     export interface TimeConstraints {
@@ -170,6 +170,10 @@ declare namespace ReactDatetimeClass {
          close it.
          */
         disableOnClickOutside?: boolean;
+        /*
+         Enables snapping to the relevant value on increase/decrease based on step.
+         */
+        snap?: boolean;
     }
 
     export interface DatetimepickerState {

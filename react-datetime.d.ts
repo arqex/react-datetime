@@ -157,6 +157,10 @@ declare module ReactDatetime {
      close it.
     */
     disableOnClickOutside?: boolean;
+    /*
+     Enables snapping to the relevant value on increase/decrease based on step.
+    */
+    snap?: boolean;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {
