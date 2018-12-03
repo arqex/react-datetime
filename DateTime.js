@@ -77,8 +77,10 @@ var Datetime = createClass({
 
 	getInitialState: function() {
 		var props = this.props;
-		let selectedDate = this.parseDate( props.value || props.defaultValue );
-		let inputFormat = this.getFormat('datetime');
+		var selectedDate = this.parseDate( props.value || props.defaultValue );
+		var inputFormat = this.getFormat('datetime');
+
+		this.checkTZ( props );
 
 		return {
 			open: !props.input,
@@ -120,22 +122,22 @@ var Datetime = createClass({
 	},
 
 	getLocaleData: function( props ){
-		let p = props || this.props;
+		var p = props || this.props;
 		return this.localMoment( p.date ).localeData();
 	},
 
 	getDateFormat: function( locale ){
-		let format = this.props.dateFormat;
+		var format = this.props.dateFormat;
 		if( format === true ) return locale.longDateFormat('L');
 		if( format ) return format;
 		return ''
 	},
 
-	getTimeFormat( locale ){
-		let format = this.props.timeFormat;
+	getTimeFormat: function( locale ){
+		var format = this.props.timeFormat;
 		if( format === true ) return locale.longDateFormat('LT');
 		if( format ) return format;
-		return ''
+		return '';
 	},
 
 	getFormat: function( type ){
@@ -199,8 +201,8 @@ var Datetime = createClass({
 	},
 
 	viewToMethod: {days: 'date', months: 'month', years: 'year'},
-	nextView:{ days: 'time', months: 'days', years: 'months'},
-	updateDate( e ){
+	nextView: { days: 'time', months: 'days', years: 'months'},
+	updateDate: function( e ){
 		var state = this.state;
 		var currentView = state.currentView;
 		var updateOnView = this.getUpdateOn( this.getFormat('date') );
@@ -215,8 +217,8 @@ var Datetime = createClass({
 			update.selectedDate = viewDate.clone();
 			update.inputValue = viewDate.format( this.getFormat('datetime') );
 
-			if( !this.props.open && this.props.input && this.props.closeOnSelect ){
-				update.open = false;
+			if( this.props.open === undefined && this.props.input && this.props.closeOnSelect ){
+				this.closeCalendar();
 			}
 
 			this.props.onChange( viewDate.clone() );
@@ -228,7 +230,7 @@ var Datetime = createClass({
 		this.setState( update );
 	},
 
-	navigate( modifier, unit ){
+	navigate: function( modifier, unit ){
 		var me  = this;
 
 		// this is a function bound to a click so we need a closure
@@ -248,19 +250,11 @@ var Datetime = createClass({
 
 	allowedSetTime: ['hours', 'minutes', 'seconds', 'milliseconds'],
 	setTime: function( type, value ) {
-		var index = this.allowedSetTime.indexOf( type ) + 1,
-			state = this.state,
-			date = (state.selectedDate || state.viewDate).clone(),
-			nextType
+		var state = this.state,
+			date = (state.selectedDate || state.viewDate).clone()
 		;
-
-		// It is needed to set all the time properties
-		// to not to reset the time
+		
 		date[ type ]( value );
-		for (; index < this.allowedSetTime.length; index++) {
-			nextType = this.allowedSetTime[index];
-			date[ nextType ]( date[nextType]() );
-		}
 
 		if ( !this.props.value ) {
 			this.setState({
@@ -273,7 +267,7 @@ var Datetime = createClass({
 	},
 
 	openCalendar: function( e ) {
-		if ( !this.state.open ) {
+		if ( !this.isOpen() ) {
 			this.setState({ open: true }, function() {
 				this.props.onOpen( e );
 			});
@@ -288,12 +282,9 @@ var Datetime = createClass({
 
 	handleClickOutside: function() {
 		var props = this.props;
-		var state = this.state;
 
-		if ( props.input && props.open === undefined && !this.state.open && !props.closeOnClickOutside ) {
-			this.setState({ open: false }, function() {
-				this.props.onClose( this.state.selectedDate || this.state.inputValue );
-			});
+		if ( props.input && props.open === undefined && !this.state.open && props.closeOnClickOutside ) {
+			this.closeCalendar();
 		}
 	},
 
@@ -448,28 +439,6 @@ var ClickableWrapper = onClickOutside( createClass({
 		this.props.onClickOut( e );
 	}
 }));
-
-/*
-Datetime.defaultProps = {
-	className: '',
-	defaultValue: '',
-	inputProps: {},
-	input: true,
-	onOpen: function() {},
-	onClose: function() {},
-	onChange: function() {},
-	onViewModeChange: function() {},
-	onNavigateBack: function() {},
-	onNavigateForward: function() {},
-	timeFormat: true,
-	timeConstraints: {},
-	dateFormat: true,
-	strictParsing: true,
-	closeOnSelect: false,
-	closeOnTab: true,
-	utc: false
-};
-*/
 
 // Make moment accessible through the Datetime class
 Datetime.moment = moment;
