@@ -202,22 +202,25 @@ var DateTimePickerTime = createClass({
 
 	toggleDayPart: function( type ) { // type is always 'hours'
 		var value = parseInt( this.state[ type ], 10) + 12;
-		if ( value > this.timeConstraints[ type ].max )
-			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
+		var tc = this.timeConstraints[ type ];
+		if ( value > tc.max )
+			value = tc.min + ( value - ( tc.max + 1 ) );
 		return this.pad( type, value );
 	},
 
 	increase: function( type ) {
-		var value = parseInt( this.state[ type ], 10) + this.timeConstraints[ type ].step;
-		if ( value > this.timeConstraints[ type ].max )
-			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
+		var tc = this.timeConstraints[ type ];
+		var value = parseInt( this.state[ type ], 10) + tc.step;
+		if ( value > tc.max )
+			value = tc.min + ( value - ( tc.max + 1 ) );
 		return this.pad( type, value );
 	},
 
 	decrease: function( type ) {
-		var value = parseInt( this.state[ type ], 10) - this.timeConstraints[ type ].step;
-		if ( value < this.timeConstraints[ type ].min )
-			value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
+		var tc = this.timeConstraints[ type ];
+		var value = parseInt( this.state[ type ], 10) - tc.step;
+		if ( value < tc.min )
+			value = tc.max + 1 - ( tc.min - value );
 		return this.pad( type, value );
 	},
 

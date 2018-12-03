@@ -8,9 +8,9 @@ var DateTimePickerMonths = createClass({
 	render: function() {
 		return React.createElement('div', { className: 'rdtMonths' }, [
 			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
+				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.navigate( -1, 'years' )}, React.createElement('span', {}, '‹' )),
 				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
+				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.navigate( 1, 'years' )}, React.createElement('span', {}, '›' ))
 			]))),
 			React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
 		]);
@@ -60,8 +60,7 @@ var DateTimePickerMonths = createClass({
 			};
 
 			if ( !isDisabled )
-				props.onClick = ( this.props.updateOn === 'months' ?
-					this.updateSelectedMonth : this.props.setDate( 'month' ) );
+				props.onClick = this.updateSelectedMonth;
 
 			months.push( renderer( props, i, year, date && date.clone() ) );
 
@@ -77,7 +76,7 @@ var DateTimePickerMonths = createClass({
 	},
 
 	updateSelectedMonth: function( event ) {
-		this.props.updateSelectedDate( event );
+		this.props.updateDate( event );
 	},
 
 	renderMonth: function( props, month ) {

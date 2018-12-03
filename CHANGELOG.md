@@ -1,5 +1,10 @@
 Changelog
 =========
+## 3.0.0
+* Big refactor, the state is not derived from the props after every update.
+* `disableCloseOnClickOutside` prop is now `closeOnClickOutside` (avoid double negations).
+* `onBlur` and `onFocus` are renamed to `onClose` and `onOpen` since they had nothing to do with the blur event and it was misleading some users. If we want to listen to the input's `onBlur` and `onFocus` use `inputProps`.
+
 ## 2.16.2
 * Turns moment timezone peer dependency in a runtime error when missing using `displayTimezone`.
 

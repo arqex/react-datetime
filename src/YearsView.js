@@ -10,9 +10,9 @@ var DateTimePickerYears = createClass({
 
 		return React.createElement('div', { className: 'rdtYears' }, [
 			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
+				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.navigate( -10, 'years' )}, React.createElement('span', {}, '‹' )),
 				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
+				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.navigate( 10, 'years' )}, React.createElement('span', {}, '›' ))
 			]))),
 			React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
 		]);
@@ -67,8 +67,7 @@ var DateTimePickerYears = createClass({
 			};
 
 			if ( !isDisabled )
-				props.onClick = ( this.props.updateOn === 'years' ?
-					this.updateSelectedYear : this.props.setDate('year') );
+				props.onClick = this.updateSelectedYear;
 
 			years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
 
@@ -85,7 +84,7 @@ var DateTimePickerYears = createClass({
 	},
 
 	updateSelectedYear: function( event ) {
-		this.props.updateSelectedDate( event );
+		this.props.updateDate( event );
 	},
 
 	renderYear: function( props, year ) {
