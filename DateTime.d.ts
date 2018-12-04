@@ -41,12 +41,16 @@ declare namespace ReactDatetimeClass {
          Represents the selected date for the component to use it as a uncontrolled component.
          This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
          */
-        defaultValue?: Date | string | Moment;
+        initialValue?: Date | string | Moment;
         /*
-         Represents the month which is viewed on opening the calendar when there is no selected date.
+         Define the month/year/decade/time which is viewed on opening the calendar.
          This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object.
          */
-        viewDate?: Date | string | Moment;
+        initialViewDate?: Date | string | Moment;
+        /*
+         The default view to display when the picker is shown for the first time. ('years', 'months', 'days', 'time')
+         */
+        initialViewMode?: ViewMode;
         /*
          Defines the format for the date. It accepts any moment.js date format.
          If true the date will be displayed using the defaults for the current locale.
@@ -114,10 +118,6 @@ declare namespace ReactDatetimeClass {
          The callback receives the amount and type ('month', 'year') as parameters.
          */
         onNavigateForward?: (amount: number, type: string) => void;
-        /*
-         The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
-         */
-        viewMode?: ViewMode | number;
         /*
          Extra class names for the component markup.
          */

@@ -20,7 +20,7 @@ describe('Datetime', () => {
 
 	it('viewMode=days: renders days, week days, month, year', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
+			component = utils.createDatetime({ viewMode: 'days', initialValue: date });
 		utils.openDatepicker(component);
 
 		// Month and year
@@ -112,7 +112,7 @@ describe('Datetime', () => {
 
 	it('selectYear', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'years', defaultValue: date });
+			component = utils.createDatetime({ viewMode: 'years', initialValue: date });
 		expect(utils.isYearView(component)).toBeTruthy();
 		expect(component.find('.rdtSwitch').text()).toEqual('2000-2009');
 
@@ -124,7 +124,7 @@ describe('Datetime', () => {
 
 	it('increase decade', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'years', defaultValue: date });
+			component = utils.createDatetime({ viewMode: 'years', initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('2000-2009');
 		utils.clickOnElement(component.find('.rdtNext span').at(0));
@@ -135,7 +135,7 @@ describe('Datetime', () => {
 
 	it('decrease decade', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'years', defaultValue: date });
+			component = utils.createDatetime({ viewMode: 'years', initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('2000-2009');
 		utils.clickOnElement(component.find('.rdtPrev span').at(0));
@@ -146,7 +146,7 @@ describe('Datetime', () => {
 
 	it('select month', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'months', defaultValue: date });
+			component = utils.createDatetime({ viewMode: 'months', initialValue: date });
 
 		expect(utils.isMonthView(component)).toBeTruthy();
 		expect(component.find('.rdtSwitch').text()).toEqual('2000');
@@ -158,7 +158,7 @@ describe('Datetime', () => {
 
 	it('increase year', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'months', defaultValue: date });
+			component = utils.createDatetime({ viewMode: 'months', initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('2000');
 		utils.clickOnElement(component.find('.rdtNext span').at(0));
@@ -169,7 +169,7 @@ describe('Datetime', () => {
 
 	it('decrease year', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'months', defaultValue: date });
+			component = utils.createDatetime({ viewMode: 'months', initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('2000');
 		utils.clickOnElement(component.find('.rdtPrev span').at(0));
@@ -180,7 +180,7 @@ describe('Datetime', () => {
 
 	it('increase month', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ defaultValue: date });
+			component = utils.createDatetime({ initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('January 2000');
 		expect(component.find('.rdtSwitch').getDOMNode().getAttribute('data-value')).toEqual('0');
@@ -194,7 +194,7 @@ describe('Datetime', () => {
 
 	it('decrease month', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ defaultValue: date });
+			component = utils.createDatetime({ initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('January 2000');
 		expect(component.find('.rdtSwitch').getDOMNode().getAttribute('data-value')).toEqual('0');
@@ -245,7 +245,7 @@ describe('Datetime', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 			prevMonthDaysIndexes = [0, 1, 2, 3, 4, 5],
 			nextMonthDaysIndexes = [37, 38, 39, 40, 41],
-			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
+			component = utils.createDatetime({ viewMode: 'days', initialValue: date });
 
 		utils.openDatepicker(component);
 
@@ -259,7 +259,7 @@ describe('Datetime', () => {
 
 	it('selected day persists (in UI) when navigating to prev month', () => {
 		const date = new Date(2000, 0, 3, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
+			component = utils.createDatetime({ viewMode: 'days', initialValue: date });
 
 		utils.openDatepicker(component);
 		expect(utils.getNthDay(component, 8).hasClass('rdtActive')).toBeTruthy();
@@ -270,7 +270,7 @@ describe('Datetime', () => {
 
 	it('sets CSS class on today date', () => {
 		const specificDate = moment('2015-04-19'),
-			component = utils.createDatetime({ defaultValue: specificDate });
+			component = utils.createDatetime({ initialValue: specificDate });
 
 		// Mock the today date
 		jasmine.clock().mockDate(specificDate.toDate());
@@ -528,7 +528,7 @@ describe('Datetime', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time',
-					defaultValue: date, onChange: (selected) => {
+					initialValue: date, onChange: (selected) => {
 						// TODO: Trigger onChange when increasing time
 						i++;
 						if (i > 2) {
@@ -560,7 +560,7 @@ describe('Datetime', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time',
-					defaultValue: date, onChange: (selected) => {
+					initialValue: date, onChange: (selected) => {
 						// TODO: Trigger onChange when increasing time
 						i++;
 						if (i > 2) {
@@ -590,7 +590,7 @@ describe('Datetime', () => {
 
 		it('long increase time', (done) => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date });
+				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', initialValue: date });
 
 			utils.increaseHour(component);
 			setTimeout(() => {
@@ -602,7 +602,7 @@ describe('Datetime', () => {
 
 		it('long decrease time', (done) => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date });
+				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', initialValue: date });
 
 			utils.decreaseHour(component);
 			setTimeout(() => {
@@ -616,7 +616,7 @@ describe('Datetime', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time',
-					defaultValue: date, timeConstraints: { hours: { max: 6, step: 8 }, minutes: { step: 15 }},
+					initialValue: date, timeConstraints: { hours: { max: 6, step: 8 }, minutes: { step: 15 }},
 					onChange: (selected) => {
 						// TODO
 						i++;
@@ -642,7 +642,7 @@ describe('Datetime', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time',
-					defaultValue: date, timeConstraints: { minutes: { step: 15 }}, onChange: (selected) => {
+					initialValue: date, timeConstraints: { minutes: { step: 15 }}, onChange: (selected) => {
 						// TODO
 						i++;
 						if (i > 2) {
@@ -662,7 +662,7 @@ describe('Datetime', () => {
 				mDate = moment(date),
 				strDate = mDate.format('L') + ' ' + mDate.format('LT'),
 				invalidStrDate = strDate + 'x',
-				component = utils.createDatetime({ defaultValue: '', strictParsing: true,
+				component = utils.createDatetime({ initialValue: '', strictParsing: true,
 					onChange: (updated) => {
 						expect(updated, invalidStrDate);
 						done();
@@ -676,7 +676,7 @@ describe('Datetime', () => {
 				mDate = moment(date),
 				strDate = mDate.format('L') + ' ' + mDate.format('LT'),
 				invalidStrDate = strDate + 'x',
-				component = utils.createDatetime({ defaultValue: '', strictParsing: false,
+				component = utils.createDatetime({ initialValue: '', strictParsing: false,
 					onChange: (updated) => {
 						expect(mDate.format('L LT')).toEqual(updated.format('L LT'));
 						done();
@@ -759,12 +759,12 @@ describe('Datetime', () => {
 			}, 0);
 		});
 
-		describe('defaultValue of type', () => {
+		describe('initialValue of type', () => {
 			it('date', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					momentDate = moment(date),
 					strDate = momentDate.format('L') + ' ' + momentDate.format('LT'),
-					component = utils.createDatetime({ defaultValue: date });
+					component = utils.createDatetime({ initialValue: date });
 				expect(utils.getInputValue(component)).toEqual(strDate);
 			});
 
@@ -772,7 +772,7 @@ describe('Datetime', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					momentDate = moment(date),
 					strDate = momentDate.format('L') + ' ' + momentDate.format('LT'),
-					component = utils.createDatetime({ defaultValue: momentDate });
+					component = utils.createDatetime({ initialValue: momentDate });
 				expect(utils.getInputValue(component)).toEqual(strDate);
 			});
 
@@ -780,7 +780,7 @@ describe('Datetime', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					momentDate = moment(date),
 					strDate = momentDate.format('L') + ' ' + momentDate.format('LT'),
-					component = utils.createDatetime({ defaultValue: strDate });
+					component = utils.createDatetime({ initialValue: strDate });
 				expect(utils.getInputValue(component)).toEqual(strDate);
 			});
 		});
@@ -812,7 +812,7 @@ describe('Datetime', () => {
 			it('dateFormat -> value should change format', (done) => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					component = utils.createDatetime({
-						dateFormat: 'YYYY-MM-DD', timeFormat: false, defaultValue: date
+						dateFormat: 'YYYY-MM-DD', timeFormat: false, initialValue: date
 					});
 
 				const valueBefore = utils.getInputValue(component);
@@ -910,46 +910,46 @@ describe('Datetime', () => {
 	});
 
 	describe('event listeners', () => {
-		describe('onBlur', () => {
+		describe('onClose', () => {
 			it('when selecting a date', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-					onBlurFn = jest.fn(),
-					component = utils.createDatetime({ value: date, onBlur: onBlurFn, closeOnSelect: true });
+					onCloseFn = jest.fn(),
+					component = utils.createDatetime({ value: date, onClose: onCloseFn, closeOnSelect: true });
 
 				utils.openDatepicker(component);
 				// Close component by selecting a date
 				utils.clickNthDay(component, 2);
-				expect(onBlurFn).toHaveBeenCalledTimes(1);
+				expect(onCloseFn).toHaveBeenCalledTimes(1);
 			});
 
 			it('when selecting date (value=null and closeOnSelect=true)', () => {
-				const onBlurFn = jest.fn(),
-					component = utils.createDatetime({ value: null, onBlur: onBlurFn, closeOnSelect: true });
+				const onCloseFn = jest.fn(),
+					component = utils.createDatetime({ value: null, onClose: onCloseFn, closeOnSelect: true });
 
 				utils.openDatepicker(component);
 				// Close component by selecting a date
 				utils.clickNthDay(component, 2);
-				expect(onBlurFn).toHaveBeenCalledTimes(1);
+				expect(onCloseFn).toHaveBeenCalledTimes(1);
 			});
 
 			it('when selecting date (value=null and closeOnSelect=false)', () => {
-				const onBlurFn = jest.fn(),
-					component = utils.createDatetime({ value: null, onBlur: onBlurFn, closeOnSelect: false });
+				const onCloseFn = jest.fn(),
+					component = utils.createDatetime({ value: null, onClose: onCloseFn, closeOnSelect: false });
 
 				utils.openDatepicker(component);
 				// Close component by selecting a date
 				utils.clickNthDay(component, 2);
-				expect(onBlurFn).not.toHaveBeenCalled();
+				expect(onCloseFn).not.toHaveBeenCalled();
 			});
 		});
 
-		it('onFocus when opening datepicker', () => {
+		it('onOpen when opening datepicker', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				onFocusFn = jest.fn(),
-				component = utils.createDatetime({ value: date, onFocus: onFocusFn });
+				onOpenFn = jest.fn(),
+				component = utils.createDatetime({ value: date, onOpen: onOpenFn });
 
 			utils.openDatepicker(component);
-			expect(onFocusFn).toHaveBeenCalledTimes(1);
+			expect(onOpenFn).toHaveBeenCalledTimes(1);
 		});
 
 		describe('onViewModeChange', () => {
@@ -1032,7 +1032,7 @@ describe('Datetime', () => {
 			it('when selecting date', (done) => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					mDate = moment(date),
-					component = utils.createDatetime({ defaultValue: date, onChange: (selected) => {
+					component = utils.createDatetime({ initialValue: date, onChange: (selected) => {
 						expect(selected.date()).toEqual(2);
 						expect(selected.month()).toEqual(mDate.month());
 						expect(selected.year()).toEqual(mDate.year());
@@ -1046,7 +1046,7 @@ describe('Datetime', () => {
 				let i = 0;
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					mDate = moment(date),
-					component = utils.createDatetime({ defaultValue: date, onChange: (selected) => {
+					component = utils.createDatetime({ initialValue: date, onChange: (selected) => {
 						i++;
 						if (i > 2) {
 							expect(selected.date()).toEqual(4);
@@ -1064,7 +1064,7 @@ describe('Datetime', () => {
 			it('when selecting month', () => {
 				const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2),
 					onChangeFn = jest.fn(),
-					component = utils.createDatetime({ defaultValue: date, dateFormat: 'YYYY-MM', onChange: onChangeFn });
+					component = utils.createDatetime({ initialValue: date, dateFormat: 'YYYY-MM', onChange: onChangeFn });
 
 				utils.clickNthMonth(component, 2);
 				expect(onChangeFn).toHaveBeenCalledTimes(1);
@@ -1075,7 +1075,7 @@ describe('Datetime', () => {
 			xit('when selecting year', () => {
 				const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2),
 					onChangeFn = jest.fn(),
-					component = utils.createDatetime({ defaultValue: date, dateFormat: 'YYYY', onChange: onChangeFn });
+					component = utils.createDatetime({ initialValue: date, dateFormat: 'YYYY', onChange: onChangeFn });
 
 				utils.clickNthYear(component, 2);
 				expect(onChangeFn).toHaveBeenCalledTimes(1);
@@ -1225,7 +1225,7 @@ describe('Datetime', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				mDate = moment(date),
 				strDate = mDate.format('L') + ' ' + mDate.format('LT'),
-				component = utils.createDatetime({ defaultValue: 'invalid-value', onChange: (updated) => {
+				component = utils.createDatetime({ initialValue: 'invalid-value', onChange: (updated) => {
 					expect(mDate.format('L LT')).toEqual(updated.format('L LT'));
 					done();
 				}});
@@ -1236,7 +1236,7 @@ describe('Datetime', () => {
 
 		it('delete invalid string value', (done) => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ defaultValue: date, onChange: (date) => {
+				component = utils.createDatetime({ initialValue: date, onChange: (date) => {
 					expect(date).toEqual('');
 					done();
 				}});

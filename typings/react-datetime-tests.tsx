@@ -18,7 +18,7 @@ const TEST_DATE_PROPS_FOR_VALUE: JSX.Element = <ReactDatetime
 	/>;
 
 const TEST_DATE_PROPS_FOR_DEFAULT_VALUE: JSX.Element = <ReactDatetime
-		defaultValue={ new Date() }
+		initialValue={ new Date() }
 	/>;
 
 const TEST_DATE_PROPS_FOR_VALUE_AS_MOMENT: JSX.Element = <ReactDatetime
@@ -30,11 +30,11 @@ const TEST_DATE_PROPS_FOR_VALUE_AS_STRING: JSX.Element = <ReactDatetime
 	/>;
 
 const TEST_DATE_PROPS_FOR_DEFAULT_VALUE_AS_MOMENT: JSX.Element = <ReactDatetime
-		defaultValue={ moment() }
+		initialValue={ moment() }
 	/>;
 
 const TEST_DATE_PROPS_FOR_DEFAULT_VALUE_AS_STRING: JSX.Element = <ReactDatetime
-		defaultValue={ '1995-12-25' }
+		initialValue={ '1995-12-25' }
 	/>;
 
 /*
@@ -99,7 +99,7 @@ const TEST_INPUT_PROPS: JSX.Element = <ReactDatetime
 			(momentOrInputString:string) => {}
 		}
 		onViewModeChange={
- 			(viewMode:string) => {}
+ 			(initialViewMode:string) => {}
  		}
  	/>;
 
@@ -117,7 +117,7 @@ const TEST_EVENT_HANDLERS_WITH_MOMENT: JSX.Element = <ReactDatetime
  */
 
 const TEST_VIEW_MODE_AND_CLASS_PROPS: JSX.Element = <ReactDatetime
-		viewMode='days'
+		initialViewMode='days'
 		className='rdt'
 	/>;
 

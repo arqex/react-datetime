@@ -22,12 +22,16 @@ declare module ReactDatetime {
      Represents the selected date for the component to use it as a uncontrolled component.
      This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
      */
-    defaultValue?: Date;
+    initialValue?: Date;
     /*
-     Represents the month which is viewed on opening the calendar when there is no selected date.
+     Define the month/year/decade/time which is viewed on opening the calendar.
      This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object.
      */
-    viewDate?: Date;
+    initialViewDate?: Date;
+    /*
+     The default view to display when the picker is shown for the first time. ('years', 'months', 'days', 'time')
+     */
+    initialViewMode?: string;
     /*
      Defines the format for the date. It accepts any moment.js date format.
      If true the date will be displayed using the defaults for the current locale.
@@ -95,10 +99,6 @@ declare module ReactDatetime {
       The callback receives the amount and type ('month', 'year') as parameters.
      */
     onNavigateForward?: (amount: number, type: string) => void;
-    /*
-     The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
-     */
-    viewMode?: string|number;
     /*
      Extra class names for the component markup.
      */

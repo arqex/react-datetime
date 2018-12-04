@@ -4,7 +4,6 @@ exports[`dateFormat set to false 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"

@@ -26,7 +26,6 @@ var Datetime = createClass({
 	propTypes: {
 		// value: TYPES.object | TYPES.string,
 		// defaultValue: TYPES.object | TYPES.string,
-		// viewDate: TYPES.object | TYPES.string,
 		onOpen: TYPES.func,
 		onClose: TYPES.func,
 		onChange: TYPES.func,
@@ -41,7 +40,8 @@ var Datetime = createClass({
 		// timeFormat: TYPES.string | TYPES.bool,
 		inputProps: TYPES.object,
 		timeConstraints: TYPES.object,
-		viewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
+		// initialViewDate: TYPES.object | TYPES.string,
+		initialViewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
@@ -62,7 +62,7 @@ var Datetime = createClass({
 			dateFormat: true,
 			timeFormat: true,
 			utc: false,
-			viewMode: viewModes.DAYS,
+			initialViewMode: viewModes.DAYS,
 			className: '',
 			input: true,
 			inputProps: {},
@@ -77,25 +77,35 @@ var Datetime = createClass({
 
 	getInitialState: function() {
 		var props = this.props;
-		var selectedDate = this.parseDate( props.value || props.defaultValue );
 		var inputFormat = this.getFormat('datetime');
+		var selectedDate = this.parseDate( props.value || props.initialValue, inputFormat );
 
 		this.checkTZ( props );
 
 		return {
 			open: !props.input,
-			currentView: props.dateFormat ? props.viewMode : viewMode.TIME,
-			viewDate: props.viewDate ? this.parseDate( props.viewDate ) : (selectedDate && selectedDate.isValid() ? selectedDate.clone() : this.localMoment()),
+			currentView: props.dateFormat ? props.initialViewMode : viewModes.TIME,
+			viewDate: props.initialViewDate ? this.parseDate( props.initialViewDate, inputFormat  ) : (selectedDate && selectedDate.isValid() ? selectedDate.clone() : this.getInitialDate() ),
 			selectedDate: selectedDate && selectedDate.isValid() ? selectedDate : undefined,
-			inputValue: props.inputProps.value || selectedDate && selectedDate.isValid() && selectedDate.format( inputFormat ) || ''
+			inputValue: props.inputProps.value || 
+				selectedDate && selectedDate.isValid() && selectedDate.format( inputFormat ) ||
+				props.value && typeof props.value === 'string' && props.value ||
+				props.initialValue && typeof props.initialValue === 'string' && props.initialValue ||
+				''
 		}
 	},
 
-	parseDate: function (date, formats) {
+	getInitialDate: function() {
+		var m = this.localMoment();
+		m.hour(0).minute(0).second(0).millisecond(0);
+		return m;
+	},
+
+	parseDate: function (date, dateFormat) {
 		var parsedDate;
 
 		if (date && typeof date === 'string')
-			parsedDate = this.localMoment(date, formats.datetime);
+			parsedDate = this.localMoment(date, dateFormat);
 		else if (date)
 			parsedDate = this.localMoment(date);
 
@@ -242,7 +252,12 @@ var Datetime = createClass({
 	
 			// Subtracting is just adding negative time
 			viewDate.add( modifier, unit );
-			me.props[ modifier > 0 ? 'onNavigateForward' : 'onNavigateBack']( modifier, unit );
+			if( modifier > 0 ){
+				me.props.onNavigateForward( modifier, unit );
+			}
+			else {
+				me.props.onNavigateBack( -(modifier), unit );
+			}
 	
 			me.setState( update );
 		}
@@ -357,17 +372,68 @@ var Datetime = createClass({
 		return cn;
 	},
 
+	componentDidUpdate: function( prevProps ){
+		if( prevProps === this.props ) return;
+
+		var needsUpdate = false;
+		var thisProps = this.props;
+		['locale', 'utc', 'displayZone'].forEach( function(p){
+			prevProps[p] !== thisProps[p] && (needsUpdate = true);
+		})
+
+		if( needsUpdate ){
+			this.regenerateDates( this.props );
+		}
+
+		this.checkTZ();
+	},
+
+	regenerateDates: function(props){
+		var viewDate = this.state.viewDate.clone();
+		var selectedDate = this.state.selectedDate && this.state.selectedDate.clone();
+
+		if( props.utc ){
+			viewDate.utc();
+			selectedDate &&	selectedDate.utc();
+		}
+		else if( props.displayTimeZone ){
+			viewDate.tz( props.displayTimeZone );
+			selectedDate &&	selectedDate.tz( props.displayTimeZone );
+		}
+		else {
+			viewDate.local();
+			selectedDate &&	selectedDate.local();
+		}
+
+		var update = { viewDate: viewDate, selectedDate: selectedDate};
+		if( selectedDate && selectedDate.isValid() ){
+			update.inputValue = selectedDate.format( this.getFormat('datetime') );
+		}
+		
+		this.setState( update );
+	},
+
+	getSelectedDate: function(){
+		if( this.props.value === undefined ) return this.state.selectedDate;
+		var selectedDate = this.parseDate( this.props.value, this.getFormat('datetime') );
+		return selectedDate && selectedDate.isValid() ? selectedDate : false;
+	},
+
+	getInputValue: function(){
+		var selectedDate = this.getSelectedDate();
+		return selectedDate ? selectedDate.format( this.getFormat('datetime') ) : this.state.inputValue;
+	},
+
 	render: function() {
 		var cn = this.getClassName();
 		var children = [];
 
 		if ( this.props.input ) {
 			var finalInputProps = assign(
-				{ type: 'text', className: 'form-control', value: this.state.inputValue },
+				{ type: 'text', className: 'form-control', value: this.getInputValue() },
 				this.props.inputProps,
 				{
-					onClick: this.overrideEvent( 'onClick', this.openCalendar ),
-					onOpen: this.overrideEvent( 'onOpen', this.openCalendar ),
+					onFocus: this.overrideEvent( 'onOpen', this.openCalendar ),
 					onChange: this.overrideEvent( 'onChange', this.onInputChange ),
 					onKeyDown: this.overrideEvent( 'onKeyDown', this.onInputKey ),
 				}
@@ -394,7 +460,7 @@ var Datetime = createClass({
 
 		var props = {
 			viewDate: state.viewDate,
-			selectedDate: state.selectedDate,
+			selectedDate: this.getSelectedDate(),
 			isValidDate: p.isValidDate,
 			updateDate: this.updateDate,
 			navigate: this.navigate,
