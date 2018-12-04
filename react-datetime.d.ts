@@ -1,6 +1,7 @@
 // Type definitions for react-datetime
 // Project: https://github.com/YouCanBookMe/react-datetime
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
+//     Updates by: Javier Marquez <javi@arqex.com>
 
 // These are the typings for Typescript 1.8
 // for Typescript 2.0+ see DateTime.d.ts
@@ -71,14 +72,14 @@ declare module ReactDatetime {
     /*
      Callback trigger for when the user opens the datepicker.
      */
-    onFocus?: () => void;
+    onOpen?: () => void;
     /*
-     Callback trigger for when the user clicks outside of the input, simulating a regular onBlur.
+     Callback trigger for when the datepicker is closed.
      The callback receives the selected `moment` object as only parameter, if the date in the input
      is valid. If the date in the input is not valid, the callback receives the value of the
      input (a string).
      */
-    onBlur?: (momentOrInputString : string|any) => void;
+    onClose?: (momentOrInputString : string|any) => void;
     /*
      Callback trigger when the view mode changes. The callback receives the selected view mode
      string ('years', 'months', 'days', 'time') as only parameter.
@@ -111,7 +112,7 @@ declare module ReactDatetime {
      (a function which opens the calendar) and the default calculated props for the input.
      Must return a React component or null.
      */
-    renderInput?: (props: Object, openCalendar: Function) => React.Component<any, any>;
+    renderInput?: (props: Object, openCalendar: Function, closeCalendar: Function) => React.Component<any, any>;
     /*
      Define the dates that can be selected. The function receives (currentDate, selectedDate)
      and should return a true or false whether the currentDate is valid or not. See selectable dates.
@@ -153,10 +154,9 @@ declare module ReactDatetime {
     */
     timeConstraints?: Object;
     /*
-     When true, keep the picker open when click event is triggered outside of component. When false,
-     close it.
-    */
-    disableOnClickOutside?: boolean;
+     When true the picker get closed when clicking outside of the calendar or the input box. When false, it stays open.
+     */
+    closeOnClickOutside?: boolean;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {

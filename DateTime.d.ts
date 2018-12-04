@@ -2,7 +2,8 @@
 // Project: https://github.com/YouCanBookMe/react-datetime
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
 //     Updates by: Aaron Spaulding <aaron@sachimp.com>,
-//                 Karol Janyst <http://github.com/LKay>
+//                 Karol Janyst <http://github.com/LKay>,
+//                 Javier Marquez <javi@arqex.com>
 
 import { Component, ChangeEvent, FocusEvent, FocusEventHandler } from "react";
 import { Moment } from "moment";
@@ -90,14 +91,14 @@ declare namespace ReactDatetimeClass {
         /*
          Callback trigger for when the user opens the datepicker.
          */
-        onFocus?: FocusEventHandler<any>;
+        onOpen?: FocusEventHandler<any>;
         /*
-         Callback trigger for when the user clicks outside of the input, simulating a regular onBlur.
+         Callback trigger for when the datepicker is closed.
          The callback receives the selected `moment` object as only parameter, if the date in the input
          is valid. If the date in the input is not valid, the callback receives the value of the
          input (a string).
          */
-        onBlur?: EventOrValueHandler<FocusEvent<any>>;
+        onClose?: EventOrValueHandler<FocusEvent<any>>;
         /*
          Callback trigger when the view mode changes. The callback receives the selected view mode
          string ('years', 'months', 'days', 'time') as only parameter.
@@ -151,6 +152,12 @@ declare namespace ReactDatetimeClass {
          */
         renderYear?: (props: any, year: number, selectedDate: any) => JSX.Element;
         /*
+         Replace the rendering of the input element. The accepted function has openCalendar
+         (a function which opens the calendar) and the default calculated props for the input.
+         Must return a React component or null.
+         */
+        renderInput?: (props: any, openCalendar: Function, closeCalendar: Function) => JSX.Element;
+        /*
          Whether to use moment's strict parsing when parsing input.
          */
         strictParsing?: boolean;
@@ -166,10 +173,9 @@ declare namespace ReactDatetimeClass {
          */
         timeConstraints?: TimeConstraints;
         /*
-         When true, keep the picker open when click event is triggered outside of component. When false,
-         close it.
+         When true the picker get closed when clicking outside of the calendar or the input box. When false, it stays open.
          */
-        disableOnClickOutside?: boolean;
+        closeOnClickOutside?: boolean;
     }
 
     export interface DatetimepickerState {

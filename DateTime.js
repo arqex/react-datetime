@@ -283,7 +283,7 @@ var Datetime = createClass({
 	handleClickOutside: function() {
 		var props = this.props;
 
-		if ( props.input && props.open === undefined && !this.state.open && props.closeOnClickOutside ) {
+		if ( props.input && this.state.open && props.open === undefined && props.closeOnClickOutside ) {
 			this.closeCalendar();
 		}
 	},

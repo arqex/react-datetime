@@ -1,5 +1,5 @@
 /*
-react-datetime v3.0.0-alpha.1
+react-datetime v3.0.0-alpha.3
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -344,7 +344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		handleClickOutside: function() {
 			var props = this.props;
 
-			if ( props.input && props.open === undefined && !this.state.open && props.closeOnClickOutside ) {
+			if ( props.input && this.state.open && props.open === undefined && props.closeOnClickOutside ) {
 				this.closeCalendar();
 			}
 		},

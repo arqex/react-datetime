@@ -60,7 +60,7 @@ const TEST_BOOLEAN_PROPS: JSX.Element = <ReactDatetime
 		open={ false }
 		strictParsing={ false }
 		closeOnSelect={ false }
-		disableOnClickOutside={ false }
+		closeOnClickOutside={ false }
 		utc={ false }
 	/>;
 
@@ -92,10 +92,10 @@ const TEST_INPUT_PROPS: JSX.Element = <ReactDatetime
  		onChange={
  			(momentOrInputString:string) => {}
  		}
-		onFocus={
+		onOpen={
 			() => {}
 		}
-		onBlur={
+		onClose={
 			(momentOrInputString:string) => {}
 		}
 		onViewModeChange={
@@ -107,7 +107,7 @@ const TEST_EVENT_HANDLERS_WITH_MOMENT: JSX.Element = <ReactDatetime
 		onChange={
 			(momentOrInputString:Moment) => {}
 		}
-		onBlur={
+		onClose={
 			(momentOrInputString:Moment) => {}
 		}
 	/>;
@@ -145,6 +145,9 @@ const TEST_CUSTOMIZABLE_COMPONENT_PROPS: JSX.Element = <ReactDatetime
 		renderYear={ (props: any, year: any, selectedDate: any) => {
 			return <td {...props}>{ year % 100 }</td>;
 		} }
+		renderInput={ (props: any, openCalendar: Function, closeCalendar: Function) => {
+			return <input {...props} />
+		}}
 	/>;
 
 /*
