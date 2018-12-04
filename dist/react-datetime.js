@@ -1,5 +1,5 @@
 /*
-react-datetime v3.0.0-alpha.3
+react-datetime v3.0.0-alpha.4
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -438,7 +438,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			var needsUpdate = false;
 			var thisProps = this.props;
-			['locale', 'utc', 'displayZone'].forEach( function(p){
+			['locale', 'utc', 'displayZone', 'dateFormat', 'timeFormat'].forEach( function(p){
 				prevProps[p] !== thisProps[p] && (needsUpdate = true);
 			})
 
@@ -446,7 +446,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				this.regenerateDates( this.props );
 			}
 
-			this.checkTZ();
+			this.checkTZ( this.props );
 		},
 
 		regenerateDates: function(props){
