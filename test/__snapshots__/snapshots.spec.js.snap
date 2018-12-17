@@ -95,7 +95,6 @@ exports[`dateFormat set to true 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -793,7 +792,6 @@ exports[`input input: set to true 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -1146,7 +1144,6 @@ exports[`inputProps with className specified 1`] = `
   <input
     className="arbitrary-className"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -1500,7 +1497,6 @@ exports[`inputProps with disabled specified 1`] = `
     className="form-control"
     disabled={true}
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -1854,7 +1850,6 @@ exports[`inputProps with name specified 1`] = `
     className="form-control"
     name="arbitrary-name"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -2207,7 +2202,6 @@ exports[`inputProps with placeholder specified 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     placeholder="arbitrary-placeholder"
@@ -2561,7 +2555,6 @@ exports[`inputProps with required specified 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     required={true}
@@ -2915,7 +2908,6 @@ exports[`open set to false 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -3268,7 +3260,6 @@ exports[`open set to true 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -3621,7 +3612,6 @@ exports[`test className: set to arbitraty value 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -3974,11 +3964,10 @@ exports[`test defaultValue: set to arbitrary value 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
-    value="12/22/2016 12:36 AM" />
+    value="" />
   <div
     className="rdtPicker">
     <div
@@ -4198,7 +4187,7 @@ exports[`test defaultValue: set to arbitrary value 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtActive rdtToday"
+              className="rdtDay rdtToday"
               data-value={22}
               onClick={[Function]}>
               22
@@ -4311,7 +4300,7 @@ exports[`test defaultValue: set to arbitrary value 1`] = `
               className="rdtTimeToggle"
               colSpan={7}
               onClick={[Function]}>
-              12:36 AM
+              12:00 AM
             </td>
           </tr>
         </tfoot>
@@ -4327,7 +4316,6 @@ exports[`test everything default: renders correctly 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -4680,7 +4668,6 @@ exports[`test isValidDate: only valid if after yesterday 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -5008,7 +4995,6 @@ exports[`test renderDay: specified 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -5361,7 +5347,6 @@ exports[`test renderMonth: specified 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -5714,7 +5699,6 @@ exports[`test renderYear: specified 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -6067,11 +6051,10 @@ exports[`test value: set to arbitrary value 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
-    value="12/22/2016 12:36 AM" />
+    value="" />
   <div
     className="rdtPicker">
     <div
@@ -6291,7 +6274,7 @@ exports[`test value: set to arbitrary value 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtActive rdtToday"
+              className="rdtDay rdtToday"
               data-value={22}
               onClick={[Function]}>
               22
@@ -6404,7 +6387,7 @@ exports[`test value: set to arbitrary value 1`] = `
               className="rdtTimeToggle"
               colSpan={7}
               onClick={[Function]}>
-              12:36 AM
+              12:00 AM
             </td>
           </tr>
         </tfoot>
@@ -6420,7 +6403,6 @@ exports[`timeFormat set to false 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -6763,7 +6745,6 @@ exports[`timeFormat set to true 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -7116,7 +7097,6 @@ exports[`viewMode set to days 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -7469,7 +7449,6 @@ exports[`viewMode set to months 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -7477,7 +7456,7 @@ exports[`viewMode set to months 1`] = `
   <div
     className="rdtPicker">
     <div
-      className="rdtMonths">
+      className="rdtDays">
       <table>
         <thead>
           <tr>
@@ -7490,10 +7469,10 @@ exports[`viewMode set to months 1`] = `
             </th>
             <th
               className="rdtSwitch"
-              colSpan={2}
-              data-value={2016}
+              colSpan={5}
+              data-value={11}
               onClick={[Function]}>
-              2016
+              December 2016
             </th>
             <th
               className="rdtNext"
@@ -7503,89 +7482,313 @@ exports[`viewMode set to months 1`] = `
               </span>
             </th>
           </tr>
+          <tr>
+            <th
+              className="dow">
+              Su
+            </th>
+            <th
+              className="dow">
+              Mo
+            </th>
+            <th
+              className="dow">
+              Tu
+            </th>
+            <th
+              className="dow">
+              We
+            </th>
+            <th
+              className="dow">
+              Th
+            </th>
+            <th
+              className="dow">
+              Fr
+            </th>
+            <th
+              className="dow">
+              Sa
+            </th>
+          </tr>
         </thead>
-      </table>
-      <table>
         <tbody>
           <tr>
             <td
-              className="rdtMonth"
-              data-value={0}
+              className="rdtDay rdtOld"
+              data-value={27}
               onClick={[Function]}>
-              Jan
+              27
             </td>
             <td
-              className="rdtMonth"
+              className="rdtDay rdtOld"
+              data-value={28}
+              onClick={[Function]}>
+              28
+            </td>
+            <td
+              className="rdtDay rdtOld"
+              data-value={29}
+              onClick={[Function]}>
+              29
+            </td>
+            <td
+              className="rdtDay rdtOld"
+              data-value={30}
+              onClick={[Function]}>
+              30
+            </td>
+            <td
+              className="rdtDay"
               data-value={1}
               onClick={[Function]}>
-              Feb
+              1
             </td>
             <td
-              className="rdtMonth"
+              className="rdtDay"
               data-value={2}
               onClick={[Function]}>
-              Mar
+              2
             </td>
             <td
-              className="rdtMonth"
+              className="rdtDay"
               data-value={3}
               onClick={[Function]}>
-              Apr
+              3
             </td>
           </tr>
           <tr>
             <td
-              className="rdtMonth"
+              className="rdtDay"
               data-value={4}
               onClick={[Function]}>
-              May
+              4
             </td>
             <td
-              className="rdtMonth"
+              className="rdtDay"
               data-value={5}
               onClick={[Function]}>
-              Jun
+              5
             </td>
             <td
-              className="rdtMonth"
+              className="rdtDay"
               data-value={6}
               onClick={[Function]}>
-              Jul
+              6
             </td>
             <td
-              className="rdtMonth"
+              className="rdtDay"
               data-value={7}
               onClick={[Function]}>
-              Aug
+              7
+            </td>
+            <td
+              className="rdtDay"
+              data-value={8}
+              onClick={[Function]}>
+              8
+            </td>
+            <td
+              className="rdtDay"
+              data-value={9}
+              onClick={[Function]}>
+              9
+            </td>
+            <td
+              className="rdtDay"
+              data-value={10}
+              onClick={[Function]}>
+              10
             </td>
           </tr>
           <tr>
             <td
-              className="rdtMonth"
-              data-value={8}
-              onClick={[Function]}>
-              Sep
-            </td>
-            <td
-              className="rdtMonth"
-              data-value={9}
-              onClick={[Function]}>
-              Oct
-            </td>
-            <td
-              className="rdtMonth"
-              data-value={10}
-              onClick={[Function]}>
-              Nov
-            </td>
-            <td
-              className="rdtMonth"
+              className="rdtDay"
               data-value={11}
               onClick={[Function]}>
-              Dec
+              11
+            </td>
+            <td
+              className="rdtDay"
+              data-value={12}
+              onClick={[Function]}>
+              12
+            </td>
+            <td
+              className="rdtDay"
+              data-value={13}
+              onClick={[Function]}>
+              13
+            </td>
+            <td
+              className="rdtDay"
+              data-value={14}
+              onClick={[Function]}>
+              14
+            </td>
+            <td
+              className="rdtDay"
+              data-value={15}
+              onClick={[Function]}>
+              15
+            </td>
+            <td
+              className="rdtDay"
+              data-value={16}
+              onClick={[Function]}>
+              16
+            </td>
+            <td
+              className="rdtDay"
+              data-value={17}
+              onClick={[Function]}>
+              17
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay"
+              data-value={18}
+              onClick={[Function]}>
+              18
+            </td>
+            <td
+              className="rdtDay"
+              data-value={19}
+              onClick={[Function]}>
+              19
+            </td>
+            <td
+              className="rdtDay"
+              data-value={20}
+              onClick={[Function]}>
+              20
+            </td>
+            <td
+              className="rdtDay"
+              data-value={21}
+              onClick={[Function]}>
+              21
+            </td>
+            <td
+              className="rdtDay rdtToday"
+              data-value={22}
+              onClick={[Function]}>
+              22
+            </td>
+            <td
+              className="rdtDay"
+              data-value={23}
+              onClick={[Function]}>
+              23
+            </td>
+            <td
+              className="rdtDay"
+              data-value={24}
+              onClick={[Function]}>
+              24
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay"
+              data-value={25}
+              onClick={[Function]}>
+              25
+            </td>
+            <td
+              className="rdtDay"
+              data-value={26}
+              onClick={[Function]}>
+              26
+            </td>
+            <td
+              className="rdtDay"
+              data-value={27}
+              onClick={[Function]}>
+              27
+            </td>
+            <td
+              className="rdtDay"
+              data-value={28}
+              onClick={[Function]}>
+              28
+            </td>
+            <td
+              className="rdtDay"
+              data-value={29}
+              onClick={[Function]}>
+              29
+            </td>
+            <td
+              className="rdtDay"
+              data-value={30}
+              onClick={[Function]}>
+              30
+            </td>
+            <td
+              className="rdtDay"
+              data-value={31}
+              onClick={[Function]}>
+              31
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay rdtNew"
+              data-value={1}
+              onClick={[Function]}>
+              1
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={2}
+              onClick={[Function]}>
+              2
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={3}
+              onClick={[Function]}>
+              3
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={4}
+              onClick={[Function]}>
+              4
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={5}
+              onClick={[Function]}>
+              5
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={6}
+              onClick={[Function]}>
+              6
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={7}
+              onClick={[Function]}>
+              7
             </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td
+              className="rdtTimeToggle"
+              colSpan={7}
+              onClick={[Function]}>
+              12:00 AM
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>
@@ -7598,7 +7801,6 @@ exports[`viewMode set to time 1`] = `
   <input
     className="form-control"
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="text"
@@ -7606,109 +7808,7 @@ exports[`viewMode set to time 1`] = `
   <div
     className="rdtPicker">
     <div
-      className="rdtTime">
-      <table>
-        <thead>
-          <tr>
-            <th
-              className="rdtSwitch"
-              colSpan={4}
-              onClick={[Function]}>
-              12/01/2016
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div
-                className="rdtCounters">
-                <div
-                  className="rdtCounter">
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▲
-                  </span>
-                  <div
-                    className="rdtCount">
-                    12
-                  </div>
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▼
-                  </span>
-                </div>
-                <div
-                  className="rdtCounterSeparator">
-                  :
-                </div>
-                <div
-                  className="rdtCounter">
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▲
-                  </span>
-                  <div
-                    className="rdtCount">
-                    00
-                  </div>
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▼
-                  </span>
-                </div>
-                <div
-                  className="rdtCounter">
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▲
-                  </span>
-                  <div
-                    className="rdtCount">
-                    AM
-                  </div>
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▼
-                  </span>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`viewMode set to years 1`] = `
-<div
-  className="rdt">
-  <input
-    className="form-control"
-    onChange={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    type="text"
-    value="" />
-  <div
-    className="rdtPicker">
-    <div
-      className="rdtYears">
+      className="rdtDays">
       <table>
         <thead>
           <tr>
@@ -7721,9 +7821,10 @@ exports[`viewMode set to years 1`] = `
             </th>
             <th
               className="rdtSwitch"
-              colSpan={2}
+              colSpan={5}
+              data-value={11}
               onClick={[Function]}>
-              2010-2019
+              December 2016
             </th>
             <th
               className="rdtNext"
@@ -7733,89 +7834,665 @@ exports[`viewMode set to years 1`] = `
               </span>
             </th>
           </tr>
+          <tr>
+            <th
+              className="dow">
+              Su
+            </th>
+            <th
+              className="dow">
+              Mo
+            </th>
+            <th
+              className="dow">
+              Tu
+            </th>
+            <th
+              className="dow">
+              We
+            </th>
+            <th
+              className="dow">
+              Th
+            </th>
+            <th
+              className="dow">
+              Fr
+            </th>
+            <th
+              className="dow">
+              Sa
+            </th>
+          </tr>
         </thead>
-      </table>
-      <table>
         <tbody>
           <tr>
             <td
-              className="rdtYear"
-              data-value={2009}
+              className="rdtDay rdtOld"
+              data-value={27}
               onClick={[Function]}>
-              2009
+              27
             </td>
             <td
-              className="rdtYear"
-              data-value={2010}
+              className="rdtDay rdtOld"
+              data-value={28}
               onClick={[Function]}>
-              2010
+              28
             </td>
             <td
-              className="rdtYear"
-              data-value={2011}
+              className="rdtDay rdtOld"
+              data-value={29}
               onClick={[Function]}>
-              2011
+              29
             </td>
             <td
-              className="rdtYear"
-              data-value={2012}
+              className="rdtDay rdtOld"
+              data-value={30}
               onClick={[Function]}>
-              2012
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtYear"
-              data-value={2013}
-              onClick={[Function]}>
-              2013
+              30
             </td>
             <td
-              className="rdtYear"
-              data-value={2014}
+              className="rdtDay"
+              data-value={1}
               onClick={[Function]}>
-              2014
+              1
             </td>
             <td
-              className="rdtYear"
-              data-value={2015}
+              className="rdtDay"
+              data-value={2}
               onClick={[Function]}>
-              2015
+              2
             </td>
             <td
-              className="rdtYear"
-              data-value={2016}
+              className="rdtDay"
+              data-value={3}
               onClick={[Function]}>
-              2016
+              3
             </td>
           </tr>
           <tr>
             <td
-              className="rdtYear"
-              data-value={2017}
+              className="rdtDay"
+              data-value={4}
               onClick={[Function]}>
-              2017
+              4
             </td>
             <td
-              className="rdtYear"
-              data-value={2018}
+              className="rdtDay"
+              data-value={5}
               onClick={[Function]}>
-              2018
+              5
             </td>
             <td
-              className="rdtYear"
-              data-value={2019}
+              className="rdtDay"
+              data-value={6}
               onClick={[Function]}>
-              2019
+              6
             </td>
             <td
-              className="rdtYear"
-              data-value={2020}
+              className="rdtDay"
+              data-value={7}
               onClick={[Function]}>
-              2020
+              7
+            </td>
+            <td
+              className="rdtDay"
+              data-value={8}
+              onClick={[Function]}>
+              8
+            </td>
+            <td
+              className="rdtDay"
+              data-value={9}
+              onClick={[Function]}>
+              9
+            </td>
+            <td
+              className="rdtDay"
+              data-value={10}
+              onClick={[Function]}>
+              10
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay"
+              data-value={11}
+              onClick={[Function]}>
+              11
+            </td>
+            <td
+              className="rdtDay"
+              data-value={12}
+              onClick={[Function]}>
+              12
+            </td>
+            <td
+              className="rdtDay"
+              data-value={13}
+              onClick={[Function]}>
+              13
+            </td>
+            <td
+              className="rdtDay"
+              data-value={14}
+              onClick={[Function]}>
+              14
+            </td>
+            <td
+              className="rdtDay"
+              data-value={15}
+              onClick={[Function]}>
+              15
+            </td>
+            <td
+              className="rdtDay"
+              data-value={16}
+              onClick={[Function]}>
+              16
+            </td>
+            <td
+              className="rdtDay"
+              data-value={17}
+              onClick={[Function]}>
+              17
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay"
+              data-value={18}
+              onClick={[Function]}>
+              18
+            </td>
+            <td
+              className="rdtDay"
+              data-value={19}
+              onClick={[Function]}>
+              19
+            </td>
+            <td
+              className="rdtDay"
+              data-value={20}
+              onClick={[Function]}>
+              20
+            </td>
+            <td
+              className="rdtDay"
+              data-value={21}
+              onClick={[Function]}>
+              21
+            </td>
+            <td
+              className="rdtDay rdtToday"
+              data-value={22}
+              onClick={[Function]}>
+              22
+            </td>
+            <td
+              className="rdtDay"
+              data-value={23}
+              onClick={[Function]}>
+              23
+            </td>
+            <td
+              className="rdtDay"
+              data-value={24}
+              onClick={[Function]}>
+              24
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay"
+              data-value={25}
+              onClick={[Function]}>
+              25
+            </td>
+            <td
+              className="rdtDay"
+              data-value={26}
+              onClick={[Function]}>
+              26
+            </td>
+            <td
+              className="rdtDay"
+              data-value={27}
+              onClick={[Function]}>
+              27
+            </td>
+            <td
+              className="rdtDay"
+              data-value={28}
+              onClick={[Function]}>
+              28
+            </td>
+            <td
+              className="rdtDay"
+              data-value={29}
+              onClick={[Function]}>
+              29
+            </td>
+            <td
+              className="rdtDay"
+              data-value={30}
+              onClick={[Function]}>
+              30
+            </td>
+            <td
+              className="rdtDay"
+              data-value={31}
+              onClick={[Function]}>
+              31
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay rdtNew"
+              data-value={1}
+              onClick={[Function]}>
+              1
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={2}
+              onClick={[Function]}>
+              2
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={3}
+              onClick={[Function]}>
+              3
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={4}
+              onClick={[Function]}>
+              4
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={5}
+              onClick={[Function]}>
+              5
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={6}
+              onClick={[Function]}>
+              6
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={7}
+              onClick={[Function]}>
+              7
             </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td
+              className="rdtTimeToggle"
+              colSpan={7}
+              onClick={[Function]}>
+              12:00 AM
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`viewMode set to years 1`] = `
+<div
+  className="rdt">
+  <input
+    className="form-control"
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    type="text"
+    value="" />
+  <div
+    className="rdtPicker">
+    <div
+      className="rdtDays">
+      <table>
+        <thead>
+          <tr>
+            <th
+              className="rdtPrev"
+              onClick={[Function]}>
+              <span>
+                ‹
+              </span>
+            </th>
+            <th
+              className="rdtSwitch"
+              colSpan={5}
+              data-value={11}
+              onClick={[Function]}>
+              December 2016
+            </th>
+            <th
+              className="rdtNext"
+              onClick={[Function]}>
+              <span>
+                ›
+              </span>
+            </th>
+          </tr>
+          <tr>
+            <th
+              className="dow">
+              Su
+            </th>
+            <th
+              className="dow">
+              Mo
+            </th>
+            <th
+              className="dow">
+              Tu
+            </th>
+            <th
+              className="dow">
+              We
+            </th>
+            <th
+              className="dow">
+              Th
+            </th>
+            <th
+              className="dow">
+              Fr
+            </th>
+            <th
+              className="dow">
+              Sa
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              className="rdtDay rdtOld"
+              data-value={27}
+              onClick={[Function]}>
+              27
+            </td>
+            <td
+              className="rdtDay rdtOld"
+              data-value={28}
+              onClick={[Function]}>
+              28
+            </td>
+            <td
+              className="rdtDay rdtOld"
+              data-value={29}
+              onClick={[Function]}>
+              29
+            </td>
+            <td
+              className="rdtDay rdtOld"
+              data-value={30}
+              onClick={[Function]}>
+              30
+            </td>
+            <td
+              className="rdtDay"
+              data-value={1}
+              onClick={[Function]}>
+              1
+            </td>
+            <td
+              className="rdtDay"
+              data-value={2}
+              onClick={[Function]}>
+              2
+            </td>
+            <td
+              className="rdtDay"
+              data-value={3}
+              onClick={[Function]}>
+              3
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay"
+              data-value={4}
+              onClick={[Function]}>
+              4
+            </td>
+            <td
+              className="rdtDay"
+              data-value={5}
+              onClick={[Function]}>
+              5
+            </td>
+            <td
+              className="rdtDay"
+              data-value={6}
+              onClick={[Function]}>
+              6
+            </td>
+            <td
+              className="rdtDay"
+              data-value={7}
+              onClick={[Function]}>
+              7
+            </td>
+            <td
+              className="rdtDay"
+              data-value={8}
+              onClick={[Function]}>
+              8
+            </td>
+            <td
+              className="rdtDay"
+              data-value={9}
+              onClick={[Function]}>
+              9
+            </td>
+            <td
+              className="rdtDay"
+              data-value={10}
+              onClick={[Function]}>
+              10
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay"
+              data-value={11}
+              onClick={[Function]}>
+              11
+            </td>
+            <td
+              className="rdtDay"
+              data-value={12}
+              onClick={[Function]}>
+              12
+            </td>
+            <td
+              className="rdtDay"
+              data-value={13}
+              onClick={[Function]}>
+              13
+            </td>
+            <td
+              className="rdtDay"
+              data-value={14}
+              onClick={[Function]}>
+              14
+            </td>
+            <td
+              className="rdtDay"
+              data-value={15}
+              onClick={[Function]}>
+              15
+            </td>
+            <td
+              className="rdtDay"
+              data-value={16}
+              onClick={[Function]}>
+              16
+            </td>
+            <td
+              className="rdtDay"
+              data-value={17}
+              onClick={[Function]}>
+              17
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay"
+              data-value={18}
+              onClick={[Function]}>
+              18
+            </td>
+            <td
+              className="rdtDay"
+              data-value={19}
+              onClick={[Function]}>
+              19
+            </td>
+            <td
+              className="rdtDay"
+              data-value={20}
+              onClick={[Function]}>
+              20
+            </td>
+            <td
+              className="rdtDay"
+              data-value={21}
+              onClick={[Function]}>
+              21
+            </td>
+            <td
+              className="rdtDay rdtToday"
+              data-value={22}
+              onClick={[Function]}>
+              22
+            </td>
+            <td
+              className="rdtDay"
+              data-value={23}
+              onClick={[Function]}>
+              23
+            </td>
+            <td
+              className="rdtDay"
+              data-value={24}
+              onClick={[Function]}>
+              24
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay"
+              data-value={25}
+              onClick={[Function]}>
+              25
+            </td>
+            <td
+              className="rdtDay"
+              data-value={26}
+              onClick={[Function]}>
+              26
+            </td>
+            <td
+              className="rdtDay"
+              data-value={27}
+              onClick={[Function]}>
+              27
+            </td>
+            <td
+              className="rdtDay"
+              data-value={28}
+              onClick={[Function]}>
+              28
+            </td>
+            <td
+              className="rdtDay"
+              data-value={29}
+              onClick={[Function]}>
+              29
+            </td>
+            <td
+              className="rdtDay"
+              data-value={30}
+              onClick={[Function]}>
+              30
+            </td>
+            <td
+              className="rdtDay"
+              data-value={31}
+              onClick={[Function]}>
+              31
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="rdtDay rdtNew"
+              data-value={1}
+              onClick={[Function]}>
+              1
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={2}
+              onClick={[Function]}>
+              2
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={3}
+              onClick={[Function]}>
+              3
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={4}
+              onClick={[Function]}>
+              4
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={5}
+              onClick={[Function]}>
+              5
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={6}
+              onClick={[Function]}>
+              6
+            </td>
+            <td
+              className="rdtDay rdtNew"
+              data-value={7}
+              onClick={[Function]}>
+              7
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td
+              className="rdtTimeToggle"
+              colSpan={7}
+              onClick={[Function]}>
+              12:00 AM
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>

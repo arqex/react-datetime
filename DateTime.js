@@ -62,7 +62,6 @@ var Datetime = createClass({
 			dateFormat: true,
 			timeFormat: true,
 			utc: false,
-			initialViewMode: viewModes.DAYS,
 			className: '',
 			input: true,
 			inputProps: {},
@@ -84,7 +83,7 @@ var Datetime = createClass({
 
 		return {
 			open: !props.input,
-			currentView: props.dateFormat ? props.initialViewMode : viewModes.TIME,
+			currentView: props.initialViewMode || this.getUpdateOn( this.getFormat('date') ),
 			viewDate: props.initialViewDate ? this.parseDate( props.initialViewDate, inputFormat  ) : (selectedDate && selectedDate.isValid() ? selectedDate.clone() : this.getInitialDate() ),
 			selectedDate: selectedDate && selectedDate.isValid() ? selectedDate : undefined,
 			inputValue: props.inputProps.value || 
@@ -167,11 +166,11 @@ var Datetime = createClass({
 
 	onInputChange: function( e ) {
 		var value = e.target === null ? e : e.target.value,
-			localMoment = this.localMoment( value, this.state.inputFormat ),
+			localMoment = this.localMoment( value, this.getFormat('datetime') ),
 			update = { inputValue: value }
 			;
 
-		if ( localMoment.isValid() && !this.props.value ) {
+		if ( localMoment.isValid() ) {
 			update.selectedDate = localMoment;
 			update.viewDate = localMoment.clone().startOf('month');
 		} else {
@@ -389,8 +388,8 @@ var Datetime = createClass({
 	},
 
 	regenerateDates: function(props){
-		var viewDate = this.state.viewDate.clone();
-		var selectedDate = this.state.selectedDate && this.state.selectedDate.clone();
+		var viewDate = this.state.viewDate.clone().locale( props.locale );
+		var selectedDate = this.state.selectedDate && this.state.selectedDate.clone().locale( props.locale );
 
 		if( props.utc ){
 			viewDate.utc();
@@ -401,8 +400,8 @@ var Datetime = createClass({
 			selectedDate &&	selectedDate.tz( props.displayTimeZone );
 		}
 		else {
-			viewDate.local();
-			selectedDate &&	selectedDate.local();
+			viewDate.locale();
+			selectedDate &&	selectedDate.locale();
 		}
 
 		var update = { viewDate: viewDate, selectedDate: selectedDate};
