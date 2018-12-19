@@ -4,3 +4,6 @@ node_modules
 tmp
 .DS_Store
 npm-debug.log
+
+# Don't force sha validation (it differs depending on the OS)
+package-lock.json
