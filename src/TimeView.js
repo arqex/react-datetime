@@ -58,9 +58,9 @@ var DateTimePickerTime = createClass({
 				}
 			}
 			return React.createElement('div', { key: type, className: 'rdtCounter' }, [
-				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
 				React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
-				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
 			]);
 		}
 		return '';
@@ -68,9 +68,9 @@ var DateTimePickerTime = createClass({
 
 	renderDayPart: function() {
 		return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
-			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
+			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
 			React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
+			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
 		]);
 	},
 
@@ -163,13 +163,17 @@ var DateTimePickerTime = createClass({
 	onStartClicking: function( action, type ) {
 		var me = this;
 
-		return function() {
+		return function( e ) {
+			if( e && e.button && e.button !== 0 ) {
+				// Only left clicks, thanks
+				return;
+			}
+
 			var update = {};
 			update[ type ] = me[ action ]( type );
 			me.setState( update );
 
 			me.timer = setTimeout( function() {
-				clearInterval( me.increaseTimer );
 				me.increaseTimer = setInterval( function() {
 					update[ type ] = me[ action ]( type );
 					me.setState( update );
@@ -187,11 +191,6 @@ var DateTimePickerTime = createClass({
 			document.body.addEventListener( 'mouseup', me.mouseUpListener );
 			document.body.addEventListener( 'touchend', me.mouseUpListener );
 		};
-	},
-
-	disableContextMenu: function( event ) {
-		event.preventDefault();
-		return false;
 	},
 
 	padValues: {

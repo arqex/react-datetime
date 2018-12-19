@@ -22,7 +22,6 @@ exports[`dateFormat set to false 1`] = `
                   className="rdtCounter">
                   <span
                     className="rdtBtn"
-                    onContextMenu={[Function]}
                     onMouseDown={[Function]}>
                     ▲
                   </span>
@@ -32,7 +31,6 @@ exports[`dateFormat set to false 1`] = `
                   </div>
                   <span
                     className="rdtBtn"
-                    onContextMenu={[Function]}
                     onMouseDown={[Function]}>
                     ▼
                   </span>
@@ -45,7 +43,6 @@ exports[`dateFormat set to false 1`] = `
                   className="rdtCounter">
                   <span
                     className="rdtBtn"
-                    onContextMenu={[Function]}
                     onMouseDown={[Function]}>
                     ▲
                   </span>
@@ -55,7 +52,6 @@ exports[`dateFormat set to false 1`] = `
                   </div>
                   <span
                     className="rdtBtn"
-                    onContextMenu={[Function]}
                     onMouseDown={[Function]}>
                     ▼
                   </span>
@@ -64,7 +60,6 @@ exports[`dateFormat set to false 1`] = `
                   className="rdtCounter">
                   <span
                     className="rdtBtn"
-                    onContextMenu={[Function]}
                     onMouseDown={[Function]}>
                     ▲
                   </span>
@@ -74,7 +69,6 @@ exports[`dateFormat set to false 1`] = `
                   </div>
                   <span
                     className="rdtBtn"
-                    onContextMenu={[Function]}
                     onMouseDown={[Function]}>
                     ▼
                   </span>

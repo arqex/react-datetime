@@ -1,5 +1,5 @@
 /*
-react-datetime v3.0.0-alpha.5
+react-datetime v3.0.0-beta.1
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -3394,9 +3394,9 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 				}
 				return React.createElement('div', { key: type, className: 'rdtCounter' }, [
-					React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
+					React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ) }, '▲' ),
 					React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
-					React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
+					React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ) }, '▼' )
 				]);
 			}
 			return '';
@@ -3404,9 +3404,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		renderDayPart: function() {
 			return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
-				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
 				React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
 			]);
 		},
 
@@ -3499,7 +3499,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		onStartClicking: function( action, type ) {
 			var me = this;
 
-			return function() {
+			return function( e ) {
+				if( e && e.button && e.button !== 0 ) {
+					// Only left clicks, thanks
+					return;
+				}
+
 				var update = {};
 				update[ type ] = me[ action ]( type );
 				me.setState( update );
@@ -3522,11 +3527,6 @@ return /******/ (function(modules) { // webpackBootstrap
 				document.body.addEventListener( 'mouseup', me.mouseUpListener );
 				document.body.addEventListener( 'touchend', me.mouseUpListener );
 			};
-		},
-
-		disableContextMenu: function( event ) {
-			event.preventDefault();
-			return false;
 		},
 
 		padValues: {
