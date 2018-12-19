@@ -169,6 +169,7 @@ var DateTimePickerTime = createClass({
 			me.setState( update );
 
 			me.timer = setTimeout( function() {
+				clearInterval( me.increaseTimer );
 				me.increaseTimer = setInterval( function() {
 					update[ type ] = me[ action ]( type );
 					me.setState( update );
