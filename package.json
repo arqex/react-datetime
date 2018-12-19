@@ -22,12 +22,12 @@
     "dev": "./node_modules/.bin/webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
     "lint": "./node_modules/.bin/eslint src/ DateTime.js test/ && echo 'Linting OK! 💪'",
     "notify-pre-commit-hook": "echo '### Starting pre-commit hook 🦄'",
-    "test": "./node_modules/.bin/jest",
-    "test:typings": "./node_modules/.bin/tsc -p ./typings",
-    "test:snapshot": "./node_modules/.bin/jest snapshot",
-    "test:snapshot:update": "./node_modules/.bin/jest snapshot --updateSnapshot",
+    "test": "node ./node_modules/jest/bin/jest.js",
+    "test:typings": "node ./node_modules/typescript/bin/tsc -p ./typings",
+    "test:snapshot": "node ./node_modules/jest/bin/jest.js snapshot",
+    "test:snapshot:update": "node ./node_modules/jest/bin/jest.js snapshot --updateSnapshot",
     "test:all": "echo 'Running tests...' && npm run test:typings && npm run test && echo 'All tests passed! 🤘'",
-    "test:watch": "./node_modules/.bin/jest --watch"
+    "test:watch": "node ./node_modules/jest/bin/jest.js --watch"
   },
   "keywords": [
     "react",
@@ -65,7 +65,7 @@
     "jest": "^18.1.0",
     "jest-cli": "^18.1.0",
     "jsdom": "^7.0.2",
-    "mocha": "^3.2.0",
+    "mocha": "^5.2.0",
     "moment": ">=2.16.0",
     "moment-timezone": "^0.5.13",
     "pre-commit": "^1.1.3",
@@ -76,7 +76,6 @@
     "through2": "^2.0.3",
     "typescript": "^2.0.10",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^1.7.0",
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {

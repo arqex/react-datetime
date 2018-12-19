@@ -94,7 +94,7 @@ var Datetime = createClass({
 		}
 	},
 	
-	getInitialViewDate( propDate, selectedDate, format ){
+	getInitialViewDate: function( propDate, selectedDate, format ){
 		var viewDate
 		if( propDate ){
 			viewDate = this.parseDate( propDate, format )
