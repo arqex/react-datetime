@@ -8,11 +8,11 @@ import Adapter from 'enzyme-adapter-react-15';
 
 Enzyme.configure({adapter: new Adapter()});
 
-describe('with viewDate', () => {
+describe('with initialViewDate', () => {
     it('date value', () => {
         const date = new Date(2000, 0, 15, 2, 2, 2, 2),
             strDate = moment(date).format('MMMM YYYY'),
-            component = utils.createDatetime({viewDate: date});
+            component = utils.createDatetime({initialViewDate: date});
         expect(utils.getViewDateValue(component)).toEqual(strDate);
     });
 
@@ -20,7 +20,7 @@ describe('with viewDate', () => {
         const date = new Date(2000, 0, 15, 2, 2, 2, 2),
             mDate = moment(date),
             strDate = mDate.format('MMMM YYYY'),
-            component = utils.createDatetime({viewDate: mDate});
+            component = utils.createDatetime({initialViewDate: mDate});
         expect(utils.getViewDateValue(component)).toEqual(strDate);
     });
 
@@ -29,7 +29,7 @@ describe('with viewDate', () => {
             mDate = moment(date),
             strDate = mDate.format('L') + ' ' + mDate.format('LT'),
             expectedStrDate = mDate.format('MMMM YYYY'),
-            component = utils.createDatetime({viewDate: strDate});
+            component = utils.createDatetime({initialViewDate: strDate});
         expect(utils.getViewDateValue(component)).toEqual(expectedStrDate);
     });
 
@@ -38,33 +38,21 @@ describe('with viewDate', () => {
             momentDateUTC = moment.utc(date),
             strDateUTC = momentDateUTC.format('L') + ' ' + momentDateUTC.format('LT'),
             expectedStrDate = momentDateUTC.format('MMMM YYYY'),
-            component = utils.createDatetime({viewDate: strDateUTC, utc: true});
+            component = utils.createDatetime({initialViewDate: strDateUTC, utc: true});
         expect(utils.getViewDateValue(component)).toEqual(expectedStrDate);
     });
 
     it('invalid string value', () => {
         const strDate = 'invalid string',
             expectedStrDate = moment().format('MMMM YYYY'),
-            component = utils.createDatetime({viewDate: strDate});
+            component = utils.createDatetime({initialViewDate: strDate});
         expect(utils.getViewDateValue(component)).toEqual(expectedStrDate);
     });
 
     it('invalid moment object', () => {
         const mDate = moment(null),
             expectedStrDate = moment().format('MMMM YYYY'),
-            component = utils.createDatetime({viewDate: mDate});
+            component = utils.createDatetime({initialViewDate: mDate});
         expect(utils.getViewDateValue(component)).toEqual(expectedStrDate);
-    });
-
-    it('viewDate -> picker should change the initial month (viewMode=months)', () => {
-        const preDate = new Date(2000, 0, 15, 2, 2, 2, 2),
-            strPreDate = moment(preDate).format('MMMM YYYY'),
-            component = utils.createDatetime({viewDate: preDate});
-        expect(utils.getViewDateValue(component)).toEqual(strPreDate);
-
-        const postDate = new Date(2010, 0, 15, 2, 2, 2, 2),
-            strPostDate = moment(postDate).format('MMMM YYYY');
-        component.setProps({viewDate: postDate});
-        expect(utils.getViewDateValue(component)).toEqual(strPostDate);
     });
 });

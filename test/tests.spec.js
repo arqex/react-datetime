@@ -213,10 +213,10 @@ describe('Datetime', () => {
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 
-	it('opens picker when clicking on input', () => {
+	it('opens picker when clicking on focus', () => {
 		const component = utils.createDatetime();
 		expect(utils.isOpen(component)).toBeFalsy();
-		component.find('.form-control').simulate('click');
+		component.find('.form-control').simulate('focus');
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 

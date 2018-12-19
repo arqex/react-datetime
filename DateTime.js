@@ -83,8 +83,8 @@ var Datetime = createClass({
 
 		return {
 			open: !props.input,
-			currentView: props.initialViewMode || this.getUpdateOn( this.getFormat('date') ),
-			viewDate: props.initialViewDate ? this.parseDate( props.initialViewDate, inputFormat  ) : (selectedDate && selectedDate.isValid() ? selectedDate.clone() : this.getInitialDate() ),
+			currentView: props.initialViewMode || this.getInitialView( this.getFormat('date') ),
+			viewDate: this.getInitialViewDate( props.initialViewDate, selectedDate, inputFormat ),
 			selectedDate: selectedDate && selectedDate.isValid() ? selectedDate : undefined,
 			inputValue: props.inputProps.value || 
 				selectedDate && selectedDate.isValid() && selectedDate.format( inputFormat ) ||
@@ -93,11 +93,33 @@ var Datetime = createClass({
 				''
 		}
 	},
+	
+	getInitialViewDate( propDate, selectedDate, format ){
+		var viewDate
+		if( propDate ){
+			viewDate = this.parseDate( propDate, format )
+			if( viewDate && viewDate.isValid() ){
+				return viewDate;
+			}
+			else {
+				console.warn('react-datetime: The initialViewDated given "' + propDate + '" is not valid. Using current date instead.')
+			}
+		}
+		else if( selectedDate && selectedDate.isValid() ){
+			return selectedDate.clone();
+		}
+		return this.getInitialDate();
+	},
 
 	getInitialDate: function() {
 		var m = this.localMoment();
 		m.hour(0).minute(0).second(0).millisecond(0);
 		return m;
+	},
+
+	getInitialView: function( dateFormat ) {
+		if( !dateFormat ) return viewModes.TIME;
+		return this.getUpdateOn( dateFormat );
 	},
 
 	parseDate: function (date, dateFormat) {
@@ -388,9 +410,13 @@ var Datetime = createClass({
 	},
 
 	regenerateDates: function(props){
-		var viewDate = this.state.viewDate.clone().locale( props.locale );
-		var selectedDate = this.state.selectedDate && this.state.selectedDate.clone().locale( props.locale );
+		var viewDate = this.state.viewDate.clone();
+		var selectedDate = this.state.selectedDate && this.state.selectedDate.clone();
 
+		if( props.locale ){
+			viewDate.locale( props.locale )
+			selectedDate &&	selectedDate.locale( props.locale );
+		}
 		if( props.utc ){
 			viewDate.utc();
 			selectedDate &&	selectedDate.utc();
