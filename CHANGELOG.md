@@ -5,6 +5,8 @@ Changelog
 * `disableCloseOnClickOutside` prop is now `closeOnClickOutside` (avoid double negations).
 * `onBlur` and `onFocus` are renamed to `onClose` and `onOpen` since they had nothing to do with the blur event and it was misleading some users. If we want to listen to the input's `onBlur` and `onFocus` use `inputProps`.
 * Updated typescript definitions.
+* Time is not updated anymore on right clicks.
+* Creates `renderView` prop to customize the whole calendar.
 
 ## 2.16.2
 * Turns moment timezone peer dependency in a runtime error when missing using `displayTimezone`.

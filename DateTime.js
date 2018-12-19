@@ -21,11 +21,13 @@ var viewModes = {
 
 var TYPES = PropTypes;
 var nofn = function(){};
+var datetype = TYPES.oneOfType([ TYPES.instanceOf(moment), TYPES.instanceOf(Date), TYPES.string ]);
 var Datetime = createClass({
 	displayName: 'DateTime',
 	propTypes: {
-		// value: TYPES.object | TYPES.string,
-		// defaultValue: TYPES.object | TYPES.string,
+		value: datetype,
+		initialValue: datetype,
+		initialViewDate: datetype,
 		onOpen: TYPES.func,
 		onClose: TYPES.func,
 		onChange: TYPES.func,
@@ -36,17 +38,21 @@ var Datetime = createClass({
 		utc: TYPES.bool,
 		displayTimeZone: TYPES.string,
 		input: TYPES.bool,
-		// dateFormat: TYPES.string | TYPES.bool,
-		// timeFormat: TYPES.string | TYPES.bool,
+		dateFormat: TYPES.oneOfType([TYPES.string, TYPES.bool]),
+		timeFormat: TYPES.oneOfType([TYPES.string, TYPES.bool]),
 		inputProps: TYPES.object,
 		timeConstraints: TYPES.object,
-		// initialViewDate: TYPES.object | TYPES.string,
 		initialViewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		renderView: TYPES.func,
+		renderInput: TYPES.func,
+		renderDay: TYPES.func,
+		renderMonth: TYPES.func,
+		renderYear: TYPES.func,
 	},
 
 	getDefaultProps: function(){
@@ -70,7 +76,10 @@ var Datetime = createClass({
 			strictParsing: true,
 			closeOnSelect: false,
 			closeOnTab: true,
-			closeOnClickOutside: true
+			closeOnClickOutside: true,
+			renderView: function( viewType, renderCalendar ){
+				return renderCalendar();
+			}
 		}
 	},
 
@@ -474,7 +483,7 @@ var Datetime = createClass({
 		return React.createElement( ClickableWrapper, {className: cn, onClickOut: this.handleClickOutside}, children.concat(
 			React.createElement( 'div',
 				{ key: 'dt', className: 'rdtPicker' },
-				this.renderCalendar( this.state.currentView )
+				this.props.renderView(  this.state.currentView, this.renderCalendar.bind( this, this.state.currentView ) )
 			)
 		));
 	},

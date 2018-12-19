@@ -478,6 +478,21 @@ describe('Datetime', () => {
 			expect(component.find('.rdtYear').at(0).text()).toEqual('custom-content');
 		});
 
+		it('renderView', () => {
+			let renderView = ( viewType, renderDefault ) => {
+				return (
+					<div className="customView">
+						<span className="viewType">{ viewType }</span>
+						{ renderDefault() }
+					</div>
+				)
+			}
+			let component = utils.createDatetime({ renderView, initialViewMode: 'years', input: false } );
+			console.log( 'Find view', component.find('.viewType'));
+			expect( component.find('.viewType').text() ).toEqual('years');
+			expect( component.find('.rdtYear') ).toBeTruthy();
+		})
+
 		it('closeOnTab=true', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ value: date });
