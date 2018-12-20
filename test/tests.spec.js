@@ -213,13 +213,6 @@ describe('Datetime', () => {
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 
-	it('opens picker when clicking on focus', () => {
-		const component = utils.createDatetime();
-		expect(utils.isOpen(component)).toBeFalsy();
-		component.find('.form-control').simulate('focus');
-		expect(utils.isOpen(component)).toBeTruthy();
-	});
-
 	it('sets CSS class on selected item (day)', () => {
 		const component = utils.createDatetime({ initialViewMode: 'days' });
 		utils.openDatepicker(component);
@@ -488,9 +481,9 @@ describe('Datetime', () => {
 				)
 			}
 			let component = utils.createDatetime({ renderView, initialViewMode: 'years', input: false } );
-			console.log( 'Find view', component.find('.viewType'));
+			
 			expect( component.find('.viewType').text() ).toEqual('years');
-			expect( component.find('.rdtYear') ).toBeTruthy();
+			expect( component.find('.rdtYear').length ).not.toBe(0);
 		})
 
 		it('closeOnTab=true', () => {
@@ -1274,4 +1267,78 @@ describe('Datetime', () => {
 		});
 
 	});
+
+	describe('View navigation', () => {
+		it('The calendar must be open in the updateOnView when not initialViewModel is defined', () => {
+			const component = utils.createDatetime({ updateOnView: 'months' });
+
+			expect( component.find('.rdtMonth').length ).not.toBe(0)
+			expect( component.find('.rdtDay').length ).toBe(0)
+		})
+
+		it('The calendar must be open in the initialViewModel if it is defined', () => {
+			const component = utils.createDatetime({ updateOnView: 'months', initialViewMode: 'days' });
+
+			expect( component.find('.rdtMonth').length ).toBe(0)
+			expect( component.find('.rdtDay').length ).not.toBe(0)
+		})
+		
+		it('The calendar must be closed on select in the updateView, if closeOnSelect defined', done => {	
+
+			const component = utils.createDatetime(
+				{ updateOnView: 'months', closeOnSelect: true, input: true }
+			);
+			
+			// Race condition fix
+			setTimeout( () => {
+				utils.openDatepicker( component );
+				expect( utils.isOpen(component) ).toBeTruthy();
+				utils.clickNthMonth( component, 1 );
+				expect( utils.isOpen(component) ).toBeFalsy();
+				done();
+			});
+		})
+
+		it('The selected date must change when selecting in the updateView', done => {
+			const initialDate = new Date(2000, 6, 15, 2, 2, 2, 2);
+			const onChange = updated => {
+				expect( updated.month() ).toBe( 1 )
+				expect( updated.year() ).toBe( 2000 )
+				
+				// We shouldn't navigate when selecting in an updateView
+				expect( component.find('.rdtMonth').length ).not.toBe(0)
+				expect( component.find('.rdtDay').length ).toBe(0)
+
+				done();
+			};
+
+			const component = utils.createDatetime({
+				updateOnView: 'months', input: false, initialValue: initialDate, onChange
+			});
+			
+			utils.clickNthMonth( component, 1 );
+		})
+
+		it('If the updateView is "time" clicking on a day shouldn`t update the selected date and navigate to the time', done => {
+			const initialDate = new Date(2000, 6, 15, 2, 2, 2, 2);
+			const onChangeFn = jest.fn();
+			const component = utils.createDatetime({
+				updateOnView: 'time', initialViewMode: 'days', input: false, initialValue: initialDate, onChangeFn
+			});
+			
+			// Race condition fix
+			setTimeout( () => {
+
+				utils.clickNthDay( component, 1 )
+
+				expect( component.find('.rdtDay').length ).toBe(0)
+				expect( component.find('.rdtTime').length ).not.toBe(0)
+
+				setTimeout(() => {
+					expect(onChangeFn).toHaveBeenCalledTimes(0);
+					done();
+				}, 10 )
+			})
+		})
+	})
 });

@@ -28,12 +28,14 @@ var Datetime = createClass({
 		value: datetype,
 		initialValue: datetype,
 		initialViewDate: datetype,
+		initialViewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
 		onOpen: TYPES.func,
 		onClose: TYPES.func,
 		onChange: TYPES.func,
 		onViewModeChange: TYPES.func,
 		onNavigateBack: TYPES.func,
 		onNavigateForward: TYPES.func,
+		updateOnView: TYPES.string,
 		locale: TYPES.string,
 		utc: TYPES.bool,
 		displayTimeZone: TYPES.string,
@@ -42,7 +44,6 @@ var Datetime = createClass({
 		timeFormat: TYPES.oneOfType([TYPES.string, TYPES.bool]),
 		inputProps: TYPES.object,
 		timeConstraints: TYPES.object,
-		initialViewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
 		isValidDate: TYPES.func,
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
@@ -146,15 +147,25 @@ var Datetime = createClass({
 	},
 
 	isOpen: function(){
-		return !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
+		var open = !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
+		return open;
+		// return !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
 	},
 
 	getUpdateOn: function( dateFormat ) {
+		if( this.props.updateOnView ){
+			return this.props.updateOnView;
+		}
+
 		if ( dateFormat.match(/[lLD]/) ) {
 			return viewModes.DAYS;
-		} else if ( dateFormat.indexOf('M') !== -1 ) {
+		}
+
+		if ( dateFormat.indexOf('M') !== -1 ) {
 			return viewModes.MONTHS;
-		} else if ( dateFormat.indexOf('Y') !== -1 ) {
+		}
+
+		if ( dateFormat.indexOf('Y') !== -1 ) {
 			return viewModes.YEARS;
 		}
 

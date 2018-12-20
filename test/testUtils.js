@@ -47,7 +47,9 @@ module.exports = {
 	 * Boolean Checks
 	 */
 	isOpen: (datetime) => {
-		return datetime.find('.rdt.rdtOpen').length > 0;
+		var open = datetime.find('.rdt.rdtOpen').length > 0;
+		console.log('Open?', open)
+		return open;
 	},
 
 	isDayView: (datetime) => {

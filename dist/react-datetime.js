@@ -82,32 +82,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var TYPES = PropTypes;
 	var nofn = function(){};
+	var datetype = TYPES.oneOfType([ TYPES.instanceOf(moment), TYPES.instanceOf(Date), TYPES.string ]);
 	var Datetime = createClass({
 		displayName: 'DateTime',
 		propTypes: {
-			// value: TYPES.object | TYPES.string,
-			// defaultValue: TYPES.object | TYPES.string,
+			value: datetype,
+			initialValue: datetype,
+			initialViewDate: datetype,
+			initialViewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
 			onOpen: TYPES.func,
 			onClose: TYPES.func,
 			onChange: TYPES.func,
 			onViewModeChange: TYPES.func,
 			onNavigateBack: TYPES.func,
 			onNavigateForward: TYPES.func,
+			updateOnView: TYPES.string,
 			locale: TYPES.string,
 			utc: TYPES.bool,
 			displayTimeZone: TYPES.string,
 			input: TYPES.bool,
-			// dateFormat: TYPES.string | TYPES.bool,
-			// timeFormat: TYPES.string | TYPES.bool,
+			dateFormat: TYPES.oneOfType([TYPES.string, TYPES.bool]),
+			timeFormat: TYPES.oneOfType([TYPES.string, TYPES.bool]),
 			inputProps: TYPES.object,
 			timeConstraints: TYPES.object,
-			// initialViewDate: TYPES.object | TYPES.string,
-			initialViewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
 			isValidDate: TYPES.func,
 			open: TYPES.bool,
 			strictParsing: TYPES.bool,
 			closeOnSelect: TYPES.bool,
-			closeOnTab: TYPES.bool
+			closeOnTab: TYPES.bool,
+			renderView: TYPES.func,
+			renderInput: TYPES.func,
+			renderDay: TYPES.func,
+			renderMonth: TYPES.func,
+			renderYear: TYPES.func,
 		},
 
 		getDefaultProps: function(){
@@ -131,7 +138,10 @@ return /******/ (function(modules) { // webpackBootstrap
 				strictParsing: true,
 				closeOnSelect: false,
 				closeOnTab: true,
-				closeOnClickOutside: true
+				closeOnClickOutside: true,
+				renderView: function( viewType, renderCalendar ){
+					return renderCalendar();
+				}
 			}
 		},
 
@@ -198,15 +208,25 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		isOpen: function(){
-			return !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
+			var open = !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
+			return open;
+			// return !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
 		},
 
 		getUpdateOn: function( dateFormat ) {
+			if( this.props.updateOnView ){
+				return this.props.updateOnView;
+			}
+
 			if ( dateFormat.match(/[lLD]/) ) {
 				return viewModes.DAYS;
-			} else if ( dateFormat.indexOf('M') !== -1 ) {
+			}
+
+			if ( dateFormat.indexOf('M') !== -1 ) {
 				return viewModes.MONTHS;
-			} else if ( dateFormat.indexOf('Y') !== -1 ) {
+			}
+
+			if ( dateFormat.indexOf('Y') !== -1 ) {
 				return viewModes.YEARS;
 			}
 
@@ -535,7 +555,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			return React.createElement( ClickableWrapper, {className: cn, onClickOut: this.handleClickOutside}, children.concat(
 				React.createElement( 'div',
 					{ key: 'dt', className: 'rdtPicker' },
-					this.renderCalendar( this.state.currentView )
+					this.props.renderView(  this.state.currentView, this.renderCalendar.bind( this, this.state.currentView ) )
 				)
 			));
 		},

@@ -33,6 +33,16 @@ declare module ReactDatetime {
      */
     initialViewMode?: string;
     /*
+      In the calendar we can navigate through years and months without actualling updating the selected view. Only 
+      when we get to one view called the "updating view", we make a selection there and the value gets updated, 
+      triggering an `onChange` event. 
+      By default the updating view will get guessed by using the `dateFormat` so if our dates only show months 
+      and never days, the update is done in the `months` view. If we set `updateOnView="time"` selecting a day 
+      will navigate to the time view. The time view always updates the selected date, never navigates. 
+      If `closeOnSelect={ true }`, making a selection in the view defined by `updateOnView` will close the calendar.
+    */
+    updateOnView?: string;
+    /*
      Defines the format for the date. It accepts any moment.js date format.
      If true the date will be displayed using the defaults for the current locale.
      If false the datepicker is disabled and the component can be used as timepicker.
