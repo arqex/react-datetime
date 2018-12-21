@@ -8,6 +8,8 @@ Changelog
 * Time is not updated anymore on right clicks.
 * Creates `renderView` prop to customize the whole calendar.
 * Creates `updateOnView` prop to decide when to update the date.
+* `onViewModeChange` prop renamed to `onNavigate`.
+* Creates `onBeforeNavigate` prop.
 
 ## 2.16.2
 * Turns moment timezone peer dependency in a runtime error when missing using `displayTimezone`.

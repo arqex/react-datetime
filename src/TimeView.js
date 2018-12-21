@@ -164,7 +164,7 @@ var DateTimePickerTime = createClass({
 		var me = this;
 
 		return function( e ) {
-			if( e && e.button && e.button !== 0 ) {
+			if ( e && e.button && e.button !== 0 ) {
 				// Only left clicks, thanks
 				return;
 			}

@@ -48,7 +48,6 @@ module.exports = {
 	 */
 	isOpen: (datetime) => {
 		var open = datetime.find('.rdt.rdtOpen').length > 0;
-		console.log('Open?', open)
 		return open;
 	},
 

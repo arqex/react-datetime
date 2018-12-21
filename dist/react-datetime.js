@@ -1,5 +1,5 @@
 /*
-react-datetime v3.0.0-beta.1
+react-datetime v3.0.0-beta.2
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -81,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	var TYPES = PropTypes;
-	var nofn = function(){};
+	var nofn = function () {};
 	var datetype = TYPES.oneOfType([ TYPES.instanceOf(moment), TYPES.instanceOf(Date), TYPES.string ]);
 	var Datetime = createClass({
 		displayName: 'DateTime',
@@ -93,7 +93,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			onOpen: TYPES.func,
 			onClose: TYPES.func,
 			onChange: TYPES.func,
-			onViewModeChange: TYPES.func,
+			onNavigate: TYPES.func,
+			onBeforeNavigate: TYPES.func,
 			onNavigateBack: TYPES.func,
 			onNavigateForward: TYPES.func,
 			updateOnView: TYPES.string,
@@ -117,14 +118,15 @@ return /******/ (function(modules) { // webpackBootstrap
 			renderYear: TYPES.func,
 		},
 
-		getDefaultProps: function(){
+		getDefaultProps: function () {
 			return {
 				onOpen: nofn,
 				onClose: nofn,
 				onCalendarOpen: nofn,
 				onCalendarClose: nofn,
 				onChange: nofn,
-				onViewModeChange: nofn,
+				onNavigate: nofn,
+				onBeforeNavigate: function(next) { return next; }, 
 				onNavigateBack: nofn,
 				onNavigateForward: nofn,
 				dateFormat: true,
@@ -134,15 +136,15 @@ return /******/ (function(modules) { // webpackBootstrap
 				input: true,
 				inputProps: {},
 				timeConstraints: {},
-				isValidDate: function(){ return true },
+				isValidDate: function() { return true; },
 				strictParsing: true,
 				closeOnSelect: false,
 				closeOnTab: true,
 				closeOnClickOutside: true,
-				renderView: function( viewType, renderCalendar ){
+				renderView: function( viewType, renderCalendar ) {
 					return renderCalendar();
 				}
-			}
+			};
 		},
 
 		getInitialState: function() {
@@ -162,21 +164,22 @@ return /******/ (function(modules) { // webpackBootstrap
 					props.value && typeof props.value === 'string' && props.value ||
 					props.initialValue && typeof props.initialValue === 'string' && props.initialValue ||
 					''
-			}
+			};
 		},
 		
-		getInitialViewDate: function( propDate, selectedDate, format ){
-			var viewDate
-			if( propDate ){
-				viewDate = this.parseDate( propDate, format )
-				if( viewDate && viewDate.isValid() ){
+		getInitialViewDate: function( propDate, selectedDate, format ) {
+			var viewDate;
+			var con = console;
+			if ( propDate ) {
+				viewDate = this.parseDate( propDate, format );
+				if ( viewDate && viewDate.isValid() ) {
 					return viewDate;
 				}
 				else {
-					console.warn('react-datetime: The initialViewDated given "' + propDate + '" is not valid. Using current date instead.')
+					con && con.warn('react-datetime: The initialViewDated given "' + propDate + '" is not valid. Using current date instead.');
 				}
 			}
-			else if( selectedDate && selectedDate.isValid() ){
+			else if ( selectedDate && selectedDate.isValid() ) {
 				return selectedDate.clone();
 			}
 			return this.getInitialDate();
@@ -189,7 +192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		getInitialView: function( dateFormat ) {
-			if( !dateFormat ) return viewModes.TIME;
+			if ( !dateFormat ) return viewModes.TIME;
 			return this.getUpdateOn( dateFormat );
 		},
 
@@ -207,14 +210,14 @@ return /******/ (function(modules) { // webpackBootstrap
 			return parsedDate;
 		},
 
-		isOpen: function(){
+		isOpen: function() {
 			var open = !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
 			return open;
 			// return !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
 		},
 
 		getUpdateOn: function( dateFormat ) {
-			if( this.props.updateOnView ){
+			if ( this.props.updateOnView ) {
 				return this.props.updateOnView;
 			}
 
@@ -233,36 +236,36 @@ return /******/ (function(modules) { // webpackBootstrap
 			return viewModes.DAYS;
 		},
 
-		getLocaleData: function( props ){
+		getLocaleData: function( props ) {
 			var p = props || this.props;
 			return this.localMoment( p.date ).localeData();
 		},
 
-		getDateFormat: function( locale ){
+		getDateFormat: function( locale ) {
 			var format = this.props.dateFormat;
-			if( format === true ) return locale.longDateFormat('L');
-			if( format ) return format;
-			return ''
-		},
-
-		getTimeFormat: function( locale ){
-			var format = this.props.timeFormat;
-			if( format === true ) return locale.longDateFormat('LT');
-			if( format ) return format;
+			if ( format === true ) return locale.longDateFormat('L');
+			if ( format ) return format;
 			return '';
 		},
 
-		getFormat: function( type ){
-			if( type === 'date' ){
-				return this.getDateFormat( this.getLocaleData() )
+		getTimeFormat: function( locale ) {
+			var format = this.props.timeFormat;
+			if ( format === true ) return locale.longDateFormat('LT');
+			if ( format ) return format;
+			return '';
+		},
+
+		getFormat: function( type ) {
+			if ( type === 'date' ) {
+				return this.getDateFormat( this.getLocaleData() );
 			}
-			else if( type === 'time' ){
-				return this.getTimeFormat( this.getLocaleData() )
+			else if ( type === 'time' ) {
+				return this.getTimeFormat( this.getLocaleData() );
 			}
-			else if( type === 'datetime' ){
+			else if ( type === 'datetime' ) {
 				var locale = this.getLocaleData();
-				var dateFormat = this.getDateFormat( locale )
-				var timeFormat = this.getTimeFormat( locale )
+				var dateFormat = this.getDateFormat( locale );
+				var timeFormat = this.getTimeFormat( locale );
 				return dateFormat && timeFormat ? dateFormat + ' ' + timeFormat : (dateFormat || timeFormat );
 			}
 		},
@@ -291,16 +294,18 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		},
 
-		showView: function( view ) {
+		showView: function( view, date ) {
 			var me = this;
 			
 			// this is a function bound to a click so we need a closure
-			return function( e ){
-				if( me.state.currentView !== view ){
-					me.props.onViewModeChange( view )
-					me.setState({ currentView: view })
+			return function() {
+				var nextView = me.props.onBeforeNavigate( view, me.state.currentView, (date || me.state.viewDate).clone() );
+
+				if ( nextView && me.state.currentView !== nextView ) {
+					me.props.onNavigate( nextView );
+					me.setState({ currentView: nextView });
 				}
-			}
+			};
 		},
 
 		updateTime: function( op, amount, type, toSelected ) {
@@ -314,47 +319,47 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		viewToMethod: {days: 'date', months: 'month', years: 'year'},
 		nextView: { days: 'time', months: 'days', years: 'months'},
-		updateDate: function( e ){
+		updateDate: function( e ) {
 			var state = this.state;
 			var currentView = state.currentView;
 			var updateOnView = this.getUpdateOn( this.getFormat('date') );
 			var viewDate = this.state.viewDate.clone();
 
 			// Set the value into day/month/year
-			var value = parseInt( e.target.getAttribute('data-value'), 10 )
-			viewDate[ this.viewToMethod[currentView] ]( value )
+			var value = parseInt( e.target.getAttribute('data-value'), 10 );
+			viewDate[ this.viewToMethod[currentView] ]( value );
 
 			var update = {viewDate: viewDate};
-			if( currentView === updateOnView ){
+			if ( currentView === updateOnView ) {
 				update.selectedDate = viewDate.clone();
 				update.inputValue = viewDate.format( this.getFormat('datetime') );
 
-				if( this.props.open === undefined && this.props.input && this.props.closeOnSelect ){
+				if ( this.props.open === undefined && this.props.input && this.props.closeOnSelect ) {
 					this.closeCalendar();
 				}
 
 				this.props.onChange( viewDate.clone() );
 			}
 			else {
-				update.currentView = this.nextView[ currentView ];
+				this.showView( this.nextView[ currentView ], viewDate )();
 			}
 
 			this.setState( update );
 		},
 
-		navigate: function( modifier, unit ){
+		navigate: function( modifier, unit ) {
 			var me  = this;
 
 			// this is a function bound to a click so we need a closure
-			return function( e ){
+			return function() {
 				var viewDate = me.state.viewDate.clone();
 				var update = {
 					viewDate: viewDate
-				}
+				};
 		
 				// Subtracting is just adding negative time
 				viewDate.add( modifier, unit );
-				if( modifier > 0 ){
+				if ( modifier > 0 ) {
 					me.props.onNavigateForward( modifier, unit );
 				}
 				else {
@@ -362,7 +367,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 		
 				me.setState( update );
-			}
+			};
 		},
 
 		allowedSetTime: ['hours', 'minutes', 'seconds', 'milliseconds'],
@@ -452,57 +457,57 @@ return /******/ (function(modules) { // webpackBootstrap
 			return this.overridenEvents[handler];
 		},
 
-		getClassName: function(){
+		getClassName: function() {
 			var cn = 'rdt';
 			var props = this.props;
 			var propCn = props.className;
 
-			if( Array.isArray( propCn ) ){
-				cn += ' ' + propCn.join(' ')
+			if ( Array.isArray( propCn ) ) {
+				cn += ' ' + propCn.join(' ');
 			}
-			else if( propCn ){
-				cn += ' ' + propCn
+			else if ( propCn ) {
+				cn += ' ' + propCn;
 			}
 
-			if( !props.input ){
-				cn += ' rdtStatic'
+			if ( !props.input ) {
+				cn += ' rdtStatic';
 			}
-			if( this.isOpen() ){
-				cn += ' rdtOpen'
+			if ( this.isOpen() ) {
+				cn += ' rdtOpen';
 			}
 
 			return cn;
 		},
 
-		componentDidUpdate: function( prevProps ){
-			if( prevProps === this.props ) return;
+		componentDidUpdate: function( prevProps ) {
+			if ( prevProps === this.props ) return;
 
 			var needsUpdate = false;
 			var thisProps = this.props;
-			['locale', 'utc', 'displayZone', 'dateFormat', 'timeFormat'].forEach( function(p){
+			['locale', 'utc', 'displayZone', 'dateFormat', 'timeFormat'].forEach( function(p) {
 				prevProps[p] !== thisProps[p] && (needsUpdate = true);
-			})
+			});
 
-			if( needsUpdate ){
+			if ( needsUpdate ) {
 				this.regenerateDates( this.props );
 			}
 
 			this.checkTZ( this.props );
 		},
 
-		regenerateDates: function(props){
+		regenerateDates: function(props) {
 			var viewDate = this.state.viewDate.clone();
 			var selectedDate = this.state.selectedDate && this.state.selectedDate.clone();
 
-			if( props.locale ){
-				viewDate.locale( props.locale )
+			if ( props.locale ) {
+				viewDate.locale( props.locale );
 				selectedDate &&	selectedDate.locale( props.locale );
 			}
-			if( props.utc ){
+			if ( props.utc ) {
 				viewDate.utc();
 				selectedDate &&	selectedDate.utc();
 			}
-			else if( props.displayTimeZone ){
+			else if ( props.displayTimeZone ) {
 				viewDate.tz( props.displayTimeZone );
 				selectedDate &&	selectedDate.tz( props.displayTimeZone );
 			}
@@ -512,20 +517,20 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			var update = { viewDate: viewDate, selectedDate: selectedDate};
-			if( selectedDate && selectedDate.isValid() ){
+			if ( selectedDate && selectedDate.isValid() ) {
 				update.inputValue = selectedDate.format( this.getFormat('datetime') );
 			}
 			
 			this.setState( update );
 		},
 
-		getSelectedDate: function(){
-			if( this.props.value === undefined ) return this.state.selectedDate;
+		getSelectedDate: function() {
+			if ( this.props.value === undefined ) return this.state.selectedDate;
 			var selectedDate = this.parseDate( this.props.value, this.getFormat('datetime') );
 			return selectedDate && selectedDate.isValid() ? selectedDate : false;
 		},
 
-		getInputValue: function(){
+		getInputValue: function() {
 			var selectedDate = this.getSelectedDate();
 			return selectedDate ? selectedDate.format( this.getFormat('datetime') ) : this.state.inputValue;
 		},
@@ -560,45 +565,45 @@ return /******/ (function(modules) { // webpackBootstrap
 			));
 		},
 
-		renderCalendar: function( currentView ){
+		renderCalendar: function( currentView ) {
 			var p = this.props;
 			var state = this.state;
 
 			var props = {
-				viewDate: state.viewDate,
+				viewDate: state.viewDate.clone(),
 				selectedDate: this.getSelectedDate(),
 				isValidDate: p.isValidDate,
 				updateDate: this.updateDate,
 				navigate: this.navigate,
 				showView: this.showView
-			}
+			};
 
 			// I think updateOn, updateSelectedDate and setDate can be merged in the same method
 			// that would update viewDate or selectedDate depending on the view and the dateFormat
-			if( currentView === viewModes.YEARS ){
+			if ( currentView === viewModes.YEARS ) {
 				// Used props
 				// { viewDate, selectedDate, renderYear, isValidDate, navigate, showView, updateDate }
-				props.renderYear = p.renderYear
-				return React.createElement( YearsView, props )
+				props.renderYear = p.renderYear;
+				return React.createElement( YearsView, props );
 			}
-			else if( currentView === viewModes.MONTHS ){
+			else if ( currentView === viewModes.MONTHS ) {
 				// { viewDate, selectedDate, renderMonth, isValidDate, navigate, showView, updateDate }
-				props.renderMonth = p.renderMonth
-				return React.createElement( MonthsView, props )
+				props.renderMonth = p.renderMonth;
+				return React.createElement( MonthsView, props );
 			}
-			else if( currentView === viewModes.DAYS ){
+			else if ( currentView === viewModes.DAYS ) {
 				// { viewDate, selectedDate, renderDay, isValidDate, navigate, showView, updateDate, timeFormat }
 				props.renderDay = p.renderDay;
 				props.timeFormat = this.getFormat('time');
 				return React.createElement( DaysView, props );
 			}
-			else if( currentView === viewModes.TIME ){
+			else if ( currentView === viewModes.TIME ) {
 				// { viewDate, selectedDate, timeFormat, dateFormat, timeConstraints, setTime, showView }
 				props.dateFormat = this.getFormat('date');
 				props.timeFormat = this.getFormat('time');
 				props.timeConstraints = p.timeConstraints;
 				props.setTime = this.setTime;
-				return React.createElement( TimeView, props )
+				return React.createElement( TimeView, props );
 			}
 		}
 	});
@@ -3520,7 +3525,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var me = this;
 
 			return function( e ) {
-				if( e && e.button && e.button !== 0 ) {
+				if ( e && e.button && e.button !== 0 ) {
 					// Only left clicks, thanks
 					return;
 				}

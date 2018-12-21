@@ -1,6 +1,6 @@
 {
   "name": "react-datetime",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.0-beta.2",
   "description": "A lightweight but complete datetime picker React.js component",
   "homepage": "https://github.com/YouCanBookMe/react-datetime",
   "repository": {
@@ -20,7 +20,7 @@
     "build:mac": "./node_modules/.bin/gulp",
     "build:win": "./node_modules/.bin/gulp.cmd",
     "dev": "./node_modules/.bin/webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
-    "lint": "./node_modules/.bin/eslint src/ DateTime.js test/ && echo 'Linting OK! 💪'",
+    "lint": "node ./node_modules/eslint/bin/eslint.js src/ DateTime.js test/ && echo 'Linting OK! 💪'",
     "notify-pre-commit-hook": "echo '### Starting pre-commit hook 🦄'",
     "test": "node ./node_modules/jest/bin/jest.js",
     "test:typings": "node ./node_modules/typescript/bin/tsc -p ./typings",

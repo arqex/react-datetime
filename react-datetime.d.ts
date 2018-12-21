@@ -98,7 +98,15 @@ declare module ReactDatetime {
      Callback trigger when the view mode changes. The callback receives the selected view mode
      string ('years', 'months', 'days', 'time') as only parameter.
     */
-    onViewModeChange?: (viewMode: string) => void;
+    onNavigate?: (viewMode: string) => void;
+    /*
+    Allows to intercept a change of the calendar view. The accepted function receives the view 
+    that it's supposed to navigate to, the view that is showing currently and the date currently 
+    shown in the view. Return a viewMode ( default ones are `years`, `months`, `days` or `time`) to 
+    navigate to it. If the function returns a "falsy" value, the navigation is stopped and we will 
+    remain in the current view.
+    */
+    onBeforeNavigate?: (nextView: string, currentView: string, viewDate: Moment) => string;
     /*
       Callback trigger when the user navigates to the previous month, year or decade.
       The callback receives the amount and type ('month', 'year') as parameters.

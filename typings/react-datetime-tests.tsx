@@ -98,9 +98,12 @@ const TEST_INPUT_PROPS: JSX.Element = <ReactDatetime
 		onClose={
 			(momentOrInputString:string) => {}
 		}
-		onViewModeChange={
+		onNavigate={
  			(initialViewMode:string) => {}
- 		}
+		}
+		onBeforeNavigate={
+			(nextView:string, currentView:string, viewDate: any ) => { return 'ok' }
+		}
  	/>;
 
 const TEST_EVENT_HANDLERS_WITH_MOMENT: JSX.Element = <ReactDatetime
