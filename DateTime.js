@@ -108,14 +108,13 @@ var Datetime = createClass({
 	
 	getInitialViewDate: function( propDate, selectedDate, format ) {
 		var viewDate;
-		var con = console;
 		if ( propDate ) {
 			viewDate = this.parseDate( propDate, format );
 			if ( viewDate && viewDate.isValid() ) {
 				return viewDate;
 			}
 			else {
-				con && con.warn('react-datetime: The initialViewDated given "' + propDate + '" is not valid. Using current date instead.');
+				this.log('The initialViewDated given "' + propDate + '" is not valid. Using current date instead.')
 			}
 		}
 		else if ( selectedDate && selectedDate.isValid() ) {
@@ -367,11 +366,9 @@ var Datetime = createClass({
 	},
 
 	checkTZ: function( props ) {
-		var con = console;
-
 		if ( props.displayTimeZone && !this.tzWarning && !moment.tz ) {
 			this.tzWarning = true;
-			con && con.error('react-datetime: displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.');
+			this.log('displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.', 'error');
 		}
 	},
 
@@ -472,6 +469,30 @@ var Datetime = createClass({
 	getInputValue: function() {
 		var selectedDate = this.getSelectedDate();
 		return selectedDate ? selectedDate.format( this.getFormat('datetime') ) : this.state.inputValue;
+	},
+
+	setViewDate: function( date ) {
+		if ( !date ) return this.log( 'Invalid date passed to the `setViewDate` method: ' + date );
+		
+		if ( typeof date === 'string' ) {
+			var parsed = this.parseDate( date, this.getFormat('datetime') );
+			if ( !parsed ) return this.log( 'Invalid date passed to the `setViewDate` method: ' + date );
+			return this.setState({ viewDate: parsed });
+		}
+
+		return this.setState({ viewDate: date });
+	},
+
+	setViewMode: function( mode ) {
+		this.showView( mode );
+	},
+
+	log: function( message, method ) {
+		var con = console;
+		if( !method ){
+			method = 'warn'
+		}
+		con[ method ]( '***react-datetime:' + message );
 	},
 
 	render: function() {

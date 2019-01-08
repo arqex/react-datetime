@@ -66,9 +66,11 @@ describe('Datetime', () => {
 
 	it('persistent valid months going monthView->yearView->monthView', () => {
 		const dateBefore = '2018-06-01';
-		const component = utils.createDatetime({ initialViewMode: 'months', isValidDate: (current) =>
-				current.isBefore(moment(dateBefore, 'YYYY-MM-DD'))
-			});
+		const component = utils.createDatetime({
+			initialViewMode: 'months',
+			value: new Date(2018, 10, 10),
+			isValidDate: current => current.isBefore(moment(dateBefore, 'YYYY-MM-DD'))
+		});
 
 		expect(utils.isMonthView(component)).toBeTruthy();
 		expect(utils.getNthMonth(component, 4).hasClass('rdtDisabled')).toEqual(false);
@@ -481,7 +483,9 @@ describe('Datetime', () => {
 				);
 			};
 
-			let component = utils.createDatetime({ renderView, initialViewMode: 'years', input: false } );
+			let component = utils.createDatetime({
+				renderView, initialViewMode: 'years', input: false
+			});
 			
 			expect( component.find('.viewType').text() ).toEqual('years');
 			expect( component.find('.rdtYear').length ).not.toBe(0);

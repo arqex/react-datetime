@@ -64,10 +64,7 @@ render: function() {
 | **inputProps** | `object` | `undefined` | Defines additional attributes for the input element of the component. For example: `onClick`, `placeholder`, `disabled`, `required`, `name` and `className` (`className` *sets* the class attribute for the input element). See [Customize the Input Appearance](#customize-the-input-appearance). |
 | **isValidDate** | `function` | `() => true` | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and shall return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).|
 | **renderInput** | `function` | `undefined` | Replace the rendering of the input element. The function has the following arguments: the default calculated `props` for the input, `openCalendar` (a function which opens the calendar) and `closeCalendar` (a function which closes the calendar). Must return a React component or `null`. See [Customize the Input Appearance](#customize-the-input-appearance). |
-| **renderView** | `function` | `(viewType, renderDefault) => renderDefault()` | Customize the way the calendar is rendered. The accepted function receives the type of the view
-it's going to be rendered `'years', 'months', 'days', 'time'` and a function to render the default
-view of react-datetime, this way it's possible to wrap the original view adding our own markup or
-override it completely with our own code. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance). |
+| **renderView** | `function` | `(viewMode, renderDefault) => renderDefault()` | Customize the way the calendar is rendered. The accepted function receives the type of the view it's going to be rendered `'years', 'months', 'days', 'time'` and a function to render the default view of react-datetime, this way it's possible to wrap the original view adding our own markup or override it completely with our own code. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance). |
 | **renderDay** | `function` | `DOM.td(day)` | Customize the way that the days are shown in the daypicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance). |
 | **renderMonth** | `function` | `DOM.td(month)` | Customize the way that the months are shown in the monthpicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance). |
 | **renderYear** | `function` | `DOM.td(year)` | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance). |
@@ -147,6 +144,39 @@ var MyDTPicker = React.createClass({
 });
 ```
 [You can see a customized calendar here.](http://codepen.io/simeg/pen/YppLmO)
+
+It's also possible to override some view in the calendar completelly. Let's say that we want to add a today button in our calendars, when we click it we display the `days` view with the current month:
+```js
+class MyDTPicker extends React.Component {
+    render() {
+        return (
+            <Datetime ref="datetime"
+                renderView={ (mode, renderDefault) => this.renderView( mode, renderDefault) }
+            />
+        );
+    }
+
+    renderView( mode, renderDefault ) {
+        // Only for years, months and days view
+        if( mode === 'time' ) return renderDefault();
+
+        return (
+            <div className="wrapper">
+                { renderDefault() }
+                <div className="controls">
+                    <button onClick={ () => this.goToToday() }>Today</button>
+                </div>
+            </div>
+        )
+    }
+
+    goToToday() {
+        // Reset
+        this.refs.datetime.setViewDate( new Date() );
+        this.refs.datetime.setViewMode( 'days' );
+    }
+});
+```
 
 #### Method Parameters
 * `props` is the object that the datepicker has calculated for this object. It is convenient to use this object as the `props` for your custom component, since it knows how to handle the click event and its `className` attribute is used by the default styles.
