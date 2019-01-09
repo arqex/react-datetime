@@ -150,12 +150,12 @@ declare namespace ReactDatetimeClass {
          */
         isValidDate?: (currentDate: any, selectedDate: any) => boolean;
         /*
-         Customize the way the calendar is rendered. The accepted function receives the type of the view
-         it's going to be rendered ('years', 'months', 'days', 'time') and a function to render the default
+         Customize the way the calendar is rendered. The accepted function receives the view mode that
+         is going to be rendered ('years', 'months', 'days', 'time') and a function to render the default
          view of react-datetime, this way it's possible to wrap the original view adding our own markup or
          override it completely with our own code.
         */
-        renderView?: (viewType: string, renderCalendar: Function) => JSX.Element;
+        renderView?: (viewMode: string, renderCalendar: Function) => JSX.Element;
         /*
          Customize the way that the days are shown in the day picker. The accepted function has
          the selectedDate, the current date and the default calculated props for the cell,

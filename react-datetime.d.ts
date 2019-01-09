@@ -126,12 +126,12 @@ declare module ReactDatetime {
      */
     inputProps?: Object;
     /*
-      Customize the way the calendar is rendered. The accepted function receives the type of the view
-      it's going to be rendered ('years', 'months', 'days', 'time') and a function to render the default
+      Customize the way the calendar is rendered. The accepted function receives view mode that
+      is going to be rendered ('years', 'months', 'days', 'time') and a function to render the default
       view of react-datetime, this way it's possible to wrap the original view adding our own markup or
       override it completely with our own code.
     */
-    renderView?: (viewType: string, renderCalendar: Function) => React.Component<any, any>;
+    renderView?: (viewMode: string, renderCalendar: Function) => React.Component<any, any>;
     /*
      Replace the rendering of the input element. The accepted function has openCalendar
      (a function which opens the calendar) and the default calculated props for the input.

@@ -114,7 +114,7 @@ var Datetime = createClass({
 				return viewDate;
 			}
 			else {
-				this.log('The initialViewDated given "' + propDate + '" is not valid. Using current date instead.')
+				this.log('The initialViewDated given "' + propDate + '" is not valid. Using current date instead.');
 			}
 		}
 		else if ( selectedDate && selectedDate.isValid() ) {
@@ -471,26 +471,42 @@ var Datetime = createClass({
 		return selectedDate ? selectedDate.format( this.getFormat('datetime') ) : this.state.inputValue;
 	},
 
+	/**
+	 * Set the date that is currently shown in the calendar. This is independent from the selected date and it's the one used to navigate through months or days in the calendar.
+	 * @param dateType date
+	 * @public
+	 */
 	setViewDate: function( date ) {
-		if ( !date ) return this.log( 'Invalid date passed to the `setViewDate` method: ' + date );
+		var logError = function() {
+			return this.log( 'Invalid date passed to the `setViewDate` method: ' + date );
+		};
+
+		if ( !date ) return logError();
 		
+		var viewDate;
 		if ( typeof date === 'string' ) {
-			var parsed = this.parseDate( date, this.getFormat('datetime') );
-			if ( !parsed ) return this.log( 'Invalid date passed to the `setViewDate` method: ' + date );
-			return this.setState({ viewDate: parsed });
+			viewDate = this.localMoment(date, this.getFormat('datetime') );
+		}
+		else {
+			viewDate = this.localMoment( date );
 		}
 
-		return this.setState({ viewDate: date });
+		if ( !viewDate || !viewDate.isValid() ) return logError();
+		this.setState({ viewDate: viewDate });
 	},
 
+	/**
+	 * Set the view currently shown by the calendar. View modes shipped with react-datetime are 'years', 'months', 'days' and 'time'.
+	 * @param TYPES.string mode 
+	 */
 	setViewMode: function( mode ) {
-		this.showView( mode );
+		this.showView( mode )();
 	},
 
 	log: function( message, method ) {
 		var con = console;
-		if( !method ){
-			method = 'warn'
+		if ( !method ) {
+			method = 'warn';
 		}
 		con[ method ]( '***react-datetime:' + message );
 	},
