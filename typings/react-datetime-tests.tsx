@@ -152,7 +152,7 @@ const TEST_CUSTOMIZABLE_COMPONENT_PROPS: JSX.Element = <ReactDatetime
 			return <input {...props} />
 		}}
 		renderView={ (viewMode: string, renderCalendar: Function ) => {
-			return defaultRender()
+			return renderCalendar()
 		}}
 	/>;
 

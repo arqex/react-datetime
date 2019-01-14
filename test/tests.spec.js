@@ -1417,4 +1417,49 @@ describe('Datetime', () => {
 			});
 		});
 	});
+	
+});
+
+describe('Imperative methods', function(){
+	it('Calling setViewDate should navigate to the given date', function() {
+		const initialDate = new Date(2000, 6, 15, 2, 2, 2, 2);
+		const component = utils.createDatetime({ initialViewMode: 'months', initialViewDate: initialDate } );
+
+		expect( utils.isMonthView( component ) ).toBeTruthy();
+		expect( component.find('.rdtSwitch').text() ).toBe('2000');
+
+		const nextDate = new Date( 2012, 10, 10 );
+		component.instance().setViewDate( nextDate );
+		
+		expect( utils.isMonthView( component ) ).toBeTruthy();
+		expect( component.find('.rdtSwitch').text() ).toBe('2012');
+	});
+
+	it('Calling setViewMode should navigate to the given mode', function( done ) {
+		const initialDate = new Date(2000, 6, 15, 2, 2, 2, 2);
+		const component = utils.createDatetime({ initialViewMode: 'months', initialViewDate: initialDate } );
+		
+		expect( utils.isMonthView( component ) ).toBeTruthy();
+
+		// Sync fix
+		setTimeout( () => {
+			component.instance().setViewMode( 'days' );
+			expect( utils.isDayView( component ) ).toBeTruthy();
+			
+			component.instance().setViewMode( 'time' );
+			expect( utils.isTimeView( component ) ).toBeTruthy();
+			
+			component.instance().setViewMode( 'years' );
+			expect( utils.isYearView( component ) ).toBeTruthy();
+			
+			component.instance().setViewMode( 'months' );
+			expect( utils.isMonthView( component ) ).toBeTruthy();
+
+			// The date should stay unmodified
+			expect( component.find('.rdtSwitch').text() ).toBe('2000');
+
+			done();
+		}, 10 );
+
+	});
 });

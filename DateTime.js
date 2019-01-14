@@ -176,7 +176,7 @@ var Datetime = createClass({
 
 	getLocaleData: function( props ) {
 		var p = props || this.props;
-		return this.localMoment( p.date ).localeData();
+		return this.localMoment( p.value || p.defaultValue || new Date() ).localeData();
 	},
 
 	getDateFormat: function( locale ) {
@@ -477,8 +477,9 @@ var Datetime = createClass({
 	 * @public
 	 */
 	setViewDate: function( date ) {
+		var me = this;
 		var logError = function() {
-			return this.log( 'Invalid date passed to the `setViewDate` method: ' + date );
+			return me.log( 'Invalid date passed to the `setViewDate` method: ' + date );
 		};
 
 		if ( !date ) return logError();

@@ -169,14 +169,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		
 		getInitialViewDate: function( propDate, selectedDate, format ) {
 			var viewDate;
-			var con = console;
 			if ( propDate ) {
 				viewDate = this.parseDate( propDate, format );
 				if ( viewDate && viewDate.isValid() ) {
 					return viewDate;
 				}
 				else {
-					con && con.warn('react-datetime: The initialViewDated given "' + propDate + '" is not valid. Using current date instead.');
+					this.log('The initialViewDated given "' + propDate + '" is not valid. Using current date instead.');
 				}
 			}
 			else if ( selectedDate && selectedDate.isValid() ) {
@@ -428,11 +427,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 
 		checkTZ: function( props ) {
-			var con = console;
-
 			if ( props.displayTimeZone && !this.tzWarning && !moment.tz ) {
 				this.tzWarning = true;
-				con && con.error('react-datetime: displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.');
+				this.log('displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.', 'error');
 			}
 		},
 
@@ -533,6 +530,47 @@ return /******/ (function(modules) { // webpackBootstrap
 		getInputValue: function() {
 			var selectedDate = this.getSelectedDate();
 			return selectedDate ? selectedDate.format( this.getFormat('datetime') ) : this.state.inputValue;
+		},
+
+		/**
+		 * Set the date that is currently shown in the calendar. This is independent from the selected date and it's the one used to navigate through months or days in the calendar.
+		 * @param dateType date
+		 * @public
+		 */
+		setViewDate: function( date ) {
+			var me = this;
+			var logError = function() {
+				return me.log( 'Invalid date passed to the `setViewDate` method: ' + date );
+			};
+
+			if ( !date ) return logError();
+			
+			var viewDate;
+			if ( typeof date === 'string' ) {
+				viewDate = this.localMoment(date, this.getFormat('datetime') );
+			}
+			else {
+				viewDate = this.localMoment( date );
+			}
+
+			if ( !viewDate || !viewDate.isValid() ) return logError();
+			this.setState({ viewDate: viewDate });
+		},
+
+		/**
+		 * Set the view currently shown by the calendar. View modes shipped with react-datetime are 'years', 'months', 'days' and 'time'.
+		 * @param TYPES.string mode 
+		 */
+		setViewMode: function( mode ) {
+			this.showView( mode )();
+		},
+
+		log: function( message, method ) {
+			var con = console;
+			if ( !method ) {
+				method = 'warn';
+			}
+			con[ method ]( '***react-datetime:' + message );
 		},
 
 		render: function() {
