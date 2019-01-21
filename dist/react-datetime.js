@@ -237,7 +237,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		getLocaleData: function( props ) {
 			var p = props || this.props;
-			return this.localMoment( p.date ).localeData();
+			return this.localMoment( p.value || p.defaultValue || new Date() ).localeData();
 		},
 
 		getDateFormat: function( locale ) {
