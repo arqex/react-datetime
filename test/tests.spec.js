@@ -478,6 +478,45 @@ describe('Datetime', () => {
 			expect(component.find('.rdtYear').at(0).text()).toEqual('custom-content');
 		});
 
+		it('renderTimeArrow', () => {
+			const timeArrows = {
+				'hours': {
+					'up': '↑',
+					'do': '↓'
+				},
+				'minutes': {
+					'up': '↟',
+					'do': '↡'
+				},
+				'seconds': {
+					'up': '↥',
+					'do': '↧'
+				},
+				'dayPart': {
+					'up': '+',
+					'do': '-'
+				}
+			};
+			const renderTimeArrow = function ( arrowType, type ) {
+				return timeArrows[type][arrowType];
+      };
+			const component = utils.createDatetime({ renderTimeArrow, timeFormat: 'hh:mm:ss:SSS A' });
+			utils.openDatepicker(component);
+      utils.clickOnElement(component.find('.rdtTimeToggle'));
+      expect(utils.isTimeView(component)).toBeTruthy();
+
+      const timeCounters = component.find('.rdtCounter');
+
+      expect(timeCounters.at(0).find('.rdtBtn').at(0).text()).toEqual('↑');
+      expect(timeCounters.at(0).find('.rdtBtn').at(1).text()).toEqual('↓');
+      expect(timeCounters.at(1).find('.rdtBtn').at(0).text()).toEqual('↟');
+      expect(timeCounters.at(1).find('.rdtBtn').at(1).text()).toEqual('↡');
+      expect(timeCounters.at(2).find('.rdtBtn').at(0).text()).toEqual('↥');
+      expect(timeCounters.at(2).find('.rdtBtn').at(1).text()).toEqual('↧');
+      expect(timeCounters.at(3).find('.rdtBtn').at(0).text()).toEqual('+');
+      expect(timeCounters.at(3).find('.rdtBtn').at(1).text()).toEqual('-');
+		});
+
 		it('closeOnTab=true', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ value: date });

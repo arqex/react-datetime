@@ -5709,6 +5709,142 @@ exports[`test renderMonth: specified 1`] = `
 </div>
 `;
 
+exports[`test renderTimeArrow: specified 1`] = `
+<div
+  className="rdt">
+  <input
+    className="form-control"
+    onChange={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    type="text"
+    value="" />
+  <div
+    className="rdtPicker">
+    <div
+      className="rdtTime">
+      <table>
+        <thead>
+          <tr>
+            <th
+              className="rdtSwitch"
+              colSpan={4}
+              onClick={[Function]}>
+              12/01/2016
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div
+                className="rdtCounters">
+                <div
+                  className="rdtCounter">
+                  <span
+                    className="rdtBtn"
+                    onContextMenu={[Function]}
+                    onMouseDown={[Function]}>
+                    ↑
+                  </span>
+                  <div
+                    className="rdtCount">
+                    12
+                  </div>
+                  <span
+                    className="rdtBtn"
+                    onContextMenu={[Function]}
+                    onMouseDown={[Function]}>
+                    ↓
+                  </span>
+                </div>
+                <div
+                  className="rdtCounterSeparator">
+                  :
+                </div>
+                <div
+                  className="rdtCounter">
+                  <span
+                    className="rdtBtn"
+                    onContextMenu={[Function]}
+                    onMouseDown={[Function]}>
+                    ↟
+                  </span>
+                  <div
+                    className="rdtCount">
+                    00
+                  </div>
+                  <span
+                    className="rdtBtn"
+                    onContextMenu={[Function]}
+                    onMouseDown={[Function]}>
+                    ↡
+                  </span>
+                </div>
+                <div
+                  className="rdtCounterSeparator">
+                  :
+                </div>
+                <div
+                  className="rdtCounter">
+                  <span
+                    className="rdtBtn"
+                    onContextMenu={[Function]}
+                    onMouseDown={[Function]}>
+                    ↥
+                  </span>
+                  <div
+                    className="rdtCount">
+                    00
+                  </div>
+                  <span
+                    className="rdtBtn"
+                    onContextMenu={[Function]}
+                    onMouseDown={[Function]}>
+                    ↧
+                  </span>
+                </div>
+                <div
+                  className="rdtCounter">
+                  <span
+                    className="rdtBtn"
+                    onContextMenu={[Function]}
+                    onMouseDown={[Function]}>
+                    +
+                  </span>
+                  <div
+                    className="rdtCount">
+                    AM
+                  </div>
+                  <span
+                    className="rdtBtn"
+                    onContextMenu={[Function]}
+                    onMouseDown={[Function]}>
+                    -
+                  </span>
+                </div>
+                <div
+                  className="rdtCounterSeparator">
+                  :
+                </div>
+                <div
+                  className="rdtCounter rdtMilli">
+                  <input
+                    onChange={[Function]}
+                    type="text"
+                    value="000" />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`test renderYear: specified 1`] = `
 <div
   className="rdt">

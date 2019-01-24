@@ -4,7 +4,7 @@
 //     Updates by: Aaron Spaulding <aaron@sachimp.com>,
 //                 Karol Janyst <http://github.com/LKay>
 
-import { Component, ChangeEvent, FocusEvent, FocusEventHandler } from "react";
+import { Component, ChangeEvent, FocusEvent, FocusEventHandler, ReactNode } from "react";
 import { Moment } from "moment";
 
 export = ReactDatetimeClass;
@@ -150,6 +150,15 @@ declare namespace ReactDatetimeClass {
          See appearance customization
          */
         renderYear?: (props: any, year: number, selectedDate: any) => JSX.Element;
+        /*
+          Customize the time arrows.
+          This function has two parameters. The first one is arrowType that represents the arrow type that has to be
+          rendered and has two possible values: 'up' for up arrow and 'do' for down arrow. The second one is type which
+          represents the type of the time and has four possible values: 'hours' for the hours arrows, 'minutes' for the
+          minutes arrows, 'seconds' for seconds arrows and 'dayPart' for the day part arrows AM/PM.
+          It should return a string or a React component.
+        */
+        renderTimeArrow?: (props: any, arrowType: string, type: string) => ReactNode|string;
         /*
          Whether to use moment's strict parsing when parsing input.
          */

@@ -138,6 +138,15 @@ declare module ReactDatetime {
      */
     renderYear?: (props: any, year: number, selectedDate: any) => React.Component<any, any>;
     /*
+      Customize the time arrows.
+      This function has two parameters. The first one is arrowType that represents the arrow type that has to be
+      rendered and has two possible values: 'up' for up arrow and 'do' for down arrow. The second one is type which
+      represents the type of the time and has four possible values: 'hours' for the hours arrows, 'minutes' for the
+      minutes arrows, 'seconds' for seconds arrows and 'dayPart' for the day part arrows AM/PM.
+      It should return a string or a React Node.
+     */
+    renderTimeArrow?: (props: any, arrowType: string, type: string) => React.ReactNode<any, any>|string;
+    /*
      Whether to use moment's strict parsing when parsing input.
      */
     strictParsing?: boolean;

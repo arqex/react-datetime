@@ -207,3 +207,31 @@ it('renderYear: specified', () => {
     ).toJSON();
     expect(tree).toMatchSnapshot();
 });
+
+it('renderTimeArrow: specified', () => {
+  const timeArrows = {
+    'hours': {
+      'up': '↑',
+      'do': '↓'
+    },
+    'minutes': {
+      'up': '↟',
+      'do': '↡'
+    },
+    'seconds': {
+      'up': '↥',
+      'do': '↧'
+    },
+    'dayPart': {
+      'up': '+',
+      'do': '-'
+    }
+  };
+  const renderTimeArrow = function ( arrowType, type ) {
+    return timeArrows[type][arrowType];
+  };
+  const tree = renderer.create(
+      <Datetime renderTimeArrow={renderTimeArrow} viewMode={'time'} timeFormat={'hh:mm:ss:SSS A'} />
+  ).toJSON();
+  expect(tree).toMatchSnapshot();
+});

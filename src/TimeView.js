@@ -47,6 +47,17 @@ var DateTimePickerTime = createClass({
 		};
 	},
 
+	renderArrow: function ( arrowType, type ) {
+		if ( this.props.renderTimeArrow ) {
+			return this.props.renderTimeArrow( arrowType, type );
+		}
+		switch ( arrowType ) {
+			case 'up': return '▲';
+			case 'do': return '▼';
+			default: return '';
+		}
+	},
+
 	renderCounter: function( type ) {
 		if ( type !== 'daypart' ) {
 			var value = this.state[ type ];
@@ -58,9 +69,9 @@ var DateTimePickerTime = createClass({
 				}
 			}
 			return React.createElement('div', { key: type, className: 'rdtCounter' }, [
-				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
+				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, this.renderArrow( 'up', type ) ),
 				React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
-				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
+				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, this.renderArrow( 'do', type ) )
 			]);
 		}
 		return '';
@@ -68,9 +79,9 @@ var DateTimePickerTime = createClass({
 
 	renderDayPart: function() {
 		return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
-			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
+			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, this.renderArrow( 'up', 'dayPart' ) ),
 			React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
+			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, this.renderArrow( 'do', 'dayPart' ) )
 		]);
 	},
 
