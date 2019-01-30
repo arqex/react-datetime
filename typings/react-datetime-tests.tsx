@@ -142,6 +142,19 @@ const TEST_CUSTOMIZABLE_COMPONENT_PROPS: JSX.Element = <ReactDatetime
 		renderMonth={ (props: any, month: any, year: any, selectedDate: any) => {
 			return <td {...props}>{ month }</td>;
 		} }
+		renderInput={ (props: any, openCalendar, closeCalendar) => {
+			function clear(){
+				props.onChange({target: {value: ''}});
+		}
+		return (
+				<div>
+						<input {...props} />
+						<button onClick={openCalendar}>open calendar</button>
+						<button onClick={closeCalendar}>close calendar</button>
+						<button onClick={clear}>clear</button>
+				</div>
+		);
+		} }
 		renderYear={ (props: any, year: any, selectedDate: any) => {
 			return <td {...props}>{ year % 100 }</td>;
 		} }
