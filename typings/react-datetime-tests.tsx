@@ -147,12 +147,12 @@ const TEST_CUSTOMIZABLE_COMPONENT_PROPS: JSX.Element = <ReactDatetime
 				props.onChange({target: {value: ''}});
 		}
 		return (
-				<div>
-						<input {...props} />
-						<button onClick={openCalendar}>open calendar</button>
-						<button onClick={closeCalendar}>close calendar</button>
-						<button onClick={clear}>clear</button>
-				</div>
+			<div>
+				<input {...props} />
+				<button onClick={openCalendar}>open calendar</button>
+				<button onClick={closeCalendar}>close calendar</button>
+				<button onClick={clear}>clear</button>
+			</div>
 		);
 		} }
 		renderYear={ (props: any, year: any, selectedDate: any) => {
