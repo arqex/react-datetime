@@ -191,7 +191,7 @@ var valid = function( current ){
 This project includes typings for TypeScript versions 1.8 and 2.0. Additional typings are not
 required.
 
-Typings for 1.8 are found in `react-datetime.d.ts` and typings for 2.0 are found in `typings/index.d.ts`.
+Typings for 1.8 are found in `react-datetime.d.ts` and typings for 2.0 are found in `DateTime.d.ts`.
 
 ```js
 import * as Datetime from 'react-datetime';
