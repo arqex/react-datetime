@@ -147,7 +147,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-postcss": "^1.6.3",
     "rollup-plugin-replace": "^2.1.0",
-    "rollup-plugin-terser": "4.0.2",
+    "rollup-plugin-terser": "4.0.4",
     "rollup-plugin-typescript2": "^0.19.0",
     "rollup-plugin-url": "^2.0.1",
     "ts-jest": "^23.10.4",
