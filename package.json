@@ -24,10 +24,6 @@
     {
       "path": "dist/index.js",
       "maxSize": "5.75 kB"
-    },
-    {
-      "path": "dist/index.es.js",
-      "maxSize": "5.75 kB"
     }
   ],
   "keywords": [
