@@ -37,8 +37,8 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production microbundle --jsx react",
     "start": "microbundle --jsx react --watch",
-    "lint": "yarn tslint",
-    "lint:fix": "yarn tslint:fix",
+    "lint": "yarn tslint --project tsconfig.json",
+    "lint:fix": "yarn tslint --project tsconfig.json --fix",
     "test": "cross-env CI=1 TZ=Europe/Stockholm jest",
     "test:coverage": "cross-env CI=1 TZ=Europe/Stockholm jest --coverage",
     "test:all": "echo 'Running tests...' && yarn test:coverage && yarn bundlesize && echo 'All tests passed! 🤘'",
