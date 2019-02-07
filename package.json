@@ -23,7 +23,7 @@
   "bundlesize": [
     {
       "path": "dist/index.js",
-      "maxSize": "5.75 kB"
+      "maxSize": "4.03 kB"
     }
   ],
   "keywords": [
@@ -35,6 +35,7 @@
     "datetime"
   ],
   "scripts": {
+    "now-build": "microbundle --jsx react",
     "build": "cross-env NODE_ENV=production microbundle --jsx react",
     "start": "microbundle --jsx react --watch",
     "lint": "yarn tslint --project tsconfig.json",
