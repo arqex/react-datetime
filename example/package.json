@@ -5,12 +5,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "now-build": "cd .. && yarn install && yarn build && yarn link && cd example && yarn install && yarn link @nateradebaugh/react-datetime && cross-env PUBLIC_URL=./ yarn build && mv build dist",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "browserslist": [
     ">0.2%",
@@ -20,12 +19,13 @@
   ],
   "dependencies": {
     "@nateradebaugh/react-datetime": "link:..",
+    "date-fns": "^1.30.1",
     "react": "^16.6.3",
-    "react-datetime": "link:..",
     "react-dom": "^16.6.3",
     "react-scripts": "^2.1.1"
   },
   "devDependencies": {
-    "gh-pages": "^2.0.1"
+    "cross-env": "^5.2.0",
+    "microbundle": "^0.9.0"
   }
 }
