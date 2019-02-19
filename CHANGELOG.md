@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.15.2
+
+- updates a lot of deps, codebase styled with prettier now
+
+## 2.15.1
+
+- don't shift the time when timezone changes
+
 ## 2.15.0
 
 - utc prop replaced by "timezone" prop
