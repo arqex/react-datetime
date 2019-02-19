@@ -1,12 +1,11 @@
-'use strict'
+import React from 'react'
+import createClass from 'create-react-class'
+import onClickOutside from '@capaj/react-onclickoutside'
 
-var React = require('react'),
-  createClass = require('create-react-class'),
-  onClickOutside = require('react-onclickoutside').default
-var DateTimePickerYears = onClickOutside(
+const DateTimePickerYears = onClickOutside(
   createClass({
-    render: function() {
-      var year = parseInt(this.props.viewDate.year() / 10, 10) * 10
+    render() {
+      const year = parseInt(this.props.viewDate.year() / 10, 10) * 10
 
       return React.createElement('div', { className: 'rdtYears' }, [
         React.createElement(
@@ -33,7 +32,7 @@ var DateTimePickerYears = onClickOutside(
                   onClick: this.props.showView('years'),
                   colSpan: 2
                 },
-                year + '-' + (year + 9)
+                `${year}-${year + 9}`
               ),
               React.createElement(
                 'th',
@@ -55,42 +54,42 @@ var DateTimePickerYears = onClickOutside(
       ])
     },
 
-    renderYears: function(year) {
-      var years = [],
-        i = -1,
-        rows = [],
-        renderer = this.props.renderYear || this.renderYear,
-        selectedDate = this.props.selectedDate,
-        isValid = this.props.isValidDate || this.alwaysValidDate,
-        classes,
-        props,
-        currentYear,
-        isDisabled,
-        noOfDaysInYear,
-        daysInYear,
-        validDay,
-        // Month and date are irrelevant here because
+    renderYears(year) {
+      let years = []
+      let i = -1
+      const rows = []
+      const renderer = this.props.renderYear || this.renderYear
+      const selectedDate = this.props.selectedDate
+      const isValid = this.props.isValidDate || this.alwaysValidDate
+      let classes
+      let props
+      let currentYear
+      let isDisabled
+      let noOfDaysInYear
+      let daysInYear
+      let validDay
+
+      const // Month and date are irrelevant here because
         // we're only interested in the year
-        irrelevantMonth = 0,
-        irrelevantDate = 1
+        irrelevantMonth = 0
+
+      const irrelevantDate = 1
       year--
       while (i < 11) {
         classes = 'rdtYear'
         currentYear = this.props.viewDate
           .clone()
-          .set({ year: year, month: irrelevantMonth, date: irrelevantDate })
+          .set({ year, month: irrelevantMonth, date: irrelevantDate })
 
         // Not sure what 'rdtOld' is for, commenting out for now as it's not working properly
         // if ( i === -1 | i === 10 )
         // classes += ' rdtOld';
 
         noOfDaysInYear = currentYear.endOf('year').format('DDD')
-        daysInYear = Array.from({ length: noOfDaysInYear }, function(e, i) {
-          return i + 1
-        })
+        daysInYear = Array.from({ length: noOfDaysInYear }, (e, i) => i + 1)
 
-        validDay = daysInYear.find(function(d) {
-          var day = currentYear.clone().dayOfYear(d)
+        validDay = daysInYear.find((d) => {
+          const day = currentYear.clone().dayOfYear(d)
           return isValid(day)
         })
 
@@ -127,22 +126,22 @@ var DateTimePickerYears = onClickOutside(
       return rows
     },
 
-    updateSelectedYear: function(event) {
+    updateSelectedYear(event) {
       this.props.updateSelectedDate(event)
     },
 
-    renderYear: function(props, year) {
+    renderYear(props, year) {
       return React.createElement('td', props, year)
     },
 
-    alwaysValidDate: function() {
+    alwaysValidDate() {
       return 1
     },
 
-    handleClickOutside: function() {
+    handleClickOutside() {
       this.props.handleClickOutside()
     }
   })
 )
 
-module.exports = DateTimePickerYears
+export default DateTimePickerYears

@@ -3,7 +3,7 @@
 import React from 'react' // eslint-disable-line no-unused-vars
 import Datetime from '../DateTime.js'
 import renderer from 'react-test-renderer'
-
+import moment from 'moment'
 // findDOMNode is not supported by the react-test-renderer,
 // and even though this component is not using that method
 // a dependency is probably using it. So we need to mock it
@@ -148,7 +148,7 @@ describe('inputProps', () => {
 })
 
 it('isValidDate: only valid if after yesterday', () => {
-  const yesterday = Datetime.moment().subtract(1, 'day')
+  const yesterday = moment().subtract(1, 'day')
   const valid = (current) => current.isAfter(yesterday)
   const tree = renderer.create(<Datetime isValidDate={valid} />).toJSON()
   expect(tree).toMatchSnapshot()

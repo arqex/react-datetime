@@ -45,10 +45,11 @@
     "moment-timezone": "^0.5.23"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.3",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "@types/react": ">=16.8.3",
-    "babel-core": "^6.22.1",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
@@ -79,7 +80,7 @@
     "request": "^2.88.0",
     "through2": "^2.0.3",
     "typescript": "^3.3.3",
-    "webpack": "^2.2.1",
+    "webpack": "^2.7.0",
     "webpack-dev-server": "^1.7.0",
     "webpack-stream": "^3.2.0"
   },
@@ -88,7 +89,7 @@
     "eslint-plugin-prettier": "^3.0.1",
     "object-assign": "^4.1.1",
     "prop-types": "^15.7.2",
-    "react-onclickoutside": "^6.7.1"
+    "@capaj/react-onclickoutside": "^6.7.1"
   },
   "pre-commit": [
     "notify-pre-commit-hook",

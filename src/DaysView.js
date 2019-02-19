@@ -1,16 +1,15 @@
-'use strict'
+import React from 'react'
+import createClass from 'create-react-class'
+import moment from 'moment'
+import onClickOutside from '@capaj/react-onclickoutside'
 
-var React = require('react'),
-  createClass = require('create-react-class'),
-  moment = require('moment'),
-  onClickOutside = require('react-onclickoutside').default
-var DateTimePickerDays = onClickOutside(
+const DateTimePickerDays = onClickOutside(
   createClass({
-    render: function() {
-      var footer = this.renderFooter(),
-        date = this.props.viewDate,
-        locale = date.localeData(),
-        tableChildren
+    render() {
+      const footer = this.renderFooter()
+      const date = this.props.viewDate
+      const locale = date.localeData()
+      let tableChildren
 
       tableChildren = [
         React.createElement('thead', { key: 'th' }, [
@@ -33,7 +32,7 @@ var DateTimePickerDays = onClickOutside(
                 colSpan: 5,
                 'data-value': this.props.viewDate.month()
               },
-              locale.months(date) + ' ' + date.year()
+              `${locale.months(date)} ${date.year()}`
             ),
             React.createElement(
               'th',
@@ -48,13 +47,13 @@ var DateTimePickerDays = onClickOutside(
           React.createElement(
             'tr',
             { key: 'd' },
-            this.getDaysOfWeek(locale).map(function(day, index) {
-              return React.createElement(
+            this.getDaysOfWeek(locale).map((day, index) =>
+              React.createElement(
                 'th',
                 { key: day + index, className: 'dow' },
                 day
               )
-            })
+            )
           )
         ]),
         React.createElement('tbody', { key: 'tb' }, this.renderDays())
@@ -74,36 +73,37 @@ var DateTimePickerDays = onClickOutside(
      * depending on the current locale
      * @return {array} A list with the shortname of the days
      */
-    getDaysOfWeek: function(locale) {
-      var days = locale._weekdaysMin,
-        first = locale.firstDayOfWeek(),
-        dow = [],
-        i = 0
-      days.forEach(function(day) {
+    getDaysOfWeek(locale) {
+      const days = locale._weekdaysMin
+      const first = locale.firstDayOfWeek()
+      const dow = []
+      let i = 0
+      days.forEach((day) => {
         dow[(7 + i++ - first) % 7] = day
       })
 
       return dow
     },
 
-    renderDays: function() {
-      var date = this.props.viewDate,
-        selected = this.props.selectedDate && this.props.selectedDate.clone(),
-        prevMonth = date.clone().subtract(1, 'months'),
-        currentYear = date.year(),
-        currentMonth = date.month(),
-        weeks = [],
-        days = [],
-        renderer = this.props.renderDay || this.renderDay,
-        isValid = this.props.isValidDate || this.alwaysValidDate,
-        classes,
-        isDisabled,
-        dayProps,
-        currentDate
+    renderDays() {
+      const date = this.props.viewDate
+      const selected =
+        this.props.selectedDate && this.props.selectedDate.clone()
+      const prevMonth = date.clone().subtract(1, 'months')
+      const currentYear = date.year()
+      const currentMonth = date.month()
+      const weeks = []
+      let days = []
+      const renderer = this.props.renderDay || this.renderDay
+      const isValid = this.props.isValidDate || this.alwaysValidDate
+      let classes
+      let isDisabled
+      let dayProps
+      let currentDate
 
       // Go to the last week of the previous month
       prevMonth.date(prevMonth.daysInMonth()).startOf('week')
-      var lastDay = prevMonth.clone().add(42, 'd')
+      const lastDay = prevMonth.clone().add(42, 'd')
 
       while (prevMonth.isBefore(lastDay)) {
         classes = 'rdtDay'
@@ -153,18 +153,18 @@ var DateTimePickerDays = onClickOutside(
       return weeks
     },
 
-    updateSelectedDate: function(event) {
+    updateSelectedDate(event) {
       this.props.updateSelectedDate(event, true)
     },
 
-    renderDay: function(props, currentDate) {
+    renderDay(props, currentDate) {
       return React.createElement('td', props, currentDate.date())
     },
 
-    renderFooter: function() {
+    renderFooter() {
       if (!this.props.timeFormat) return ''
 
-      var date = this.props.selectedDate || this.props.viewDate
+      const date = this.props.selectedDate || this.props.viewDate
 
       return React.createElement(
         'tfoot',
@@ -185,14 +185,14 @@ var DateTimePickerDays = onClickOutside(
       )
     },
 
-    alwaysValidDate: function() {
+    alwaysValidDate() {
       return 1
     },
 
-    handleClickOutside: function() {
+    handleClickOutside() {
       this.props.handleClickOutside()
     }
   })
 )
 
-module.exports = DateTimePickerDays
+export default DateTimePickerDays

@@ -1,20 +1,19 @@
-'use strict'
+import assign from 'object-assign'
+import PropTypes from 'prop-types'
+import createClass from 'create-react-class'
+import moment from 'moment'
+import React from 'react'
+import CalendarContainer from './src/CalendarContainer'
 
-var assign = require('object-assign'),
-  PropTypes = require('prop-types'),
-  createClass = require('create-react-class'),
-  moment = require('moment'),
-  React = require('react'),
-  CalendarContainer = require('./src/CalendarContainer')
-var viewModes = Object.freeze({
+const viewModes = Object.freeze({
   YEARS: 'years',
   MONTHS: 'months',
   DAYS: 'days',
   TIME: 'time'
 })
 
-var TYPES = PropTypes
-var Datetime = createClass({
+const TYPES = PropTypes
+const Datetime = createClass({
   displayName: 'DateTime',
   propTypes: {
     // value: TYPES.object | TYPES.string,
@@ -46,8 +45,8 @@ var Datetime = createClass({
     closeOnTab: TYPES.bool
   },
 
-  getInitialState: function() {
-    var state = this.getStateFromProps(this.props)
+  getInitialState() {
+    const state = this.getStateFromProps(this.props)
 
     if (state.open === undefined) state.open = !this.props.input
 
@@ -58,24 +57,24 @@ var Datetime = createClass({
     return state
   },
 
-  parseDate: function(date, formats) {
-    var parsedDate
+  parseDate(date, { datetime }) {
+    let parsedDate
 
     if (date && typeof date === 'string')
-      parsedDate = this.localMoment(date, formats.datetime)
+      parsedDate = this.localMoment(date, datetime)
     else if (date) parsedDate = this.localMoment(date)
     if (parsedDate && !parsedDate.isValid()) parsedDate = null
 
     return parsedDate
   },
 
-  getStateFromProps: function(props) {
-    var formats = this.getFormats(props),
-      date = props.value || props.defaultValue,
-      selectedDate,
-      viewDate,
-      updateOn,
-      inputValue
+  getStateFromProps(props) {
+    const formats = this.getFormats(props)
+    const date = props.value || props.defaultValue
+    let selectedDate
+    let viewDate
+    let updateOn
+    let inputValue
 
     selectedDate = this.parseDate(date, formats)
 
@@ -94,33 +93,34 @@ var Datetime = createClass({
     else inputValue = date || ''
 
     return {
-      updateOn: updateOn,
+      updateOn,
       inputFormat: formats.datetime,
-      viewDate: viewDate,
-      selectedDate: selectedDate,
-      inputValue: inputValue,
+      viewDate,
+      selectedDate,
+      inputValue,
       open: props.open
     }
   },
 
-  getUpdateOn: function(formats) {
-    if (formats.date.match(/[lLD]/)) {
+  getUpdateOn({ date }) {
+    if (date.match(/[lLD]/)) {
       return viewModes.DAYS
-    } else if (formats.date.indexOf('M') !== -1) {
+    } else if (date.includes('M')) {
       return viewModes.MONTHS
-    } else if (formats.date.indexOf('Y') !== -1) {
+    } else if (date.includes('Y')) {
       return viewModes.YEARS
     }
 
     return viewModes.DAYS
   },
 
-  getFormats: function(props) {
-    var formats = {
-        date: props.dateFormat || '',
-        time: props.timeFormat || ''
-      },
-      locale = this.localMoment(props.date, null, props).localeData()
+  getFormats(props) {
+    const formats = {
+      date: props.dateFormat || '',
+      time: props.timeFormat || ''
+    }
+
+    const locale = this.localMoment(props.date, null, props).localeData()
     if (formats.date === true) {
       formats.date = locale.longDateFormat('L')
     } else if (this.getUpdateOn(formats) !== viewModes.DAYS) {
@@ -133,15 +133,15 @@ var Datetime = createClass({
 
     formats.datetime =
       formats.date && formats.time
-        ? formats.date + ' ' + formats.time
+        ? `${formats.date} ${formats.time}`
         : formats.date || formats.time
 
     return formats
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    var formats = this.getFormats(nextProps),
-      updatedState = {}
+  componentWillReceiveProps(nextProps) {
+    const formats = this.getFormats(nextProps)
+    let updatedState = {}
     if (
       nextProps.value !== this.props.value ||
       formats.datetime !== this.getFormats(this.props).datetime
@@ -168,13 +168,13 @@ var Datetime = createClass({
 
     if (nextProps.locale !== this.props.locale) {
       if (this.state.viewDate) {
-        var updatedViewDate = this.state.viewDate
+        const updatedViewDate = this.state.viewDate
           .clone()
           .locale(nextProps.locale)
         updatedState.viewDate = updatedViewDate
       }
       if (this.state.selectedDate) {
-        var updatedSelectedDate = this.state.selectedDate
+        const updatedSelectedDate = this.state.selectedDate
           .clone()
           .locale(nextProps.locale)
         updatedState.selectedDate = updatedSelectedDate
@@ -221,10 +221,10 @@ var Datetime = createClass({
     this.setState(updatedState)
   },
 
-  onInputChange: function(e) {
-    var value = e.target === null ? e : e.target.value,
-      localMoment = this.localMoment(value, this.state.inputFormat),
-      update = { inputValue: value }
+  onInputChange(e) {
+    const value = e.target === null ? e : e.target.value
+    const localMoment = this.localMoment(value, this.state.inputFormat)
+    const update = { inputValue: value }
     if (localMoment.isValid() && !this.props.value) {
       update.selectedDate = localMoment
       update.viewDate = localMoment.clone().startOf('month')
@@ -239,31 +239,33 @@ var Datetime = createClass({
     })
   },
 
-  onInputKey: function(e) {
-    if (e.which === 9 && this.props.closeOnTab) {
+  onInputKey({ which }) {
+    if (which === 9 && this.props.closeOnTab) {
       this.closeCalendar()
     }
   },
 
-  showView: function(view) {
-    var me = this
-    return function() {
+  showView(view) {
+    const me = this
+    return () => {
       me.state.currentView !== view && me.props.onViewModeChange(view)
       me.setState({ currentView: view })
     }
   },
 
-  setDate: function(type) {
-    var me = this,
-      nextViews = {
-        month: viewModes.DAYS,
-        year: viewModes.MONTHS
-      }
-    return function(e) {
+  setDate(type) {
+    const me = this
+
+    const nextViews = {
+      month: viewModes.DAYS,
+      year: viewModes.MONTHS
+    }
+
+    return ({ target }) => {
       me.setState({
         viewDate: me.state.viewDate
           .clone()
-          [type](parseInt(e.target.getAttribute('data-value'), 10))
+          [type](parseInt(target.getAttribute('data-value'), 10))
           .startOf(type),
         currentView: nextViews[type]
       })
@@ -271,25 +273,25 @@ var Datetime = createClass({
     }
   },
 
-  subtractTime: function(amount, type, toSelected) {
-    var me = this
-    return function() {
+  subtractTime(amount, type, toSelected) {
+    const me = this
+    return () => {
       me.props.onNavigateBack(amount, type)
       me.updateTime('subtract', amount, type, toSelected)
     }
   },
 
-  addTime: function(amount, type, toSelected) {
-    var me = this
-    return function() {
+  addTime(amount, type, toSelected) {
+    const me = this
+    return () => {
       me.props.onNavigateForward(amount, type)
       me.updateTime('add', amount, type, toSelected)
     }
   },
 
-  updateTime: function(op, amount, type, toSelected) {
-    var update = {},
-      date = toSelected ? 'selectedDate' : 'viewDate'
+  updateTime(op, amount, type, toSelected) {
+    const update = {}
+    const date = toSelected ? 'selectedDate' : 'viewDate'
 
     update[date] = this.state[date].clone()[op](amount, type)
 
@@ -297,11 +299,11 @@ var Datetime = createClass({
   },
 
   allowedSetTime: ['hours', 'minutes', 'seconds', 'milliseconds'],
-  setTime: function(type, value) {
-    var index = this.allowedSetTime.indexOf(type) + 1,
-      state = this.state,
-      date = (state.selectedDate || state.viewDate).clone(),
-      nextType
+  setTime(type, value) {
+    let index = this.allowedSetTime.indexOf(type) + 1
+    const state = this.state
+    const date = (state.selectedDate || state.viewDate).clone()
+    let nextType
 
     // It is needed to set all the time properties
     // to not to reset the time
@@ -320,27 +322,27 @@ var Datetime = createClass({
     this.props.onChange(date)
   },
 
-  updateSelectedDate: function(e, close) {
-    var target = e.target,
-      modifier = 0,
-      viewDate = this.state.viewDate,
-      currentDate = this.state.selectedDate || viewDate,
-      date
+  updateSelectedDate(e, close) {
+    const target = e.target
+    let modifier = 0
+    const viewDate = this.state.viewDate
+    const currentDate = this.state.selectedDate || viewDate
+    let date
 
-    if (target.className.indexOf('rdtDay') !== -1) {
-      if (target.className.indexOf('rdtNew') !== -1) modifier = 1
-      else if (target.className.indexOf('rdtOld') !== -1) modifier = -1
+    if (target.className.includes('rdtDay')) {
+      if (target.className.includes('rdtNew')) modifier = 1
+      else if (target.className.includes('rdtOld')) modifier = -1
 
       date = viewDate
         .clone()
         .month(viewDate.month() + modifier)
         .date(parseInt(target.getAttribute('data-value'), 10))
-    } else if (target.className.indexOf('rdtMonth') !== -1) {
+    } else if (target.className.includes('rdtMonth')) {
       date = viewDate
         .clone()
         .month(parseInt(target.getAttribute('data-value'), 10))
         .date(currentDate.date())
-    } else if (target.className.indexOf('rdtYear') !== -1) {
+    } else if (target.className.includes('rdtYear')) {
       date = viewDate
         .clone()
         .month(currentDate.month())
@@ -355,7 +357,7 @@ var Datetime = createClass({
       .milliseconds(currentDate.milliseconds())
 
     if (!this.props.value) {
-      var open = !(this.props.closeOnSelect && close)
+      const open = !(this.props.closeOnSelect && close)
       if (!open) {
         this.props.onBlur(date)
       }
@@ -364,7 +366,7 @@ var Datetime = createClass({
         selectedDate: date,
         viewDate: date.clone().startOf('month'),
         inputValue: date.format(this.state.inputFormat),
-        open: open
+        open
       })
     } else {
       if (this.props.closeOnSelect && close) {
@@ -375,7 +377,7 @@ var Datetime = createClass({
     this.props.onChange(date)
   },
 
-  openCalendar: function(e) {
+  openCalendar(e) {
     if (!this.state.open) {
       this.setState({ open: true }, function() {
         this.props.onFocus(e)
@@ -383,13 +385,13 @@ var Datetime = createClass({
     }
   },
 
-  closeCalendar: function() {
+  closeCalendar() {
     this.setState({ open: false }, function() {
       this.props.onBlur(this.state.selectedDate || this.state.inputValue)
     })
   },
 
-  handleClickOutside: function() {
+  handleClickOutside() {
     if (
       this.props.input &&
       this.state.open &&
@@ -402,14 +404,12 @@ var Datetime = createClass({
     }
   },
 
-  localMoment: function(date, format, props) {
+  localMoment(date, format, props) {
     props = props || this.props
-    var momentFn = props.timezone
-      ? function(time) {
-          return moment(time).tz(props.timezone, true)
-        }
+    const momentFn = props.timezone
+      ? (time) => moment(time).tz(props.timezone, true)
       : moment
-    var m = momentFn(date, format, props.strictParsing)
+    const m = momentFn(date, format, props.strictParsing)
     if (props.locale) m.locale(props.locale)
     return m
   },
@@ -436,37 +436,38 @@ var Datetime = createClass({
     ]
   },
 
-  getComponentProps: function() {
-    var me = this,
-      formats = this.getFormats(this.props),
-      props = { dateFormat: formats.date, timeFormat: formats.time }
-    this.componentProps.fromProps.forEach(function(name) {
+  getComponentProps() {
+    const me = this
+    const formats = this.getFormats(this.props)
+    const props = { dateFormat: formats.date, timeFormat: formats.time }
+    this.componentProps.fromProps.forEach((name) => {
       props[name] = me.props[name]
     })
-    this.componentProps.fromState.forEach(function(name) {
+    this.componentProps.fromState.forEach((name) => {
       props[name] = me.state[name]
     })
-    this.componentProps.fromThis.forEach(function(name) {
+    this.componentProps.fromThis.forEach((name) => {
       props[name] = me[name]
     })
 
     return props
   },
 
-  render: function() {
+  render() {
     // TODO: Make a function or clean up this code,
     // logic right now is really hard to follow
-    var className =
-        'rdt' +
-        (this.props.className
-          ? Array.isArray(this.props.className)
-            ? ' ' + this.props.className.join(' ')
-            : ' ' + this.props.className
-          : ''),
-      children = []
+    let className = `rdt${
+      this.props.className
+        ? Array.isArray(this.props.className)
+          ? ` ${this.props.className.join(' ')}`
+          : ` ${this.props.className}`
+        : ''
+    }`
+
+    let children = []
 
     if (this.props.input) {
-      var finalInputProps = assign(
+      const finalInputProps = assign(
         {
           type: 'text',
           className: 'form-control',
@@ -503,7 +504,7 @@ var Datetime = createClass({
 
     return React.createElement(
       'div',
-      { className: className },
+      { className },
       children.concat(
         React.createElement(
           'div',
@@ -524,12 +525,12 @@ Datetime.defaultProps = {
   defaultValue: '',
   inputProps: {},
   input: true,
-  onFocus: function() {},
-  onBlur: function() {},
-  onChange: function() {},
-  onViewModeChange: function() {},
-  onNavigateBack: function() {},
-  onNavigateForward: function() {},
+  onFocus() {},
+  onBlur() {},
+  onChange() {},
+  onViewModeChange() {},
+  onNavigateBack() {},
+  onNavigateForward() {},
   timeFormat: true,
   timeConstraints: {},
   dateFormat: true,
@@ -539,7 +540,4 @@ Datetime.defaultProps = {
   timezone: null
 }
 
-// Make moment accessible through the Datetime class
-Datetime.moment = moment
-
-module.exports = Datetime
+export default Datetime

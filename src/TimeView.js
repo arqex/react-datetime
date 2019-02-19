@@ -1,37 +1,36 @@
-'use strict'
+import React from 'react'
+import createClass from 'create-react-class'
+import assign from 'object-assign'
+import onClickOutside from '@capaj/react-onclickoutside'
 
-var React = require('react'),
-  createClass = require('create-react-class'),
-  assign = require('object-assign'),
-  onClickOutside = require('react-onclickoutside').default
-var DateTimePickerTime = onClickOutside(
+const DateTimePickerTime = onClickOutside(
   createClass({
-    getInitialState: function() {
+    getInitialState() {
       return this.calculateState(this.props)
     },
 
-    calculateState: function(props) {
-      var date = props.selectedDate || props.viewDate,
-        format = props.timeFormat,
-        counters = []
-      if (format.toLowerCase().indexOf('h') !== -1) {
+    calculateState({ selectedDate, viewDate, timeFormat }) {
+      const date = selectedDate || viewDate
+      const format = timeFormat
+      const counters = []
+      if (format.toLowerCase().includes('h')) {
         counters.push('hours')
-        if (format.indexOf('m') !== -1) {
+        if (format.includes('m')) {
           counters.push('minutes')
-          if (format.indexOf('s') !== -1) {
+          if (format.includes('s')) {
             counters.push('seconds')
           }
         }
       }
 
-      var hours = date.format('H')
+      const hours = date.format('H')
 
-      var daypart = false
+      let daypart = false
       if (
         this.state !== null &&
-        this.props.timeFormat.toLowerCase().indexOf(' a') !== -1
+        this.props.timeFormat.toLowerCase().includes(' a')
       ) {
-        if (this.props.timeFormat.indexOf(' A') !== -1) {
+        if (this.props.timeFormat.includes(' A')) {
           daypart = hours >= 12 ? 'PM' : 'AM'
         } else {
           daypart = hours >= 12 ? 'pm' : 'am'
@@ -39,21 +38,21 @@ var DateTimePickerTime = onClickOutside(
       }
 
       return {
-        hours: hours,
+        hours,
         minutes: date.format('mm'),
         seconds: date.format('ss'),
         milliseconds: date.format('SSS'),
-        daypart: daypart,
-        counters: counters
+        daypart,
+        counters
       }
     },
 
-    renderCounter: function(type) {
+    renderCounter(type) {
       if (type !== 'daypart') {
-        var value = this.state[type]
+        let value = this.state[type]
         if (
           type === 'hours' &&
-          this.props.timeFormat.toLowerCase().indexOf(' a') !== -1
+          this.props.timeFormat.toLowerCase().includes(' a')
         ) {
           value = ((value - 1) % 12) + 1
 
@@ -98,7 +97,7 @@ var DateTimePickerTime = onClickOutside(
       return ''
     },
 
-    renderDayPart: function() {
+    renderDayPart() {
       return React.createElement(
         'div',
         { key: 'dayPart', className: 'rdtCounter' },
@@ -134,16 +133,16 @@ var DateTimePickerTime = onClickOutside(
       )
     },
 
-    render: function() {
-      var me = this,
-        counters = []
-      this.state.counters.forEach(function(c) {
+    render() {
+      const me = this
+      const counters = []
+      this.state.counters.forEach((c) => {
         if (counters.length)
           counters.push(
             React.createElement(
               'div',
               {
-                key: 'sep' + counters.length,
+                key: `sep${counters.length}`,
                 className: 'rdtCounterSeparator'
               },
               ':'
@@ -158,7 +157,7 @@ var DateTimePickerTime = onClickOutside(
 
       if (
         this.state.counters.length === 3 &&
-        this.props.timeFormat.indexOf('S') !== -1
+        this.props.timeFormat.includes('S')
       ) {
         counters.push(
           React.createElement(
@@ -206,8 +205,8 @@ var DateTimePickerTime = onClickOutside(
       )
     },
 
-    componentWillMount: function() {
-      var me = this
+    componentWillMount() {
+      const me = this
       me.timeConstraints = {
         hours: {
           min: 0,
@@ -230,28 +229,28 @@ var DateTimePickerTime = onClickOutside(
           step: 1
         }
       }
-      ;['hours', 'minutes', 'seconds', 'milliseconds'].forEach(function(type) {
+      ;['hours', 'minutes', 'seconds', 'milliseconds'].forEach((type) => {
         assign(me.timeConstraints[type], me.props.timeConstraints[type])
       })
       this.setState(this.calculateState(this.props))
     },
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps(nextProps) {
       this.setState(this.calculateState(nextProps))
     },
 
-    updateMilli: function(e) {
-      var milli = parseInt(e.target.value, 10)
-      if (milli === e.target.value && milli >= 0 && milli < 1000) {
+    updateMilli({ target }) {
+      const milli = parseInt(target.value, 10)
+      if (milli === target.value && milli >= 0 && milli < 1000) {
         this.props.setTime('milliseconds', milli)
         this.setState({ milliseconds: milli })
       }
     },
 
-    renderHeader: function() {
+    renderHeader() {
       if (!this.props.dateFormat) return null
 
-      var date = this.props.selectedDate || this.props.viewDate
+      const date = this.props.selectedDate || this.props.viewDate
       return React.createElement(
         'thead',
         { key: 'h' },
@@ -271,22 +270,22 @@ var DateTimePickerTime = onClickOutside(
       )
     },
 
-    onStartClicking: function(action, type) {
-      var me = this
+    onStartClicking(action, type) {
+      const me = this
 
-      return function() {
-        var update = {}
+      return () => {
+        const update = {}
         update[type] = me[action](type)
         me.setState(update)
 
-        me.timer = setTimeout(function() {
-          me.increaseTimer = setInterval(function() {
+        me.timer = setTimeout(() => {
+          me.increaseTimer = setInterval(() => {
             update[type] = me[action](type)
             me.setState(update)
           }, 70)
         }, 500)
 
-        me.mouseUpListener = function() {
+        me.mouseUpListener = () => {
           clearTimeout(me.timer)
           clearInterval(me.increaseTimer)
           me.props.setTime(type, me.state[type])
@@ -299,7 +298,7 @@ var DateTimePickerTime = onClickOutside(
       }
     },
 
-    disableContextMenu: function(event) {
+    disableContextMenu(event) {
       event.preventDefault()
       return false
     },
@@ -311,9 +310,9 @@ var DateTimePickerTime = onClickOutside(
       milliseconds: 3
     },
 
-    toggleDayPart: function(type) {
+    toggleDayPart(type) {
       // type is always 'hours'
-      var value = parseInt(this.state[type], 10) + 12
+      let value = parseInt(this.state[type], 10) + 12
       if (value > this.timeConstraints[type].max)
         value =
           this.timeConstraints[type].min +
@@ -321,8 +320,8 @@ var DateTimePickerTime = onClickOutside(
       return this.pad(type, value)
     },
 
-    increase: function(type) {
-      var value =
+    increase(type) {
+      let value =
         parseInt(this.state[type], 10) + this.timeConstraints[type].step
       if (value > this.timeConstraints[type].max)
         value =
@@ -331,8 +330,8 @@ var DateTimePickerTime = onClickOutside(
       return this.pad(type, value)
     },
 
-    decrease: function(type) {
-      var value =
+    decrease(type) {
+      let value =
         parseInt(this.state[type], 10) - this.timeConstraints[type].step
       if (value < this.timeConstraints[type].min)
         value =
@@ -342,16 +341,16 @@ var DateTimePickerTime = onClickOutside(
       return this.pad(type, value)
     },
 
-    pad: function(type, value) {
-      var str = value + ''
-      while (str.length < this.padValues[type]) str = '0' + str
+    pad(type, value) {
+      let str = `${value}`
+      while (str.length < this.padValues[type]) str = `0${str}`
       return str
     },
 
-    handleClickOutside: function() {
+    handleClickOutside() {
       this.props.handleClickOutside()
     }
   })
 )
 
-module.exports = DateTimePickerTime
+export default DateTimePickerTime

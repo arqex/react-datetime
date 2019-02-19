@@ -1,11 +1,10 @@
-'use strict'
+import React from 'react'
+import createClass from 'create-react-class'
+import onClickOutside from '@capaj/react-onclickoutside'
 
-var React = require('react'),
-  createClass = require('create-react-class'),
-  onClickOutside = require('react-onclickoutside').default
-var DateTimePickerMonths = onClickOutside(
+const DateTimePickerMonths = onClickOutside(
   createClass({
-    render: function() {
+    render() {
       return React.createElement('div', { className: 'rdtMonths' }, [
         React.createElement(
           'table',
@@ -54,37 +53,37 @@ var DateTimePickerMonths = onClickOutside(
       ])
     },
 
-    renderMonths: function() {
-      var date = this.props.selectedDate,
-        month = this.props.viewDate.month(),
-        year = this.props.viewDate.year(),
-        rows = [],
-        i = 0,
-        months = [],
-        renderer = this.props.renderMonth || this.renderMonth,
-        isValid = this.props.isValidDate || this.alwaysValidDate,
-        classes,
-        props,
-        currentMonth,
-        isDisabled,
-        noOfDaysInMonth,
-        daysInMonth,
-        validDay,
-        // Date is irrelevant because we're only interested in month
+    renderMonths() {
+      const date = this.props.selectedDate
+      const month = this.props.viewDate.month()
+      const year = this.props.viewDate.year()
+      const rows = []
+      let i = 0
+      let months = []
+      const renderer = this.props.renderMonth || this.renderMonth
+      const isValid = this.props.isValidDate || this.alwaysValidDate
+      let classes
+      let props
+      let currentMonth
+      let isDisabled
+      let noOfDaysInMonth
+      let daysInMonth
+      let validDay
+
+      const // Date is irrelevant because we're only interested in month
         irrelevantDate = 1
+
       while (i < 12) {
         classes = 'rdtMonth'
         currentMonth = this.props.viewDate
           .clone()
-          .set({ year: year, month: i, date: irrelevantDate })
+          .set({ year, month: i, date: irrelevantDate })
 
         noOfDaysInMonth = currentMonth.endOf('month').format('D')
-        daysInMonth = Array.from({ length: noOfDaysInMonth }, function(e, i) {
-          return i + 1
-        })
+        daysInMonth = Array.from({ length: noOfDaysInMonth }, (e, i) => i + 1)
 
-        validDay = daysInMonth.find(function(d) {
-          var day = currentMonth.clone().set('date', d)
+        validDay = daysInMonth.find((d) => {
+          const day = currentMonth.clone().set('date', d)
           return isValid(day)
         })
 
@@ -113,7 +112,7 @@ var DateTimePickerMonths = onClickOutside(
           rows.push(
             React.createElement(
               'tr',
-              { key: month + '_' + rows.length },
+              { key: `${month}_${rows.length}` },
               months
             )
           )
@@ -126,27 +125,27 @@ var DateTimePickerMonths = onClickOutside(
       return rows
     },
 
-    updateSelectedMonth: function(event) {
+    updateSelectedMonth(event) {
       this.props.updateSelectedDate(event)
     },
 
-    renderMonth: function(props, month) {
-      var localMoment = this.props.viewDate
-      var monthStr = localMoment
+    renderMonth(props, month) {
+      const localMoment = this.props.viewDate
+      const monthStr = localMoment
         .localeData()
         .monthsShort(localMoment.month(month))
-      var strLength = 3
+      const strLength = 3
       // Because some months are up to 5 characters long, we want to
       // use a fixed string length for consistency
-      var monthStrFixedLength = monthStr.substring(0, strLength)
+      const monthStrFixedLength = monthStr.substring(0, strLength)
       return React.createElement('td', props, capitalize(monthStrFixedLength))
     },
 
-    alwaysValidDate: function() {
+    alwaysValidDate() {
       return 1
     },
 
-    handleClickOutside: function() {
+    handleClickOutside() {
       this.props.handleClickOutside()
     }
   })
@@ -156,4 +155,4 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-module.exports = DateTimePickerMonths
+export default DateTimePickerMonths
