@@ -2,6 +2,10 @@
 
 ## 2.15.2
 
+- swicthes react-onclickoutside to @capaj/react-onclickoutside because of an issue described here:
+
+## 2.15.2
+
 - updates a lot of deps, codebase styled with prettier now
 
 ## 2.15.1
