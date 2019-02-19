@@ -1,0 +1,563 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Datetime should show correct selected month when traversing view modes 1`] = `
+<DateTime
+  className=""
+  closeOnSelect={false}
+  closeOnTab={true}
+  dateFormat={true}
+  defaultValue={2000-05-03T00:02:02.002Z}
+  input={true}
+  inputProps={Object {}}
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onNavigateBack={[Function]}
+  onNavigateForward={[Function]}
+  onViewModeChange={[Function]}
+  strictParsing={true}
+  timeConstraints={Object {}}
+  timeFormat={true}
+  timezone={null}
+  viewMode="days"
+>
+  <div
+    className="rdt rdtOpen"
+  >
+    <input
+      className="form-control"
+      key="i"
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      type="text"
+      value="05/03/2000 2:02 AM"
+    />
+    <div
+      className="rdtPicker"
+      key="dt"
+    >
+      <Component
+        onClickOutside={[Function]}
+        view="months"
+        viewProps={
+          Object {
+            "addTime": [Function],
+            "dateFormat": "MM/DD/YYYY",
+            "handleClickOutside": [Function],
+            "isValidDate": undefined,
+            "localMoment": [Function],
+            "renderDay": undefined,
+            "renderMonth": undefined,
+            "renderYear": undefined,
+            "selectedDate": "2000-05-03T00:02:02.002Z",
+            "setDate": [Function],
+            "setTime": [Function],
+            "showView": [Function],
+            "subtractTime": [Function],
+            "timeConstraints": Object {},
+            "timeFormat": "h:mm A",
+            "updateOn": "days",
+            "updateSelectedDate": [Function],
+            "value": undefined,
+            "viewDate": "2000-11-30T23:00:00.000Z",
+          }
+        }
+      >
+        <OnClickOutside(Component)
+          addTime={[Function]}
+          dateFormat="MM/DD/YYYY"
+          eventTypes={
+            Array [
+              "mousedown",
+              "touchstart",
+            ]
+          }
+          excludeScrollbar={false}
+          handleClickOutside={[Function]}
+          localMoment={[Function]}
+          outsideClickIgnoreClass="ignore-react-onclickoutside"
+          preventDefault={false}
+          selectedDate={"2000-05-03T00:02:02.002Z"}
+          setDate={[Function]}
+          setTime={[Function]}
+          showView={[Function]}
+          stopPropagation={false}
+          subtractTime={[Function]}
+          timeConstraints={Object {}}
+          timeFormat="h:mm A"
+          updateOn="days"
+          updateSelectedDate={[Function]}
+          viewDate={"2000-11-30T23:00:00.000Z"}
+        >
+          <Component
+            addTime={[Function]}
+            dateFormat="MM/DD/YYYY"
+            disableOnClickOutside={[Function]}
+            enableOnClickOutside={[Function]}
+            eventTypes={
+              Array [
+                "mousedown",
+                "touchstart",
+              ]
+            }
+            handleClickOutside={[Function]}
+            localMoment={[Function]}
+            outsideClickIgnoreClass="ignore-react-onclickoutside"
+            preventDefault={false}
+            selectedDate={"2000-05-03T00:02:02.002Z"}
+            setDate={[Function]}
+            setTime={[Function]}
+            showView={[Function]}
+            stopPropagation={false}
+            subtractTime={[Function]}
+            timeConstraints={Object {}}
+            timeFormat="h:mm A"
+            updateOn="days"
+            updateSelectedDate={[Function]}
+            viewDate={"2000-11-30T23:00:00.000Z"}
+          >
+            <div
+              className="rdtMonths"
+            >
+              <table
+                key="a"
+              >
+                <thead>
+                  <tr>
+                    <th
+                      className="rdtPrev"
+                      key="prev"
+                      onClick={[Function]}
+                    >
+                      <span>
+                        ‹
+                      </span>
+                    </th>
+                    <th
+                      className="rdtSwitch"
+                      colSpan={2}
+                      data-value={2000}
+                      key="year"
+                      onClick={[Function]}
+                    >
+                      2000
+                    </th>
+                    <th
+                      className="rdtNext"
+                      key="next"
+                      onClick={[Function]}
+                    >
+                      <span>
+                        ›
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+              <table
+                key="months"
+              >
+                <tbody
+                  key="b"
+                >
+                  <tr
+                    key="4_0"
+                  >
+                    <td
+                      className="rdtMonth"
+                      data-value={0}
+                      key="0"
+                      onClick={[Function]}
+                    >
+                      Jan
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={1}
+                      key="1"
+                      onClick={[Function]}
+                    >
+                      Feb
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={2}
+                      key="2"
+                      onClick={[Function]}
+                    >
+                      Mar
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={3}
+                      key="3"
+                      onClick={[Function]}
+                    >
+                      Apr
+                    </td>
+                  </tr>
+                  <tr
+                    key="4_1"
+                  >
+                    <td
+                      className="rdtMonth rdtActive"
+                      data-value={4}
+                      key="4"
+                      onClick={[Function]}
+                    >
+                      May
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={5}
+                      key="5"
+                      onClick={[Function]}
+                    >
+                      Jun
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={6}
+                      key="6"
+                      onClick={[Function]}
+                    >
+                      Jul
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={7}
+                      key="7"
+                      onClick={[Function]}
+                    >
+                      Aug
+                    </td>
+                  </tr>
+                  <tr
+                    key="4_2"
+                  >
+                    <td
+                      className="rdtMonth"
+                      data-value={8}
+                      key="8"
+                      onClick={[Function]}
+                    >
+                      Sep
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={9}
+                      key="9"
+                      onClick={[Function]}
+                    >
+                      Oct
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={10}
+                      key="10"
+                      onClick={[Function]}
+                    >
+                      Nov
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={11}
+                      key="11"
+                      onClick={[Function]}
+                    >
+                      Dec
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Component>
+        </OnClickOutside(Component)>
+      </Component>
+    </div>
+  </div>
+</DateTime>
+`;
+
+exports[`Datetime should show correct selected month when traversing view modes 2`] = `
+<DateTime
+  className=""
+  closeOnSelect={false}
+  closeOnTab={true}
+  dateFormat={true}
+  defaultValue={2000-05-03T00:02:02.002Z}
+  input={true}
+  inputProps={Object {}}
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onNavigateBack={[Function]}
+  onNavigateForward={[Function]}
+  onViewModeChange={[Function]}
+  strictParsing={true}
+  timeConstraints={Object {}}
+  timeFormat={true}
+  timezone={null}
+  viewMode="days"
+>
+  <div
+    className="rdt rdtOpen"
+  >
+    <input
+      className="form-control"
+      key="i"
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      type="text"
+      value="05/03/2000 2:02 AM"
+    />
+    <div
+      className="rdtPicker"
+      key="dt"
+    >
+      <Component
+        onClickOutside={[Function]}
+        view="months"
+        viewProps={
+          Object {
+            "addTime": [Function],
+            "dateFormat": "MM/DD/YYYY",
+            "handleClickOutside": [Function],
+            "isValidDate": undefined,
+            "localMoment": [Function],
+            "renderDay": undefined,
+            "renderMonth": undefined,
+            "renderYear": undefined,
+            "selectedDate": "2000-05-03T00:02:02.002Z",
+            "setDate": [Function],
+            "setTime": [Function],
+            "showView": [Function],
+            "subtractTime": [Function],
+            "timeConstraints": Object {},
+            "timeFormat": "h:mm A",
+            "updateOn": "days",
+            "updateSelectedDate": [Function],
+            "value": undefined,
+            "viewDate": "2000-11-30T23:00:00.000Z",
+          }
+        }
+      >
+        <OnClickOutside(Component)
+          addTime={[Function]}
+          dateFormat="MM/DD/YYYY"
+          eventTypes={
+            Array [
+              "mousedown",
+              "touchstart",
+            ]
+          }
+          excludeScrollbar={false}
+          handleClickOutside={[Function]}
+          localMoment={[Function]}
+          outsideClickIgnoreClass="ignore-react-onclickoutside"
+          preventDefault={false}
+          selectedDate={"2000-05-03T00:02:02.002Z"}
+          setDate={[Function]}
+          setTime={[Function]}
+          showView={[Function]}
+          stopPropagation={false}
+          subtractTime={[Function]}
+          timeConstraints={Object {}}
+          timeFormat="h:mm A"
+          updateOn="days"
+          updateSelectedDate={[Function]}
+          viewDate={"2000-11-30T23:00:00.000Z"}
+        >
+          <Component
+            addTime={[Function]}
+            dateFormat="MM/DD/YYYY"
+            disableOnClickOutside={[Function]}
+            enableOnClickOutside={[Function]}
+            eventTypes={
+              Array [
+                "mousedown",
+                "touchstart",
+              ]
+            }
+            handleClickOutside={[Function]}
+            localMoment={[Function]}
+            outsideClickIgnoreClass="ignore-react-onclickoutside"
+            preventDefault={false}
+            selectedDate={"2000-05-03T00:02:02.002Z"}
+            setDate={[Function]}
+            setTime={[Function]}
+            showView={[Function]}
+            stopPropagation={false}
+            subtractTime={[Function]}
+            timeConstraints={Object {}}
+            timeFormat="h:mm A"
+            updateOn="days"
+            updateSelectedDate={[Function]}
+            viewDate={"2000-11-30T23:00:00.000Z"}
+          >
+            <div
+              className="rdtMonths"
+            >
+              <table
+                key="a"
+              >
+                <thead>
+                  <tr>
+                    <th
+                      className="rdtPrev"
+                      key="prev"
+                      onClick={[Function]}
+                    >
+                      <span>
+                        ‹
+                      </span>
+                    </th>
+                    <th
+                      className="rdtSwitch"
+                      colSpan={2}
+                      data-value={2000}
+                      key="year"
+                      onClick={[Function]}
+                    >
+                      2000
+                    </th>
+                    <th
+                      className="rdtNext"
+                      key="next"
+                      onClick={[Function]}
+                    >
+                      <span>
+                        ›
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+              <table
+                key="months"
+              >
+                <tbody
+                  key="b"
+                >
+                  <tr
+                    key="0_0"
+                  >
+                    <td
+                      className="rdtMonth"
+                      data-value={0}
+                      key="0"
+                      onClick={[Function]}
+                    >
+                      Jan
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={1}
+                      key="1"
+                      onClick={[Function]}
+                    >
+                      Feb
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={2}
+                      key="2"
+                      onClick={[Function]}
+                    >
+                      Mar
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={3}
+                      key="3"
+                      onClick={[Function]}
+                    >
+                      Apr
+                    </td>
+                  </tr>
+                  <tr
+                    key="0_1"
+                  >
+                    <td
+                      className="rdtMonth rdtActive"
+                      data-value={4}
+                      key="4"
+                      onClick={[Function]}
+                    >
+                      May
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={5}
+                      key="5"
+                      onClick={[Function]}
+                    >
+                      Jun
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={6}
+                      key="6"
+                      onClick={[Function]}
+                    >
+                      Jul
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={7}
+                      key="7"
+                      onClick={[Function]}
+                    >
+                      Aug
+                    </td>
+                  </tr>
+                  <tr
+                    key="0_2"
+                  >
+                    <td
+                      className="rdtMonth"
+                      data-value={8}
+                      key="8"
+                      onClick={[Function]}
+                    >
+                      Sep
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={9}
+                      key="9"
+                      onClick={[Function]}
+                    >
+                      Oct
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={10}
+                      key="10"
+                      onClick={[Function]}
+                    >
+                      Nov
+                    </td>
+                    <td
+                      className="rdtMonth"
+                      data-value={11}
+                      key="11"
+                      onClick={[Function]}
+                    >
+                      Dec
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Component>
+        </OnClickOutside(Component)>
+      </Component>
+    </div>
+  </div>
+</DateTime>
+`;

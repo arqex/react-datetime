@@ -9,21 +9,19 @@ export default class CustomizableExample extends Component {
     input: true,
     utc: false,
     closeOnSelect: false,
-    closeOnTab: true,
+    closeOnTab: true
   }
 
   render() {
-    const Select = ({name, children}) => (
+    const Select = ({ name, children }) => (
       <div className="form-group">
-        <label className="control-label col-xs-6">
-          {name}
-        </label>
+        <label className="control-label col-xs-6">{name}</label>
 
         <div className="col-xs-6">
           <select
             className="form-control"
             value={this.state[name]}
-            onChange={e => this.setState({ [name]: e.target.value })}
+            onChange={(e) => this.setState({ [name]: e.target.value })}
           >
             {children}
           </select>
@@ -31,35 +29,33 @@ export default class CustomizableExample extends Component {
       </div>
     )
 
-    const Checkbox = ({name}) => (
+    const Checkbox = ({ name }) => (
       <div className="form-group">
-        <label className="control-label col-xs-6">
-          {name}
-        </label>
+        <label className="control-label col-xs-6">{name}</label>
 
         <div className="col-xs-6">
           <input
             type="checkbox"
             checked={this.state[name]}
-            onChange={e => this.setState({ [name]: e.target.checked })}
+            onChange={(e) => this.setState({ [name]: e.target.checked })}
           />
         </div>
       </div>
     )
-    const {utc, restOfState} = this.state
+    const { utc, restOfState } = this.state
 
     return (
       <div className="form-horizontal">
         <h2>Customization props</h2>
         <p>
-          Try out various configuration options and see how they affect the component.
+          Try out various configuration options and see how they affect the
+          component.
         </p>
-
 
         <DateTime
           defaultValue={new Date()}
           onChange={console.log}
-          timezone={utc ? "UTC": null}
+          timezone={utc ? 'UTC' : null}
           {...restOfState}
         />
 

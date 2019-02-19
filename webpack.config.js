@@ -1,13 +1,12 @@
-var webpack = require('webpack');
+var webpack = require('webpack')
 
 var plugins = [
   new webpack.DefinePlugin({
-  	'process.env': { NODE_ENV: '"production"'}
+    'process.env': { NODE_ENV: '"production"' }
   })
-];
+]
 
 module.exports = {
-
   entry: ['./DateTime.js'],
 
   output: {
@@ -21,10 +20,10 @@ module.exports = {
   },
 
   externals: {
-    'react': 'React',
+    react: 'React',
     'react-dom': 'ReactDOM',
-    'moment': 'moment'
+    moment: 'moment'
   },
 
   plugins: plugins
-};
+}

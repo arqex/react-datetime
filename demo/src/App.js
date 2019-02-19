@@ -16,16 +16,16 @@ export default class App extends Component {
               href="https://github.com/YouCanBookMe/react-datetime"
               target="_blank"
               rel="noopener noreferrer"
-            >react-datetime</a>
+            >
+              react-datetime
+            </a>
           </div>
         </nav>
 
         <div className="container">
           <div className="jumbotron">
             <h2>react-datetime</h2>
-            <p>
-              A lightweight but complete datetime picker react component.
-            </p>
+            <p>A lightweight but complete datetime picker react component.</p>
           </div>
 
           <div className="row">
@@ -41,6 +41,6 @@ export default class App extends Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
