@@ -26,6 +26,6 @@
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
-    "microbundle": "^0.9.0"
+    "microbundle": "^0.10.0"
   }
 }
