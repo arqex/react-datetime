@@ -1,6 +1,6 @@
 import React from 'react'
 import createClass from 'create-react-class'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import onClickOutside from '@capaj/react-onclickoutside'
 
 const DateTimePickerDays = onClickOutside(
@@ -10,61 +10,46 @@ const DateTimePickerDays = onClickOutside(
       const date = this.props.viewDate
       const locale = date.localeData()
       let tableChildren
-
       tableChildren = [
-        React.createElement('thead', { key: 'th' }, [
-          React.createElement('tr', { key: 'h' }, [
-            React.createElement(
-              'th',
-              {
-                key: 'p',
-                className: 'rdtPrev',
-                onClick: this.props.subtractTime(1, 'months')
-              },
-              React.createElement('span', {}, '‹')
-            ),
-            React.createElement(
-              'th',
-              {
-                key: 's',
-                className: 'rdtSwitch',
-                onClick: this.props.showView('months'),
-                colSpan: 5,
-                'data-value': this.props.viewDate.month()
-              },
-              `${locale.months(date)} ${date.year()}`
-            ),
-            React.createElement(
-              'th',
-              {
-                key: 'n',
-                className: 'rdtNext',
-                onClick: this.props.addTime(1, 'months')
-              },
-              React.createElement('span', {}, '›')
-            )
-          ]),
-          React.createElement(
-            'tr',
-            { key: 'd' },
-            this.getDaysOfWeek(locale).map((day, index) =>
-              React.createElement(
-                'th',
-                { key: day + index, className: 'dow' },
-                day
-              )
-            )
-          )
-        ]),
-        React.createElement('tbody', { key: 'tb' }, this.renderDays())
+        <thead key="th">
+          <tr key="h">
+            <th
+              key="p"
+              className="rdtPrev"
+              onClick={this.props.subtractTime(1, 'months')}
+            >
+              <span>‹</span>
+            </th>
+            <th
+              key="s"
+              className="rdtSwitch"
+              onClick={this.props.showView('months')}
+              colSpan={5}
+              data-value={this.props.viewDate.month()}
+            >{`${locale.months(date)} ${date.year()}`}</th>
+            <th
+              key="n"
+              className="rdtNext"
+              onClick={this.props.addTime(1, 'months')}
+            >
+              <span>›</span>
+            </th>
+          </tr>
+          <tr key="d">
+            {this.getDaysOfWeek(locale).map((day, index) => (
+              <th key={day + index} className="dow">
+                {day}
+              </th>
+            ))}
+          </tr>
+        </thead>,
+        <tbody key="tb">{this.renderDays()}</tbody>
       ]
-
       if (footer) tableChildren.push(footer)
-
-      return React.createElement(
-        'div',
-        { className: 'rdtDays' },
-        React.createElement('table', {}, tableChildren)
+      return (
+        <div className="rdtDays">
+          <table>{tableChildren}</table>
+        </div>
       )
     },
 
@@ -73,7 +58,8 @@ const DateTimePickerDays = onClickOutside(
      * depending on the current locale
      * @return {array} A list with the shortname of the days
      */
-    getDaysOfWeek(locale) {
+    getDaysOfWeek(locale: moment.Locale) {
+      // @ts-ignore
       const days = locale._weekdaysMin
       const first = locale.firstDayOfWeek()
       const dow = []
@@ -81,7 +67,6 @@ const DateTimePickerDays = onClickOutside(
       days.forEach((day) => {
         dow[(7 + i++ - first) % 7] = day
       })
-
       return dow
     },
 
@@ -99,16 +84,14 @@ const DateTimePickerDays = onClickOutside(
       let classes
       let isDisabled
       let dayProps
-      let currentDate
+      let currentDate // Go to the last week of the previous month
 
-      // Go to the last week of the previous month
       prevMonth.date(prevMonth.daysInMonth()).startOf('week')
       const lastDay = prevMonth.clone().add(42, 'd')
 
       while (prevMonth.isBefore(lastDay)) {
         classes = 'rdtDay'
         currentDate = prevMonth.clone()
-
         if (
           (prevMonth.year() === currentYear &&
             prevMonth.month() < currentMonth) ||
@@ -121,29 +104,21 @@ const DateTimePickerDays = onClickOutside(
           prevMonth.year() > currentYear
         )
           classes += ' rdtNew'
-
         if (selected && prevMonth.isSame(selected, 'day'))
           classes += ' rdtActive'
-
         if (prevMonth.isSame(moment(), 'day')) classes += ' rdtToday'
-
         isDisabled = !isValid(currentDate, selected)
         if (isDisabled) classes += ' rdtDisabled'
-
         dayProps = {
           key: prevMonth.format('M_D'),
           'data-value': prevMonth.date(),
           className: classes
         }
-
         if (!isDisabled) dayProps.onClick = this.updateSelectedDate
-
         days.push(renderer(dayProps, currentDate, selected))
 
         if (days.length === 7) {
-          weeks.push(
-            React.createElement('tr', { key: prevMonth.format('M_D') }, days)
-          )
+          weeks.push(<tr key={prevMonth.format('M_D')}>{days}</tr>)
           days = []
         }
 
@@ -158,30 +133,24 @@ const DateTimePickerDays = onClickOutside(
     },
 
     renderDay(props, currentDate) {
-      return React.createElement('td', props, currentDate.date())
+      return <td {...props}>{currentDate.date()}</td>
     },
 
     renderFooter() {
       if (!this.props.timeFormat) return ''
-
       const date = this.props.selectedDate || this.props.viewDate
-
-      return React.createElement(
-        'tfoot',
-        { key: 'tf' },
-        React.createElement(
-          'tr',
-          {},
-          React.createElement(
-            'td',
-            {
-              onClick: this.props.showView('time'),
-              colSpan: 7,
-              className: 'rdtTimeToggle'
-            },
-            date.format(this.props.timeFormat)
-          )
-        )
+      return (
+        <tfoot key="tf">
+          <tr>
+            <td
+              onClick={this.props.showView('time')}
+              colSpan={7}
+              className="rdtTimeToggle"
+            >
+              {date.format(this.props.timeFormat)}
+            </td>
+          </tr>
+        </tfoot>
       )
     },
 
@@ -194,5 +163,4 @@ const DateTimePickerDays = onClickOutside(
     }
   })
 )
-
 export default DateTimePickerDays

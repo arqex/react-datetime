@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Datetime should show correct selected month when traversing view modes 1`] = `
-<DateTime
+<Datetime
   className=""
   closeOnSelect={false}
   closeOnTab={true}
@@ -38,7 +38,7 @@ exports[`Datetime should show correct selected month when traversing view modes 
       className="rdtPicker"
       key="dt"
     >
-      <Component
+      <CalendarContainer
         onClickOutside={[Function]}
         view="months"
         viewProps={
@@ -275,14 +275,14 @@ exports[`Datetime should show correct selected month when traversing view modes 
             </div>
           </Component>
         </OnClickOutside(Component)>
-      </Component>
+      </CalendarContainer>
     </div>
   </div>
-</DateTime>
+</Datetime>
 `;
 
 exports[`Datetime should show correct selected month when traversing view modes 2`] = `
-<DateTime
+<Datetime
   className=""
   closeOnSelect={false}
   closeOnTab={true}
@@ -319,7 +319,7 @@ exports[`Datetime should show correct selected month when traversing view modes 
       className="rdtPicker"
       key="dt"
     >
-      <Component
+      <CalendarContainer
         onClickOutside={[Function]}
         view="months"
         viewProps={
@@ -556,8 +556,8 @@ exports[`Datetime should show correct selected month when traversing view modes 
             </div>
           </Component>
         </OnClickOutside(Component)>
-      </Component>
+      </CalendarContainer>
     </div>
   </div>
-</DateTime>
+</Datetime>
 `;

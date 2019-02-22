@@ -1,7 +1,7 @@
 /* global it, describe, expect, jest */
 
 import React from 'react' // eslint-disable-line no-unused-vars
-import Datetime from '../DateTime.js'
+import Datetime from '../src/DateTime'
 import renderer from 'react-test-renderer'
 import moment from 'moment'
 // findDOMNode is not supported by the react-test-renderer,

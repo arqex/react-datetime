@@ -13,10 +13,13 @@ const DateTimePickerTime = onClickOutside(
       const date = selectedDate || viewDate
       const format = timeFormat
       const counters = []
+
       if (format.toLowerCase().includes('h')) {
         counters.push('hours')
+
         if (format.includes('m')) {
           counters.push('minutes')
+
           if (format.includes('s')) {
             counters.push('seconds')
           }
@@ -24,8 +27,8 @@ const DateTimePickerTime = onClickOutside(
       }
 
       const hours = date.format('H')
-
       let daypart = false
+
       if (
         this.state !== null &&
         this.props.timeFormat.toLowerCase().includes(' a')
@@ -50,6 +53,7 @@ const DateTimePickerTime = onClickOutside(
     renderCounter(type) {
       if (type !== 'daypart') {
         let value = this.state[type]
+
         if (
           type === 'hours' &&
           this.props.timeFormat.toLowerCase().includes(' a')
@@ -60,76 +64,66 @@ const DateTimePickerTime = onClickOutside(
             value = 12
           }
         }
-        return React.createElement(
-          'div',
-          { key: type, className: 'rdtCounter' },
-          [
-            React.createElement(
-              'span',
-              {
-                key: 'up',
-                className: 'rdtBtn',
-                onTouchStart: this.onStartClicking('increase', type),
-                onMouseDown: this.onStartClicking('increase', type),
-                onContextMenu: this.disableContextMenu
-              },
-              '▲'
-            ),
-            React.createElement(
-              'div',
-              { key: 'c', className: 'rdtCount' },
-              value
-            ),
-            React.createElement(
-              'span',
-              {
-                key: 'do',
-                className: 'rdtBtn',
-                onTouchStart: this.onStartClicking('decrease', type),
-                onMouseDown: this.onStartClicking('decrease', type),
-                onContextMenu: this.disableContextMenu
-              },
-              '▼'
-            )
-          ]
+
+        return (
+          <div key={type} className="rdtCounter">
+            {[
+              <span
+                key="up"
+                className="rdtBtn"
+                onTouchStart={this.onStartClicking('increase', type)}
+                onMouseDown={this.onStartClicking('increase', type)}
+                onContextMenu={this.disableContextMenu}
+              >
+                ▲
+              </span>,
+              <div key="c" className="rdtCount">
+                {value}
+              </div>,
+              <span
+                key="do"
+                className="rdtBtn"
+                onTouchStart={this.onStartClicking('decrease', type)}
+                onMouseDown={this.onStartClicking('decrease', type)}
+                onContextMenu={this.disableContextMenu}
+              >
+                ▼
+              </span>
+            ]}
+          </div>
         )
       }
+
       return ''
     },
 
     renderDayPart() {
-      return React.createElement(
-        'div',
-        { key: 'dayPart', className: 'rdtCounter' },
-        [
-          React.createElement(
-            'span',
-            {
-              key: 'up',
-              className: 'rdtBtn',
-              onTouchStart: this.onStartClicking('toggleDayPart', 'hours'),
-              onMouseDown: this.onStartClicking('toggleDayPart', 'hours'),
-              onContextMenu: this.disableContextMenu
-            },
-            '▲'
-          ),
-          React.createElement(
-            'div',
-            { key: this.state.daypart, className: 'rdtCount' },
-            this.state.daypart
-          ),
-          React.createElement(
-            'span',
-            {
-              key: 'do',
-              className: 'rdtBtn',
-              onTouchStart: this.onStartClicking('toggleDayPart', 'hours'),
-              onMouseDown: this.onStartClicking('toggleDayPart', 'hours'),
-              onContextMenu: this.disableContextMenu
-            },
-            '▼'
-          )
-        ]
+      return (
+        <div key="dayPart" className="rdtCounter">
+          {[
+            <span
+              key="up"
+              className="rdtBtn"
+              onTouchStart={this.onStartClicking('toggleDayPart', 'hours')}
+              onMouseDown={this.onStartClicking('toggleDayPart', 'hours')}
+              onContextMenu={this.disableContextMenu}
+            >
+              ▲
+            </span>,
+            <div key={this.state.daypart} className="rdtCount">
+              {this.state.daypart}
+            </div>,
+            <span
+              key="do"
+              className="rdtBtn"
+              onTouchStart={this.onStartClicking('toggleDayPart', 'hours')}
+              onMouseDown={this.onStartClicking('toggleDayPart', 'hours')}
+              onContextMenu={this.disableContextMenu}
+            >
+              ▼
+            </span>
+          ]}
+        </div>
       )
     },
 
@@ -139,14 +133,9 @@ const DateTimePickerTime = onClickOutside(
       this.state.counters.forEach((c) => {
         if (counters.length)
           counters.push(
-            React.createElement(
-              'div',
-              {
-                key: `sep${counters.length}`,
-                className: 'rdtCounterSeparator'
-              },
-              ':'
-            )
+            <div key={`sep${counters.length}`} className="rdtCounterSeparator">
+              :
+            </div>
           )
         counters.push(me.renderCounter(c))
       })
@@ -160,48 +149,36 @@ const DateTimePickerTime = onClickOutside(
         this.props.timeFormat.includes('S')
       ) {
         counters.push(
-          React.createElement(
-            'div',
-            { className: 'rdtCounterSeparator', key: 'sep5' },
-            ':'
-          )
+          <div className="rdtCounterSeparator" key="sep5">
+            :
+          </div>
         )
         counters.push(
-          React.createElement(
-            'div',
-            { className: 'rdtCounter rdtMilli', key: 'm' },
-            React.createElement('input', {
-              value: this.state.milliseconds,
-              type: 'text',
-              onChange: this.updateMilli
-            })
-          )
+          <div className="rdtCounter rdtMilli" key="m">
+            <input
+              value={this.state.milliseconds}
+              type="text"
+              onChange={this.updateMilli}
+            />
+          </div>
         )
       }
 
-      return React.createElement(
-        'div',
-        { className: 'rdtTime' },
-        React.createElement('table', {}, [
-          this.renderHeader(),
-          React.createElement(
-            'tbody',
-            { key: 'b' },
-            React.createElement(
-              'tr',
-              {},
-              React.createElement(
-                'td',
-                {},
-                React.createElement(
-                  'div',
-                  { className: 'rdtCounters' },
-                  counters
-                )
-              )
-            )
-          )
-        ])
+      return (
+        <div className="rdtTime">
+          <table>
+            {[
+              this.renderHeader(),
+              <tbody key="b">
+                <tr>
+                  <td>
+                    <div className="rdtCounters">{counters}</div>
+                  </td>
+                </tr>
+              </tbody>
+            ]}
+          </table>
+        </div>
       )
     },
 
@@ -241,43 +218,39 @@ const DateTimePickerTime = onClickOutside(
 
     updateMilli({ target }) {
       const milli = parseInt(target.value, 10)
+
       if (milli === target.value && milli >= 0 && milli < 1000) {
         this.props.setTime('milliseconds', milli)
-        this.setState({ milliseconds: milli })
+        this.setState({
+          milliseconds: milli
+        })
       }
     },
 
     renderHeader() {
       if (!this.props.dateFormat) return null
-
       const date = this.props.selectedDate || this.props.viewDate
-      return React.createElement(
-        'thead',
-        { key: 'h' },
-        React.createElement(
-          'tr',
-          {},
-          React.createElement(
-            'th',
-            {
-              className: 'rdtSwitch',
-              colSpan: 4,
-              onClick: this.props.showView('days')
-            },
-            date.format(this.props.dateFormat)
-          )
-        )
+      return (
+        <thead key="h">
+          <tr>
+            <th
+              className="rdtSwitch"
+              colSpan={4}
+              onClick={this.props.showView('days')}
+            >
+              {date.format(this.props.dateFormat)}
+            </th>
+          </tr>
+        </thead>
       )
     },
 
     onStartClicking(action, type) {
       const me = this
-
       return () => {
         const update = {}
         update[type] = me[action](type)
         me.setState(update)
-
         me.timer = setTimeout(() => {
           me.increaseTimer = setInterval(() => {
             update[type] = me[action](type)
@@ -343,7 +316,9 @@ const DateTimePickerTime = onClickOutside(
 
     pad(type, value) {
       let str = `${value}`
+
       while (str.length < this.padValues[type]) str = `0${str}`
+
       return str
     },
 
@@ -352,5 +327,4 @@ const DateTimePickerTime = onClickOutside(
     }
   })
 )
-
 export default DateTimePickerTime
