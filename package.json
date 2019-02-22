@@ -1,6 +1,6 @@
 {
   "name": "@capaj/react-datetime",
-  "version": "2.15.3",
+  "version": "2.15.4",
   "description": "A lightweight but complete datetime picker React.js component",
   "homepage": "https://github.com/capaj/react-datetime",
   "repository": {
@@ -15,7 +15,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --transpileOnly",
+    "build": "rm -rf dist && tsc || true",
+    "prepublishOnly": "npm run build",
     "dev": "cd example && parcel index.html",
     "lint": "eslint src/ DateTime.js test/ && echo 'Linting OK! 💪'",
     "notify-pre-commit-hook": "echo '### Starting pre-commit hook 🦄'",

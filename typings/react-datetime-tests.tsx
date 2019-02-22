@@ -1,7 +1,6 @@
-import * as React from 'react'
-import { Moment } from 'moment'
-import * as moment from 'moment'
-import * as ReactDatetime from 'react-datetime'
+import React from 'react'
+import moment, { Moment } from 'moment'
+import ReactDatetime from '../src/DateTime'
 
 /*
  Test the datetime picker.
