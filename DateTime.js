@@ -158,7 +158,7 @@ var Datetime = createClass({
 		if ( updatedState.open === undefined ) {
 			if ( typeof nextProps.open !== 'undefined' ) {
 				updatedState.open = nextProps.open;
-			} else if ( this.props.closeOnSelect && this.state.currentView !== viewModes.TIME ) {
+			} else if ( this.props.closeOnSelect) {
 				updatedState.open = false;
 			} else {
 				updatedState.open = this.state.open;
