@@ -408,19 +408,23 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
   }
 
   componentDidUpdate(prevProps: DateTimeProps, prevState: DateTimeState) {
-    const prevVal = prevState.selectedDate || prevState.inputValue;
-    const val = this.state.selectedDate || this.state.inputValue;
-    if (
-      (prevVal instanceof Date &&
-        val instanceof Date &&
-        !isEqual(prevVal, val)) ||
-      prevVal !== val
-    ) {
-      this.props.onChange!(val);
+    const isControlled = this.props.value !== undefined;
+    if (!isControlled) {
+      const prevVal = prevState.selectedDate || prevState.inputValue;
+      const val = this.state.selectedDate || this.state.inputValue;
+      if (
+        ((prevVal instanceof Date &&
+          val instanceof Date &&
+          !isEqual(prevVal, val)) ||
+          prevVal !== val) &&
+        typeof this.props.onChange === "function"
+      ) {
+        this.props.onChange(val);
+      }
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: DateTimeProps) {
     const formats = getFormats(nextProps);
     const updatedState = getStateFromProps(nextProps);
     const formatOptions = getFormatOptions(nextProps);
@@ -468,8 +472,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     this.setState(updatedState);
   }
 
-  onInputChange(e) {
-    const { value } = e.target;
+  onInputChange(e: React.FormEvent<HTMLInputElement>) {
+    const { value } = e.target as HTMLInputElement;
     const date = parse(value);
     const update: any = { inputValue: value };
 
@@ -480,10 +484,17 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       update.selectedDate = null;
     }
 
-    return this.setState(update);
+    this.setState(update);
+
+    if (
+      this.props.value !== undefined &&
+      typeof this.props.onChange === "function"
+    ) {
+      this.props.onChange(date);
+    }
   }
 
-  onInputKey(e) {
+  onInputKey(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.which === 9 && this.props.closeOnTab) {
       this.closeCalendar();
     }
@@ -551,8 +562,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
             format(currentDate, `${fmt.rest} HH:mm:ss.SSSZ`)
         );
 
-        const readonly = this.props.value;
-        if (!readonly) {
+        const isControlled = this.props.value !== undefined;
+        if (!isControlled) {
           const open = !close;
           if (!open) {
             this.props.onBlur!(date);
@@ -568,7 +579,11 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
             ),
             open: open
           });
-        } else if (close) {
+        } else if (typeof this.props.onChange === "function") {
+          this.props.onChange(date);
+        }
+
+        if (close) {
           this.closeCalendar();
         }
       } else {
