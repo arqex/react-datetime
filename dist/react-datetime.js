@@ -1,5 +1,5 @@
 /*
-react-datetime v3.0.0-beta.2
+react-datetime v3.0.0-beta.3
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -325,8 +325,15 @@ return /******/ (function(modules) { // webpackBootstrap
 			var viewDate = this.state.viewDate.clone();
 
 			// Set the value into day/month/year
-			var value = parseInt( e.target.getAttribute('data-value'), 10 );
-			viewDate[ this.viewToMethod[currentView] ]( value );
+			viewDate[ this.viewToMethod[currentView] ](
+				parseInt( e.target.getAttribute('data-value'), 10 )
+			);
+
+			// Need to set month and year will for days view (prev/next month)
+			if ( currentView === 'days' ) {
+				viewDate.month( parseInt( e.target.getAttribute('data-month'), 10 ) );
+				viewDate.year( parseInt( e.target.getAttribute('data-year'), 10 ) );
+			}
 
 			var update = {viewDate: viewDate};
 			if ( currentView === updateOnView ) {
@@ -3114,11 +3121,24 @@ return /******/ (function(modules) { // webpackBootstrap
 			while ( prevMonth.isBefore( lastDay ) ) {
 				classes = 'rdtDay';
 				currentDate = prevMonth.clone();
+				
+				dayProps = {
+					key: prevMonth.format( 'M_D' ),
+					'data-value': prevMonth.date(),
+					'data-month': currentMonth,
+					'data-year': currentYear
+				};
 
-				if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) )
+				if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) ){
 					classes += ' rdtOld';
-				else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) )
+					dayProps['data-month'] = prevMonth.month();
+					dayProps['data-year'] = prevMonth.year();
+				}
+				else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) ){
 					classes += ' rdtNew';
+					dayProps['data-month'] = prevMonth.month();
+					dayProps['data-year'] = prevMonth.year();
+				}
 
 				if ( selected && prevMonth.isSame( selected, 'day' ) )
 					classes += ' rdtActive';
@@ -3130,11 +3150,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				if ( isDisabled )
 					classes += ' rdtDisabled';
 
-				dayProps = {
-					key: prevMonth.format( 'M_D' ),
-					'data-value': prevMonth.date(),
-					className: classes
-				};
+				dayProps.className = classes;
 
 				if ( !isDisabled )
 					dayProps.onClick = this.updateSelectedDate;

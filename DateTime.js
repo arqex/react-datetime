@@ -264,8 +264,15 @@ var Datetime = createClass({
 		var viewDate = this.state.viewDate.clone();
 
 		// Set the value into day/month/year
-		var value = parseInt( e.target.getAttribute('data-value'), 10 );
-		viewDate[ this.viewToMethod[currentView] ]( value );
+		viewDate[ this.viewToMethod[currentView] ](
+			parseInt( e.target.getAttribute('data-value'), 10 )
+		);
+
+		// Need to set month and year will for days view (prev/next month)
+		if ( currentView === 'days' ) {
+			viewDate.month( parseInt( e.target.getAttribute('data-month'), 10 ) );
+			viewDate.year( parseInt( e.target.getAttribute('data-year'), 10 ) );
+		}
 
 		var update = {viewDate: viewDate};
 		if ( currentView === updateOnView ) {

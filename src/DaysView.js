@@ -72,11 +72,24 @@ var DateTimePickerDays = createClass({
 		while ( prevMonth.isBefore( lastDay ) ) {
 			classes = 'rdtDay';
 			currentDate = prevMonth.clone();
+			
+			dayProps = {
+				key: prevMonth.format( 'M_D' ),
+				'data-value': prevMonth.date(),
+				'data-month': currentMonth,
+				'data-year': currentYear
+			};
 
-			if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) )
+			if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) ){
 				classes += ' rdtOld';
-			else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) )
+				dayProps['data-month'] = prevMonth.month();
+				dayProps['data-year'] = prevMonth.year();
+			}
+			else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) ){
 				classes += ' rdtNew';
+				dayProps['data-month'] = prevMonth.month();
+				dayProps['data-year'] = prevMonth.year();
+			}
 
 			if ( selected && prevMonth.isSame( selected, 'day' ) )
 				classes += ' rdtActive';
@@ -88,11 +101,7 @@ var DateTimePickerDays = createClass({
 			if ( isDisabled )
 				classes += ' rdtDisabled';
 
-			dayProps = {
-				key: prevMonth.format( 'M_D' ),
-				'data-value': prevMonth.date(),
-				className: classes
-			};
+			dayProps.className = classes;
 
 			if ( !isDisabled )
 				dayProps.onClick = this.updateSelectedDate;

@@ -215,6 +215,30 @@ describe('Datetime', () => {
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 
+	it('click on day of the next month', () => {
+		const component = utils.createDatetime({
+			initialViewMode: 'days',
+			initialValue: new Date(2019, 0, 1)
+		});
+
+		utils.openDatepicker(component);
+		utils.clickClassItem(component, '.rdtNew', 1);
+
+		expect(component.find('.rdtSwitch').text()).toEqual('February 2019');
+	});
+
+	it('click on day of the prev month', () => {
+		const component = utils.createDatetime({
+			initialViewMode: 'days',
+			initialValue: new Date(2019, 0, 1)
+		});
+
+		utils.openDatepicker(component);
+		utils.clickClassItem(component, '.rdtOld', 1);
+		
+		expect(component.find('.rdtSwitch').text()).toEqual('December 2018');
+	});
+
 	it('sets CSS class on selected item (day)', () => {
 		const component = utils.createDatetime({ initialViewMode: 'days' });
 		utils.openDatepicker(component);
