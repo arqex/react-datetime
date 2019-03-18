@@ -3129,12 +3129,12 @@ return /******/ (function(modules) { // webpackBootstrap
 					'data-year': currentYear
 				};
 
-				if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) ){
+				if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) ) {
 					classes += ' rdtOld';
 					dayProps['data-month'] = prevMonth.month();
 					dayProps['data-year'] = prevMonth.year();
 				}
-				else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) ){
+				else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) ) {
 					classes += ' rdtNew';
 					dayProps['data-month'] = prevMonth.month();
 					dayProps['data-year'] = prevMonth.year();
