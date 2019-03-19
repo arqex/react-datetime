@@ -1,5 +1,5 @@
 /*
-react-datetime v3.0.0-beta.3
+react-datetime v3.0.0-beta.4
 https://github.com/YouCanBookMe/react-datetime
 MIT: https://github.com/YouCanBookMe/react-datetime/raw/master/LICENSE
 */
@@ -3238,7 +3238,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				currentMonth =
 					this.props.viewDate.clone().set({ year: year, month: i, date: irrelevantDate });
 
-				noOfDaysInMonth = currentMonth.endOf( 'month' ).format( 'D' );
+				noOfDaysInMonth = currentMonth.endOf( 'month' ).date();
 				daysInMonth = Array.from({ length: noOfDaysInMonth }, function( e, i ) {
 					return i + 1;
 				});
@@ -3352,7 +3352,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				// if ( i === -1 | i === 10 )
 					// classes += ' rdtOld';
 
-				noOfDaysInYear = currentYear.endOf( 'year' ).format( 'DDD' );
+				noOfDaysInYear = currentYear.endOf( 'year' ).dayOfYear();
 				daysInYear = Array.from({ length: noOfDaysInYear }, function( e, i ) {
 					return i + 1;
 				});
@@ -3441,7 +3441,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			}
 
-			var hours = date.format( 'H' );
+			var hours = date.hours();
 
 			var daypart = false;
 			if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
@@ -3453,10 +3453,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			return {
-				hours: hours,
-				minutes: date.format( 'mm' ),
-				seconds: date.format( 'ss' ),
-				milliseconds: date.format( 'SSS' ),
+				hours: this.pad( 'hours', hours ),
+				minutes: this.pad( 'minutes', date.minutes() ),
+				seconds: this.pad( 'seconds', date.seconds() ),
+				milliseconds: this.pad('milliseconds', date.milliseconds() ),
 				daypart: daypart,
 				counters: counters
 			};

@@ -26,7 +26,7 @@ var DateTimePickerTime = createClass({
 			}
 		}
 
-		var hours = date.format( 'H' );
+		var hours = date.hours();
 
 		var daypart = false;
 		if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
@@ -38,10 +38,10 @@ var DateTimePickerTime = createClass({
 		}
 
 		return {
-			hours: hours,
-			minutes: date.format( 'mm' ),
-			seconds: date.format( 'ss' ),
-			milliseconds: date.format( 'SSS' ),
+			hours: this.pad( 'hours', hours ),
+			minutes: this.pad( 'minutes', date.minutes() ),
+			seconds: this.pad( 'seconds', date.seconds() ),
+			milliseconds: this.pad('milliseconds', date.milliseconds() ),
 			daypart: daypart,
 			counters: counters
 		};

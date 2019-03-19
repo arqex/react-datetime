@@ -35,7 +35,7 @@ var DateTimePickerMonths = createClass({
 			currentMonth =
 				this.props.viewDate.clone().set({ year: year, month: i, date: irrelevantDate });
 
-			noOfDaysInMonth = currentMonth.endOf( 'month' ).format( 'D' );
+			noOfDaysInMonth = currentMonth.endOf( 'month' ).date();
 			daysInMonth = Array.from({ length: noOfDaysInMonth }, function( e, i ) {
 				return i + 1;
 			});
