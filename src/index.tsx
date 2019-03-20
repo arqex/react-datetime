@@ -1,5 +1,5 @@
 import * as React from "react";
-import CalendarContainer from "./CalendarContainer";
+import RawCalendarContainer from "./CalendarContainer";
 import startOfMonth from "date-fns/start_of_month";
 import isDate from "date-fns/is_date";
 import isDateValid from "date-fns/is_valid";
@@ -13,6 +13,9 @@ import cc from "classcat";
 import toUtc from "./toUtc";
 import fromUtc from "./fromUtc";
 import noop from "./noop";
+
+export * from "./CalendarContainer";
+export const CalendarContainer = RawCalendarContainer;
 
 /*
 The view mode can be any of the following strings.
