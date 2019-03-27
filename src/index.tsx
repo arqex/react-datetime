@@ -10,6 +10,8 @@ import format from "date-fns/format";
 import isEqual from "date-fns/is_equal";
 import cc from "classcat";
 
+import { Manager, Reference, Popper } from "react-popper";
+
 import toUtc from "./toUtc";
 import fromUtc from "./fromUtc";
 import noop from "./noop";
@@ -675,25 +677,51 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
           }
         ])}
       >
-        {!!this.props.input &&
-          (this.props.renderInput ? (
-            <div key="i">
-              {this.props.renderInput(
-                finalInputProps,
-                this.openCalendar,
-                this.closeCalendar
-              )}
-            </div>
-          ) : (
-            <input {...finalInputProps} key="i" />
-          ))}
-        <div className="rdtPicker">
-          <CalendarContainer
-            view={this.state.currentView}
-            viewProps={this.getComponentProps()}
-            onClickOutside={this.handleClickOutside}
-          />
-        </div>
+        {!!this.props.input ? (
+          <Manager>
+            <Reference>
+              {({ ref }) =>
+                this.props.renderInput ? (
+                  <div ref={ref} key="i">
+                    {this.props.renderInput(
+                      finalInputProps,
+                      this.openCalendar,
+                      this.closeCalendar
+                    )}
+                  </div>
+                ) : (
+                  <input ref={ref} {...finalInputProps} key="i" />
+                )
+              }
+            </Reference>
+            {this.state.open && (
+              <Popper placement="bottom-start">
+                {({ ref, style, placement }) => (
+                  <div
+                    ref={ref}
+                    style={style}
+                    data-placement={placement}
+                    className="rdtPicker"
+                  >
+                    <CalendarContainer
+                      view={this.state.currentView}
+                      viewProps={this.getComponentProps()}
+                      onClickOutside={this.handleClickOutside}
+                    />
+                  </div>
+                )}
+              </Popper>
+            )}
+          </Manager>
+        ) : (
+          <div className="rdtPicker">
+            <CalendarContainer
+              view={this.state.currentView}
+              viewProps={this.getComponentProps()}
+              onClickOutside={this.handleClickOutside}
+            />
+          </div>
+        )}
       </div>
     );
   }

@@ -40,14 +40,17 @@ export const clickOnElement = element => {
 };
 
 export const clickNthDay = (datetime, n) => {
+  openDatepicker(datetime);
   return _simulateClickOnElement(datetime.find(".rdtDay").at(n));
 };
 
 export const clickNthMonth = (datetime, n) => {
+  openDatepicker(datetime);
   return _simulateClickOnElement(datetime.find(".rdtMonth").at(n));
 };
 
 export const clickNthYear = (datetime, n) => {
+  openDatepicker(datetime);
   return _simulateClickOnElement(datetime.find(".rdtYear").at(n));
 };
 
@@ -59,18 +62,22 @@ export const isOpen = datetime => {
 };
 
 export const isDayView = datetime => {
+  openDatepicker(datetime);
   return datetime.find(".rdtPicker .rdtDays").length === 1;
 };
 
 export const isMonthView = datetime => {
+  openDatepicker(datetime);
   return datetime.find(".rdtPicker .rdtMonths").length === 1;
 };
 
 export const isYearView = datetime => {
+  openDatepicker(datetime);
   return datetime.find(".rdtPicker .rdtYears").length === 1;
 };
 
 export const isTimeView = datetime => {
+  openDatepicker(datetime);
   return datetime.find(".rdtPicker .rdtTime").length === 1;
 };
 
@@ -80,6 +87,8 @@ export const isTimeView = datetime => {
  * These functions only work when the time view is open
  */
 export const increaseHour = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(0)
@@ -91,6 +100,8 @@ export const increaseHour = (datetime, triggerUp = true) => {
 };
 
 export const decreaseHour = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(1)
@@ -102,6 +113,8 @@ export const decreaseHour = (datetime, triggerUp = true) => {
 };
 
 export const increaseMinute = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(2)
@@ -113,6 +126,8 @@ export const increaseMinute = (datetime, triggerUp = true) => {
 };
 
 export const decreaseMinute = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(3)
@@ -124,6 +139,8 @@ export const decreaseMinute = (datetime, triggerUp = true) => {
 };
 
 export const increaseSecond = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(4)
@@ -135,6 +152,8 @@ export const increaseSecond = (datetime, triggerUp = true) => {
 };
 
 export const decreaseSecond = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(5)
@@ -146,6 +165,8 @@ export const decreaseSecond = (datetime, triggerUp = true) => {
 };
 
 export const increaseMillisecond = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(6)
@@ -157,6 +178,8 @@ export const increaseMillisecond = (datetime, triggerUp = true) => {
 };
 
 export const decreaseMillisecond = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(7)
@@ -168,6 +191,8 @@ export const decreaseMillisecond = (datetime, triggerUp = true) => {
 };
 
 export const increaseDayPart = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(8)
@@ -179,6 +204,8 @@ export const increaseDayPart = (datetime, triggerUp = true) => {
 };
 
 export const decreaseDayPart = (datetime, triggerUp = true) => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(9)
@@ -190,6 +217,8 @@ export const decreaseDayPart = (datetime, triggerUp = true) => {
 };
 
 export const rightClickIncreaseHour = datetime => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(0)
@@ -197,6 +226,8 @@ export const rightClickIncreaseHour = datetime => {
 };
 
 export const rightClickDecreaseHour = datetime => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(1)
@@ -204,6 +235,8 @@ export const rightClickDecreaseHour = datetime => {
 };
 
 export const rightClickIncreaseMinute = datetime => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(2)
@@ -211,6 +244,8 @@ export const rightClickIncreaseMinute = datetime => {
 };
 
 export const rightClickDecreaseMinute = datetime => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(3)
@@ -218,6 +253,8 @@ export const rightClickDecreaseMinute = datetime => {
 };
 
 export const rightClickIncreaseSecond = datetime => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(4)
@@ -225,6 +262,8 @@ export const rightClickIncreaseSecond = datetime => {
 };
 
 export const rightClickDecreaseSecond = datetime => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(5)
@@ -232,6 +271,8 @@ export const rightClickDecreaseSecond = datetime => {
 };
 
 export const rightClickIncreaseMillisecond = datetime => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(6)
@@ -239,6 +280,8 @@ export const rightClickIncreaseMillisecond = datetime => {
 };
 
 export const rightClickDecreaseMillisecond = datetime => {
+  openDatepicker(datetime);
+
   datetime
     .find(".rdtCounter .rdtBtn")
     .at(7)
@@ -249,18 +292,26 @@ export const rightClickDecreaseMillisecond = datetime => {
  * Get Values
  */
 export const getNthDay = (datetime, n) => {
+  openDatepicker(datetime);
+
   return datetime.find(".rdtDay").at(n);
 };
 
 export const getNthMonth = (datetime, n) => {
+  openDatepicker(datetime);
+
   return datetime.find(".rdtMonth").at(n);
 };
 
 export const getNthYear = (datetime, n) => {
+  openDatepicker(datetime);
+
   return datetime.find(".rdtYear").at(n);
 };
 
 export const getHours = datetime => {
+  openDatepicker(datetime);
+
   return datetime
     .find(".rdtCount")
     .at(0)
@@ -268,6 +319,8 @@ export const getHours = datetime => {
 };
 
 export const getMinutes = datetime => {
+  openDatepicker(datetime);
+
   return datetime
     .find(".rdtCount")
     .at(1)
@@ -275,6 +328,8 @@ export const getMinutes = datetime => {
 };
 
 export const getSeconds = datetime => {
+  openDatepicker(datetime);
+
   return datetime
     .find(".rdtCount")
     .at(2)
@@ -282,6 +337,8 @@ export const getSeconds = datetime => {
 };
 
 export const getMilliseconds = datetime => {
+  openDatepicker(datetime);
+
   return datetime
     .find(".rdtCount")
     .at(3)
@@ -289,14 +346,18 @@ export const getMilliseconds = datetime => {
 };
 
 export const getDayPart = datetime => {
+  openDatepicker(datetime);
+
   const element = datetime.find(".rdtCount").at(4);
   return element.exists() ? element.text() : "";
 };
 
 export const getInputValue = datetime => {
-  return datetime.find(".rdt > .form-control").getDOMNode().value;
+  return datetime.find(".rdt .form-control").getDOMNode().value;
 };
 
 export const getViewDateValue = datetime => {
+  openDatepicker(datetime);
+
   return datetime.find(".rdtSwitch").getDOMNode().innerHTML;
 };
