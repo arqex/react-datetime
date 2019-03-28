@@ -204,26 +204,26 @@ function onStartClicking(
   return () => {
     const {
       readonly,
-      viewTimestamp: origViewTimestamp = new Date(),
+      viewTimestamp: origViewTimestamp,
       timeConstraints,
-      setViewTimestamp = (_: Date) => void 0,
-      setTime = (_: Date) => void 0
+      setViewTimestamp,
+      setTime
     } = props;
     if (!readonly) {
-      let viewTimestamp = change(op, type, origViewTimestamp, timeConstraints);
-      setViewTimestamp(viewTimestamp);
+      let viewTimestamp = change(op, type, origViewTimestamp!, timeConstraints);
+      setViewTimestamp!(viewTimestamp);
 
       timer = setTimeout(() => {
         increaseTimer = setInterval(() => {
           viewTimestamp = change(op, type, viewTimestamp, timeConstraints);
-          setViewTimestamp(viewTimestamp);
+          setViewTimestamp!(viewTimestamp);
         }, 70);
       }, 500);
 
       mouseUpListener = () => {
         clearTimeout(timer);
         clearInterval(increaseTimer);
-        setTime(viewTimestamp);
+        setTime!(viewTimestamp);
         document.body.removeEventListener("mouseup", mouseUpListener);
         document.body.removeEventListener("touchend", mouseUpListener);
       };
@@ -241,7 +241,7 @@ function TimeView(props: TimeViewProps) {
     show,
     timeFormat,
     formatOptions,
-    setTime = (_: Date) => void 0
+    setTime
   } = props;
 
   let numCounters = 0;
@@ -288,8 +288,8 @@ function TimeView(props: TimeViewProps) {
                   );
                 })}
                 <TimePart
-                  onUp={toggleDayPart(viewTimestamp, setTime)}
-                  onDown={toggleDayPart(viewTimestamp, setTime)}
+                  onUp={toggleDayPart(viewTimestamp, setTime!)}
+                  onDown={toggleDayPart(viewTimestamp, setTime!)}
                   value={getFormatted(
                     "daypart",
                     viewTimestamp,
