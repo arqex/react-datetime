@@ -584,8 +584,8 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
             ),
             open: open
           });
-        } else if (typeof this.props.onChange === "function") {
-          this.props.onChange(date);
+        } else {
+          this.props.onChange!(date);
         }
 
         if (close) {
