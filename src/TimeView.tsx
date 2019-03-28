@@ -8,7 +8,6 @@ import {
   ShowFunc,
   SetViewTimestampFunc
 } from "./";
-import noop from "./noop";
 import disableContextMenu from "./disableContextMenu";
 import addHours from "date-fns/add_hours";
 import addMinutes from "date-fns/add_minutes";
@@ -147,7 +146,7 @@ function getFormatted(
 ) {
   const fmt = typeof timeFormat === "string" ? timeFormat : "";
 
-  function has(f, val) {
+  function has(f: string, val: string) {
     return f.indexOf(val) !== -1;
   }
 
@@ -166,16 +165,16 @@ function getFormatted(
         ? "h"
         : "H"
       : type === "minutes" && hasMinutes
-        ? "mm"
-        : type === "seconds" && hasSeconds
-          ? "ss"
-          : type === "milliseconds" && hasMilliseconds
-            ? "SSS"
-            : type === "daypart" && hasLowerDayPart
-              ? "a"
-              : type === "daypart" && hasUpperDayPart
-                ? "A"
-                : undefined;
+      ? "mm"
+      : type === "seconds" && hasSeconds
+      ? "ss"
+      : type === "milliseconds" && hasMilliseconds
+      ? "SSS"
+      : type === "daypart" && hasLowerDayPart
+      ? "a"
+      : type === "daypart" && hasUpperDayPart
+      ? "A"
+      : undefined;
 
   if (typeFormat) {
     return format(timestamp, typeFormat, formatOptions);
@@ -184,7 +183,7 @@ function getFormatted(
   return undefined;
 }
 
-function toggleDayPart(timestamp, setTime) {
+function toggleDayPart(timestamp: Date, setTime: SetTimeFunc) {
   return () => {
     const hours = getHours(timestamp);
     const newHours = hours >= 12 ? hours - 12 : hours + 12;
@@ -193,11 +192,15 @@ function toggleDayPart(timestamp, setTime) {
   };
 }
 
-let timer: any;
-let increaseTimer: any;
-let mouseUpListener: any;
+let timer: NodeJS.Timeout;
+let increaseTimer: NodeJS.Timeout;
+let mouseUpListener: () => void;
 
-function onStartClicking(action, type, props) {
+function onStartClicking(
+  op: "add" | "sub",
+  type: "hours" | "minutes" | "seconds" | "milliseconds",
+  props: TimeViewProps
+) {
   return () => {
     const {
       readonly,
@@ -207,25 +210,20 @@ function onStartClicking(action, type, props) {
       setTime
     } = props;
     if (!readonly) {
-      let viewTimestamp = change(
-        action,
-        type,
-        origViewTimestamp,
-        timeConstraints
-      );
-      setViewTimestamp(viewTimestamp);
+      let viewTimestamp = change(op, type, origViewTimestamp!, timeConstraints);
+      setViewTimestamp!(viewTimestamp);
 
       timer = setTimeout(() => {
         increaseTimer = setInterval(() => {
-          viewTimestamp = change(action, type, viewTimestamp, timeConstraints);
-          setViewTimestamp(viewTimestamp);
+          viewTimestamp = change(op, type, viewTimestamp, timeConstraints);
+          setViewTimestamp!(viewTimestamp);
         }, 70);
       }, 500);
 
       mouseUpListener = () => {
         clearTimeout(timer);
         clearInterval(increaseTimer);
-        setTime(viewTimestamp);
+        setTime!(viewTimestamp);
         document.body.removeEventListener("mouseup", mouseUpListener);
         document.body.removeEventListener("touchend", mouseUpListener);
       };
@@ -238,7 +236,7 @@ function onStartClicking(action, type, props) {
 
 function TimeView(props: TimeViewProps) {
   const {
-    viewTimestamp,
+    viewTimestamp = new Date(),
     dateFormat,
     show,
     timeFormat,
@@ -259,7 +257,7 @@ function TimeView(props: TimeViewProps) {
                 colSpan={4}
                 onClick={show && show("days")}
               >
-                {format(viewTimestamp!, dateFormat)}
+                {format(viewTimestamp, dateFormat)}
               </th>
             </tr>
           </thead>
@@ -271,7 +269,7 @@ function TimeView(props: TimeViewProps) {
                 {allCounters.map(type => {
                   const val = getFormatted(
                     type,
-                    viewTimestamp!,
+                    viewTimestamp,
                     timeFormat,
                     formatOptions
                   );
@@ -290,11 +288,11 @@ function TimeView(props: TimeViewProps) {
                   );
                 })}
                 <TimePart
-                  onUp={toggleDayPart(viewTimestamp, setTime)}
-                  onDown={toggleDayPart(viewTimestamp, setTime)}
+                  onUp={toggleDayPart(viewTimestamp, setTime!)}
+                  onDown={toggleDayPart(viewTimestamp, setTime!)}
                   value={getFormatted(
                     "daypart",
-                    viewTimestamp!,
+                    viewTimestamp,
                     timeFormat,
                     formatOptions
                   )}
@@ -307,13 +305,5 @@ function TimeView(props: TimeViewProps) {
     </div>
   );
 }
-
-TimeView.defaultProps = {
-  viewTimestamp: new Date(),
-  readonly: false,
-  setTime: noop,
-  setViewTimestamp: noop,
-  show: noop
-};
 
 export default TimeView;

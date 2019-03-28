@@ -20,15 +20,21 @@ import fr from "date-fns/locale/fr";
 Enzyme.configure({ adapter: new Adapter() });
 
 // Mock date to get rid of time as a factor to make tests deterministic
-mockDateTo(parse("September 2, 2018 03:24:00"));
+mockDateTo(parse("September 2, 2018 18:24:34:567"));
 
 describe("DateTime", () => {
   it("create component", () => {
     const component = utils.createDatetime({});
 
     expect(component).toBeDefined();
-    expect(component.find(".rdt > .form-control").length).toEqual(1);
-    expect(component.find(".rdt > .rdtPicker").length).toEqual(1);
+
+    expect(component.find(".rdt").length).toEqual(1);
+    expect(component.find(".rdt .form-control").length).toEqual(1);
+    expect(component.find(".rdt .rdtPicker").length).toEqual(0);
+
+    utils.openDatepicker(component);
+
+    expect(component.find(".rdt .rdtPicker").length).toEqual(1);
   });
 
   it("viewMode=days: renders days, week days, month, year", () => {
@@ -161,6 +167,8 @@ describe("DateTime", () => {
       defaultValue: date
     });
 
+    utils.openDatepicker(component);
+
     expect(component.find(".rdtSwitch").text()).toEqual("2000-2009");
     utils.clickOnElement(component.find(".rdtNext span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("2010-2019");
@@ -174,6 +182,8 @@ describe("DateTime", () => {
       viewMode: "years",
       defaultValue: date
     });
+
+    utils.openDatepicker(component);
 
     expect(component.find(".rdtSwitch").text()).toEqual("2000-2009");
     utils.clickOnElement(component.find(".rdtPrev span").at(0));
@@ -189,6 +199,8 @@ describe("DateTime", () => {
       defaultValue: date
     });
 
+    utils.openDatepicker(component);
+
     expect(utils.isMonthView(component)).toBeTruthy();
     expect(component.find(".rdtSwitch").text()).toEqual("2000");
     // Click any month to enter day view
@@ -202,6 +214,8 @@ describe("DateTime", () => {
       viewMode: "months",
       defaultValue: date
     });
+
+    utils.openDatepicker(component);
 
     expect(component.find(".rdtSwitch").text()).toEqual("2000");
     utils.clickOnElement(component.find(".rdtNext span").at(0));
@@ -217,6 +231,8 @@ describe("DateTime", () => {
       defaultValue: date
     });
 
+    utils.openDatepicker(component);
+
     expect(component.find(".rdtSwitch").text()).toEqual("2000");
     utils.clickOnElement(component.find(".rdtPrev span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("1999");
@@ -228,6 +244,8 @@ describe("DateTime", () => {
     const date = new Date(2000, 0, 15, 2, 2, 2, 2);
     const component = utils.createDatetime({ defaultValue: date });
 
+    utils.openDatepicker(component);
+
     expect(component.find(".rdtSwitch").text()).toEqual("January 2000");
     utils.clickOnElement(component.find(".rdtNext span").at(0));
     expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
@@ -238,6 +256,8 @@ describe("DateTime", () => {
   it("decrease month", () => {
     const date = new Date(2000, 0, 15, 2, 2, 2, 2);
     const component = utils.createDatetime({ defaultValue: date });
+
+    utils.openDatepicker(component);
 
     expect(component.find(".rdtSwitch").text()).toEqual("January 2000");
     utils.clickOnElement(component.find(".rdtPrev span").at(0));
@@ -254,6 +274,8 @@ describe("DateTime", () => {
     utils.clickNthDay(component, 0);
 
     expect(utils.getInputValue(component)).toEqual("12/26/1999 2:02 AM");
+
+    utils.openDatepicker(component);
 
     expect(component.find(".rdtSwitch").text()).toEqual("December 1999");
   });
@@ -567,6 +589,8 @@ describe("DateTime", () => {
         renderDay: renderDayFn
       });
 
+      utils.openDatepicker(component);
+
       // Last day should be 5th of february
       expect(getDate(currentDate)).toEqual(5);
       expect(getMonth(currentDate)).toEqual(1);
@@ -607,6 +631,8 @@ describe("DateTime", () => {
         renderMonth: renderMonthFn
       });
 
+      utils.openDatepicker(component);
+
       expect(month).toEqual(11);
       expect(year).toEqual(2000);
 
@@ -643,6 +669,8 @@ describe("DateTime", () => {
         viewMode: "years",
         renderYear: renderYearFn
       });
+
+      utils.openDatepicker(component);
 
       expect(year).toEqual(2010);
 
@@ -1590,6 +1618,7 @@ describe("DateTime", () => {
 
     it("locale", () => {
       const component = utils.createDatetime({ locale: nl });
+      utils.openDatepicker(component);
       const expectedWeekDays = ["zo", "ma", "di", "wo", "do", "vr", "za"];
       const actualWeekDays = component
         .find(".rdtDays .dow")
@@ -1720,6 +1749,7 @@ describe("DateTime", () => {
           viewMode: "time",
           timeFormat: "HH:mm:ss:SSS"
         });
+        utils.openDatepicker(component);
         expect(component.find(".rdtCounter").length).toEqual(4);
       });
 
@@ -1728,6 +1758,7 @@ describe("DateTime", () => {
           viewMode: "time",
           timeFormat: "HH:mm:ss"
         });
+        utils.openDatepicker(component);
         expect(component.find(".rdtCounter").length).toEqual(3);
       });
 
@@ -1736,6 +1767,7 @@ describe("DateTime", () => {
           viewMode: "time",
           timeFormat: "HH:mm"
         });
+        utils.openDatepicker(component);
         expect(component.find(".rdtCounter").length).toEqual(2);
       });
 
@@ -1744,6 +1776,7 @@ describe("DateTime", () => {
           viewMode: "time",
           timeFormat: "HH"
         });
+        utils.openDatepicker(component);
         expect(component.find(".rdtCounter").length).toEqual(1);
       });
     });
@@ -1855,6 +1888,7 @@ describe("DateTime", () => {
           viewMode: "days",
           locale: nl
         });
+        utils.openDatepicker(component);
         const weekdaysBefore = component
           .find(".rdtDays .dow")
           .map(element => element.text());
@@ -2165,6 +2199,8 @@ describe("DateTime", () => {
         }
       });
 
+      utils.openDatepicker(component);
+
       utils.clickOnElement(component.find(".rdtNext"));
     });
 
@@ -2177,6 +2213,8 @@ describe("DateTime", () => {
         }
       });
 
+      utils.openDatepicker(component);
+
       utils.clickOnElement(component.find(".rdtNext"));
     });
 
@@ -2188,6 +2226,8 @@ describe("DateTime", () => {
           expect(type).toEqual("years");
         }
       });
+
+      utils.openDatepicker(component);
 
       utils.clickOnElement(component.find(".rdtNext"));
     });
@@ -2202,6 +2242,8 @@ describe("DateTime", () => {
         }
       });
 
+      utils.openDatepicker(component);
+
       utils.clickOnElement(component.find(".rdtPrev"));
     });
 
@@ -2214,6 +2256,8 @@ describe("DateTime", () => {
         }
       });
 
+      utils.openDatepicker(component);
+
       utils.clickOnElement(component.find(".rdtPrev"));
     });
 
@@ -2225,6 +2269,8 @@ describe("DateTime", () => {
           expect(type).toEqual("years");
         }
       });
+
+      utils.openDatepicker(component);
 
       utils.clickOnElement(component.find(".rdtPrev"));
     });

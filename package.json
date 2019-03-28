@@ -1,6 +1,6 @@
 {
   "name": "@nateradebaugh/react-datetime",
-  "version": "3.3.6",
+  "version": "4.0.0-rc.5",
   "description": "A lightweight but complete datetime picker React.js component",
   "license": "MIT",
   "homepage": "https://github.com/NateRadebaugh/react-datetime",
@@ -23,7 +23,7 @@
   "bundlesize": [
     {
       "path": "dist/index.js",
-      "maxSize": "4.08 kB"
+      "maxSize": "4.22 kB"
     }
   ],
   "keywords": [
@@ -141,6 +141,7 @@
   },
   "dependencies": {
     "classcat": "^3.2.3",
-    "react-onclickoutside": "^6.7.1"
+    "react-onclickoutside": "^6.7.1",
+    "react-popper": "^1.3.3"
   }
 }

@@ -24,7 +24,7 @@ jest.mock("react-dom", () => ({
 }));
 
 // Mock date to get rid of time as a factor to make tests deterministic
-mockDateTo(parse("September 2, 2018 03:24:00"));
+mockDateTo(parse("September 2, 2018 18:24:34:567"));
 
 describe("DateTime component", () => {
   it("everything default: renders correctly", () => {
@@ -251,6 +251,25 @@ describe("CalendarContainer", () => {
 describe("TimeView", () => {
   it("everything default: renders correctly", () => {
     const tree = renderer.create(<TimeView />).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it("should render with military time", () => {
+    const tree = renderer.create(<TimeView timeFormat="H:mm" />).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it("should render with full time with UPPERCASE daypart", () => {
+    const tree = renderer
+      .create(<TimeView timeFormat="h:mm:ss:SSS A" />)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it("should render with full time with lowercase daypart", () => {
+    const tree = renderer
+      .create(<TimeView timeFormat="h:mm:ss:SSS a" />)
+      .toJSON();
     expect(tree).toMatchSnapshot();
   });
 });
