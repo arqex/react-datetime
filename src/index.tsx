@@ -693,7 +693,16 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
               }
             </Reference>
             {this.state.open && (
-              <Popper placement="bottom-start">
+              <Popper
+                placement="bottom-start"
+                modifiers={{
+                  preventOverflow: {
+                    enabled: true,
+                    escapeWithReference: true,
+                    boundariesElement: "viewport"
+                  }
+                }}
+              >
                 {({ ref, style, placement }) => (
                   <div
                     ref={ref}
