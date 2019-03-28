@@ -12,7 +12,8 @@ export default class CustomizableExample extends Component {
       input: true,
       utc: false,
       closeOnSelect: false,
-      closeOnTab: true
+      closeOnTab: true,
+      disableOnClickOutside: false
     };
 
     // Bind functions
@@ -87,9 +88,10 @@ export default class CustomizableExample extends Component {
 
         <Select name="timeFormat">
           <option value="">false</option>
-          <option>HH:mm A</option>
+          <option>hh:mm A</option>
           <option>HH:mm:ss</option>
           <option>HH:mm:SSS</option>
+          <option>hh:mm:SSS a</option>
           <option>hmm</option>
           <option>HH:mm Z</option>
         </Select>
@@ -104,6 +106,7 @@ export default class CustomizableExample extends Component {
         <Checkbox name="utc" />
         <Checkbox name="closeOnSelect" />
         <Checkbox name="closeOnTab" />
+        <Checkbox name="disableOnClickOutside" />
       </div>
     );
   }
