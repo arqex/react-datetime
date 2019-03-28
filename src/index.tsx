@@ -698,7 +698,6 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
                 modifiers={{
                   preventOverflow: {
                     enabled: true,
-                    escapeWithReference: true,
                     boundariesElement: "viewport"
                   }
                 }}
