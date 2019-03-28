@@ -20,7 +20,7 @@ import fr from "date-fns/locale/fr";
 Enzyme.configure({ adapter: new Adapter() });
 
 // Mock date to get rid of time as a factor to make tests deterministic
-mockDateTo(parse("September 2, 2018 03:24:00"));
+mockDateTo(parse("September 2, 2018 18:24:34:567"));
 
 describe("DateTime", () => {
   it("create component", () => {
