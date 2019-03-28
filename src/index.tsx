@@ -625,9 +625,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       !this.props.open &&
       !this.props.disableOnClickOutside
     ) {
-      this.setState({ open: false }, () => {
-        this.props.onBlur!(this.state.selectedDate || this.state.inputValue);
-      });
+      this.closeCalendar();
     }
   }
 
