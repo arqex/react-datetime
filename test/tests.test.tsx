@@ -280,6 +280,17 @@ describe("DateTime", () => {
     expect(component.find(".rdtSwitch").text()).toEqual("December 1999");
   });
 
+  it("should close the picker by default when clicking a day in the next month", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({ defaultValue: date });
+
+    utils.openDatepicker(component);
+    utils.clickNthDay(component, 41);
+
+    expect(utils.getInputValue(component)).toEqual("02/05/2000 2:02 AM");
+    expect(utils.isOpen(component)).toBeFalsy();
+  });
+
   it("should switch to next month's view when clicking a day in the next month", () => {
     const date = new Date(2000, 0, 15, 2, 2, 2, 2);
     const component = utils.createDatetime({ defaultValue: date });
@@ -288,7 +299,35 @@ describe("DateTime", () => {
     utils.clickNthDay(component, 41);
 
     expect(utils.getInputValue(component)).toEqual("02/05/2000 2:02 AM");
+    utils.openDatepicker(component);
+    expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
+  });
 
+  it("should keep the picker open when closeOnSelect is false when clicking a day in the next month", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({
+      defaultValue: date,
+      closeOnSelect: false
+    });
+
+    utils.openDatepicker(component);
+    utils.clickNthDay(component, 41);
+
+    expect(utils.getInputValue(component)).toEqual("02/05/2000 2:02 AM");
+    expect(utils.isOpen(component)).toBeTruthy();
+  });
+
+  it("should switch to next month's view when clicking a day in the next month", () => {
+    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+    const component = utils.createDatetime({
+      defaultValue: date,
+      closeOnSelect: false
+    });
+
+    utils.openDatepicker(component);
+    utils.clickNthDay(component, 41);
+
+    expect(utils.getInputValue(component)).toEqual("02/05/2000 2:02 AM");
     expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
   });
 
