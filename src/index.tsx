@@ -664,6 +664,14 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
       ...this.props.inputProps
     };
 
+    const cal = (
+      <CalendarContainer
+        view={this.state.currentView}
+        viewProps={this.getComponentProps()}
+        onClickOutside={this.handleClickOutside}
+      />
+    );
+
     return (
       <div
         className={cc([
@@ -698,7 +706,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
                 modifiers={{
                   preventOverflow: {
                     enabled: true,
-                    boundariesElement: "viewport"
+                    boundariesElement: "window"
                   }
                 }}
               >
@@ -709,24 +717,14 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
                     data-placement={placement}
                     className="rdtPicker"
                   >
-                    <CalendarContainer
-                      view={this.state.currentView}
-                      viewProps={this.getComponentProps()}
-                      onClickOutside={this.handleClickOutside}
-                    />
+                    {cal}
                   </div>
                 )}
               </Popper>
             )}
           </Manager>
         ) : (
-          <div className="rdtPicker">
-            <CalendarContainer
-              view={this.state.currentView}
-              viewProps={this.getComponentProps()}
-              onClickOutside={this.handleClickOutside}
-            />
-          </div>
+          <div className="rdtPicker">{cal}</div>
         )}
       </div>
     );
