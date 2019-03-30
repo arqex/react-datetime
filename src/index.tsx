@@ -388,7 +388,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
     timeFormat: true,
     timeConstraints: {},
     dateFormat: true,
-    closeOnSelect: false,
+    closeOnSelect: true,
     closeOnTab: true,
     utc: false
   };
