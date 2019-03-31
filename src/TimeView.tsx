@@ -45,7 +45,14 @@ const defaultTimeConstraints: AlwaysTimeConstraints = {
   }
 };
 
-const TimePart = props => {
+interface TimePartInterface {
+  showPrefix?: boolean;
+  onUp: () => void;
+  onDown: () => void;
+  value: string | undefined;
+}
+
+const TimePart = (props: TimePartInterface) => {
   const { showPrefix, onUp, onDown, value } = props;
 
   return value !== null && value !== undefined ? (
