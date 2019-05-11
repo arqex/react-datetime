@@ -564,7 +564,7 @@ class DateTime extends React.Component<DateTimeProps, DateTimeState> {
         const currentDate = selectedDate || viewDate;
         const date = parse(
           format(newDate, `YYYY${fmt.sel}`) +
-            format(currentDate, `${fmt.rest} HH:mm:ss.SSSZ`)
+            format(currentDate, `${fmt.rest} HH:mm:ss.SSS`)
         );
 
         const isControlled = this.props.value !== undefined;
