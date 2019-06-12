@@ -13,17 +13,33 @@
     "Nate Radebaugh"
   ],
   "main": "dist/index.js",
-  "umd:main": "dist/index.umd.js",
-  "module": "dist/index.esm.js",
-  "source": "src/index.tsx",
+  "umd:main": "dist/react-datetime.umd.production.js",
+  "module": "dist/react-datetime.es.production.js",
+  "typings": "dist/index.d.ts",
   "files": [
     "css",
     "dist"
   ],
   "bundlesize": [
     {
-      "path": "dist/index.js",
-      "maxSize": "4.2 kB"
+      "path": "dist/nateradebaughreact-datetime.cjs.production.js",
+      "maxSize": "4.4 kB"
+    },
+    {
+      "path": "dist/nateradebaughreact-datetime.cjs.development.js",
+      "maxSize": "6.4 kB"
+    },
+    {
+      "path": "dist/nateradebaughreact-datetime.es.production.js",
+      "maxSize": "4.4 kB"
+    },
+    {
+      "path": "dist/nateradebaughreact-datetime.umd.production.js",
+      "maxSize": "5.1 kB"
+    },
+    {
+      "path": "dist/nateradebaughreact-datetime.umd.development.js",
+      "maxSize": "7.3 kB"
     }
   ],
   "keywords": [
@@ -35,21 +51,20 @@
     "datetime"
   ],
   "scripts": {
-    "now-build": "microbundle --jsx react",
-    "build": "cross-env NODE_ENV=production microbundle --jsx react",
-    "start": "microbundle --jsx react --watch",
+    "now-build": "tsdx build",
+    "build": "tsdx build",
+    "start": "tsdx watch",
     "lint": "yarn tslint --project tsconfig.json",
     "lint:fix": "yarn tslint --project tsconfig.json --fix",
-    "test": "yarn lint:fix&&cross-env CI=1 TZ=Europe/Stockholm jest",
+    "test": "yarn lint:fix&&cross-env CI=1 TZ=Europe/Stockholm tsdx test --env=jsdom",
     "test:coverage": "yarn lint:fix&&yarn test --coverage",
     "test:all": "echo 'Running tests...' && yarn test:coverage && yarn bundlesize && echo 'All tests passed! 🤘'",
-    "test:watch": "cross-env TZ=Europe/Stockholm jest --watch",
-    "circleci-test": "cross-env CI=1 TZ=Europe/Stockholm JEST_JUNIT_OUTPUT=reports/junit/js-test-results.xml jest --ci --reporters=jest-junit --runInBand",
+    "test:watch": "cross-env TZ_Europe/Stockholm tsdx test --env=jsdom --watch",
+    "circleci-test": "cross-env CI=1 TZ=Europe/Stockholm JEST_JUNIT_OUTPUT=reports/junit/js-test-results.xml tsdx test --ci --reporters=jest-junit --runInBand",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "prettier": "prettier --write **/*.{json,js,jsx,css}",
+    "prettier": "prettier --write **/*.{json.js,jsx,ts,tsx.css}",
     "prepare": "yarn build",
-    "predeploy": "cd example && yarn install && yarn build",
-    "deploy": "gh-pages -d example/build"
+    "predeploy": "cd example && yarn install && yarn build"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -79,68 +94,36 @@
   },
   "peerDependencies": {
     "date-fns": "^1.29.0",
-    "react": "^15.0.0 || ^16.0.0",
+    "react": ">=16",
     "react-dom": "^16.5.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/plugin-proposal-decorators": "^7.4.4",
-    "@babel/plugin-proposal-do-expressions": "^7.2.0",
-    "@babel/plugin-proposal-export-default-from": "^7.2.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
-    "@babel/plugin-proposal-function-bind": "^7.2.0",
-    "@babel/plugin-proposal-function-sent": "^7.2.0",
-    "@babel/plugin-proposal-json-strings": "^7.2.0",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.2.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
-    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
-    "@babel/plugin-proposal-pipeline-operator": "^7.3.2",
-    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/plugin-syntax-import-meta": "^7.2.0",
-    "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
-    "@types/jest": "^24.0.12",
-    "@types/react": "^16.8.17",
-    "babel-eslint": "10.0.1",
+    "@types/jest": "^24.0.13",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
     "bundlesize": "^0.17.1",
     "coveralls": "^3.0.3",
     "cross-env": "^5.2.0",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.13.0",
-    "eslint": "5.16.0",
-    "eslint-config-prettier": "^4.2.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-config-standard-react": "^7.0.2",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-node": "^9.0.1",
-    "eslint-plugin-prettier": "^3.1.0",
-    "eslint-plugin-promise": "^4.1.1",
-    "eslint-plugin-react": "^7.13.0",
-    "eslint-plugin-standard": "^4.0.0",
-    "gh-pages": "^2.0.1",
-    "husky": "^2.2.0",
-    "jest": "^24.8.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "husky": "^2.4.1",
     "jest-date-mock": "^1.0.7",
-    "jest-junit": "^6.4.0",
-    "lint-staged": "^8.1.6",
-    "microbundle": "^0.11.0",
-    "pre-commit": "^1.2.2",
-    "prettier": "^1.17.0",
+    "lint-staged": "^8.2.0",
+    "prettier": "^1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-test-renderer": "^16.8.6",
-    "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0",
+    "tsdx": "^0.6.1",
+    "tslib": "^1.10.0",
+    "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^4.0.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.1"
   },
   "dependencies": {
     "classcat": "^3.2.5",
+    "date-fns": "^1.30.1",
     "react-onclickoutside": "^6.8.0",
     "react-popper": "^1.3.3"
   }

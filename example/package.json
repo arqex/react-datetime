@@ -2,30 +2,24 @@
   "name": "react-datetime-example",
   "homepage": "https://NateRadebaugh.github.io/react-datetime",
   "version": "0.0.0",
+  "main": "index.js",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "now-build": "cd .. && yarn install && yarn build && yarn link && cd example && yarn install && yarn link @nateradebaugh/react-datetime && cross-env PUBLIC_URL=./ yarn build && mv build dist",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
   "dependencies": {
-    "@nateradebaugh/react-datetime": "link:..",
-    "date-fns": "^1.30.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "^3.0.1"
+    "react-app-polyfill": "^1.0.0"
+  },
+  "alias": {
+    "react": "../node_modules/react",
+    "react-dom": "../node_modules/react-dom"
   },
   "devDependencies": {
-    "cross-env": "^5.2.0",
-    "microbundle": "^0.11.0"
+    "@types/react": "^16.8.15",
+    "@types/react-dom": "^16.8.4",
+    "parcel": "^1.12.3",
+    "typescript": "^3.4.5"
   }
 }
