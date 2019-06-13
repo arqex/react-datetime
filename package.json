@@ -56,10 +56,10 @@
     "start": "tsdx watch",
     "lint": "yarn tslint --project tsconfig.json",
     "lint:fix": "yarn tslint --project tsconfig.json --fix",
-    "test": "yarn lint:fix&&cross-env CI=1 TZ=Europe/Stockholm tsdx test --env=jsdom",
+    "test": "yarn lint:fix&&cross-env CI=1 TZ=Europe/Stockholm tsdx test",
     "test:coverage": "yarn lint:fix&&yarn test --coverage",
     "test:all": "echo 'Running tests...' && yarn test:coverage && yarn bundlesize && echo 'All tests passed! 🤘'",
-    "test:watch": "cross-env TZ_Europe/Stockholm tsdx test --env=jsdom --watch",
+    "test:watch": "cross-env TZ_Europe/Stockholm tsdx test --watch",
     "circleci-test": "cross-env CI=1 TZ=Europe/Stockholm JEST_JUNIT_OUTPUT=reports/junit/js-test-results.xml tsdx test --ci --reporters=jest-junit --runInBand",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "prettier": "prettier --write **/*.{json.js,jsx,ts,tsx.css}",
@@ -67,23 +67,17 @@
     "predeploy": "cd example && yarn install && yarn build"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier --write",
-      "eslint --fix",
-      "git add",
-      "cross-env CI=1 TZ=Europe/Stockholm jest --bail --findRelatedTests"
-    ],
-    "*.{ts,tsx}": [
+    "{src,test}/**/*.{ts,tsx}": [
       "prettier --write",
       "tslint --project tsconfig.json --fix",
       "git add",
       "cross-env CI=1 TZ=Europe/Stockholm jest --bail --findRelatedTests"
     ],
-    "*.{json,css,scss}": [
+    "{src,test}/**/*.{json,css,scss}": [
       "prettier --write",
       "git add"
     ],
-    "*": [
+    "{src,test}/**/*": [
       "bundlesize"
     ]
   },
@@ -109,6 +103,7 @@
     "enzyme-adapter-react-16": "^1.14.0",
     "husky": "^2.4.1",
     "jest-date-mock": "^1.0.7",
+    "jest-junit": "^6.4.0",
     "lint-staged": "^8.2.0",
     "prettier": "^1.18.2",
     "react": "^16.8.6",

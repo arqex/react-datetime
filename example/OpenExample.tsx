@@ -1,12 +1,12 @@
-import * as React from 'react';
-import DateTime from '../.';
+import * as React from "react";
+import DateTime from "../.";
 
 export default class OpenExample extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
     this.state = {
-      viewMode: undefined,
+      viewMode: undefined
     };
 
     // Bind functions
@@ -35,11 +35,11 @@ export default class OpenExample extends React.Component<any, any> {
         </p>
         <p>Try out various viewModes and see how they affect the component.</p>
         <p>
-          {this.renderButton('Default - undefined', undefined)}
-          {this.renderButton('Years', 'years')}
-          {this.renderButton('Months', 'months')}
-          {this.renderButton('Days', 'days')}
-          {this.renderButton('Time', 'time')}
+          {this.renderButton("Default - undefined", undefined)}
+          {this.renderButton("Years", "years")}
+          {this.renderButton("Months", "months")}
+          {this.renderButton("Days", "days")}
+          {this.renderButton("Time", "time")}
         </p>
 
         <DateTime

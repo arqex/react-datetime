@@ -1,7 +1,7 @@
-import * as React from 'react';
-import DateTime from '../.';
-import isBefore from 'date-fns/is_before';
-import startOfMonth from 'date-fns/start_of_month';
+import * as React from "react";
+import DateTime from "../.";
+import isBefore from "date-fns/is_before";
+import startOfMonth from "date-fns/start_of_month";
 
 export default class ValidatedExample extends React.Component<any, any> {
   render() {
