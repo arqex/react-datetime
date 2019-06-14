@@ -13,7 +13,6 @@
 ![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/@nateradebaugh/react-datetime.svg)
 ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@nateradebaugh/react-datetime.svg)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/NateRadebaugh/react-datetime.svg)](https://greenkeeper.io/)
 [![Known Vulnerabilities](https://snyk.io/test/github/NateRadebaugh/react-datetime/badge.svg)](https://snyk.io/test/github/NateRadebaugh/react-datetime)
 ![David](https://img.shields.io/david/nateradebaugh/react-datetime.svg)
 ![David](https://img.shields.io/david/dev/nateradebaugh/react-datetime.svg)
