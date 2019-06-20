@@ -13,8 +13,8 @@
     "Nate Radebaugh"
   ],
   "main": "dist/index.js",
-  "umd:main": "dist/react-datetime.umd.production.js",
-  "module": "dist/react-datetime.es.production.js",
+  "umd:main": "dist/react-datetime.umd.production.min.js",
+  "module": "dist/react-datetime.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "css",
@@ -22,24 +22,24 @@
   ],
   "bundlesize": [
     {
-      "path": "dist/nateradebaughreact-datetime.cjs.production.js",
+      "path": "dist/react-datetime.cjs.production.min.js",
       "maxSize": "4.4 kB"
     },
     {
-      "path": "dist/nateradebaughreact-datetime.cjs.development.js",
-      "maxSize": "6.4 kB"
+      "path": "dist/react-datetime.cjs.development.js",
+      "maxSize": "6.39 kB"
     },
     {
-      "path": "dist/nateradebaughreact-datetime.es.production.js",
-      "maxSize": "4.4 kB"
+      "path": "dist/react-datetime.esm.js",
+      "maxSize": "6.3 kB"
     },
     {
-      "path": "dist/nateradebaughreact-datetime.umd.production.js",
-      "maxSize": "5.1 kB"
+      "path": "dist/react-datetime.umd.production.min.js",
+      "maxSize": "5.01 kB"
     },
     {
-      "path": "dist/nateradebaughreact-datetime.umd.development.js",
-      "maxSize": "7.3 kB"
+      "path": "dist/react-datetime.umd.development.js",
+      "maxSize": "7.24 kB"
     }
   ],
   "keywords": [
@@ -52,13 +52,13 @@
   ],
   "scripts": {
     "now-build": "tsdx build",
-    "build": "tsdx build",
-    "start": "tsdx watch",
+    "build": "tsdx build --format=umd,esm,cjs",
+    "start": "tsdx watch --format=esm",
     "lint": "yarn tslint --project tsconfig.json",
     "lint:fix": "yarn tslint --project tsconfig.json --fix",
     "test": "yarn lint:fix&&cross-env CI=1 TZ=Europe/Stockholm tsdx test",
     "test:coverage": "yarn lint:fix&&yarn test --coverage",
-    "test:all": "echo 'Running tests...' && yarn test:coverage && yarn bundlesize && echo 'All tests passed! 🤘'",
+    "test:all": "echo 'Running tests...' && yarn bundlesize && yarn test:coverage && echo 'All tests passed! 🤘'",
     "test:watch": "cross-env TZ_Europe/Stockholm tsdx test --watch",
     "circleci-test": "cross-env CI=1 TZ=Europe/Stockholm JEST_JUNIT_OUTPUT=reports/junit/js-test-results.xml tsdx test --ci --reporters=jest-junit --runInBand",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
@@ -92,6 +92,7 @@
     "react-dom": "^16.5.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@types/jest": "^24.0.13",
     "@types/react": "^16.8.19",
@@ -108,7 +109,7 @@
     "prettier": "^1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "tsdx": "^0.6.1",
+    "tsdx": "^0.7.2",
     "tslib": "^1.10.0",
     "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0",
