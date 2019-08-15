@@ -25,7 +25,10 @@ yarn add react-datetime
 
 
 ```js
-require('react-datetime');
+import DateTime from 'react-datetime';
+
+// import the stylings
+import 'react-datetime/css/react-datetime.css'
 
 ...
 
