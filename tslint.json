@@ -6,6 +6,7 @@
     "tslint-config-prettier"
   ],
   "rules": {
+    "jsx-no-lambda": false,
     "no-internal-module": true,
     "no-reference": true,
     "no-var-requires": true,
@@ -60,7 +61,7 @@
     "no-submodule-imports": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "object-literal-shorthand": [true, "never"],
+    "object-literal-shorthand": [true, "always"],
     "no-implicit-dependencies": [true, "dev"],
     "member-access": false,
     "interface-name": false

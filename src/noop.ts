@@ -1,4 +1,5 @@
-// tslint:disable-next-line:no-empty
-const noop = () => {};
+function noop(..._) {
+  return void 0;
+}
 
 export default noop;

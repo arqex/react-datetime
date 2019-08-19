@@ -1,50 +1,26 @@
 import * as React from "react";
+import cc from "classcat";
+
+import format from "date-fns/format";
+import addYears from "date-fns/add_years";
 import getYear from "date-fns/get_year";
 import setYear from "date-fns/set_year";
 import getDaysInYear from "date-fns/get_days_in_year";
 import setDayOfYear from "date-fns/set_day_of_year";
-import cc from "classcat";
-import { IsValidDateFunc, SetDateFunc, ShiftFunc, ShowFunc } from ".";
+
 import returnTrue from "./returnTrue";
+import noop from "./noop";
 
-interface YearsViewProps {
-  viewDate?: Date;
-  shift?: ShiftFunc;
-  show?: ShowFunc;
-  selectedDate?: Date;
-
-  /*
-  Define the dates that can be selected. The function receives (currentDate, selectedDate)
-  and should return a true or false whether the currentDate is valid or not. See selectable dates.
-  */
-  isValidDate?: IsValidDateFunc;
-
-  /*
-  Customize the way that the years are shown in the year picker.
-  The accepted function has the selectedDate, the current date and the default calculated
-  props for the cell, the year to be shown, and must return a React component.
-  See appearance customization
-  */
-  renderYear?: (props: any, year: number, selectedDate?: Date) => JSX.Element;
-
-  setDate?: SetDateFunc;
-}
-
-function defaultRenderYear(yearProps: any, year: number): JSX.Element {
-  return <td {...yearProps}>{year}</td>;
-}
-
-function YearsView({
-  selectedDate,
-  viewDate = new Date(),
-  renderYear,
-  isValidDate,
-  shift,
-  show,
-  setDate
-}: YearsViewProps): JSX.Element {
-  const renderer = renderYear || defaultRenderYear;
-  const isValid = isValidDate || returnTrue;
+function YearsView(props) {
+  const {
+    viewDate = new Date(),
+    setViewDate = noop,
+    selectedDate,
+    setSelectedDate = noop,
+    formatOptions,
+    setViewMode = noop,
+    isValidDate = returnTrue
+  } = props;
 
   const startYear = Math.floor(getYear(viewDate) / 10) * 10;
 
@@ -55,20 +31,20 @@ function YearsView({
           <tr>
             <th
               className="rdtPrev"
-              onClick={shift && shift("sub", 10, "years")}
+              onClick={() => setViewDate(addYears(viewDate, -10))}
             >
               <span>‹</span>
             </th>
             <th
               className="rdtSwitch"
-              onClick={show && show("years")}
+              onClick={() => setViewMode("years")}
               colSpan={2}
             >
               {startYear}-{startYear + 9}
             </th>
             <th
               className="rdtNext"
-              onClick={shift && shift("add", 10, "years")}
+              onClick={() => setViewDate(addYears(viewDate, 10))}
             >
               <span>›</span>
             </th>
@@ -92,27 +68,28 @@ function YearsView({
                     (e, i) => setDayOfYear(currentYear, i + 1)
                   );
 
-                  const isDisabled = daysInYear.every(d => !isValid(d));
-                  const yearProps: any = {
-                    key: year,
-                    className: cc([
-                      "rdtYear",
-                      {
-                        rdtDisabled: isDisabled,
-                        rdtActive:
-                          selectedDate && getYear(selectedDate) === year
-                      }
-                    ])
-                  };
+                  const isDisabled = daysInYear.every(d => !isValidDate(d));
 
-                  if (!isDisabled && setDate) {
-                    yearProps.onClick = setDate(
-                      "years",
-                      setYear(viewDate, year)
-                    );
-                  }
-
-                  return renderer(yearProps, year, selectedDate);
+                  return (
+                    <td
+                      key={year}
+                      className={cc([
+                        "rdtYear",
+                        {
+                          rdtDisabled: isDisabled,
+                          rdtActive:
+                            selectedDate && getYear(selectedDate) === year
+                        }
+                      ])}
+                      onClick={() => {
+                        if (!isDisabled) {
+                          setSelectedDate(setYear(viewDate, year));
+                        }
+                      }}
+                    >
+                      {format(currentYear, "YYYY", formatOptions)}
+                    </td>
+                  );
                 })}
               </tr>
             );

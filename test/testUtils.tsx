@@ -32,7 +32,7 @@ export const createDatetimeShallow = (props: any) => {
  * Click Simulations
  */
 export const openDatepicker = datetime => {
-  datetime.find(".form-control").simulate("focus");
+  datetime.find(".rdt input").simulate("focus");
 };
 
 export const clickOnElement = element => {
@@ -353,7 +353,7 @@ export const getDayPart = datetime => {
 };
 
 export const getInputValue = datetime => {
-  return datetime.find(".rdt .form-control").getDOMNode().value;
+  return datetime.find(".rdt input").getDOMNode().value;
 };
 
 export const getViewDateValue = datetime => {

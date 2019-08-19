@@ -1,3 +1,5 @@
-const returnTrue = () => true;
+function returnTrue() {
+  return true;
+}
 
 export default returnTrue;

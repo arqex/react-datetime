@@ -10,7 +10,6 @@ import { advanceTo as mockDateTo } from "jest-date-mock";
 
 import parse from "date-fns/parse";
 import addDays from "date-fns/add_days";
-import getDate from "date-fns/get_date";
 import isAfter from "date-fns/is_after";
 
 // findDOMNode is not supported by the react-test-renderer,
@@ -108,26 +107,6 @@ describe("DateTime component", () => {
       tree.update(<DateTime open={true} />);
       expect(tree.toJSON()).toMatchSnapshot();
     });
-
-    describe("undefined `open` prop", () => {
-      it("should hide when changing prop if closeOnSelect is true", () => {
-        const tree = renderer.create(
-          <DateTime
-            value={parse("December 21, 2016 05:36 PM")}
-            closeOnSelect={true}
-          />
-        );
-        expect(tree.toJSON()).toMatchSnapshot();
-
-        // Click into the input field
-        tree.root.findByType("input").props.onClick();
-        expect(tree.toJSON()).toMatchSnapshot();
-
-        // Change the value
-        tree.update(<DateTime value={parse("December 21, 2016 03:36 PM")} />);
-        expect(tree.toJSON()).toMatchSnapshot();
-      });
-    });
   });
 
   describe("viewMode", () => {
@@ -163,45 +142,37 @@ describe("DateTime component", () => {
 
   it("className: set to arbitrary value", () => {
     const tree = renderer
-      .create(<DateTime className={"arbitrary-value"} />)
+      .create(<DateTime className="arbitrary-value" />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
 
-  describe("inputProps", () => {
+  describe("input props", () => {
     it("with placeholder specified", () => {
       const tree = renderer
-        .create(
-          <DateTime inputProps={{ placeholder: "arbitrary-placeholder" }} />
-        )
+        .create(<DateTime placeholder="arbitrary-placeholder" />)
         .toJSON();
       expect(tree).toMatchSnapshot();
     });
 
     it("with disabled specified", () => {
-      const tree = renderer
-        .create(<DateTime inputProps={{ disabled: true }} />)
-        .toJSON();
+      const tree = renderer.create(<DateTime disabled={true} />).toJSON();
       expect(tree).toMatchSnapshot();
     });
 
     it("with required specified", () => {
-      const tree = renderer
-        .create(<DateTime inputProps={{ required: true }} />)
-        .toJSON();
+      const tree = renderer.create(<DateTime required={true} />).toJSON();
       expect(tree).toMatchSnapshot();
     });
 
     it("with name specified", () => {
-      const tree = renderer
-        .create(<DateTime inputProps={{ name: "arbitrary-name" }} />)
-        .toJSON();
+      const tree = renderer.create(<DateTime name="arbitrary-name" />).toJSON();
       expect(tree).toMatchSnapshot();
     });
 
     it("with className specified", () => {
       const tree = renderer
-        .create(<DateTime inputProps={{ className: "arbitrary-className" }} />)
+        .create(<DateTime className="arbitrary-className" />)
         .toJSON();
       expect(tree).toMatchSnapshot();
     });
@@ -211,32 +182,6 @@ describe("DateTime component", () => {
     const yesterday = addDays(new Date(), -1);
     const valid = current => isAfter(current, yesterday);
     const tree = renderer.create(<DateTime isValidDate={valid} />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  it("renderDay: specified", () => {
-    const renderDay = (props, currentDate) => (
-      <td {...props}>{`0${getDate(currentDate)}`}</td>
-    );
-    const tree = renderer.create(<DateTime renderDay={renderDay} />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  it("renderMonth: specified", () => {
-    const renderMonth = (props, currentDate) => (
-      <td {...props}>{`0${getDate(currentDate)}`}</td>
-    );
-    const tree = renderer
-      .create(<DateTime renderMonth={renderMonth} />)
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  it("renderYear: specified", () => {
-    const renderYear = (props, currentDate) => (
-      <td {...props}>{`0${getDate(currentDate)}`}</td>
-    );
-    const tree = renderer.create(<DateTime renderYear={renderYear} />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

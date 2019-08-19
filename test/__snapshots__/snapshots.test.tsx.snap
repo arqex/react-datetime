@@ -296,10 +296,10 @@ exports[`CalendarContainer everything default: renders correctly 1`] = `
 
 exports[`DateTime component className: set to arbitrary value 1`] = `
 <div
-  className="rdt arbitrary-value"
+  className="rdt"
 >
   <input
-    className="form-control"
+    className="arbitrary-value"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -315,7 +315,6 @@ exports[`DateTime component dateFormat set to false 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -331,7 +330,6 @@ exports[`DateTime component dateFormat set to true 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -347,7 +345,6 @@ exports[`DateTime component defaultValue: set to arbitrary value 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -363,7 +360,6 @@ exports[`DateTime component everything default: renders correctly 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -737,7 +733,6 @@ exports[`DateTime component input input: set to true 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -748,7 +743,7 @@ exports[`DateTime component input input: set to true 1`] = `
 </div>
 `;
 
-exports[`DateTime component inputProps with className specified 1`] = `
+exports[`DateTime component input props with className specified 1`] = `
 <div
   className="rdt"
 >
@@ -764,12 +759,11 @@ exports[`DateTime component inputProps with className specified 1`] = `
 </div>
 `;
 
-exports[`DateTime component inputProps with disabled specified 1`] = `
+exports[`DateTime component input props with disabled specified 1`] = `
 <div
   className="rdt"
 >
   <input
-    className="form-control"
     disabled={true}
     onChange={[Function]}
     onClick={[Function]}
@@ -781,12 +775,11 @@ exports[`DateTime component inputProps with disabled specified 1`] = `
 </div>
 `;
 
-exports[`DateTime component inputProps with name specified 1`] = `
+exports[`DateTime component input props with name specified 1`] = `
 <div
   className="rdt"
 >
   <input
-    className="form-control"
     name="arbitrary-name"
     onChange={[Function]}
     onClick={[Function]}
@@ -798,12 +791,11 @@ exports[`DateTime component inputProps with name specified 1`] = `
 </div>
 `;
 
-exports[`DateTime component inputProps with placeholder specified 1`] = `
+exports[`DateTime component input props with placeholder specified 1`] = `
 <div
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -815,12 +807,11 @@ exports[`DateTime component inputProps with placeholder specified 1`] = `
 </div>
 `;
 
-exports[`DateTime component inputProps with required specified 1`] = `
+exports[`DateTime component input props with required specified 1`] = `
 <div
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -837,7 +828,6 @@ exports[`DateTime component isValidDate: only valid if after yesterday 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -853,7 +843,6 @@ exports[`DateTime component open set to false 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -1245,7 +1234,6 @@ exports[`DateTime component open should support change false -> true 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2024,424 +2012,16 @@ exports[`DateTime component open should support change true -> false 2`] = `
 </div>
 `;
 
-exports[`DateTime component open undefined \`open\` prop should hide when changing prop if closeOnSelect is true 1`] = `
-<div
-  className="rdt"
->
-  <input
-    className="form-control"
-    onChange={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    type="text"
-    value="12/21/2016 5:36 PM"
-  />
-</div>
-`;
-
-exports[`DateTime component open undefined \`open\` prop should hide when changing prop if closeOnSelect is true 2`] = `
-<div
-  className="rdt rdtOpen"
->
-  <input
-    className="form-control"
-    onChange={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    type="text"
-    value="12/21/2016 5:36 PM"
-  />
-  <div
-    className="rdtPicker"
-    style={
-      Object {
-        "left": 0,
-        "opacity": 0,
-        "pointerEvents": "none",
-        "position": "absolute",
-        "top": 0,
-      }
-    }
-  >
-    <div
-      className="rdtDays"
-    >
-      <table>
-        <thead>
-          <tr>
-            <th
-              className="rdtPrev"
-              onClick={[Function]}
-            >
-              <span>
-                ‹
-              </span>
-            </th>
-            <th
-              className="rdtSwitch"
-              colSpan={5}
-              onClick={[Function]}
-            >
-              December 2016
-            </th>
-            <th
-              className="rdtNext"
-              onClick={[Function]}
-            >
-              <span>
-                ›
-              </span>
-            </th>
-          </tr>
-          <tr>
-            <th
-              className="dow"
-            >
-              Su
-            </th>
-            <th
-              className="dow"
-            >
-              Mo
-            </th>
-            <th
-              className="dow"
-            >
-              Tu
-            </th>
-            <th
-              className="dow"
-            >
-              We
-            </th>
-            <th
-              className="dow"
-            >
-              Th
-            </th>
-            <th
-              className="dow"
-            >
-              Fr
-            </th>
-            <th
-              className="dow"
-            >
-              Sa
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td
-              className="rdtDay rdtOld"
-              onClick={[Function]}
-            >
-              27
-            </td>
-            <td
-              className="rdtDay rdtOld"
-              onClick={[Function]}
-            >
-              28
-            </td>
-            <td
-              className="rdtDay rdtOld"
-              onClick={[Function]}
-            >
-              29
-            </td>
-            <td
-              className="rdtDay rdtOld"
-              onClick={[Function]}
-            >
-              30
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              1
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              2
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              3
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              4
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              5
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              6
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              7
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              8
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              9
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              10
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              11
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              12
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              13
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              14
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              15
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              16
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              17
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              18
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              19
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              20
-            </td>
-            <td
-              className="rdtDay rdtActive"
-              onClick={[Function]}
-            >
-              21
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              22
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              23
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              24
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              25
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              26
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              27
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              28
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              29
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              30
-            </td>
-            <td
-              className="rdtDay"
-              onClick={[Function]}
-            >
-              31
-            </td>
-          </tr>
-          <tr>
-            <td
-              className="rdtDay rdtNew"
-              onClick={[Function]}
-            >
-              1
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              onClick={[Function]}
-            >
-              2
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              onClick={[Function]}
-            >
-              3
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              onClick={[Function]}
-            >
-              4
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              onClick={[Function]}
-            >
-              5
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              onClick={[Function]}
-            >
-              6
-            </td>
-            <td
-              className="rdtDay rdtNew"
-              onClick={[Function]}
-            >
-              7
-            </td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td
-              className="rdtTimeToggle"
-              colSpan={7}
-              onClick={[Function]}
-            >
-              5:36 PM
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`DateTime component open undefined \`open\` prop should hide when changing prop if closeOnSelect is true 3`] = `
-<div
-  className="rdt"
->
-  <input
-    className="form-control"
-    onChange={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    type="text"
-    value="12/21/2016 3:36 PM"
-  />
-</div>
-`;
-
 exports[`DateTime component renderDay: specified 1`] = `
 <div
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
+    renderDay={[Function]}
     type="text"
     value=""
   />
@@ -2453,11 +2033,11 @@ exports[`DateTime component renderMonth: specified 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
+    renderMonth={[Function]}
     type="text"
     value=""
   />
@@ -2469,11 +2049,11 @@ exports[`DateTime component renderYear: specified 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
+    renderYear={[Function]}
     type="text"
     value=""
   />
@@ -2485,7 +2065,6 @@ exports[`DateTime component timeFormat set to false 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2501,7 +2080,6 @@ exports[`DateTime component timeFormat set to true 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2517,7 +2095,6 @@ exports[`DateTime component value: set to arbitrary value 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2533,7 +2110,6 @@ exports[`DateTime component viewMode set to days 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2549,7 +2125,6 @@ exports[`DateTime component viewMode set to months 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2565,7 +2140,6 @@ exports[`DateTime component viewMode set to time 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2581,7 +2155,6 @@ exports[`DateTime component viewMode set to years 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2597,7 +2170,6 @@ exports[`DateTime component viewMode should support changing dynamically 1`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2613,7 +2185,6 @@ exports[`DateTime component viewMode should support changing dynamically 2`] = `
   className="rdt"
 >
   <input
-    className="form-control"
     onChange={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
@@ -2633,6 +2204,7 @@ exports[`DaysView everything default: renders correctly 1`] = `
       <tr>
         <th
           className="rdtPrev"
+          onClick={[Function]}
         >
           <span>
             ‹
@@ -2641,11 +2213,13 @@ exports[`DaysView everything default: renders correctly 1`] = `
         <th
           className="rdtSwitch"
           colSpan={5}
+          onClick={[Function]}
         >
-          September 2018
+          Invalid Date
         </th>
         <th
           className="rdtNext"
+          onClick={[Function]}
         >
           <span>
             ›
@@ -2656,261 +2230,303 @@ exports[`DaysView everything default: renders correctly 1`] = `
         <th
           className="dow"
         >
-          Su
+          Invalid Date
         </th>
         <th
           className="dow"
         >
-          Mo
+          Invalid Date
         </th>
         <th
           className="dow"
         >
-          Tu
+          Invalid Date
         </th>
         <th
           className="dow"
         >
-          We
+          Invalid Date
         </th>
         <th
           className="dow"
         >
-          Th
+          Invalid Date
         </th>
         <th
           className="dow"
         >
-          Fr
+          Invalid Date
         </th>
         <th
           className="dow"
         >
-          Sa
+          Invalid Date
         </th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td
-          className="rdtDay rdtOld"
+          className="rdtDay"
+          onClick={[Function]}
         >
-          26
-        </td>
-        <td
-          className="rdtDay rdtOld"
-        >
-          27
-        </td>
-        <td
-          className="rdtDay rdtOld"
-        >
-          28
-        </td>
-        <td
-          className="rdtDay rdtOld"
-        >
-          29
-        </td>
-        <td
-          className="rdtDay rdtOld"
-        >
-          30
-        </td>
-        <td
-          className="rdtDay rdtOld"
-        >
-          31
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          1
-        </td>
-      </tr>
-      <tr>
-        <td
-          className="rdtDay rdtToday"
-        >
-          2
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          3
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          4
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          5
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          6
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          7
-        </td>
-        <td
-          className="rdtDay"
-        >
-          8
+          Invalid Date
         </td>
       </tr>
       <tr>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          9
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          10
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          11
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          12
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          13
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          14
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          15
+          Invalid Date
         </td>
       </tr>
       <tr>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          16
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          17
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          18
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          19
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          20
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          21
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          22
+          Invalid Date
         </td>
       </tr>
       <tr>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          23
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          24
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          25
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          26
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          27
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          28
+          Invalid Date
         </td>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          29
+          Invalid Date
         </td>
       </tr>
       <tr>
         <td
           className="rdtDay"
+          onClick={[Function]}
         >
-          30
+          Invalid Date
         </td>
         <td
-          className="rdtDay rdtNew"
+          className="rdtDay"
+          onClick={[Function]}
         >
-          1
+          Invalid Date
         </td>
         <td
-          className="rdtDay rdtNew"
+          className="rdtDay"
+          onClick={[Function]}
         >
-          2
+          Invalid Date
         </td>
         <td
-          className="rdtDay rdtNew"
+          className="rdtDay"
+          onClick={[Function]}
         >
-          3
+          Invalid Date
         </td>
         <td
-          className="rdtDay rdtNew"
+          className="rdtDay"
+          onClick={[Function]}
         >
-          4
+          Invalid Date
         </td>
         <td
-          className="rdtDay rdtNew"
+          className="rdtDay"
+          onClick={[Function]}
         >
-          5
+          Invalid Date
         </td>
         <td
-          className="rdtDay rdtNew"
+          className="rdtDay"
+          onClick={[Function]}
         >
-          6
+          Invalid Date
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="rdtDay"
+          onClick={[Function]}
+        >
+          Invalid Date
+        </td>
+        <td
+          className="rdtDay"
+          onClick={[Function]}
+        >
+          Invalid Date
+        </td>
+        <td
+          className="rdtDay"
+          onClick={[Function]}
+        >
+          Invalid Date
+        </td>
+        <td
+          className="rdtDay"
+          onClick={[Function]}
+        >
+          Invalid Date
+        </td>
+        <td
+          className="rdtDay"
+          onClick={[Function]}
+        >
+          Invalid Date
+        </td>
+        <td
+          className="rdtDay"
+          onClick={[Function]}
+        >
+          Invalid Date
+        </td>
+        <td
+          className="rdtDay"
+          onClick={[Function]}
+        >
+          Invalid Date
         </td>
       </tr>
     </tbody>
@@ -2927,6 +2543,7 @@ exports[`MonthsView everything default: renders correctly 1`] = `
       <tr>
         <th
           className="rdtPrev"
+          onClick={[Function]}
         >
           <span>
             ‹
@@ -2935,11 +2552,13 @@ exports[`MonthsView everything default: renders correctly 1`] = `
         <th
           className="rdtSwitch"
           colSpan={2}
+          onClick={[Function]}
         >
-          2018
+          Invalid Date
         </th>
         <th
           className="rdtNext"
+          onClick={[Function]}
         >
           <span>
             ›
@@ -2952,66 +2571,78 @@ exports[`MonthsView everything default: renders correctly 1`] = `
     <tbody>
       <tr>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Jan
         </td>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Feb
         </td>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Mar
         </td>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Apr
         </td>
       </tr>
       <tr>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           May
         </td>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Jun
         </td>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Jul
         </td>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Aug
         </td>
       </tr>
       <tr>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Sep
         </td>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Oct
         </td>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Nov
         </td>
         <td
-          className="rdtMonth"
+          className="rdtMonth rdtDisabled"
+          onClick={[Function]}
         >
           Dec
         </td>
@@ -3055,7 +2686,6 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3063,11 +2693,10 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                6
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3083,7 +2712,6 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3091,11 +2719,10 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                24
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3111,7 +2738,6 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3119,11 +2745,10 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                34
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3139,7 +2764,6 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3147,11 +2771,10 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                567
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3162,7 +2785,6 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3170,11 +2792,10 @@ exports[`TimeView should render with full time with UPPERCASE daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                PM
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3204,7 +2825,6 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3212,11 +2832,10 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                6
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3232,7 +2851,6 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3240,11 +2858,10 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                24
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3260,7 +2877,6 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3268,11 +2884,10 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                34
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3288,7 +2903,6 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3296,11 +2910,10 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                567
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3311,7 +2924,6 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3319,11 +2931,10 @@ exports[`TimeView should render with full time with lowercase daypart 1`] = `
               <div
                 className="rdtCount"
               >
-                pm
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3353,7 +2964,6 @@ exports[`TimeView should render with military time 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3361,11 +2971,10 @@ exports[`TimeView should render with military time 1`] = `
               <div
                 className="rdtCount"
               >
-                18
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3381,7 +2990,6 @@ exports[`TimeView should render with military time 1`] = `
             >
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▲
@@ -3389,11 +2997,10 @@ exports[`TimeView should render with military time 1`] = `
               <div
                 className="rdtCount"
               >
-                24
+                Invalid Date
               </div>
               <span
                 className="rdtBtn"
-                onContextMenu={[Function]}
                 onMouseDown={[Function]}
               >
                 ▼
@@ -3416,6 +3023,7 @@ exports[`YearsView everything default: renders correctly 1`] = `
       <tr>
         <th
           className="rdtPrev"
+          onClick={[Function]}
         >
           <span>
             ‹
@@ -3424,13 +3032,15 @@ exports[`YearsView everything default: renders correctly 1`] = `
         <th
           className="rdtSwitch"
           colSpan={2}
+          onClick={[Function]}
         >
-          2010
+          NaN
           -
-          2019
+          NaN
         </th>
         <th
           className="rdtNext"
+          onClick={[Function]}
         >
           <span>
             ›
@@ -3444,67 +3054,79 @@ exports[`YearsView everything default: renders correctly 1`] = `
       <tr>
         <td
           className="rdtYear"
+          onClick={[Function]}
         >
-          2009
+          Invalid Date
         </td>
         <td
           className="rdtYear"
+          onClick={[Function]}
         >
-          2010
+          Invalid Date
         </td>
         <td
           className="rdtYear"
+          onClick={[Function]}
         >
-          2011
+          Invalid Date
         </td>
         <td
           className="rdtYear"
+          onClick={[Function]}
         >
-          2012
-        </td>
-      </tr>
-      <tr>
-        <td
-          className="rdtYear"
-        >
-          2013
-        </td>
-        <td
-          className="rdtYear"
-        >
-          2014
-        </td>
-        <td
-          className="rdtYear"
-        >
-          2015
-        </td>
-        <td
-          className="rdtYear"
-        >
-          2016
+          Invalid Date
         </td>
       </tr>
       <tr>
         <td
           className="rdtYear"
+          onClick={[Function]}
         >
-          2017
+          Invalid Date
         </td>
         <td
           className="rdtYear"
+          onClick={[Function]}
         >
-          2018
+          Invalid Date
         </td>
         <td
           className="rdtYear"
+          onClick={[Function]}
         >
-          2019
+          Invalid Date
         </td>
         <td
           className="rdtYear"
+          onClick={[Function]}
         >
-          2020
+          Invalid Date
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="rdtYear"
+          onClick={[Function]}
+        >
+          Invalid Date
+        </td>
+        <td
+          className="rdtYear"
+          onClick={[Function]}
+        >
+          Invalid Date
+        </td>
+        <td
+          className="rdtYear"
+          onClick={[Function]}
+        >
+          Invalid Date
+        </td>
+        <td
+          className="rdtYear"
+          onClick={[Function]}
+        >
+          Invalid Date
         </td>
       </tr>
     </tbody>

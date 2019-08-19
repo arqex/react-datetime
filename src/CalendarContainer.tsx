@@ -1,41 +1,28 @@
 import * as React from "react";
-import onClickOutside from "react-onclickoutside";
-import Days from "./DaysView";
-import Months from "./MonthsView";
-import Years from "./YearsView";
-import Time from "./TimeView";
-import noop from "./noop";
 
-const views = {
-  days: Days,
-  months: Months,
-  years: Years,
-  time: Time
-};
+import TimeView from "./TimeView";
+import DaysView from "./DaysView";
+import MonthsView from "./MonthsView";
+import YearsView from "./YearsView";
 
-interface CalendarContainerProps {
-  view: "years" | "months" | "days" | "time";
-  viewProps: any;
-  onClickOutside: any;
-}
+function CalendarContainer(props) {
+  const { viewMode, ...rest } = props;
 
-class CalendarContainer extends React.Component<CalendarContainerProps, never> {
-  static defaultProps = {
-    view: "days",
-    onClickOutside: noop,
-    viewProps: {}
-  };
+  switch (viewMode) {
+    case "time":
+      return <TimeView {...rest} />;
 
-  handleClickOutside() {
-    this.props.onClickOutside();
+    case "days":
+      return <DaysView {...rest} />;
+
+    case "months":
+      return <MonthsView {...rest} />;
+
+    case "years":
+      return <YearsView {...rest} />;
   }
 
-  render() {
-    const { view, viewProps } = this.props;
-    const Component = views[view];
-
-    return <Component {...viewProps} readonly={!!viewProps.value} />;
-  }
+  throw new Error("Unsupported view mode.");
 }
 
-export default onClickOutside(CalendarContainer);
+export default CalendarContainer;

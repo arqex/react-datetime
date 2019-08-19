@@ -1,4 +1,3 @@
-import React from "react";
 import * as utils from "./testUtils";
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
@@ -29,7 +28,7 @@ describe("DateTime", () => {
     expect(component).toBeDefined();
 
     expect(component.find(".rdt").length).toEqual(1);
-    expect(component.find(".rdt .form-control").length).toEqual(1);
+    expect(component.find(".rdt input").length).toEqual(1);
     expect(component.find(".rdt .rdtPicker").length).toEqual(0);
 
     utils.openDatepicker(component);
@@ -303,34 +302,6 @@ describe("DateTime", () => {
     expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
   });
 
-  it("should keep the picker open when closeOnSelect is false when clicking a day in the next month", () => {
-    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-    const component = utils.createDatetime({
-      defaultValue: date,
-      closeOnSelect: false
-    });
-
-    utils.openDatepicker(component);
-    utils.clickNthDay(component, 41);
-
-    expect(utils.getInputValue(component)).toEqual("02/05/2000 2:02 AM");
-    expect(utils.isOpen(component)).toBeTruthy();
-  });
-
-  it("should switch to next month's view when clicking a day in the next month", () => {
-    const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-    const component = utils.createDatetime({
-      defaultValue: date,
-      closeOnSelect: false
-    });
-
-    utils.openDatepicker(component);
-    utils.clickNthDay(component, 41);
-
-    expect(utils.getInputValue(component)).toEqual("02/05/2000 2:02 AM");
-    expect(component.find(".rdtSwitch").text()).toEqual("February 2000");
-  });
-
   it("open picker", () => {
     const component = utils.createDatetime({});
     expect(utils.isOpen(component)).toBeFalsy();
@@ -341,7 +312,7 @@ describe("DateTime", () => {
   it("opens picker when clicking on input", () => {
     const component = utils.createDatetime({});
     expect(utils.isOpen(component)).toBeFalsy();
-    component.find(".form-control").simulate("click");
+    component.find("input").simulate("click");
     expect(utils.isOpen(component)).toBeTruthy();
   });
 
@@ -454,7 +425,7 @@ describe("DateTime", () => {
   describe("with custom props", () => {
     it("input=false", () => {
       const component = utils.createDatetime({ input: false });
-      expect(component.find(".rdt > .form-control").length).toEqual(0);
+      expect(component.find(".rdt > input").length).toEqual(0);
       expect(component.find(".rdt > .rdtPicker").length).toEqual(1);
     });
 
@@ -487,7 +458,7 @@ describe("DateTime", () => {
       const timeFormat = "HH:mm:ss:SSS";
       const component = utils.createDatetime({
         value: date,
-        timeFormat: timeFormat
+        timeFormat
       });
       expect(utils.getInputValue(component)).toEqual(
         format(date, "MM/DD/YYYY " + timeFormat)
@@ -515,7 +486,7 @@ describe("DateTime", () => {
       const timeFormat = "HH:mm:ss:SSS a";
       const component = utils.createDatetime({
         value: date,
-        timeFormat: timeFormat
+        timeFormat
       });
       expect(utils.getInputValue(component)).toEqual(
         expect.stringMatching(".*am$")
@@ -527,7 +498,7 @@ describe("DateTime", () => {
       const timeFormat = "HH:mm:ss:SSS A";
       const component = utils.createDatetime({
         value: date,
-        timeFormat: timeFormat
+        timeFormat
       });
       expect(utils.getInputValue(component)).toEqual(
         expect.stringMatching(".*AM$")
@@ -564,227 +535,17 @@ describe("DateTime", () => {
       expect(component.find(".custom-class2").length).toEqual(1);
     });
 
-    it("inputProps", () => {
+    it("input props", () => {
       const component = utils.createDatetime({
-        inputProps: {
           className: "custom-class",
           type: "email",
           placeholder: "custom-placeholder"
-        }
       });
       expect(component.find("input.custom-class").length).toEqual(1);
       expect(component.find("input").getDOMNode().type).toEqual("email");
       expect(component.find("input").getDOMNode().placeholder).toEqual(
         "custom-placeholder"
       );
-    });
-
-    it("renderInput", () => {
-      const renderInput = (props, openCalendar, closeCalendar) => {
-        return (
-          <div>
-            <input {...props} />
-            <button className="custom-open" onClick={openCalendar}>
-              open calendar
-            </button>
-            <button className="custom-close" onClick={closeCalendar}>
-              close calendar
-            </button>
-          </div>
-        );
-      };
-
-      const component = utils.createDatetime({ renderInput: renderInput });
-
-      expect(component.find("button.custom-open").length).toEqual(1);
-      expect(utils.isOpen(component)).toBeFalsy();
-      utils.clickOnElement(component.find("button.custom-open"));
-      expect(utils.isOpen(component)).toBeTruthy();
-      utils.clickOnElement(component.find("button.custom-open"));
-      expect(utils.isOpen(component)).toBeTruthy();
-
-      expect(component.find("button.custom-close").length).toEqual(1);
-      utils.clickOnElement(component.find("button.custom-close"));
-      expect(utils.isOpen(component)).toBeFalsy();
-      utils.clickOnElement(component.find("button.custom-close"));
-      expect(utils.isOpen(component)).toBeFalsy();
-    });
-
-    it("renderDay", () => {
-      let props: any = {};
-      let currentDate = "";
-      let selectedDate = "";
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const renderDayFn = (fnProps, current, selected) => {
-        props = fnProps;
-        currentDate = current;
-        selectedDate = selected;
-
-        return <td {...fnProps}>custom-content</td>;
-      };
-
-      const component = utils.createDatetime({
-        value: date,
-        renderDay: renderDayFn
-      });
-
-      utils.openDatepicker(component);
-
-      // Last day should be 5th of february
-      expect(getDate(currentDate)).toEqual(5);
-      expect(getMonth(currentDate)).toEqual(1);
-
-      // The date must be the same
-      expect(selectedDate).toEqual(date);
-
-      // There should be a onClick function in the props
-      expect(typeof props.onClick).toEqual("function");
-
-      // The cell text should match
-      expect(
-        component
-          .find(".rdtDay")
-          .at(0)
-          .text()
-      ).toEqual("custom-content");
-    });
-
-    it("renderMonth", () => {
-      let props: any = {};
-      let month = "";
-      let year = "";
-      let selectedDate = "";
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const renderMonthFn = (fnProps, fnMonth, fnYear, selected) => {
-        props = fnProps;
-        month = fnMonth;
-        year = fnYear;
-        selectedDate = selected;
-
-        return <td {...fnProps}>custom-content</td>;
-      };
-
-      const component = utils.createDatetime({
-        value: date,
-        viewMode: "months",
-        renderMonth: renderMonthFn
-      });
-
-      utils.openDatepicker(component);
-
-      expect(month).toEqual(11);
-      expect(year).toEqual(2000);
-
-      // The date must be the same
-      expect(selectedDate).toEqual(date);
-
-      // There should be a onClick function in the props
-      expect(typeof props.onClick).toEqual("function");
-
-      // The cell text should match
-      expect(
-        component
-          .find(".rdtMonth")
-          .at(0)
-          .text()
-      ).toEqual("custom-content");
-    });
-
-    it("renderYear", () => {
-      let props: any = {};
-      let year = "";
-      let selectedDate = "";
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const renderYearFn = (fnProps, fnYear, selected) => {
-        props = fnProps;
-        year = fnYear;
-        selectedDate = selected;
-
-        return <td {...fnProps}>custom-content</td>;
-      };
-
-      const component = utils.createDatetime({
-        value: date,
-        viewMode: "years",
-        renderYear: renderYearFn
-      });
-
-      utils.openDatepicker(component);
-
-      expect(year).toEqual(2010);
-
-      // The date must be the same
-      expect(selectedDate).toEqual(date);
-
-      // There should be a onClick function in the props
-      expect(typeof props.onClick).toEqual("function");
-
-      // The cell text should match
-      expect(
-        component
-          .find(".rdtYear")
-          .at(0)
-          .text()
-      ).toEqual("custom-content");
-    });
-
-    it("closeOnTab=true", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({ value: date });
-
-      expect(utils.isOpen(component)).toBeFalsy();
-      utils.openDatepicker(component);
-      expect(utils.isOpen(component)).toBeTruthy();
-      component
-        .find(".form-control")
-        .simulate("keyDown", { key: "Tab", keyCode: 9, which: 9 });
-      expect(utils.isOpen(component)).toBeFalsy();
-    });
-
-    it("closeOnTab=false", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({
-        value: date,
-        closeOnTab: false
-      });
-
-      expect(utils.isOpen(component)).toBeFalsy();
-      utils.openDatepicker(component);
-      expect(utils.isOpen(component)).toBeTruthy();
-      component
-        .find(".form-control")
-        .simulate("keyDown", { key: "Tab", keyCode: 9, which: 9 });
-      expect(utils.isOpen(component)).toBeTruthy();
-    });
-
-    it("disableOnClickOutside=true", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({
-        value: date,
-        disableOnClickOutside: true
-      });
-
-      expect(utils.isOpen(component)).toBeFalsy();
-      utils.openDatepicker(component);
-      expect(utils.isOpen(component)).toBeTruthy();
-      document.dispatchEvent(new Event("mousedown"));
-      component.update();
-      expect(utils.isOpen(component)).toBeTruthy();
-    });
-
-    it("disableOnClickOutside=false", () => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({
-        value: date,
-        disableOnClickOutside: false
-      });
-
-      expect(utils.isOpen(component)).toBeFalsy();
-      utils.openDatepicker(component);
-      expect(utils.isOpen(component)).toBeTruthy();
-      document.dispatchEvent(new Event("mousedown"));
-      component.update();
-      expect(utils.isOpen(component)).toBeFalsy();
     });
 
     it("increase hour with value provided should do nothing", () => {
@@ -1680,82 +1441,6 @@ describe("DateTime", () => {
       expect(actualMonths).toEqual(expectedMonths);
     });
 
-    it("closeOnSelect=true without controlled value", done => {
-      const component = utils.createDatetime({ closeOnSelect: true });
-
-      // A unknown race condition is causing this test to fail without this time out,
-      // and when the test fails it says:
-      // 'Timeout - Async callback was not invoked within timeout'
-      // Ideally it would say something else but at least we know the tests are passing now
-      setTimeout(() => {
-        expect(utils.isOpen(component)).toBeFalsy();
-        utils.openDatepicker(component);
-        expect(utils.isOpen(component)).toBeTruthy();
-        utils.clickNthDay(component, 2);
-        expect(utils.isOpen(component)).toBeFalsy();
-        done();
-      }, 0);
-    });
-
-    it("closeOnSelect=false with controlled value", done => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({
-        value: date,
-        closeOnSelect: false
-      });
-
-      // A unknown race condition is causing this test to fail without this time out,
-      // and when the test fails it says:
-      // 'Timeout - Async callback was not invoked within timeout'
-      // Ideally it would say something else but at least we know the tests are passing now
-      setTimeout(() => {
-        expect(utils.isOpen(component)).toBeFalsy();
-        utils.openDatepicker(component);
-        expect(utils.isOpen(component)).toBeTruthy();
-        utils.clickNthDay(component, 2);
-        expect(utils.isOpen(component)).toBeTruthy();
-        done();
-      }, 0);
-    });
-
-    it("closeOnSelect=false without controlled value", done => {
-      const component = utils.createDatetime({ closeOnSelect: false });
-
-      // A unknown race condition is causing this test to fail without this time out,
-      // and when the test fails it says:
-      // 'Timeout - Async callback was not invoked within timeout'
-      // Ideally it would say something else but at least we know the tests are passing now
-      setTimeout(() => {
-        expect(utils.isOpen(component)).toBeFalsy();
-        utils.openDatepicker(component);
-        expect(utils.isOpen(component)).toBeTruthy();
-        utils.clickNthDay(component, 2);
-        expect(utils.isOpen(component)).toBeTruthy();
-        done();
-      }, 0);
-    });
-
-    it("closeOnSelect=true with controlled value", done => {
-      const date = new Date(2000, 0, 15, 2, 2, 2, 2);
-      const component = utils.createDatetime({
-        value: date,
-        closeOnSelect: true
-      });
-
-      // A unknown race condition is causing this test to fail without this time out,
-      // and when the test fails it says:
-      // 'Timeout - Async callback was not invoked within timeout'
-      // Ideally it would say something else but at least we know the tests are passing now
-      setTimeout(() => {
-        expect(utils.isOpen(component)).toBeFalsy();
-        utils.openDatepicker(component);
-        expect(utils.isOpen(component)).toBeTruthy();
-        utils.clickNthDay(component, 2);
-        expect(utils.isOpen(component)).toBeFalsy();
-        done();
-      }, 0);
-    });
-
     describe("defaultValue of type", () => {
       it("date", () => {
         const date = new Date(2000, 0, 15, 2, 2, 2, 2);
@@ -2004,8 +1689,7 @@ describe("DateTime", () => {
         const onBlurFn = jest.fn();
         const component = utils.createDatetime({
           value: date,
-          onBlur: onBlurFn,
-          closeOnSelect: true
+          onBlur: onBlurFn
         });
 
         utils.openDatepicker(component);
@@ -2014,32 +1698,17 @@ describe("DateTime", () => {
         expect(onBlurFn).toHaveBeenCalledTimes(1);
       });
 
-      it("when selecting date (value=null and closeOnSelect=true)", () => {
+      it("when selecting date (value=null)", () => {
         const onBlurFn = jest.fn();
         const component = utils.createDatetime({
           value: null,
-          onBlur: onBlurFn,
-          closeOnSelect: true
+          onBlur: onBlurFn
         });
 
         utils.openDatepicker(component);
         // Close component by selecting a date
         utils.clickNthDay(component, 2);
         expect(onBlurFn).toHaveBeenCalledTimes(1);
-      });
-
-      it("when selecting date (value=null and closeOnSelect=false)", () => {
-        const onBlurFn = jest.fn();
-        const component = utils.createDatetime({
-          value: null,
-          onBlur: onBlurFn,
-          closeOnSelect: false
-        });
-
-        utils.openDatepicker(component);
-        // Close component by selecting a date
-        utils.clickNthDay(component, 2);
-        expect(onBlurFn).not.toHaveBeenCalled();
       });
     });
 
@@ -2053,80 +1722,6 @@ describe("DateTime", () => {
 
       utils.openDatepicker(component);
       expect(onFocusFn).toHaveBeenCalledTimes(1);
-    });
-
-    describe("onViewModeChange", () => {
-      it("when switch from days to time view mode", () => {
-        const component = utils.createDatetime({
-          onViewModeChange: viewMode => {
-            expect(viewMode).toEqual("time");
-          }
-        });
-        expect(utils.isDayView(component)).toBeTruthy();
-        utils.clickOnElement(component.find(".rdtTimeToggle"));
-        expect(utils.isTimeView(component)).toBeTruthy();
-      });
-
-      it("when switch from time to days view mode", () => {
-        const component = utils.createDatetime({
-          viewMode: "time",
-          onViewModeChange: viewMode => {
-            expect(viewMode).toEqual("days");
-          }
-        });
-        expect(utils.isTimeView(component)).toBeTruthy();
-        utils.clickOnElement(component.find(".rdtSwitch"));
-        expect(utils.isDayView(component)).toBeTruthy();
-      });
-
-      it("when switch from days to months view mode", () => {
-        const component = utils.createDatetime({
-          onViewModeChange: viewMode => {
-            expect(viewMode).toEqual("months");
-          }
-        });
-        expect(utils.isDayView(component)).toBeTruthy();
-        utils.clickOnElement(component.find(".rdtSwitch"));
-        expect(utils.isMonthView(component)).toBeTruthy();
-      });
-
-      it("when switch from months to years view mode", () => {
-        const component = utils.createDatetime({
-          viewMode: "months",
-          onViewModeChange: viewMode => {
-            expect(viewMode).toEqual("years");
-          }
-        });
-        expect(utils.isMonthView(component)).toBeTruthy();
-        utils.clickOnElement(component.find(".rdtSwitch"));
-        expect(utils.isYearView(component)).toBeTruthy();
-      });
-
-      it("only when switch from years to months view mode", () => {
-        const component = utils.createDatetime({
-          viewMode: "years",
-          onViewModeChange: viewMode => {
-            expect(viewMode).toEqual("months");
-          }
-        });
-        expect(utils.isYearView(component)).toBeTruthy();
-        utils.clickOnElement(component.find(".rdtSwitch"));
-        expect(utils.isYearView(component)).toBeTruthy();
-        utils.clickNthYear(component, 2);
-        expect(utils.isMonthView(component)).toBeTruthy();
-      });
-
-      it("when switch from months to days view mode", () => {
-        const component = utils.createDatetime({
-          viewMode: "months",
-          onViewModeChange: viewMode => {
-            expect(viewMode).toEqual("days");
-          }
-        });
-        expect(utils.isMonthView(component)).toBeTruthy();
-        utils.clickNthMonth(component, 2);
-        expect(utils.isDayView(component)).toBeTruthy();
-      });
     });
 
     describe("onChange", () => {
@@ -2229,92 +1824,6 @@ describe("DateTime", () => {
     });
   });
 
-  describe("onNavigateForward", () => {
-    it("when moving to next month", () => {
-      const component = utils.createDatetime({
-        onNavigateForward: (amount, type) => {
-          expect(amount).toEqual(1);
-          expect(type).toEqual("months");
-        }
-      });
-
-      utils.openDatepicker(component);
-
-      utils.clickOnElement(component.find(".rdtNext"));
-    });
-
-    it("when moving to next year", () => {
-      const component = utils.createDatetime({
-        viewMode: "months",
-        onNavigateForward: (amount, type) => {
-          expect(amount).toEqual(1);
-          expect(type).toEqual("years");
-        }
-      });
-
-      utils.openDatepicker(component);
-
-      utils.clickOnElement(component.find(".rdtNext"));
-    });
-
-    it("when moving decade forward", () => {
-      const component = utils.createDatetime({
-        viewMode: "years",
-        onNavigateForward: (amount, type) => {
-          expect(amount).toEqual(10);
-          expect(type).toEqual("years");
-        }
-      });
-
-      utils.openDatepicker(component);
-
-      utils.clickOnElement(component.find(".rdtNext"));
-    });
-  });
-
-  describe("onNavigateBack", () => {
-    it("when moving to previous month", () => {
-      const component = utils.createDatetime({
-        onNavigateBack: (amount, type) => {
-          expect(amount).toEqual(1);
-          expect(type).toEqual("months");
-        }
-      });
-
-      utils.openDatepicker(component);
-
-      utils.clickOnElement(component.find(".rdtPrev"));
-    });
-
-    it("when moving to previous year", () => {
-      const component = utils.createDatetime({
-        viewMode: "months",
-        onNavigateBack: (amount, type) => {
-          expect(amount).toEqual(1);
-          expect(type).toEqual("years");
-        }
-      });
-
-      utils.openDatepicker(component);
-
-      utils.clickOnElement(component.find(".rdtPrev"));
-    });
-
-    it("when moving decade back", () => {
-      const component = utils.createDatetime({
-        viewMode: "years",
-        onNavigateBack: (amount, type) => {
-          expect(amount).toEqual(10);
-          expect(type).toEqual("years");
-        }
-      });
-
-      utils.openDatepicker(component);
-
-      utils.clickOnElement(component.find(".rdtPrev"));
-    });
-  });
-
   describe("with set value", () => {
     it("date value", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
@@ -2377,11 +1886,11 @@ describe("DateTime", () => {
         }
       });
 
-      expect(component.find(".form-control").getDOMNode().value).toEqual(
+      expect(component.find("input").getDOMNode().value).toEqual(
         "invalid-value"
       );
       component
-        .find(".form-control")
+        .find("input")
         .simulate("change", { target: { value: strDate } });
     });
 
@@ -2396,7 +1905,7 @@ describe("DateTime", () => {
       });
 
       component
-        .find(".form-control")
+        .find("input")
         .simulate("change", { target: { value: "" } });
     });
 
@@ -2414,9 +1923,9 @@ describe("DateTime", () => {
         }
       });
 
-      expect(component.find(".form-control").getDOMNode().value).toEqual("");
+      expect(component.find("input").getDOMNode().value).toEqual("");
       component
-        .find(".form-control")
+        .find("input")
         .simulate("change", { target: { value: strDate } });
     });
   });

@@ -43,7 +43,7 @@ yarn add @nateradebaugh/react-datetime
 
 ```js
 import DateTime from "@nateradebaugh/react-datetime";
-import "@nateradebaugh/react-datetime/css/react-datetime.css";
+import "@nateradebaugh/react-datetime/scss/styles.css";
 
 ...
 
@@ -54,39 +54,28 @@ render() {
 
 [See this example working](https://codesandbox.io/s/jz6kwnjq9y).
 
-**Don't forget to add the [CSS stylesheet](https://github.com/NateRadebaugh/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
+**Don't forget to add the [SCSS stylesheet](https://github.com/NateRadebaugh/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
 
 ## API
 
-| Name                      | Type                       | Default         | Description                                                                                                                                                                                                                                                                                                                                                                     |
-| ------------------------- | -------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **value**                 | `Date`                     | `new Date()`    | Represents the selected date by the component, in order to use it as a [controlled component](https://facebook.github.io/react/docs/forms.html#controlled-components). This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.                                                                                                            |
-| **defaultValue**          | `Date`                     | `new Date()`    | Represents the selected date for the component to use it as a [uncontrolled component](https://facebook.github.io/react/docs/uncontrolled-components.html). This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.                                                                                                                       |
-| **viewDate**              | `Date`                     | `new Date()`    | Represents the month which is viewed on opening the calendar when there is no selected date. This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.                                                                                                                                                                                      |
-| **dateFormat**            | `boolean` or `string`      | `true`          | Defines the format for the date. It accepts any [date-fns date format](https://date-fns.org/v1.29.0/docs/format) (not in localized format). If `true` the date will be displayed using the defaults for the current locale. If `false` the datepicker is disabled and the component can be used as timepicker, see [available units docs](#specify-available-units).            |
-| **timeFormat**            | `boolean` or `string`      | `true`          | Defines the format for the time. It accepts any [date-fns time format](https://date-fns.org/v1.29.0/docs/format) (not in localized format). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker, see [available units docs](#specify-available-units).            |
-| **input**                 | `boolean`                  | `true`          | Whether to show an input field to edit the date manually.                                                                                                                                                                                                                                                                                                                       |
-| **open**                  | `boolean`                  | `null`          | Whether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside.                                                                                                                                                                                                                                           |
-| **locale**                | `string`                   | `null`          | Manually set the locale for the react-datetime instance. date-fns locale needs to be loaded to be used, see [i18n docs](#i18n).                                                                                                                                                                                                                                                 |
-| **utc**                   | `boolean`                  | `false`         | When true, input time values will be interpreted as UTC (Zulu time) by date-fns. Otherwise they will default to the user's local timezone.                                                                                                                                                                                                                                      |
-| **onChange**              | `function`                 | empty function  | Callback trigger when the date changes. The callback receives the selected `Date` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback receives the value of the input (a string).                                                                                                                                  |
-| **onFocus**               | `function`                 | empty function  | Callback trigger for when the user opens the datepicker. The callback receives an event of type SyntheticEvent.                                                                                                                                                                                                                                                                 |
-| **onBlur**                | `function`                 | empty function  | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `Date` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned.                                                                                                               |
-| **onViewModeChange**      | `function`                 | empty function  | Callback trigger when the view mode changes. The callback receives the selected view mode string (`years`, `months`, `days` or `time`) as only parameter.                                                                                                                                                                                                                       |
-| **onNavigateBack**        | `function`                 | empty function  | Callback trigger when the user navigates to the previous month, year or decade. The callback receives the amount and type ('month', 'year') as parameters.                                                                                                                                                                                                                      |
-| **onNavigateForward**     | `function`                 | empty function  | Callback trigger when the user navigates to the next month, year or decade. The callback receives the amount and type ('month', 'year') as parameters.                                                                                                                                                                                                                          |
-| **viewMode**              | `string` or `number`       | `'days'`        | The default view to display when the picker is shown (`'years'`, `'months'`, `'days'`, `'time'`).                                                                                                                                                                                                                                                                               |
-| **className**             | `string` or `string array` | `''`            | Extra class name for the outermost markup element.                                                                                                                                                                                                                                                                                                                              |
-| **inputProps**            | `object`                   | `undefined`     | Defines additional attributes for the input element of the component. For example: `onClick`, `placeholder`, `disabled`, `required`, `name` and `className` (`className` _sets_ the class attribute for the input element). See [Customize the Input Appearance](#customize-the-input-appearance).                                                                              |
-| **isValidDate**           | `function`                 | `() => true`    | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and shall return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).                                                                                                                                                           |
-| **renderInput**           | `function`                 | `undefined`     | Replace the rendering of the input element. The function has the following arguments: the default calculated `props` for the input, `openCalendar` (a function which opens the calendar) and `closeCalendar` (a function which closes the calendar). Must return a React component or `null`. See [Customize the Input Appearance](#customize-the-input-appearance).            |
-| **renderDay**             | `function`                 | `DOM.td(day)`   | Customize the way that the days are shown in the daypicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, and must return a React component. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance).                                                                                 |
-| **renderMonth**           | `function`                 | `DOM.td(month)` | Customize the way that the months are shown in the monthpicker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `month` and the `year` to be shown, and must return a React component. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance).                                     |
-| **renderYear**            | `function`                 | `DOM.td(year)`  | Customize the way that the years are shown in the year picker. The accepted function has the `selectedDate`, the current date and the default calculated `props` for the cell, the `year` to be shown, and must return a React component. See [Customize the Datepicker Appearance](#customize-the-datepicker-appearance).                                                      |
-| **closeOnSelect**         | `boolean`                  | `true`          | When `true`, once the day has been selected, the datepicker will be automatically closed.                                                                                                                                                                                                                                                                                       |
-| **closeOnTab**            | `boolean`                  | `true`          | When `true` and the input is focused, pressing the `tab` key will close the datepicker.                                                                                                                                                                                                                                                                                         |
-| **timeConstraints**       | `object`                   | `null`          | Add some constraints to the timepicker. It accepts an `object` with the format `{ hours: { min: 9, max: 15, step: 2 }}`, this example means the hours can't be lower than `9` and higher than `15`, and it will change adding or subtracting `2` hours everytime the buttons are clicked. The constraints can be added to the `hours`, `minutes`, `seconds` and `milliseconds`. |
-| **disableOnClickOutside** | `boolean`                  | `false`         | When `true`, keep the datepicker open when click event is triggered outside of component. When `false`, close it.                                                                                                                                                                                                                                                               |
+| Name                | Type                       | Default        | Description                                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------- | -------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **value**           | `Date`                     | `new Date()`   | Represents the selected date by the component, in order to use it as a [controlled component](https://facebook.github.io/react/docs/forms.html#controlled-components). This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.                                                                                                            |
+| **defaultValue**    | `Date`                     | `new Date()`   | Represents the selected date for the component to use it as a [uncontrolled component](https://facebook.github.io/react/docs/uncontrolled-components.html). This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.                                                                                                                       |
+| **viewDate**        | `Date`                     | `new Date()`   | Represents the month which is viewed on opening the calendar when there is no selected date. This prop is parsed by date-fns, so it is possible to use a date `string` or a `Date` object.                                                                                                                                                                                      |
+| **dateFormat**      | `boolean` or `string`      | `true`         | Defines the format for the date. It accepts any [date-fns date format](https://date-fns.org/v1.29.0/docs/format) (not in localized format). If `true` the date will be displayed using the defaults for the current locale. If `false` the datepicker is disabled and the component can be used as timepicker, see [available units docs](#specify-available-units).            |
+| **timeFormat**      | `boolean` or `string`      | `true`         | Defines the format for the time. It accepts any [date-fns time format](https://date-fns.org/v1.29.0/docs/format) (not in localized format). If `true` the time will be displayed using the defaults for the current locale. If `false` the timepicker is disabled and the component can be used as datepicker, see [available units docs](#specify-available-units).            |
+| **input**           | `boolean`                  | `true`         | Whether to show an input field to edit the date manually.                                                                                                                                                                                                                                                                                                                       |
+| **open**            | `boolean`                  | `null`         | Whether to open or close the picker. If not set react-datetime will open the datepicker on input focus and close it on click outside.                                                                                                                                                                                                                                           |
+| **locale**          | `string`                   | `null`         | Manually set the locale for the react-datetime instance. date-fns locale needs to be loaded to be used, see [i18n docs](#i18n).                                                                                                                                                                                                                                                 |
+| **utc**             | `boolean`                  | `false`        | When true, input time values will be interpreted as UTC (Zulu time) by date-fns. Otherwise they will default to the user's local timezone.                                                                                                                                                                                                                                      |
+| **onChange**        | `function`                 | empty function | Callback trigger when the date changes. The callback receives the selected `Date` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback receives the value of the input (a string).                                                                                                                                  |
+| **onFocus**         | `function`                 | empty function | Callback trigger for when the user opens the datepicker. The callback receives an event of type SyntheticEvent.                                                                                                                                                                                                                                                                 |
+| **onBlur**          | `function`                 | empty function | Callback trigger for when the user clicks outside of the input, simulating a regular onBlur. The callback receives the selected `Date` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned.                                                                                                               |
+| **viewMode**        | `string` or `number`       | `'days'`       | The default view to display when the picker is shown (`'years'`, `'months'`, `'days'`, `'time'`).                                                                                                                                                                                                                                                                               |
+| **className**       | `string` or `string array` | `''`           | Extra class name for the outermost markup element.                                                                                                                                                                                                                                                                                                                              |
+| **isValidDate**     | `function`                 | `() => true`   | Define the dates that can be selected. The function receives `(currentDate, selectedDate)` and shall return a `true` or `false` whether the `currentDate` is valid or not. See [selectable dates](#selectable-dates).                                                                                                                                                           |
+| **timeConstraints** | `object`                   | `null`         | Add some constraints to the timepicker. It accepts an `object` with the format `{ hours: { min: 9, max: 15, step: 2 }}`, this example means the hours can't be lower than `9` and higher than `15`, and it will change adding or subtracting `2` hours everytime the buttons are clicked. The constraints can be added to the `hours`, `minutes`, `seconds` and `milliseconds`. |
 
 ## i18n
 
@@ -107,89 +96,9 @@ You can then use the prop `locale` to define what language shall be used by the 
 <DateTime locale={fr} />
 ```
 
-[Here you can see the i18n example working](https://codesandbox.io/s/v2p1rvwr7).
+## Customize appearance
 
-## Customize the Input Appearance
-
-It is possible to customize the way that the input is displayed. The simplest is to supply `inputProps` which get assigned to the default `<input />` element within the component.
-
-```js
-<DateTime inputProps={{ placeholder: 'N/A', disabled: true }}>
-```
-
-Alternatively, if you need to render different content than an `<input />` element, you may supply a `renderInput` function which is called instead.
-
-```js
-class MyDTPicker extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Bind functions
-    this.renderInput = this.renderInput.bind(this);
-    this.clear = this.clear.bind(this);
-  }
-
-  clear() {
-    props.onChange({ target: { value: "" } });
-  }
-
-  render() {
-    return <DateTime renderInput={this.renderInput} />;
-  }
-
-  renderInput(props, openCalendar, closeCalendar) {
-    return (
-      <div>
-        <input {...props} />
-        <button onClick={openCalendar}>open calendar</button>
-        <button onClick={closeCalendar}>close calendar</button>
-        <button onClick={this.clear}>clear</button>
-      </div>
-    );
-  }
-}
-```
-
-## Customize the Datepicker Appearance
-
-It is possible to customize the way that the datepicker display the days, months and years in the calendar. To adapt the calendar for every need it is possible to use the props `renderDay(props, currentDate, selectedDate)`, `renderMonth(props, month, year, selectedDate)` and `renderYear(props, year, selectedDate)` to customize the output of each rendering method.
-
-```js
-class MyDTPicker extends Component {
-  constructor(props) {
-    super(props);
-
-    // Bind functions
-    this.renderDay = this.renderDay.bind(this);
-    this.renderMonth = this.renderMonth.bind(this);
-    this.renderYear = this.renderYear.bind(this);
-  }
-
-  render() {
-    return (
-      <DateTime
-        renderDay={this.renderDay}
-        renderMonth={this.renderMonth}
-        renderYear={this.renderYear}
-      />
-    );
-  }
-
-  renderDay(props, currentDate, selectedDate) {
-    return <td {...props}>{"0" + currentDate.date()}</td>;
-  }
-
-  renderMonth(props, month, year, selectedDate) {
-    return <td {...props}>{month}</td>;
-  }
-
-  renderYear(props, year, selectedDate) {
-    return <td {...props}>{year % 100}</td>;
-  }
-}
-```
-
-[You can see a customized calendar here.](https://codesandbox.io/s/xr6xy2y17w)
+It is possible to customize the way that the input displays using `className` and `styles` prop.
 
 #### Method Parameters
 
@@ -201,15 +110,9 @@ class MyDTPicker extends Component {
 
 You can filter out what you want the user to be able to pick by using `dateFormat` and `timeFormat`, e.g. to create a timepicker, yearpicker etc.
 
-In this example the component is being used as a _timepicker_ and can _only be used for selecting a time_.
-
 ```js
 <DateTime dateFormat={false} />
 ```
-
-[Working example of a timepicker here.](https://codesandbox.io/s/533w4y46px)
-
-In this example you can _only select a year and month_.
 
 ```js
 <DateTime dateFormat="YYYY-MM" timeFormat={false} />
@@ -235,8 +138,6 @@ const valid = function(current) {
 <DateTime isValidDate={valid} />;
 ```
 
-[Working example of disabled days here.](https://codesandbox.io/s/pkx81xx8pq)
-
 It's also possible to disable _the weekends_, as shown in the example below.
 
 ```js
@@ -249,8 +150,6 @@ const valid = function(current) {
 <DateTime isValidDate={valid} />;
 ```
 
-[Working example of disabled weekends here.](https://codesandbox.io/s/y270j8k54x)
-
 ## Usage with TypeScript
 
 This project includes typings. Additional typings are not
@@ -258,52 +157,9 @@ required.
 
 Typings are bundled with the project and should _just work_.
 
-```js
-import React, { Component } from "react";
-
-import DateTime from "@nateradebaugh/react-datetime";
-import "@nateradebaugh/react-datetime/css/react-datetime.css";
-
-interface AppProps {}
-interface AppState {}
-
-class App extends Component<AppProps, AppState> {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>Hello TypeScript</h1>
-        <DateTime />
-      </div>
-    );
-  }
-}
-```
-
-[Working TypeScript example with intellisense here.](https://stackblitz.com/edit/react-ts-hjzjp9)
-
 ## Contributions
 
 For information about how to contribute, see the [CONTRIBUTING](.github/CONTRIBUTING.md) file.
-
-## Development
-
-From `./`
-
-```sh
-yarn start
-```
-
-In another terminal window/tab from `./example`
-
-```sh
-yarn start
-```
-
-This will start a local `create-react-app` app that has the component `yarn link`'d in. As you make changes and save, the example app will update accordingly.
 
 ### [Changelog](CHANGELOG.md)
 

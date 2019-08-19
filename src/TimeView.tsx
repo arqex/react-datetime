@@ -1,19 +1,15 @@
 import * as React from "react";
+
 import format from "date-fns/format";
 import getHours from "date-fns/get_hours";
-import {
-  TimeConstraint,
-  SetTimeFunc,
-  TimeConstraints,
-  ShowFunc,
-  SetViewTimestampFunc
-} from "./";
-import disableContextMenu from "./disableContextMenu";
 import addHours from "date-fns/add_hours";
 import addMinutes from "date-fns/add_minutes";
 import addSeconds from "date-fns/add_seconds";
 import addMilliseconds from "date-fns/add_milliseconds";
 import setHours from "date-fns/set_hours";
+
+import { TimeConstraint, TimeConstraints } from "./index";
+import noop from "./noop";
 
 const allCounters: Array<"hours" | "minutes" | "seconds" | "milliseconds"> = [
   "hours",
@@ -59,19 +55,11 @@ const TimePart = (props: TimePartInterface) => {
     <React.Fragment>
       {showPrefix && <div className="rdtCounterSeparator">:</div>}
       <div className="rdtCounter">
-        <span
-          className="rdtBtn"
-          onMouseDown={onUp}
-          onContextMenu={disableContextMenu}
-        >
+        <span className="rdtBtn" onMouseDown={onUp}>
           ▲
         </span>
         <div className="rdtCount">{value}</div>
-        <span
-          className="rdtBtn"
-          onMouseDown={onDown}
-          onContextMenu={disableContextMenu}
-        >
+        <span className="rdtBtn" onMouseDown={onDown}>
           ▼
         </span>
       </div>
@@ -84,32 +72,6 @@ interface AlwaysTimeConstraints {
   minutes: TimeConstraint;
   seconds: TimeConstraint;
   milliseconds: TimeConstraint;
-}
-
-interface TimeViewProps {
-  readonly?: boolean;
-
-  timeConstraints?: TimeConstraints;
-
-  setTime?: SetTimeFunc;
-  setViewTimestamp?: SetViewTimestampFunc;
-
-  /*
-  Defines the format for the date. It accepts any date-fns date format.
-  If false the datepicker is disabled and the component can be used as timepicker.
-  */
-  dateFormat?: string | false;
-
-  /*
-  Defines the format for the time. It accepts any date-fns time format.
-  If false the timepicker is disabled and the component can be used as datepicker.
-  */
-  timeFormat?: string | false;
-
-  viewTimestamp?: Date;
-  show?: ShowFunc;
-
-  formatOptions?: any;
 }
 
 function getStepSize(
@@ -190,47 +152,47 @@ function getFormatted(
   return undefined;
 }
 
-function toggleDayPart(timestamp: Date, setTime: SetTimeFunc) {
+function toggleDayPart(timestamp: Date, setSelectedDate) {
   return () => {
     const hours = getHours(timestamp);
     const newHours = hours >= 12 ? hours - 12 : hours + 12;
 
-    setTime(setHours(timestamp, newHours));
+    setSelectedDate(setHours(timestamp, newHours));
   };
 }
 
-let timer: NodeJS.Timeout;
-let increaseTimer: NodeJS.Timeout;
+let timer;
+let increaseTimer;
 let mouseUpListener: () => void;
 
 function onStartClicking(
   op: "add" | "sub",
   type: "hours" | "minutes" | "seconds" | "milliseconds",
-  props: TimeViewProps
+  props
 ) {
   return () => {
     const {
       readonly,
-      viewTimestamp: origViewTimestamp,
+      viewTimestamp: origViewTimestamp = new Date(),
       timeConstraints,
-      setViewTimestamp,
-      setTime
+      setViewTimestamp = noop,
+      setSelectedDate = noop
     } = props;
     if (!readonly) {
       let viewTimestamp = change(op, type, origViewTimestamp!, timeConstraints);
-      setViewTimestamp!(viewTimestamp);
+      setViewTimestamp(viewTimestamp);
 
       timer = setTimeout(() => {
         increaseTimer = setInterval(() => {
           viewTimestamp = change(op, type, viewTimestamp, timeConstraints);
-          setViewTimestamp!(viewTimestamp);
+          setViewTimestamp(viewTimestamp);
         }, 70);
       }, 500);
 
       mouseUpListener = () => {
         clearTimeout(timer);
         clearInterval(increaseTimer);
-        setTime!(viewTimestamp);
+        setSelectedDate(viewTimestamp);
         document.body.removeEventListener("mouseup", mouseUpListener);
         document.body.removeEventListener("touchend", mouseUpListener);
       };
@@ -241,14 +203,14 @@ function onStartClicking(
   };
 }
 
-function TimeView(props: TimeViewProps) {
+function TimeView(props) {
   const {
     viewTimestamp = new Date(),
-    dateFormat,
-    show,
+    dateFormat = false,
+    setViewMode = noop,
     timeFormat,
     formatOptions,
-    setTime
+    setSelectedDate = noop
   } = props;
 
   let numCounters = 0;
@@ -262,7 +224,7 @@ function TimeView(props: TimeViewProps) {
               <th
                 className="rdtSwitch"
                 colSpan={4}
-                onClick={show && show("days")}
+                onClick={() => setViewMode("days")}
               >
                 {format(viewTimestamp, dateFormat)}
               </th>
@@ -295,8 +257,8 @@ function TimeView(props: TimeViewProps) {
                   );
                 })}
                 <TimePart
-                  onUp={toggleDayPart(viewTimestamp, setTime!)}
-                  onDown={toggleDayPart(viewTimestamp, setTime!)}
+                  onUp={toggleDayPart(viewTimestamp, setSelectedDate)}
+                  onDown={toggleDayPart(viewTimestamp, setSelectedDate)}
                   value={getFormatted(
                     "daypart",
                     viewTimestamp,

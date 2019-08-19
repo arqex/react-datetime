@@ -104,9 +104,6 @@ export default class CustomizableExample extends React.Component<any, any> {
         </Select>
 
         <Checkbox name="utc" />
-        <Checkbox name="closeOnSelect" />
-        <Checkbox name="closeOnTab" />
-        <Checkbox name="disableOnClickOutside" />
       </div>
     );
   }
