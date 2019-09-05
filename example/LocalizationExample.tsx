@@ -4,52 +4,50 @@ import nl from "date-fns/locale/nl";
 import es from "date-fns/locale/es";
 import fr from "date-fns/locale/fr";
 
-class LocalizationExample extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
+const { useState } = React;
 
-    this.state = {
-      currentLocale: undefined
-    };
+function LocalizationExample() {
+  const [value, setValue] = useState(
+    new Date(Date.UTC(2000, 0, 15, 2, 2, 2, 2))
+  );
+  const [currentLocale, setCurrentLocale] = useState();
 
-    // Bind functions
-    this.renderButton = this.renderButton.bind(this);
-  }
-
-  renderButton(text, newLocale) {
+  function renderButton(text: string, newLocale: any) {
     return (
       <button
         type="button"
-        onClick={() => this.setState({ currentLocale: newLocale })}
-        disabled={this.state.currentLocale === newLocale}
+        onClick={() => setCurrentLocale(newLocale)}
+        disabled={currentLocale === newLocale}
       >
         {text}
       </button>
     );
   }
 
-  render() {
-    return (
-      <div className="form-horizontal">
-        <h2>Locale props</h2>
-        <p>Try out various locales and see how they affect the component.</p>
-        <p>
-          {this.renderButton("EN - undefined", undefined)}
-          {this.renderButton("NL - nl", nl)}
-          {this.renderButton("ES - es", es)}
-          {this.renderButton("FR - fr", fr)}
-        </p>
+  return (
+    <div className="form-horizontal">
+      <h2>Locale props</h2>
+      <p>Try out various locales and see how they affect the component.</p>
+      <p>
+        {renderButton("EN - undefined", undefined)}
+        {renderButton("NL - nl", nl)}
+        {renderButton("ES - es", es)}
+        {renderButton("FR - fr", fr)}
+      </p>
 
-        <DateTime
-          viewMode="months"
-          defaultValue={Date.UTC(2000, 0, 15, 2, 2, 2, 2)}
-          locale={this.state.currentLocale}
-          open={true}
-          input={false}
-        />
-      </div>
-    );
-  }
+      <DateTime
+        viewMode="months"
+        value={value}
+        onChange={newValue => {
+          console.log(newValue);
+          setValue(newValue);
+        }}
+        locale={currentLocale}
+        open={true}
+        input={false}
+      />
+    </div>
+  );
 }
 
 export default LocalizationExample;

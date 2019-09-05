@@ -1,18 +1,17 @@
 import * as React from "react";
 import DateTime from "../.";
 
-export default class CustomizableExample extends React.Component<any, any> {
+class CustomizableExample extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
     this.state = {
+      value: new Date(),
       viewMode: "days",
       dateFormat: "MM/DD/YYYY",
       timeFormat: "HH:mm A",
       input: true,
       utc: false,
-      closeOnSelect: false,
-      closeOnTab: true,
       disableOnClickOutside: false
     };
 
@@ -68,8 +67,11 @@ export default class CustomizableExample extends React.Component<any, any> {
         </p>
 
         <DateTime
-          defaultValue={new Date()}
-          onChange={console.log}
+          value={new Date()}
+          onChange={newValue => {
+            console.log(newValue);
+            this.setState({ value: newValue });
+          }}
           {...this.state}
         />
 
@@ -103,8 +105,12 @@ export default class CustomizableExample extends React.Component<any, any> {
           <option>time</option>
         </Select>
 
+        <Checkbox name="input" />
         <Checkbox name="utc" />
+        <Checkbox name="disableOnClickOutside" />
       </div>
     );
   }
 }
+
+export default CustomizableExample;

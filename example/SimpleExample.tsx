@@ -1,27 +1,24 @@
 import * as React from "react";
 import DateTime from "../.";
 
-export default class SimpleExample extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
+const { useState } = React;
 
-    this.state = {
-      value: undefined
-    };
-  }
+function SimpleExample() {
+  const [value, setValue] = useState(new Date());
 
-  render() {
-    return (
-      <div>
-        <h2>Simple Scenario</h2>
-        <DateTime
-          value={this.state.value}
-          onChange={newVal => {
-            console.log({ newVal });
-            this.setState({ value: newVal });
-          }}
-        />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h2>Simple Scenario</h2>
+      <p>{JSON.stringify(value, null, 2)}</p>
+      <DateTime
+        value={value}
+        onChange={newVal => {
+          console.log({ newVal });
+          setValue(newVal);
+        }}
+      />
+    </div>
+  );
 }
+
+export default SimpleExample;
