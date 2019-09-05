@@ -11,7 +11,9 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "react-app-polyfill": "^1.0.2"
+    "react": "^16.9.0",
+    "react-app-polyfill": "^1.0.2",
+    "react-dom": "^16.9.0"
   },
   "alias": {
     "react": "../node_modules/react",
@@ -19,9 +21,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
-    "@types/react": "^16.9.1",
-    "@types/react-dom": "^16.8.5",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
     "parcel": "^1.12.3",
-    "typescript": "^3.5.3"
+    "typescript": "^3.6.2"
   }
 }

@@ -2,6 +2,7 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",
+    "react-hooks",
     "prettier",
     "prettier/react"
   ],
@@ -21,12 +22,16 @@ module.exports = {
   },
   settings: {
     react: {
-      version: "16.4.2"
+      version: "16.8.6"
     }
   },
   rules: {
     // Enforce prettier formatting
     "prettier/prettier": "error",
+
+    // Help enforce hooks
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
 
     // We do not use prop types at the moment
     "react/prop-types": "off",
