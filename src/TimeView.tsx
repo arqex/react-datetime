@@ -1,12 +1,12 @@
 import * as React from "react";
 
 import format from "date-fns/format";
-import getHours from "date-fns/get_hours";
-import addHours from "date-fns/add_hours";
-import addMinutes from "date-fns/add_minutes";
-import addSeconds from "date-fns/add_seconds";
-import addMilliseconds from "date-fns/add_milliseconds";
-import setHours from "date-fns/set_hours";
+import getHours from "date-fns/getHours";
+import addHours from "date-fns/addHours";
+import addMinutes from "date-fns/addMinutes";
+import addSeconds from "date-fns/addSeconds";
+import addMilliseconds from "date-fns/addMilliseconds";
+import setHours from "date-fns/setHours";
 
 import { TimeConstraint, TimeConstraints } from "./index";
 import noop from "./noop";
@@ -124,7 +124,7 @@ function getFormatted(
   const hasSeconds = has(fmt, "s");
   const hasMilliseconds = has(fmt, "S");
 
-  const hasUpperDayPart = has(fmt, "A");
+  const hasUpperDayPart = has(fmt, "a");
   const hasLowerDayPart = has(fmt, "a");
   const hasDayPart = hasUpperDayPart || hasLowerDayPart;
 
@@ -142,7 +142,7 @@ function getFormatted(
       : type === "daypart" && hasLowerDayPart
       ? "a"
       : type === "daypart" && hasUpperDayPart
-      ? "A"
+      ? "a"
       : undefined;
 
   if (typeFormat) {

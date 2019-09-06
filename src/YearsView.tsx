@@ -2,11 +2,11 @@ import * as React from "react";
 import cc from "classcat";
 
 import format from "date-fns/format";
-import addYears from "date-fns/add_years";
-import getYear from "date-fns/get_year";
-import setYear from "date-fns/set_year";
-import getDaysInYear from "date-fns/get_days_in_year";
-import setDayOfYear from "date-fns/set_day_of_year";
+import addYears from "date-fns/addYears";
+import getYear from "date-fns/getYear";
+import setYear from "date-fns/setYear";
+import getDaysInYear from "date-fns/getDaysInYear";
+import setDayOfYear from "date-fns/setDayOfYear";
 
 import returnTrue from "./returnTrue";
 import noop from "./noop";
@@ -97,7 +97,7 @@ function YearsView(props: YearsViewProps) {
                         }
                       }}
                     >
-                      {format(currentYear, "YYYY", formatOptions)}
+                      {format(currentYear, "yyyy", formatOptions)}
                     </td>
                   );
                 })}

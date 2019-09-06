@@ -1,7 +1,7 @@
 import * as React from "react";
 import DateTime from "../.";
-import isBefore from "date-fns/is_before";
-import startOfMonth from "date-fns/start_of_month";
+import isBefore from "date-fns/isBefore";
+import startOfMonth from "date-fns/startOfMonth";
 
 const { useState } = React;
 
@@ -21,7 +21,7 @@ function ValidatedExample() {
           setValue(newValue);
         }}
         viewMode="months"
-        dateFormat="MMMM"
+        dateFormat="LLLL"
         timeFormat={false}
         isValidDate={current => isBefore(current, startOfMonth(new Date()))}
       />
@@ -30,7 +30,7 @@ function ValidatedExample() {
       <DateTime
         defaultValue={value}
         viewMode="months"
-        dateFormat="MMMM"
+        dateFormat="LLLL"
         timeFormat={false}
         isValidDate={current => isBefore(current, startOfMonth(new Date()))}
       />

@@ -218,7 +218,7 @@ describe("timer tests", () => {
     it("should do nothing if the release is off of the arrow", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
-        timeFormat: "HH:mm:ss:SSS A",
+        timeFormat: "HH:mm:ss:SSS a",
         viewMode: "time",
         defaultValue: date
       });
@@ -245,7 +245,7 @@ describe("timer tests", () => {
     it("should do nothing if the release is off of the arrow", () => {
       const date = new Date(2000, 0, 15, 2, 2, 2, 2);
       const component = utils.createDatetime({
-        timeFormat: "HH:mm:ss:SSS A",
+        timeFormat: "HH:mm:ss:SSS a",
         viewMode: "time",
         defaultValue: date
       });

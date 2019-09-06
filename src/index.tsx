@@ -5,8 +5,8 @@ import useOnClickOutside from "use-onclickoutside";
 
 import format from "date-fns/format";
 import rawParse from "date-fns/parse";
-import isDateValid from "date-fns/is_valid";
-import startOfDay from "date-fns/start_of_day";
+import isDateValid from "date-fns/isValid";
+import startOfDay from "date-fns/startOfDay";
 
 import CalendarContainer from "./CalendarContainer";
 import returnTrue from "./returnTrue";
@@ -18,17 +18,14 @@ function parse(
   fullFormat: string,
   formatOptions: any
 ): Date | undefined {
-  if (date) {
-    if (date instanceof Date && isDateValid(date)) {
-      return date;
-    }
+  if (date instanceof Date && isDateValid(date)) {
+    return date;
+  }
 
-    const fullFormatted = format(date, fullFormat, formatOptions);
-    if (date === fullFormatted) {
-      const parsedDate = rawParse(date);
-      if (parsedDate instanceof Date && isDateValid(parsedDate)) {
-        return parsedDate;
-      }
+  if (typeof date === "string") {
+    const asDate = rawParse(date, fullFormat, undefined as any, formatOptions);
+    if (isDateValid(asDate)) {
+      return asDate;
     }
   }
 
@@ -142,8 +139,8 @@ function DateTime(props: DateTimeProps) {
   //
   // Formats
   //
-  const dateFormat = rawDateFormat === true ? "MM/DD/YYYY" : rawDateFormat;
-  const timeFormat = rawTimeFormat === true ? "h:mm A" : rawTimeFormat;
+  const dateFormat = rawDateFormat === true ? "LL/dd/yyyy" : rawDateFormat;
+  const timeFormat = rawTimeFormat === true ? "h:mm a" : rawTimeFormat;
   const fullFormat =
     dateFormat && timeFormat
       ? `${dateFormat} ${timeFormat}`

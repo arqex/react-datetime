@@ -8,8 +8,8 @@ class CustomizableExample extends React.Component<any, any> {
     this.state = {
       value: new Date(),
       viewMode: "days",
-      dateFormat: "MM/DD/YYYY",
-      timeFormat: "hh:mm A",
+      dateFormat: "LL/dd/yyyy",
+      timeFormat: "hh:mm a",
       input: true,
       disableOnClickOutside: false
     };
@@ -81,23 +81,23 @@ class CustomizableExample extends React.Component<any, any> {
 
         <Select name="dateFormat">
           <option value="">false</option>
-          <option>YYYY-MM-DD</option>
-          <option>MM/DD/YYYY</option>
-          <option>DD.MM.YYYY</option>
-          <option>MM-DD</option>
-          <option>MMMM</option>
-          <option>YYYY/MM</option>
-          <option>YYYY</option>
+          <option>yyyy-LL-dd</option>
+          <option>LL/dd/yyyy</option>
+          <option>dd.LL.yyyy</option>
+          <option>LL-dd</option>
+          <option>LLLL</option>
+          <option>yyyy/LL</option>
+          <option>yyyy</option>
         </Select>
 
         <Select name="timeFormat">
           <option value="">false</option>
-          <option>hh:mm A</option>
+          <option>hh:mm a</option>
           <option>HH:mm:ss</option>
           <option>HH:mm:SSS</option>
           <option>hh:mm:SSS a</option>
           <option>hmm</option>
-          <option>HH:mm Z</option>
+          <option>HH:mm xxx</option>
         </Select>
 
         <Select name="viewMode">

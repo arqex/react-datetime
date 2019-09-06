@@ -1,16 +1,16 @@
 import * as React from "react";
 import cc from "classcat";
 
-import addDays from "date-fns/add_days";
+import addDays from "date-fns/addDays";
 import format from "date-fns/format";
-import differenceInDays from "date-fns/difference_in_days";
-import startOfWeek from "date-fns/start_of_week";
-import startOfMonth from "date-fns/start_of_month";
-import endOfMonth from "date-fns/end_of_month";
-import isSameDay from "date-fns/is_same_day";
-import isBefore from "date-fns/is_before";
-import addMonths from "date-fns/add_months";
-import getDate from "date-fns/get_date";
+import differenceInDays from "date-fns/differenceInDays";
+import startOfWeek from "date-fns/startOfWeek";
+import startOfMonth from "date-fns/startOfMonth";
+import endOfMonth from "date-fns/endOfMonth";
+import isSameDay from "date-fns/isSameDay";
+import isBefore from "date-fns/isBefore";
+import addMonths from "date-fns/addMonths";
+import getDate from "date-fns/getDate";
 import returnTrue from "./returnTrue";
 import noop from "./noop";
 
@@ -65,7 +65,7 @@ function DaysView(props: DaysViewProps) {
               onClick={() => setViewMode("months")}
               colSpan={5}
             >
-              {format(viewDate, "MMMM YYYY", formatOptions)}
+              {format(viewDate, "LLLL yyyy", formatOptions)}
             </th>
             <th
               className="rdtNext"
@@ -77,7 +77,7 @@ function DaysView(props: DaysViewProps) {
           <tr>
             {[0, 1, 2, 3, 4, 5, 6].map(colNum => (
               <th key={colNum} className="dow">
-                {format(addDays(sunday, colNum), "dd", formatOptions)}
+                {format(addDays(sunday, colNum), "iiiiii", formatOptions)}
               </th>
             ))}
           </tr>
@@ -88,7 +88,7 @@ function DaysView(props: DaysViewProps) {
             const rowStartDay = rowNum * 7;
 
             return (
-              <tr key={format(addDays(prevMonthLastWeekStart, rowStartDay))}>
+              <tr key={format(addDays(prevMonthLastWeekStart, rowStartDay), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}>
                 {[0, 1, 2, 3, 4, 5, 6].map(d => {
                   const i = d + rowStartDay;
                   const workingDate = addDays(prevMonthLastWeekStart, i);
@@ -115,7 +115,7 @@ function DaysView(props: DaysViewProps) {
                         }
                       }}
                     >
-                      {format(workingDate, "D", formatOptions)}
+                      {format(workingDate, "d", formatOptions)}
                     </td>
                   );
                 })}

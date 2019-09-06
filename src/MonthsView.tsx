@@ -2,11 +2,11 @@ import * as React from "react";
 import cc from "classcat";
 
 import format from "date-fns/format";
-import addYears from "date-fns/add_years";
-import isSameMonth from "date-fns/is_same_month";
-import setMonth from "date-fns/set_month";
-import getDaysInMonth from "date-fns/get_days_in_month";
-import setDate from "date-fns/set_date";
+import addYears from "date-fns/addYears";
+import isSameMonth from "date-fns/isSameMonth";
+import setMonth from "date-fns/setMonth";
+import getDaysInMonth from "date-fns/getDaysInMonth";
+import setDate from "date-fns/setDate";
 
 import returnTrue from "./returnTrue";
 import noop from "./noop";
@@ -48,7 +48,7 @@ function MonthsView(props: MonthsViewProps) {
               onClick={() => setViewMode("years")}
               colSpan={2}
             >
-              {format(viewDate, "YYYY", formatOptions)}
+              {format(viewDate, "yyyy", formatOptions)}
             </th>
             <th
               className="rdtNext"
@@ -97,7 +97,7 @@ function MonthsView(props: MonthsViewProps) {
                         }
                       }}
                     >
-                      {format(monthDate, "MMM", formatOptions)}
+                      {format(monthDate, "LLL", formatOptions)}
                     </td>
                   );
                 })}
