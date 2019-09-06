@@ -1,11 +1,22 @@
 import * as React from "react";
 
-import TimeView from "./TimeView";
-import DaysView from "./DaysView";
-import MonthsView from "./MonthsView";
-import YearsView from "./YearsView";
+import TimeView, { TimeViewProps } from "./TimeView";
+import DaysView, { DaysViewProps } from "./DaysView";
+import MonthsView, { MonthsViewProps } from "./MonthsView";
+import YearsView, { YearsViewProps } from "./YearsView";
+import { ViewMode } from "./.";
 
-function CalendarContainer(props) {
+interface CalendarContainerProps {
+  viewMode: ViewMode | undefined;
+}
+
+function CalendarContainer(
+  props: CalendarContainerProps &
+    TimeViewProps &
+    DaysViewProps &
+    MonthsViewProps &
+    YearsViewProps
+) {
   const { viewMode, ...rest } = props;
 
   switch (viewMode) {

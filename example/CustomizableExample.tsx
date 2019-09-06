@@ -9,9 +9,8 @@ class CustomizableExample extends React.Component<any, any> {
       value: new Date(),
       viewMode: "days",
       dateFormat: "MM/DD/YYYY",
-      timeFormat: "HH:mm A",
+      timeFormat: "hh:mm A",
       input: true,
-      utc: false,
       disableOnClickOutside: false
     };
 
@@ -66,6 +65,7 @@ class CustomizableExample extends React.Component<any, any> {
           component.
         </p>
 
+        <h3>Controlled</h3>
         <DateTime
           value={new Date()}
           onChange={newValue => {
@@ -74,6 +74,8 @@ class CustomizableExample extends React.Component<any, any> {
           }}
           {...this.state}
         />
+        <h3>Uncontrolled</h3>
+        <DateTime defaultValue={new Date()} {...this.state} />
 
         <hr />
 
@@ -106,7 +108,6 @@ class CustomizableExample extends React.Component<any, any> {
         </Select>
 
         <Checkbox name="input" />
-        <Checkbox name="utc" />
         <Checkbox name="disableOnClickOutside" />
       </div>
     );

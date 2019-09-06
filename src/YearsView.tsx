@@ -11,7 +11,17 @@ import setDayOfYear from "date-fns/set_day_of_year";
 import returnTrue from "./returnTrue";
 import noop from "./noop";
 
-function YearsView(props) {
+export interface YearsViewProps {
+  viewDate: Date;
+  setViewDate: any;
+  selectedDate: Date | undefined;
+  setSelectedDate: any;
+  formatOptions: any;
+  setViewMode: any;
+  isValidDate: any;
+}
+
+function YearsView(props: YearsViewProps) {
   const {
     viewDate = new Date(),
     setViewDate = noop,

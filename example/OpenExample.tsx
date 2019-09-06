@@ -4,7 +4,7 @@ import DateTime from "../.";
 const { useState } = React;
 
 function OpenExample() {
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(undefined);
   const [viewMode, setViewMode] = useState(undefined);
 
   function renderButton(text: string, newViewMode) {
@@ -35,13 +35,22 @@ function OpenExample() {
         {renderButton("Time", "time")}
       </p>
 
+      <h3>Controlled</h3>
       <DateTime
         value={value}
         onChange={newValue => {
           console.log(newValue);
           setValue(newValue);
         }}
-        open
+        open={true}
+        input={false}
+        viewMode={viewMode}
+      />
+
+      <h3>Uncontrolled</h3>
+      <DateTime
+        defaultValue={value}
+        open={true}
         input={false}
         viewMode={viewMode}
       />

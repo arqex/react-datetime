@@ -5,22 +5,30 @@ import useOnClickOutside from "use-onclickoutside";
 
 import format from "date-fns/format";
 import rawParse from "date-fns/parse";
-import isDate from "date-fns/is_date";
 import isDateValid from "date-fns/is_valid";
 import startOfDay from "date-fns/start_of_day";
 
 import CalendarContainer from "./CalendarContainer";
 import returnTrue from "./returnTrue";
-import toUtc from "./toUtc";
-import fromUtc from "./fromUtc";
 
 const { useRef, useState, useEffect } = React;
 
-function parse(date: Date | string): any {
+function parse(
+  date: Date | string | undefined,
+  fullFormat: string,
+  formatOptions: any
+): Date | undefined {
   if (date) {
-    const parsedDate = rawParse(date);
-    if (isDate(parsedDate) && isDateValid(parsedDate)) {
-      return parsedDate;
+    if (date instanceof Date && isDateValid(date)) {
+      return date;
+    }
+
+    const fullFormatted = format(date, fullFormat, formatOptions);
+    if (date === fullFormatted) {
+      const parsedDate = rawParse(date);
+      if (parsedDate instanceof Date && isDateValid(parsedDate)) {
+        return parsedDate;
+      }
     }
   }
 
@@ -40,6 +48,8 @@ export interface TimeConstraints {
   milliseconds?: TimeConstraint;
 }
 
+export type ViewMode = "days" | "months" | "years" | "time";
+
 interface NextViewModes {
   days: "days";
   months: "days";
@@ -55,7 +65,7 @@ const nextViewModes: NextViewModes = {
 function getInitialViewMode(
   dateFormat: string | false,
   timeFormat: string | false
-): "time" | "days" | "months" | "years" | undefined {
+): ViewMode | undefined {
   if (typeof dateFormat === "string") {
     if (dateFormat.match(/[lLD]/)) {
       return "days";
@@ -73,28 +83,65 @@ function getInitialViewMode(
   return undefined;
 }
 
-function DateTime(props) {
+interface DateTimeProps {
+  className?: string;
+  style?: any;
+  placeholder?: string;
+  isValidDate?: any;
+
+  defaultValue?: string | Date;
+  value?: string | Date;
+
+  viewDate?: Date;
+  dateFormat?: string | boolean;
+  timeFormat?: string | boolean;
+
+  input?: boolean;
+
+  open?: boolean;
+  defaultOpen?: boolean;
+  disableOnClickOutside?: boolean;
+
+  locale?: any;
+
+  onChange?: any;
+  viewMode?: ViewMode;
+}
+
+function DateTime(props: DateTimeProps) {
   const {
     className,
     style,
     placeholder,
     isValidDate = returnTrue,
-    value,
-    defaultValue,
+    defaultValue: uncontrolledDefaultValue,
+    value: controlledValue,
+    onChange: setControlledValue,
     viewDate: propViewDate,
     dateFormat: rawDateFormat = true,
     timeFormat: rawTimeFormat = true,
     input: isInput = true,
     open: controlledIsOpen,
     locale,
-    utc = false,
-    onChange,
     viewMode: propViewMode,
-    defaultOpen = false,
+    defaultOpen,
+    disableOnClickOutside,
     ...rest
   } = props;
 
-  const isControlled = value !== undefined;
+  //
+  // Controlled/uncontrolled value
+  //
+  const [uncontrolledValue, setUncontrolledValue] = useState(
+    uncontrolledDefaultValue
+  );
+  const isControlled = typeof setControlledValue === "function";
+  const value = isControlled ? controlledValue : uncontrolledValue;
+  const onChange = isControlled ? setControlledValue : setUncontrolledValue;
+
+  //
+  // Formats
+  //
   const dateFormat = rawDateFormat === true ? "MM/DD/YYYY" : rawDateFormat;
   const timeFormat = rawTimeFormat === true ? "h:mm A" : rawTimeFormat;
   const fullFormat =
@@ -106,98 +153,63 @@ function DateTime(props) {
     locale
   };
 
-  const defaultViewMode = getInitialViewMode(dateFormat, timeFormat);
+  const valueAsDate = parse(value, fullFormat, formatOptions);
 
-  const [hasInitialized, setHasInitialized] = useState(false);
+  //
+  // ViewDate
+  //
+  const [viewDate, setViewDate] = useState();
+  useEffect(() => {
+    setViewDate(propViewDate || valueAsDate || startOfDay(new Date()));
+  }, [propViewDate, valueAsDate]);
+
+  //
+  // ViewMode
+  //
+  const defaultViewMode = getInitialViewMode(dateFormat, timeFormat);
+  const [viewMode, setViewMode] = useState();
+  useEffect(() => {
+    setViewMode(propViewMode || defaultViewMode);
+  }, [propViewMode, defaultViewMode]);
+
+  //
+  // ViewTimestamp
+  //
+  const [viewTimestamp, setViewTimestamp] = useState();
+  useEffect(() => {
+    setViewTimestamp(valueAsDate || viewDate);
+  }, [valueAsDate, viewDate]);
+
+  //
+  // IsOpen
+  //
   const [internalIsOpen, setIsOpen] = useState(defaultOpen);
   const isOpen =
     typeof controlledIsOpen === "boolean" ? controlledIsOpen : internalIsOpen;
-  const [viewMode, setViewMode] = useState(propViewMode || defaultViewMode);
-  const [rawSelectedDate, rawSetSelectedDate] = useState(
-    parse(value) || parse(defaultValue)
-  );
 
-  const selectedDate = isControlled
-    ? value
-    : rawSelectedDate !== undefined
-    ? rawSelectedDate
-    : undefined;
-
-  const [viewDate, setViewDate] = useState(
-    selectedDate || startOfDay(new Date())
-  );
-
-  useEffect(() => {
-    setHasInitialized(true);
-  }, []);
-
-  useEffect(() => {
-    if (propViewDate) {
-      setViewDate(propViewDate);
-    }
-  }, [propViewDate]);
-
-  useEffect(() => {
-    if (propViewMode) {
-      setViewMode(propViewMode);
-    }
-  }, [propViewMode]);
-
-  useEffect(() => {
-    if (hasInitialized) {
-      const func = utc ? toUtc : fromUtc;
-
-      setViewDate(func(viewDate));
-      if (selectedDate) {
-        const newSelectedDate = func(selectedDate);
-        setSelectedDate(newSelectedDate);
-        setInputValue(format(newSelectedDate, fullFormat, formatOptions));
-      }
-    }
-  }, [utc]);
-
-  const [viewTimestamp, setViewTimestamp] = useState();
-
-  useEffect(() => {
-    setViewTimestamp(selectedDate || viewDate);
-  }, [selectedDate, viewDate]);
-
-  const defaultInputValue = isControlled
-    ? value
-    : selectedDate
-    ? format(selectedDate, fullFormat, formatOptions)
-    : "";
-  const [inputValue, setInputValue] = useState(defaultInputValue);
-
-  function setSelectedDate(newDate, tryClose = true) {
+  //
+  // SetSelectedDate
+  //
+  function setSelectedDate(newDate: Date, tryClose = true) {
     setViewDate(newDate);
     setViewTimestamp(newDate);
 
-    const theSetSelectedDate = isControlled
-      ? newSelectedDate => {
-          if (typeof onChange === "function") {
-            onChange(newSelectedDate);
-          }
-        }
-      : rawSetSelectedDate;
+    // Time switches value but stays open
+    if (viewMode === "time") {
+      onChange(newDate);
+    }
+    // When view mode is the default, switch and try to close
+    else if (viewMode === defaultViewMode) {
+      onChange(newDate);
 
-    if (newDate) {
-      setInputValue(format(newDate, fullFormat, formatOptions));
-
-      if (viewMode === "time") {
-        theSetSelectedDate(newDate);
-      } else if (viewMode === defaultViewMode) {
-        theSetSelectedDate(newDate);
-
-        if (tryClose) {
-          setIsOpen(false);
-        }
-      } else {
-        const newViewMode = viewMode ? nextViewModes[viewMode] : undefined;
-        setViewMode(newViewMode);
+      if (tryClose) {
+        setIsOpen(false);
       }
-    } else {
-      theSetSelectedDate(newDate);
+    }
+    // When view mode is not the default, switch to the next view mode
+    else {
+      const newViewMode = viewMode ? nextViewModes[viewMode] : undefined;
+      setViewMode(newViewMode);
     }
   }
 
@@ -211,23 +223,13 @@ function DateTime(props) {
 
   function onInputChange(e: React.FormEvent<HTMLInputElement>) {
     const { value: newValue } = e.target as HTMLInputElement;
-    const date = parse(newValue);
 
-    const fullFormatted = format(date, fullFormat, formatOptions);
-    const dateFormatted = format(date, dateFormat, formatOptions);
-    if (newValue === fullFormatted || newValue === dateFormatted) {
-      setSelectedDate(date, false);
-
-      if (typeof onChange === "function") {
-        onChange(date);
-      }
+    const newValueAsDate = parse(newValue, fullFormat, formatOptions);
+    if (newValueAsDate) {
+      setSelectedDate(newValueAsDate, false);
     } else {
-      if (typeof onChange === "function") {
-        onChange(newValue);
-      }
+      onChange(newValue);
     }
-
-    setInputValue(newValue);
   }
 
   function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -255,10 +257,21 @@ function DateTime(props) {
   const inputRef = useRef(null);
   const contentRef = useRef(null);
 
-  useOnClickOutside(contentRef, close);
+  useOnClickOutside(contentRef, () => {
+    if (!disableOnClickOutside) {
+      close();
+    }
+  });
 
-  const valueAsDate = value && parse(value);
+  const valueStr: string = valueAsDate
+    ? format(valueAsDate, fullFormat, formatOptions)
+    : typeof value === "string"
+    ? value
+    : "";
 
+  //
+  // Input Props
+  //
   const finalInputProps = {
     type: "text",
     className,
@@ -268,22 +281,19 @@ function DateTime(props) {
     onChange: onInputChange,
     onKeyDown: onInputKeyDown,
     placeholder,
-    value: isControlled
-      ? isDate(valueAsDate) && isDateValid(valueAsDate)
-        ? format(valueAsDate, fullFormat, formatOptions)
-        : value
-      : inputValue
-      ? inputValue
-      : "",
+    value: valueStr,
     ...rest
   };
 
-  const contentProps = {
+  //
+  // Calendar props
+  //
+  const calendarProps = {
     dateFormat,
     timeFormat,
     viewDate,
     setViewDate,
-    selectedDate: isControlled && value ? value : selectedDate,
+    selectedDate: valueAsDate,
     setSelectedDate,
     viewTimestamp,
     setViewTimestamp,
@@ -293,23 +303,29 @@ function DateTime(props) {
     isValidDate
   };
 
-  return isInput ? (
-    <div className={cc(["rdt", { rdtOpen: isOpen }])}>
-      <input ref={inputRef} key="i" {...finalInputProps} />
-      {isOpen && viewMode && (
-        <Popover targetRef={inputRef}>
-          <div ref={contentRef} className="rdtPicker">
-            <CalendarContainer {...contentProps} />
+  return (
+    <>
+      {isInput ? (
+        <div className={cc(["rdt", { rdtOpen: isOpen }])}>
+          <input ref={inputRef} key="i" {...finalInputProps} />
+          {isOpen && viewMode && (
+            <Popover targetRef={inputRef}>
+              <div ref={contentRef} className="rdtPicker">
+                <CalendarContainer {...calendarProps} />
+              </div>
+            </Popover>
+          )}
+        </div>
+      ) : (
+        viewMode && (
+          <div className="rdt rdtStatic rdtOpen">
+            <div className="rdtPicker">
+              <CalendarContainer {...calendarProps} />
+            </div>
           </div>
-        </Popover>
+        )
       )}
-    </div>
-  ) : (
-    <div className="rdt rdtStatic rdtOpen">
-      <div className="rdtPicker">
-        <CalendarContainer {...contentProps} />
-      </div>
-    </div>
+    </>
   );
 }
 

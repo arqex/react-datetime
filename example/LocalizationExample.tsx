@@ -35,6 +35,7 @@ function LocalizationExample() {
         {renderButton("FR - fr", fr)}
       </p>
 
+      <h3>Controlled</h3>
       <DateTime
         viewMode="months"
         value={value}
@@ -42,6 +43,15 @@ function LocalizationExample() {
           console.log(newValue);
           setValue(newValue);
         }}
+        locale={currentLocale}
+        open={true}
+        input={false}
+      />
+
+      <h3>Uncontrolled</h3>
+      <DateTime
+        viewMode="months"
+        defaultValue={value}
         locale={currentLocale}
         open={true}
         input={false}

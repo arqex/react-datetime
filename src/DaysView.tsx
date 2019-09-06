@@ -14,7 +14,18 @@ import getDate from "date-fns/get_date";
 import returnTrue from "./returnTrue";
 import noop from "./noop";
 
-function DaysView(props) {
+export interface DaysViewProps {
+  timeFormat: string | false;
+  viewDate: Date;
+  setViewDate: any;
+  selectedDate: Date | undefined;
+  setSelectedDate: any;
+  formatOptions: any;
+  setViewMode: any;
+  isValidDate: any;
+}
+
+function DaysView(props: DaysViewProps) {
   const {
     timeFormat = false,
     viewDate = new Date(),

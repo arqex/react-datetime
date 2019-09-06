@@ -203,7 +203,16 @@ function onStartClicking(
   };
 }
 
-function TimeView(props) {
+export interface TimeViewProps {
+  viewTimestamp: Date;
+  dateFormat: string | false;
+  setViewMode: any;
+  timeFormat: string | false;
+  formatOptions: any;
+  setSelectedDate: any;
+}
+
+function TimeView(props: TimeViewProps) {
   const {
     viewTimestamp = new Date(),
     dateFormat = false,

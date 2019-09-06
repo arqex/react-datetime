@@ -11,7 +11,17 @@ import setDate from "date-fns/set_date";
 import returnTrue from "./returnTrue";
 import noop from "./noop";
 
-function MonthsView(props) {
+export interface MonthsViewProps {
+  viewDate: Date;
+  setViewDate: any;
+  selectedDate: Date | undefined;
+  setSelectedDate: any;
+  formatOptions: any;
+  setViewMode: any;
+  isValidDate: any;
+}
+
+function MonthsView(props: MonthsViewProps) {
   const {
     viewDate = new Date(),
     setViewDate = noop,
