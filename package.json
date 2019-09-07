@@ -51,7 +51,7 @@
     "datetime"
   ],
   "scripts": {
-    "now-build": "tsdx build",
+    "now-build": "yarn tsdx build",
     "build": "tsdx build --format=umd,esm,cjs",
     "start": "tsdx watch --format=esm",
     "lint": "yarn tslint --project tsconfig.json",

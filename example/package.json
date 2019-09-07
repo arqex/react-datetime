@@ -3,10 +3,13 @@
   "homepage": "https://NateRadebaugh.github.io/react-datetime",
   "version": "0.0.0",
   "main": "index.js",
+  "engines": {
+    "node": "10.x"
+  },
   "license": "MIT",
   "private": true,
   "scripts": {
-    "now-build": "parcel build index.html",
+    "now-build": "yarn parcel build index.html",
     "start": "parcel index.html",
     "build": "parcel build index.html"
   },
