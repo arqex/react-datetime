@@ -26,5 +26,5 @@
       "*": ["src/*", "node_modules/*"]
     }
   },
-  "include": ["src", "types"]
+  "include": ["src"]
 }

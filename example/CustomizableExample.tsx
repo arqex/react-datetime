@@ -7,16 +7,12 @@ class CustomizableExample extends React.Component<any, any> {
 
     this.state = {
       value: new Date(),
-      viewMode: "days",
       dateFormat: "LL/dd/yyyy",
-      timeFormat: "hh:mm a",
-      input: true,
-      disableOnClickOutside: false
+      timeFormat: "hh:mm a"
     };
 
     // Bind functions
     this.renderSelect = this.renderSelect.bind(this);
-    this.renderCheckbox = this.renderCheckbox.bind(this);
   }
 
   renderSelect({ name, children }) {
@@ -37,25 +33,8 @@ class CustomizableExample extends React.Component<any, any> {
     );
   }
 
-  renderCheckbox({ name }) {
-    return (
-      <div className="form-group">
-        <label className="control-label col-xs-6">{name}</label>
-
-        <div className="col-xs-6">
-          <input
-            type="checkbox"
-            checked={this.state[name]}
-            onChange={e => this.setState({ [name]: e.target.checked })}
-          />
-        </div>
-      </div>
-    );
-  }
-
   render() {
     const Select = this.renderSelect;
-    const Checkbox = this.renderCheckbox;
 
     return (
       <div className="form-horizontal">
@@ -65,7 +44,6 @@ class CustomizableExample extends React.Component<any, any> {
           component.
         </p>
 
-        <h3>Controlled</h3>
         <DateTime
           value={new Date()}
           onChange={newValue => {
@@ -74,8 +52,6 @@ class CustomizableExample extends React.Component<any, any> {
           }}
           {...this.state}
         />
-        <h3>Uncontrolled</h3>
-        <DateTime defaultValue={new Date()} {...this.state} />
 
         <hr />
 
@@ -99,16 +75,6 @@ class CustomizableExample extends React.Component<any, any> {
           <option>hmm</option>
           <option>HH:mm xxx</option>
         </Select>
-
-        <Select name="viewMode">
-          <option>years</option>
-          <option>months</option>
-          <option>days</option>
-          <option>time</option>
-        </Select>
-
-        <Checkbox name="input" />
-        <Checkbox name="disableOnClickOutside" />
       </div>
     );
   }

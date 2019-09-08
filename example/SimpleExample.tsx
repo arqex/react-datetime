@@ -9,7 +9,6 @@ function SimpleExample() {
   return (
     <div>
       <h2>Simple Scenario</h2>
-      <h3>Controlled</h3>
       <DateTime
         value={value}
         onChange={newVal => {
@@ -17,8 +16,6 @@ function SimpleExample() {
           setValue(newVal);
         }}
       />
-      <h3>Uncontrolled</h3>
-      <DateTime defaultValue={value} />
     </div>
   );
 }

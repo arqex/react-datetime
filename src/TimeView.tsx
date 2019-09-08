@@ -136,7 +136,7 @@ function getFormatted(
       ? "ss"
       : type === "milliseconds" && hasMilliseconds
       ? "SSS"
-      : type === "daypart"
+      : type === "daypart" && hasDayPart
       ? "a"
       : undefined;
 

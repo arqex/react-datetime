@@ -80,7 +80,7 @@
     }
   },
   "peerDependencies": {
-    "date-fns": "^1.29.0",
+    "date-fns": ">=2.0.0",
     "react": ">=16.8",
     "react-dom": "^16.8.0"
   },
@@ -90,7 +90,6 @@
     "@typescript-eslint/eslint-plugin": "^2.1.0",
     "@typescript-eslint/parser": "^2.1.0",
     "bundlesize": "^0.18.0",
-    "cross-env": "^5.2.1",
     "cssnano": "^4.1.10",
     "eslint-plugin-react-hooks": "^2.0.1",
     "husky": "^3.0.5",

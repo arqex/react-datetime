@@ -4,7 +4,7 @@ import "../scss/styles.scss";
 import SimpleExample from "./SimpleExample";
 import LocalizationExample from "./LocalizationExample";
 import CustomizableExample from "./CustomizableExample";
-import OpenExample from "./OpenExample";
+import ViewModeExample from "./ViewModeExample";
 import ValidatedExample from "./ValidatedExample";
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
       <hr />
       <CustomizableExample />
       <hr />
-      <OpenExample />
+      <ViewModeExample />
       <hr />
       <ValidatedExample />
       <hr />

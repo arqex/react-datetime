@@ -66,6 +66,9 @@ module.exports = {
     // Disallow inconsistent returns
     "consistent-return": "error",
 
+    // Allow switch/case fallthrough without requiring a "break" statement after each one
+    "no-fallthrough": "off",
+
     // Simplify Typescript
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "off"

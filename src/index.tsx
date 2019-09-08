@@ -62,17 +62,17 @@ function getInitialViewMode(
   dateFormat: string | false,
   timeFormat: string | false
 ): ViewMode | undefined {
-  if (typeof dateFormat === "string") {
-    if (dateFormat.match(/[lLD]/)) {
+  if (typeof dateFormat === "string" && dateFormat) {
+    if (dateFormat.match(/[d]/)) {
       return "days";
-    } else if (dateFormat.indexOf("M") !== -1) {
+    } else if (dateFormat.indexOf("L") !== -1) {
       return "months";
-    } else if (dateFormat.indexOf("Y") !== -1) {
+    } else if (dateFormat.indexOf("y") !== -1) {
       return "years";
     }
   }
 
-  if (typeof timeFormat === "string") {
+  if (typeof timeFormat === "string" && timeFormat) {
     return "time";
   }
 
@@ -85,23 +85,13 @@ interface DateTimeProps {
   placeholder?: string;
   isValidDate?: any;
 
-  defaultValue?: string | Date;
   value?: string | Date;
+  onChange?: any;
 
-  viewDate?: Date;
   dateFormat?: string | boolean;
   timeFormat?: string | boolean;
 
-  input?: boolean;
-
-  open?: boolean;
-  defaultOpen?: boolean;
-  disableOnClickOutside?: boolean;
-
   locale?: any;
-
-  onChange?: any;
-  viewMode?: ViewMode;
 }
 
 function DateTime(props: DateTimeProps) {
@@ -110,30 +100,13 @@ function DateTime(props: DateTimeProps) {
     style,
     placeholder,
     isValidDate,
-    defaultValue: uncontrolledDefaultValue,
-    value: controlledValue,
-    onChange: setControlledValue,
-    viewDate: propViewDate,
+    value,
+    onChange,
     dateFormat: rawDateFormat = true,
     timeFormat: rawTimeFormat = true,
-    input: isInput = true,
-    open: controlledIsOpen,
     locale,
-    viewMode: propViewMode,
-    defaultOpen,
-    disableOnClickOutside,
     ...rest
   } = props;
-
-  //
-  // Controlled/uncontrolled value
-  //
-  const [uncontrolledValue, setUncontrolledValue] = useState(
-    uncontrolledDefaultValue
-  );
-  const isControlled = typeof setControlledValue === "function";
-  const value = isControlled ? controlledValue : uncontrolledValue;
-  const onChange = isControlled ? setControlledValue : setUncontrolledValue;
 
   //
   // Formats
@@ -156,8 +129,8 @@ function DateTime(props: DateTimeProps) {
   //
   const [viewDate, setViewDate] = useState();
   useEffect(() => {
-    setViewDate(propViewDate || valueAsDate || startOfDay(new Date()));
-  }, [propViewDate, valueAsDate]);
+    setViewDate(valueAsDate || startOfDay(new Date()));
+  }, [valueAsDate]);
 
   //
   // ViewMode
@@ -165,8 +138,8 @@ function DateTime(props: DateTimeProps) {
   const defaultViewMode = getInitialViewMode(dateFormat, timeFormat);
   const [viewMode, setViewMode] = useState();
   useEffect(() => {
-    setViewMode(propViewMode || defaultViewMode);
-  }, [propViewMode, defaultViewMode]);
+    setViewMode(defaultViewMode);
+  }, [defaultViewMode]);
 
   //
   // ViewTimestamp
@@ -179,9 +152,7 @@ function DateTime(props: DateTimeProps) {
   //
   // IsOpen
   //
-  const [internalIsOpen, setIsOpen] = useState(defaultOpen);
-  const isOpen =
-    typeof controlledIsOpen === "boolean" ? controlledIsOpen : internalIsOpen;
+  const [isOpen, setIsOpen] = useState(false);
 
   //
   // SetSelectedDate
@@ -210,7 +181,9 @@ function DateTime(props: DateTimeProps) {
   }
 
   function open() {
-    setIsOpen(true);
+    if (viewMode) {
+      setIsOpen(true);
+    }
   }
 
   function close() {
@@ -229,41 +202,38 @@ function DateTime(props: DateTimeProps) {
   }
 
   function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    // Enter key
-    if (isOpen && e.which === 13) {
-      close();
-    }
-
-    // Escape key
-    if (isOpen && e.which === 27) {
-      close();
-    }
-
-    // Tab key
-    if (isOpen && e.which === 9) {
-      close();
-    }
-
-    // Down arrow
-    if (!isOpen && e.which === 40) {
-      open();
+    if (isOpen) {
+      switch (e.which) {
+        // Enter key
+        case 13:
+        // Escape key
+        case 27:
+        // Tab key
+        case 9:
+          close();
+          break;
+      }
+    } else {
+      switch (e.which) {
+        // Down arrow
+        case 40:
+          open();
+          break;
+      }
     }
   }
 
   const inputRef = useRef(null);
   const contentRef = useRef(null);
 
-  useOnClickOutside(contentRef, () => {
-    if (!disableOnClickOutside) {
-      close();
-    }
-  });
+  useOnClickOutside(contentRef, close);
 
-  const valueStr: string = valueAsDate
-    ? format(valueAsDate, fullFormat, formatOptions)
-    : typeof value === "string"
-    ? value
-    : "";
+  const valueStr: string =
+    valueAsDate && fullFormat
+      ? format(valueAsDate, fullFormat, formatOptions)
+      : typeof value === "string"
+      ? value
+      : "";
 
   //
   // Input Props
@@ -300,28 +270,16 @@ function DateTime(props: DateTimeProps) {
   };
 
   return (
-    <>
-      {isInput ? (
-        <div className={cc(["rdt", { rdtOpen: isOpen }])}>
-          <input ref={inputRef} key="i" {...finalInputProps} />
-          {isOpen && viewMode && (
-            <Popover targetRef={inputRef}>
-              <div ref={contentRef} className="rdtPicker">
-                <CalendarContainer {...calendarProps} />
-              </div>
-            </Popover>
-          )}
-        </div>
-      ) : (
-        viewMode && (
-          <div className="rdt rdtStatic rdtOpen">
-            <div className="rdtPicker">
-              <CalendarContainer {...calendarProps} />
-            </div>
+    <div className={cc(["rdt", { rdtOpen: isOpen }])}>
+      <input ref={inputRef} key="i" {...finalInputProps} />
+      {isOpen && (
+        <Popover targetRef={inputRef}>
+          <div ref={contentRef} className="rdtPicker">
+            <CalendarContainer {...calendarProps} />
           </div>
-        )
+        </Popover>
       )}
-    </>
+    </div>
   );
 }
 
