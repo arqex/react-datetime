@@ -23,23 +23,23 @@
   "bundlesize": [
     {
       "path": "dist/react-datetime.cjs.production.min.js",
-      "maxSize": "3.6 kB"
+      "maxSize": "3.2 kB"
     },
     {
       "path": "dist/react-datetime.cjs.development.js",
-      "maxSize": "5.2 kB"
+      "maxSize": "4.8 kB"
     },
     {
       "path": "dist/react-datetime.esm.js",
-      "maxSize": "5.0 kB"
+      "maxSize": "4.7 kB"
     },
     {
       "path": "dist/react-datetime.umd.production.min.js",
-      "maxSize": "4.3 kB"
+      "maxSize": "3.8 kB"
     },
     {
       "path": "dist/react-datetime.umd.development.js",
-      "maxSize": "6.2 kB"
+      "maxSize": "5.6 kB"
     }
   ],
   "keywords": [
