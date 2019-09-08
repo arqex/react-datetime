@@ -8,9 +8,6 @@ import setMonth from "date-fns/setMonth";
 import getDaysInMonth from "date-fns/getDaysInMonth";
 import setDate from "date-fns/setDate";
 
-import returnTrue from "./returnTrue";
-import noop from "./noop";
-
 export interface MonthsViewProps {
   viewDate: Date;
   setViewDate: any;
@@ -24,12 +21,12 @@ export interface MonthsViewProps {
 function MonthsView(props: MonthsViewProps) {
   const {
     viewDate = new Date(),
-    setViewDate = noop,
+    setViewDate,
     selectedDate,
-    setSelectedDate = noop,
+    setSelectedDate,
     formatOptions,
-    setViewMode = noop,
-    isValidDate = returnTrue
+    setViewMode,
+    isValidDate
   } = props;
 
   return (
@@ -76,7 +73,9 @@ function MonthsView(props: MonthsViewProps) {
                     (e, i) => setDate(currentMonth, i + 1)
                   );
 
-                  const isDisabled = daysInMonths.every(d => !isValidDate(d));
+                  const isDisabled = daysInMonths.every(
+                    d => typeof isValidDate === "function" && !isValidDate(d)
+                  );
                   const monthDate = setMonth(new Date(), month);
 
                   return (

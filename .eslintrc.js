@@ -1,13 +1,18 @@
 module.exports = {
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: "./tsconfig.json"
+  },
   extends: [
     "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "react-hooks",
     "prettier",
-    "prettier/react"
+    "prettier/react",
+    "prettier/@typescript-eslint"
   ],
-  plugins: ["react", "prettier"],
-  parser: "babel-eslint",
+  plugins: ["@typescript-eslint", "react", "react-hooks", "prettier"],
   parserOptions: {
     sourceType: "module",
     ecmaFeatures: {
@@ -56,9 +61,13 @@ module.exports = {
     "no-console": "warn",
 
     // Disallow arrow functions in render functions
-    "react/jsx-no-bind": "warn",
+    "react/jsx-no-bind": "off",
 
     // Disallow inconsistent returns
-    "consistent-return": "error"
+    "consistent-return": "error",
+
+    // Simplify Typescript
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-function-return-type": "off"
   }
 };

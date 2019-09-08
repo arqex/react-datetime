@@ -9,7 +9,6 @@ import isDateValid from "date-fns/isValid";
 import startOfDay from "date-fns/startOfDay";
 
 import CalendarContainer from "./CalendarContainer";
-import returnTrue from "./returnTrue";
 
 const { useRef, useState, useEffect } = React;
 
@@ -110,7 +109,7 @@ function DateTime(props: DateTimeProps) {
     className,
     style,
     placeholder,
-    isValidDate = returnTrue,
+    isValidDate,
     defaultValue: uncontrolledDefaultValue,
     value: controlledValue,
     onChange: setControlledValue,

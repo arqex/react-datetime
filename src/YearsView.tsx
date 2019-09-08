@@ -8,9 +8,6 @@ import setYear from "date-fns/setYear";
 import getDaysInYear from "date-fns/getDaysInYear";
 import setDayOfYear from "date-fns/setDayOfYear";
 
-import returnTrue from "./returnTrue";
-import noop from "./noop";
-
 export interface YearsViewProps {
   viewDate: Date;
   setViewDate: any;
@@ -24,12 +21,12 @@ export interface YearsViewProps {
 function YearsView(props: YearsViewProps) {
   const {
     viewDate = new Date(),
-    setViewDate = noop,
+    setViewDate,
     selectedDate,
-    setSelectedDate = noop,
+    setSelectedDate,
     formatOptions,
-    setViewMode = noop,
-    isValidDate = returnTrue
+    setViewMode,
+    isValidDate
   } = props;
 
   const startYear = Math.floor(getYear(viewDate) / 10) * 10;
@@ -78,7 +75,9 @@ function YearsView(props: YearsViewProps) {
                     (e, i) => setDayOfYear(currentYear, i + 1)
                   );
 
-                  const isDisabled = daysInYear.every(d => !isValidDate(d));
+                  const isDisabled = daysInYear.every(
+                    d => typeof isValidDate === "function" && !isValidDate(d)
+                  );
 
                   return (
                     <td

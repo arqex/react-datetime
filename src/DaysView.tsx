@@ -11,8 +11,6 @@ import isSameDay from "date-fns/isSameDay";
 import isBefore from "date-fns/isBefore";
 import addMonths from "date-fns/addMonths";
 import getDate from "date-fns/getDate";
-import returnTrue from "./returnTrue";
-import noop from "./noop";
 
 export interface DaysViewProps {
   timeFormat: string | false;
@@ -29,12 +27,12 @@ function DaysView(props: DaysViewProps) {
   const {
     timeFormat = false,
     viewDate = new Date(),
-    setViewDate = noop,
+    setViewDate,
     selectedDate,
-    setSelectedDate = noop,
+    setSelectedDate,
     formatOptions,
-    setViewMode = noop,
-    isValidDate = returnTrue
+    setViewMode,
+    isValidDate
   } = props;
 
   const sunday = startOfWeek(viewDate);
@@ -88,11 +86,18 @@ function DaysView(props: DaysViewProps) {
             const rowStartDay = rowNum * 7;
 
             return (
-              <tr key={format(addDays(prevMonthLastWeekStart, rowStartDay), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}>
+              <tr
+                key={format(
+                  addDays(prevMonthLastWeekStart, rowStartDay),
+                  "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
+                )}
+              >
                 {[0, 1, 2, 3, 4, 5, 6].map(d => {
                   const i = d + rowStartDay;
                   const workingDate = addDays(prevMonthLastWeekStart, i);
-                  const isDisabled = !isValidDate(workingDate, selectedDate);
+                  const isDisabled =
+                    typeof isValidDate === "function" &&
+                    !isValidDate(workingDate, selectedDate);
 
                   return (
                     <td

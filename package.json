@@ -54,16 +54,16 @@
     "now-build": "yarn tsdx build",
     "build": "tsdx build --format=umd,esm,cjs",
     "start": "tsdx watch --format=esm",
-    "lint": "yarn tslint --project tsconfig.json",
-    "lint:fix": "yarn tslint --project tsconfig.json --fix",
+    "lint": "yarn eslint src --ext .js,.ts,.jsx,.tsx",
+    "lint:fix": "yarn eslint src --ext .js,.ts,.jsx,.tsx --fix",
     "prettier": "prettier --write {src,scss}/*.{json,js,jsx,ts,tsx,scss}",
     "prepare": "yarn build",
     "predeploy": "cd example && yarn install && yarn build"
   },
   "lint-staged": {
-    "{src}/**/*.{ts,tsx}": [
+    "{src}/**/*.{js,jsx,ts,tsx}": [
       "prettier --write",
-      "tslint --project tsconfig.json --fix",
+      "eslint src --ext .js,.ts,.jsx,.tsx --fix",
       "git add"
     ],
     "{src}/**/*.{json,css,scss}": [
@@ -87,6 +87,8 @@
   "devDependencies": {
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
     "bundlesize": "^0.18.0",
     "cross-env": "^5.2.1",
     "cssnano": "^4.1.10",
@@ -99,16 +101,11 @@
     "sass": "^1.23.0-module.beta.1",
     "tsdx": "^0.9.1",
     "tslib": "^1.10.0",
-    "tslint": "^5.19.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-eslint-rules": "^5.4.0",
-    "tslint-react": "^4.0.0",
     "typescript": "^3.6.2"
   },
   "dependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "@date-fns/upgrade": "^1.0.0-beta.2",
     "@reach/popover": "^0.1.0",
     "classcat": "^4.0.2",
     "date-fns": "^2.0.1",

@@ -9,7 +9,6 @@ import addMilliseconds from "date-fns/addMilliseconds";
 import setHours from "date-fns/setHours";
 
 import { TimeConstraint, TimeConstraints } from "./index";
-import noop from "./noop";
 
 const allCounters: Array<"hours" | "minutes" | "seconds" | "milliseconds"> = [
   "hours",
@@ -124,9 +123,7 @@ function getFormatted(
   const hasSeconds = has(fmt, "s");
   const hasMilliseconds = has(fmt, "S");
 
-  const hasUpperDayPart = has(fmt, "a");
-  const hasLowerDayPart = has(fmt, "a");
-  const hasDayPart = hasUpperDayPart || hasLowerDayPart;
+  const hasDayPart = has(fmt, "a");
 
   const typeFormat =
     type === "hours" && hasHours
@@ -139,9 +136,7 @@ function getFormatted(
       ? "ss"
       : type === "milliseconds" && hasMilliseconds
       ? "SSS"
-      : type === "daypart" && hasLowerDayPart
-      ? "a"
-      : type === "daypart" && hasUpperDayPart
+      : type === "daypart"
       ? "a"
       : undefined;
 
@@ -175,11 +170,11 @@ function onStartClicking(
       readonly,
       viewTimestamp: origViewTimestamp = new Date(),
       timeConstraints,
-      setViewTimestamp = noop,
-      setSelectedDate = noop
+      setViewTimestamp,
+      setSelectedDate
     } = props;
     if (!readonly) {
-      let viewTimestamp = change(op, type, origViewTimestamp!, timeConstraints);
+      let viewTimestamp = change(op, type, origViewTimestamp, timeConstraints);
       setViewTimestamp(viewTimestamp);
 
       timer = setTimeout(() => {
@@ -216,10 +211,10 @@ function TimeView(props: TimeViewProps) {
   const {
     viewTimestamp = new Date(),
     dateFormat = false,
-    setViewMode = noop,
+    setViewMode,
     timeFormat,
     formatOptions,
-    setSelectedDate = noop
+    setSelectedDate
   } = props;
 
   let numCounters = 0;
