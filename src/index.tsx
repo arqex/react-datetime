@@ -1,6 +1,6 @@
 import * as React from "react";
 import cc from "classcat";
-import Popover from "@reach/popover";
+import Popover from "@nateradebaugh/popover";
 import useOnClickOutside from "use-onclickoutside";
 
 import format from "date-fns/format";
