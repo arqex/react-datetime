@@ -26,7 +26,7 @@ var DateTimePickerTime = createClass({
 			}
 		}
 
-		var hours = date.format( 'H' );
+		var hours = date.format( this.props.militaryTime ? 'HH' : 'H' );
 
 		var daypart = false;
 		if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
@@ -56,6 +56,7 @@ var DateTimePickerTime = createClass({
 				if ( value === 0 ) {
 					value = 12;
 				}
+				value = this.pad( type, value );
 			}
 			return React.createElement('div', { key: type, className: 'rdtCounter' }, [
 				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
@@ -132,6 +133,12 @@ var DateTimePickerTime = createClass({
 				step: 1
 			}
 		};
+		me.padValues = {
+            hours: this.props.militaryTime ? 2 : 1,
+            minutes: 2,
+            seconds: 2,
+            milliseconds: 3
+        };
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
 			assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
 		});
@@ -191,13 +198,6 @@ var DateTimePickerTime = createClass({
 	disableContextMenu: function( event ) {
 		event.preventDefault();
 		return false;
-	},
-
-	padValues: {
-		hours: 1,
-		minutes: 2,
-		seconds: 2,
-		milliseconds: 3
 	},
 
 	toggleDayPart: function( type ) { // type is always 'hours'

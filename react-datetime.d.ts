@@ -157,6 +157,10 @@ declare module ReactDatetime {
      close it.
     */
     disableOnClickOutside?: boolean;
+    /*
+     When true, add zero to hours from 0 to 9.
+     */
+    militaryTime?: boolean;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {

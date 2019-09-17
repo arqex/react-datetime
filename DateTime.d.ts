@@ -170,6 +170,10 @@ declare namespace ReactDatetimeClass {
          close it.
          */
         disableOnClickOutside?: boolean;
+        /*
+         When true, add zero to hours from 0 to 9.
+         */
+        militaryTime?: boolean;
     }
 
     export interface DatetimepickerState {
