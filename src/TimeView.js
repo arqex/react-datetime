@@ -134,11 +134,11 @@ var DateTimePickerTime = createClass({
 			}
 		};
 		me.padValues = {
-            hours: this.props.militaryTime ? 2 : 1,
-            minutes: 2,
-            seconds: 2,
-            milliseconds: 3
-        };
+			hours: this.props.militaryTime ? 2 : 1,
+			minutes: 2,
+			seconds: 2,
+			milliseconds: 3
+		};
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
 			assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
 		});

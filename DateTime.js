@@ -43,7 +43,7 @@ var Datetime = createClass({
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
 		closeOnTab: TYPES.bool,
-        militaryTime: TYPES.bool
+		militaryTime: TYPES.bool
 	},
 
 	getInitialState: function() {
