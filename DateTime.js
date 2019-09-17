@@ -91,7 +91,7 @@ var Datetime = createClass({
 
 		if ( selectedDate )
 			inputValue = selectedDate.format(formats.datetime);
-		else if ( date.isValid && !date.isValid() )
+		else if ( date && date.isValid && !date.isValid() )
 			inputValue = '';
 		else
 			inputValue = date || '';
