@@ -9,7 +9,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "now-build": "yarn parcel build index.html",
+    "now-build": "cd .. && yarn install && yarn build && cd example && yarn install && yarn build",
     "start": "parcel index.html",
     "build": "parcel build index.html"
   },
