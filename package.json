@@ -93,7 +93,7 @@
     "cssnano": "^4.1.10",
     "eslint-plugin-react-hooks": "^2.0.1",
     "husky": "^3.0.5",
-    "lint-staged": "^9.2.5",
+    "lint-staged": "^9.3.0",
     "prettier": "^1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -107,7 +107,7 @@
     "@babel/preset-react": "^7.0.0",
     "@nateradebaugh/popover": "^0.2.5",
     "classcat": "^4.0.2",
-    "date-fns": "^2.0.1",
+    "date-fns": "^2.3.0",
     "use-onclickoutside": "^0.3.1"
   }
 }
