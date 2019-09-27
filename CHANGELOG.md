@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.0
+
+- Rewrite the DateTime component with hooks.
+- Removed the majority of extra props that stop this from being as lightweight as possible.
+- Update date-fns dependency to 2.+
+- Update react dependency to 16.8+
+
 ## 3.3.3
 
 - Updated Days/Months/Years views to be functional components. Should have perf/size improvements.

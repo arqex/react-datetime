@@ -56,7 +56,7 @@
     "start": "tsdx watch --format=esm",
     "lint": "yarn eslint src --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn eslint src --ext .js,.ts,.jsx,.tsx --fix",
-    "prettier": "prettier --write {src,scss}/*.{json,js,jsx,ts,tsx,scss}",
+    "prettier": "prettier --write {src,scss}/*.{json,js,jsx,ts,tsx,scss} *.{json,js,md,mdx}",
     "prepare": "yarn build",
     "predeploy": "cd example && yarn install && yarn build"
   },
@@ -105,7 +105,7 @@
   "dependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "@nateradebaugh/popover": "^0.2.5",
+    "@reach/popover": "^0.1.0",
     "classcat": "^4.0.2",
     "date-fns": "^2.3.0",
     "use-onclickoutside": "^0.3.1"

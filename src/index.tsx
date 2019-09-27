@@ -1,6 +1,6 @@
 import * as React from "react";
 import cc from "classcat";
-import Popover from "@nateradebaugh/popover";
+import Popover from "@reach/popover";
 import useOnClickOutside from "use-onclickoutside";
 
 import format from "date-fns/format";
@@ -46,13 +46,7 @@ export interface TimeConstraints {
 
 export type ViewMode = "days" | "months" | "years" | "time";
 
-interface NextViewModes {
-  days: "days";
-  months: "days";
-  years: "months";
-}
-
-const nextViewModes: NextViewModes = {
+const nextViewModes = {
   days: "days",
   months: "days",
   years: "months"

@@ -22,7 +22,7 @@ function LocalizationExample() {
         {text}
       </button>
     );
-  }
+  } 
 
   return (
     <div className="form-horizontal">
@@ -43,6 +43,7 @@ function LocalizationExample() {
         }}
         locale={currentLocale}
         dateFormat="LL/yyyy"
+        timeFormat={false}
       />
     </div>
   );
