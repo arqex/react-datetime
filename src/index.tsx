@@ -22,9 +22,12 @@ function parse(
   }
 
   if (typeof date === "string") {
-    const asDate = rawParse(date, fullFormat, undefined as any, formatOptions);
+    const asDate = rawParse(date, fullFormat, new Date(), formatOptions);
     if (isDateValid(asDate)) {
-      return asDate;
+      const formatted = format(asDate, fullFormat, formatOptions);
+      if (date === formatted) {
+        return asDate;
+      }
     }
   }
 
@@ -188,6 +191,7 @@ function DateTime(props: DateTimeProps) {
     const { value: newValue } = e.target as HTMLInputElement;
 
     const newValueAsDate = parse(newValue, fullFormat, formatOptions);
+    console.log({ newValue, fullFormat, newValueAsDate });
     if (newValueAsDate) {
       setSelectedDate(newValueAsDate, false);
     } else {
