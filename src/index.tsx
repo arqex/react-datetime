@@ -191,7 +191,6 @@ function DateTime(props: DateTimeProps) {
     const { value: newValue } = e.target as HTMLInputElement;
 
     const newValueAsDate = parse(newValue, fullFormat, formatOptions);
-    console.log({ newValue, fullFormat, newValueAsDate });
     if (newValueAsDate) {
       setSelectedDate(newValueAsDate, false);
     } else {
