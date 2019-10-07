@@ -15,7 +15,7 @@ import CalendarContainer from "./CalendarContainer";
 const { useRef, useState, useEffect } = React;
 
 function getTime(date: any) {
-  var asDate = toDate(date);
+  const asDate = toDate(date);
   if (asDate && isDateValid(asDate)) {
     return asDate.getTime();
   }
@@ -156,7 +156,7 @@ function DateTime(props: DateTimeProps) {
   //
   function onChange(newValue: string | Date | undefined) {
     if (typeof rawOnChange !== "function") {
-      return;
+      return undefined;
     }
 
     if (typeof newValue === "string") {
@@ -175,15 +175,6 @@ function DateTime(props: DateTimeProps) {
   }
 
   //
-  // Trigger change when useNumericDate changes
-  //
-  useEffect(() => {
-    if (valueAsDate) {
-      setSelectedDate(valueAsDate);
-    }
-  }, [useNumericDate]);
-
-  //
   // ViewDate
   //
   const [viewDate, setViewDate] = useState<Date>(
@@ -191,9 +182,10 @@ function DateTime(props: DateTimeProps) {
   );
   useEffect(() => {
     const newViewDate = valueAsDate || startOfDay(new Date());
-    if (isEqual(newViewDate, viewDate)) {
+    if (!isEqual(newViewDate, viewDate)) {
       setViewDate(newViewDate);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getTime(valueAsDate), getTime(viewDate)]);
 
   //
@@ -205,6 +197,7 @@ function DateTime(props: DateTimeProps) {
     if (viewMode !== defaultViewMode) {
       setViewMode(defaultViewMode);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultViewMode]);
 
   //
@@ -215,9 +208,10 @@ function DateTime(props: DateTimeProps) {
   );
   useEffect(() => {
     const newViewTimestamp = valueAsDate || viewDate;
-    if (isEqual(newViewTimestamp, viewTimestamp)) {
+    if (!isEqual(newViewTimestamp, viewTimestamp)) {
       setViewTimestamp(newViewTimestamp);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getTime(valueAsDate), getTime(viewDate)]);
 
   //
@@ -253,6 +247,16 @@ function DateTime(props: DateTimeProps) {
       setViewMode(newViewMode);
     }
   }
+
+  //
+  // Trigger change when important props change
+  //
+  useEffect(() => {
+    if (valueAsDate) {
+      setSelectedDate(valueAsDate);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [useNumericDate, fullFormat]);
 
   function open() {
     if (viewMode) {
