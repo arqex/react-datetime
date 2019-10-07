@@ -5,6 +5,8 @@ import useOnClickOutside from "use-onclickoutside";
 
 import format from "date-fns/format";
 import rawParse from "date-fns/parse";
+import isEqual from "date-fns/isEqual";
+import toDate from "date-fns/toDate";
 import isDateValid from "date-fns/isValid";
 import startOfDay from "date-fns/startOfDay";
 
@@ -12,15 +14,20 @@ import CalendarContainer from "./CalendarContainer";
 
 const { useRef, useState, useEffect } = React;
 
+function getTime(date: any) {
+  var asDate = toDate(date);
+  if (asDate && isDateValid(asDate)) {
+    return asDate.getTime();
+  }
+
+  return undefined;
+}
+
 function parse(
-  date: Date | string | undefined,
+  date: Date | string | number | undefined,
   fullFormat: string,
   formatOptions: any
 ): Date | undefined {
-  if (date instanceof Date && isDateValid(date)) {
-    return date;
-  }
-
   if (typeof date === "string") {
     const asDate = rawParse(date, fullFormat, new Date(), formatOptions);
     if (isDateValid(asDate)) {
@@ -28,6 +35,11 @@ function parse(
       if (date === formatted) {
         return asDate;
       }
+    }
+  } else if (date) {
+    const asDate = toDate(date);
+    if (isDateValid(asDate)) {
+      return asDate;
     }
   }
 
@@ -49,7 +61,13 @@ export interface TimeConstraints {
 
 export type ViewMode = "days" | "months" | "years" | "time";
 
-const nextViewModes = {
+interface NextViewModes {
+  days: ViewMode;
+  months: ViewMode;
+  years: ViewMode;
+}
+
+const nextViewModes: NextViewModes = {
   days: "days",
   months: "days",
   years: "months"
@@ -82,7 +100,8 @@ interface DateTimeProps {
   placeholder?: string;
   isValidDate?: any;
 
-  value?: string | Date;
+  useNumericDate?: boolean;
+  value?: string | number | Date;
   onChange?: any;
 
   dateFormat?: string | boolean;
@@ -97,8 +116,9 @@ function DateTime(props: DateTimeProps) {
     style,
     placeholder,
     isValidDate,
+    useNumericDate: rawUseNumericDate = false,
     value,
-    onChange,
+    onChange: rawOnChange,
     dateFormat: rawDateFormat = true,
     timeFormat: rawTimeFormat = true,
     locale,
@@ -120,31 +140,85 @@ function DateTime(props: DateTimeProps) {
   };
 
   const valueAsDate = parse(value, fullFormat, formatOptions);
+  const useNumericDate =
+    typeof rawUseNumericDate === "boolean"
+      ? rawUseNumericDate
+      : value
+      ? typeof value === "number"
+      : false;
+
+  //
+  // On Change
+  // string -> string
+  // falsy -> raw onChange
+  // Date -> if numeric, number (ms)
+  // Date -> if not numeric, Date
+  //
+  function onChange(newValue: string | Date | undefined) {
+    if (typeof rawOnChange !== "function") {
+      return;
+    }
+
+    if (typeof newValue === "string") {
+      return rawOnChange(newValue);
+    }
+
+    if (!newValue) {
+      return rawOnChange(newValue);
+    }
+
+    if (useNumericDate) {
+      return rawOnChange(newValue.getTime());
+    } else {
+      return rawOnChange(newValue);
+    }
+  }
+
+  //
+  // Trigger change when useNumericDate changes
+  //
+  useEffect(() => {
+    if (valueAsDate) {
+      setSelectedDate(valueAsDate);
+    }
+  }, [useNumericDate]);
 
   //
   // ViewDate
   //
-  const [viewDate, setViewDate] = useState();
+  const [viewDate, setViewDate] = useState<Date>(
+    valueAsDate || startOfDay(new Date())
+  );
   useEffect(() => {
-    setViewDate(valueAsDate || startOfDay(new Date()));
-  }, [valueAsDate]);
+    const newViewDate = valueAsDate || startOfDay(new Date());
+    if (isEqual(newViewDate, viewDate)) {
+      setViewDate(newViewDate);
+    }
+  }, [getTime(valueAsDate), getTime(viewDate)]);
 
   //
   // ViewMode
   //
   const defaultViewMode = getInitialViewMode(dateFormat, timeFormat);
-  const [viewMode, setViewMode] = useState();
+  const [viewMode, setViewMode] = useState(defaultViewMode);
   useEffect(() => {
-    setViewMode(defaultViewMode);
+    if (viewMode !== defaultViewMode) {
+      setViewMode(defaultViewMode);
+    }
   }, [defaultViewMode]);
 
   //
   // ViewTimestamp
   //
-  const [viewTimestamp, setViewTimestamp] = useState();
+  const [viewTimestamp, setViewTimestamp] = useState<Date>(
+    valueAsDate || viewDate
+  );
   useEffect(() => {
-    setViewTimestamp(valueAsDate || viewDate);
-  }, [valueAsDate, viewDate]);
+    const newViewTimestamp = valueAsDate || viewDate;
+    if (isEqual(newViewTimestamp, viewTimestamp)) {
+      setViewTimestamp(newViewTimestamp);
+    }
+  }, [getTime(valueAsDate), getTime(viewDate)]);
 
   //
   // IsOpen
@@ -155,8 +229,9 @@ function DateTime(props: DateTimeProps) {
   // SetSelectedDate
   //
   function setSelectedDate(newDate: Date, tryClose = true) {
-    setViewDate(newDate);
-    setViewTimestamp(newDate);
+    const asDate = toDate(newDate);
+    setViewDate(asDate);
+    setViewTimestamp(asDate);
 
     // Time switches value but stays open
     if (viewMode === "time") {
@@ -172,7 +247,9 @@ function DateTime(props: DateTimeProps) {
     }
     // When view mode is not the default, switch to the next view mode
     else {
-      const newViewMode = viewMode ? nextViewModes[viewMode] : undefined;
+      const newViewMode: ViewMode | undefined = viewMode
+        ? nextViewModes[viewMode]
+        : undefined;
       setViewMode(newViewMode);
     }
   }
