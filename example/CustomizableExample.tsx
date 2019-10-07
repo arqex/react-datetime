@@ -8,7 +8,8 @@ class CustomizableExample extends React.Component<any, any> {
     this.state = {
       value: new Date(),
       dateFormat: "LL/dd/yyyy",
-      timeFormat: "hh:mm a"
+      timeFormat: "hh:mm a",
+      useNumericDate: false
     };
 
     // Bind functions
@@ -24,7 +25,16 @@ class CustomizableExample extends React.Component<any, any> {
           <select
             className="form-control"
             value={this.state[name]}
-            onChange={e => this.setState({ [name]: e.target.value })}
+            onChange={e => {
+              let newValue: any = e.target.value;
+              if (newValue === "true") {
+                newValue = true;
+              } else if (newValue === "false") {
+                newValue = false;
+              }
+
+              this.setState({ [name]: newValue });
+            }}
           >
             {children}
           </select>
@@ -44,8 +54,12 @@ class CustomizableExample extends React.Component<any, any> {
           component.
         </p>
 
+        <div>
+          <strong>Value:</strong> {JSON.stringify(this.state.value)}
+        </div>
+
         <DateTime
-          value={new Date()}
+          value={this.state.value}
           onChange={newValue => {
             console.log(newValue);
             this.setState({ value: newValue });
@@ -74,6 +88,11 @@ class CustomizableExample extends React.Component<any, any> {
           <option>hh:mm:SSS a</option>
           <option>hmm</option>
           <option>HH:mm xxx</option>
+        </Select>
+
+        <Select name="useNumericDate">
+          <option>false</option>
+          <option>true</option>
         </Select>
       </div>
     );
