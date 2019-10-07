@@ -6,7 +6,7 @@ class CustomizableExample extends React.Component<any, any> {
     super(props);
 
     this.state = {
-      value: new Date(),
+      value: new Date(2019, 7, 2, 11, 25),
       dateFormat: "LL/dd/yyyy",
       timeFormat: "hh:mm a",
       useNumericDate: false
