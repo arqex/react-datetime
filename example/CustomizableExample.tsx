@@ -9,7 +9,7 @@ class CustomizableExample extends React.Component<any, any> {
       value: new Date(2019, 7, 2, 11, 25),
       dateFormat: "LL/dd/yyyy",
       timeFormat: "hh:mm a",
-      useNumericDate: false
+      dateTypeMode: undefined
     };
 
     // Bind functions
@@ -90,9 +90,11 @@ class CustomizableExample extends React.Component<any, any> {
           <option>HH:mm xxx</option>
         </Select>
 
-        <Select name="useNumericDate">
-          <option>false</option>
-          <option>true</option>
+        <Select name="dateTypeMode">
+          <option value="">default (Date)</option>
+          <option>utc-ms-timestamp</option>
+          <option>input-format</option>
+          <option>Date</option>
         </Select>
       </div>
     );

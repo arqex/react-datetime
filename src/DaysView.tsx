@@ -97,7 +97,7 @@ function DaysView(props: DaysViewProps) {
                   const workingDate = addDays(prevMonthLastWeekStart, i);
                   const isDisabled =
                     typeof isValidDate === "function" &&
-                    !isValidDate(workingDate, selectedDate);
+                    !isValidDate(workingDate);
 
                   return (
                     <td

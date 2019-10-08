@@ -94,15 +94,17 @@ function getInitialViewMode(
   return undefined;
 }
 
+export type DateTypeMode = "utc-ms-timestamp" | "input-format" | "Date";
+
 interface DateTimeProps {
   className?: string;
   style?: any;
   placeholder?: string;
-  isValidDate?: any;
+  isValidDate?: (date: Date) => boolean;
 
-  useNumericDate?: boolean;
+  dateTypeMode?: DateTypeMode;
   value?: string | number | Date;
-  onChange?: any;
+  onChange?: (newValue: undefined | string | number | Date) => void;
 
   dateFormat?: string | boolean;
   timeFormat?: string | boolean;
@@ -110,13 +112,19 @@ interface DateTimeProps {
   locale?: any;
 }
 
-function DateTime(props: DateTimeProps) {
+function DateTime(
+  props: DateTimeProps &
+    React.DetailedHTMLProps<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    >
+) {
   const {
     className,
     style,
     placeholder,
     isValidDate,
-    useNumericDate: rawUseNumericDate = false,
+    dateTypeMode: rawDateTypeMode,
     value,
     onChange: rawOnChange,
     dateFormat: rawDateFormat = true,
@@ -140,12 +148,16 @@ function DateTime(props: DateTimeProps) {
   };
 
   const valueAsDate = parse(value, fullFormat, formatOptions);
-  const useNumericDate =
-    typeof rawUseNumericDate === "boolean"
-      ? rawUseNumericDate
-      : value
-      ? typeof value === "number"
-      : false;
+  const dateTypeMode: DateTypeMode =
+    typeof rawDateTypeMode === "string"
+      ? rawDateTypeMode.toLowerCase() === "utc-ms-timestamp"
+        ? "utc-ms-timestamp"
+        : rawDateTypeMode.toLowerCase() === "input-format"
+        ? "input-format"
+        : "Date"
+      : value && typeof value === "number"
+      ? "utc-ms-timestamp"
+      : "Date";
 
   //
   // On Change
@@ -167,10 +179,15 @@ function DateTime(props: DateTimeProps) {
       return rawOnChange(newValue);
     }
 
-    if (useNumericDate) {
-      return rawOnChange(newValue.getTime());
-    } else {
-      return rawOnChange(newValue);
+    switch (dateTypeMode) {
+      case "utc-ms-timestamp":
+        return rawOnChange(newValue.getTime());
+
+      case "input-format":
+        return rawOnChange(format(newValue, fullFormat, formatOptions));
+
+      default:
+        return rawOnChange(newValue);
     }
   }
 
@@ -256,7 +273,7 @@ function DateTime(props: DateTimeProps) {
       setSelectedDate(valueAsDate);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useNumericDate, fullFormat]);
+  }, [dateTypeMode, fullFormat]);
 
   function open() {
     if (viewMode) {
@@ -349,7 +366,7 @@ function DateTime(props: DateTimeProps) {
 
   return (
     <div className={cc(["rdt", { rdtOpen: isOpen }])}>
-      <input ref={inputRef} key="i" {...finalInputProps} />
+      <input ref={inputRef} key="i" {...finalInputProps} type="text" />
       {isOpen && (
         <Popover targetRef={inputRef}>
           <div ref={contentRef} className="rdtPicker">
