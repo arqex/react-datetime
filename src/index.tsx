@@ -203,7 +203,7 @@ function DateTime(
       setViewDate(newViewDate);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getTime(valueAsDate), getTime(viewDate)]);
+  }, [getTime(valueAsDate)]);
 
   //
   // ViewMode
