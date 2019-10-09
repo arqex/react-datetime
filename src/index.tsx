@@ -5,7 +5,7 @@ import useOnClickOutside from "use-onclickoutside";
 
 import format from "date-fns/format";
 import rawParse from "date-fns/parse";
-import isEqual from "date-fns/isEqual";
+//import isEqual from "date-fns/isEqual";
 import toDate from "date-fns/toDate";
 import isDateValid from "date-fns/isValid";
 import startOfDay from "date-fns/startOfDay";
@@ -14,13 +14,26 @@ import CalendarContainer from "./CalendarContainer";
 
 const { useRef, useState, useEffect } = React;
 
-function getTime(date: any) {
+function tryGetAsTime(date: any) {
   const asDate = toDate(date);
   if (asDate && isDateValid(asDate)) {
     return asDate.getTime();
   }
 
-  return undefined;
+  return date;
+}
+
+function useDefaultStateWithOverride<Type>(defaultValue: Type) {
+  const [override, setOverride] = useState<Type | undefined>(undefined);
+  const value = override || defaultValue;
+
+  // Clear the override if the default changes
+  const changeVal = tryGetAsTime(defaultValue);
+  useEffect(() => {
+    setOverride(undefined);
+  }, [changeVal]);
+
+  return [value, setOverride] as const;
 }
 
 function parse(
@@ -73,7 +86,7 @@ const nextViewModes: NextViewModes = {
   years: "months"
 };
 
-function getInitialViewMode(
+function getViewMode(
   dateFormat: string | false,
   timeFormat: string | false
 ): ViewMode | undefined {
@@ -97,9 +110,6 @@ function getInitialViewMode(
 export type DateTypeMode = "utc-ms-timestamp" | "input-format" | "Date";
 
 interface DateTimeProps {
-  className?: string;
-  style?: any;
-  placeholder?: string;
   isValidDate?: (date: Date) => boolean;
 
   dateTypeMode?: DateTypeMode;
@@ -120,9 +130,6 @@ function DateTime(
     >
 ) {
   const {
-    className,
-    style,
-    placeholder,
     isValidDate,
     dateTypeMode: rawDateTypeMode,
     value,
@@ -196,42 +203,22 @@ function DateTime(
   //
   // ViewDate
   //
-  const [viewDate, setViewDate] = useState<Date>(
+  const [viewDate, setViewDate] = useDefaultStateWithOverride(
     valueAsDate || startOfDay(new Date())
   );
-  useEffect(() => {
-    const newViewDate = valueAsDate || startOfDay(new Date());
-    if (!isEqual(newViewDate, viewDate)) {
-      setViewDate(newViewDate);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getTime(valueAsDate)]);
 
   //
   // ViewMode
   //
-  const defaultViewMode = getInitialViewMode(dateFormat, timeFormat);
-  const [viewMode, setViewMode] = useState(defaultViewMode);
-  useEffect(() => {
-    if (viewMode !== defaultViewMode) {
-      setViewMode(defaultViewMode);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultViewMode]);
+  const defaultViewMode = getViewMode(dateFormat, timeFormat);
+  const [viewMode, setViewMode] = useDefaultStateWithOverride(defaultViewMode);
 
   //
   // ViewTimestamp
   //
-  const [viewTimestamp, setViewTimestamp] = useState<Date>(
+  const [viewTimestamp, setViewTimestamp] = useDefaultStateWithOverride(
     valueAsDate || viewDate
   );
-  useEffect(() => {
-    const newViewTimestamp = valueAsDate || viewDate;
-    if (!isEqual(newViewTimestamp, viewTimestamp)) {
-      setViewTimestamp(newViewTimestamp);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getTime(valueAsDate), getTime(viewDate)]);
 
   //
   // IsOpen
@@ -344,16 +331,13 @@ function DateTime(
   // Input Props
   //
   const finalInputProps = {
+    ...rest,
     type: "text",
-    className,
-    style,
     onClick: open,
     onFocus: open,
     onChange: onInputChange,
     onKeyDown: onInputKeyDown,
-    placeholder,
-    value: valueStr,
-    ...rest
+    value: valueStr
   };
 
   //
@@ -376,7 +360,7 @@ function DateTime(
 
   return (
     <div className={cc(["rdt", { rdtOpen: isOpen }])}>
-      <input ref={inputRef} key="i" {...finalInputProps} type="text" />
+      <input ref={inputRef} key="i" {...finalInputProps} />
       {isOpen && (
         <Popover targetRef={inputRef}>
           <div ref={contentRef} className="rdtPicker">
