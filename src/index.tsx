@@ -127,6 +127,8 @@ function DateTime(
     dateTypeMode: rawDateTypeMode,
     value,
     onChange: rawOnChange,
+    onBlur,
+    onFocus,
     dateFormat: rawDateFormat = true,
     timeFormat: rawTimeFormat = true,
     locale,
@@ -278,11 +280,19 @@ function DateTime(
   function open() {
     if (viewMode) {
       setIsOpen(true);
+
+      if (typeof onFocus === "function") {
+        onFocus(undefined as any);
+      }
     }
   }
 
   function close() {
     setIsOpen(false);
+
+    if (typeof onBlur === "function") {
+      onBlur(undefined as any);
+    }
   }
 
   function onInputChange(e: React.FormEvent<HTMLInputElement>) {
