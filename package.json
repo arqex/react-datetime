@@ -100,11 +100,11 @@
     "sass": "^1.23.0",
     "tsdx": "^0.9.3",
     "tslib": "^1.10.0",
-    "typescript": "^3.6.2"
+    "typescript": "^3.6.4"
   },
   "dependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/core": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
     "@reach/popover": "^0.1.0",
     "classcat": "^4.0.2",
     "date-fns": "^2.4.1",
