@@ -115,6 +115,8 @@ interface DateTimeProps {
   dateTypeMode?: DateTypeMode;
   value?: string | number | Date;
   onChange?: (newValue: undefined | string | number | Date) => void;
+  onFocus?: () => void;
+  onBlur?: (newValue: undefined | string | number | Date) => void;
 
   dateFormat?: string | boolean;
   timeFormat?: string | boolean;
@@ -140,7 +142,7 @@ function DateTime(
     timeFormat: rawTimeFormat = true,
     locale,
     ...rest
-  } = props;
+  } = props as DateTimeProps;
 
   //
   // Formats
@@ -168,6 +170,26 @@ function DateTime(
       ? "utc-ms-timestamp"
       : "Date";
 
+  function getChangedValue(newValue: undefined | string | Date) {
+    if (typeof newValue === "string") {
+      return newValue;
+    }
+
+    if (!newValue) {
+      return newValue;
+    }
+
+    switch (dateTypeMode) {
+      case "utc-ms-timestamp":
+        return newValue.getTime();
+
+      case "input-format":
+        return format(newValue, fullFormat, formatOptions);
+    }
+
+    return newValue;
+  }
+
   //
   // On Change
   // string -> string
@@ -180,24 +202,9 @@ function DateTime(
       return undefined;
     }
 
-    if (typeof newValue === "string") {
-      return rawOnChange(newValue);
-    }
+    const changedValue = getChangedValue(newValue);
 
-    if (!newValue) {
-      return rawOnChange(newValue);
-    }
-
-    switch (dateTypeMode) {
-      case "utc-ms-timestamp":
-        return rawOnChange(newValue.getTime());
-
-      case "input-format":
-        return rawOnChange(format(newValue, fullFormat, formatOptions));
-
-      default:
-        return rawOnChange(newValue);
-    }
+    return rawOnChange(changedValue);
   }
 
   //
@@ -225,6 +232,29 @@ function DateTime(
   //
   const [isOpen, setIsOpen] = useState(false);
 
+  function open() {
+    if (viewMode) {
+      setIsOpen(true);
+
+      if (typeof onFocus === "function") {
+        onFocus();
+      }
+    }
+  }
+
+  function closeWith(newValue: undefined | string | Date) {
+    setIsOpen(false);
+
+    if (typeof onBlur === "function") {
+      const changedValue = getChangedValue(newValue);
+      onBlur(changedValue as any);
+    }
+  }
+
+  function close() {
+    return closeWith(valueAsDate);
+  }
+
   //
   // SetSelectedDate
   //
@@ -242,7 +272,7 @@ function DateTime(
       onChange(newDate);
 
       if (tryClose) {
-        setIsOpen(false);
+        closeWith(newDate);
       }
     }
     // When view mode is not the default, switch to the next view mode
@@ -263,24 +293,6 @@ function DateTime(
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateTypeMode, fullFormat]);
-
-  function open() {
-    if (viewMode) {
-      setIsOpen(true);
-
-      if (typeof onFocus === "function") {
-        onFocus(undefined as any);
-      }
-    }
-  }
-
-  function close() {
-    setIsOpen(false);
-
-    if (typeof onBlur === "function") {
-      onBlur(undefined as any);
-    }
-  }
 
   function onInputChange(e: React.FormEvent<HTMLInputElement>) {
     const { value: newValue } = e.target as HTMLInputElement;
