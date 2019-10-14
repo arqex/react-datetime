@@ -105,7 +105,7 @@
   "dependencies": {
     "@babel/core": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
-    "@reach/popover": "^0.1.0",
+    "@reach/popover": "^0.3.0",
     "classcat": "^4.0.2",
     "date-fns": "^2.4.1",
     "use-onclickoutside": "^0.3.1"
