@@ -5,14 +5,14 @@ import useOnClickOutside from "use-onclickoutside";
 
 import format from "date-fns/format";
 import rawParse from "date-fns/parse";
-//import isEqual from "date-fns/isEqual";
+import isEqual from "date-fns/isEqual";
 import toDate from "date-fns/toDate";
 import isDateValid from "date-fns/isValid";
 import startOfDay from "date-fns/startOfDay";
 
 import CalendarContainer from "./CalendarContainer";
 
-const { useRef, useState, useEffect } = React;
+const { useRef, useState, useEffect, useCallback } = React;
 
 function tryGetAsTime(date: any) {
   const asDate = toDate(date);
@@ -170,25 +170,28 @@ function DateTime(
       ? "utc-ms-timestamp"
       : "Date";
 
-  function getChangedValue(newValue: undefined | string | Date) {
-    if (typeof newValue === "string") {
+  const getChangedValue = useCallback(
+    (newValue: undefined | string | Date) => {
+      if (typeof newValue === "string") {
+        return newValue;
+      }
+
+      if (!newValue) {
+        return newValue;
+      }
+
+      switch (dateTypeMode) {
+        case "utc-ms-timestamp":
+          return newValue.getTime();
+
+        case "input-format":
+          return format(newValue, fullFormat, formatOptions);
+      }
+
       return newValue;
-    }
-
-    if (!newValue) {
-      return newValue;
-    }
-
-    switch (dateTypeMode) {
-      case "utc-ms-timestamp":
-        return newValue.getTime();
-
-      case "input-format":
-        return format(newValue, fullFormat, formatOptions);
-    }
-
-    return newValue;
-  }
+    },
+    [dateTypeMode, formatOptions, fullFormat]
+  );
 
   //
   // On Change
@@ -197,15 +200,33 @@ function DateTime(
   // Date -> if numeric, number (ms)
   // Date -> if not numeric, Date
   //
-  function onChange(newValue: string | Date | undefined) {
-    if (typeof rawOnChange !== "function") {
-      return undefined;
-    }
+  const onChange = useCallback(
+    (newValue: string | Date | undefined): void => {
+      if (typeof rawOnChange !== "function") {
+        return;
+      }
 
-    const changedValue = getChangedValue(newValue);
+      const changedValue = getChangedValue(newValue);
 
-    return rawOnChange(changedValue);
-  }
+      //
+      // Suppress change event when the value didn't change!
+      //
+      if (
+        value instanceof Date &&
+        changedValue instanceof Date &&
+        isEqual(value, changedValue)
+      ) {
+        return;
+      }
+
+      if (value === changedValue) {
+        return;
+      }
+
+      rawOnChange(changedValue);
+    },
+    [getChangedValue, rawOnChange, value]
+  );
 
   //
   // ViewDate

@@ -27,7 +27,7 @@
     },
     {
       "path": "dist/react-datetime.cjs.development.js",
-      "maxSize": "6 kB"
+      "maxSize": "10 kB"
     },
     {
       "path": "dist/react-datetime.esm.js",
@@ -39,7 +39,7 @@
     },
     {
       "path": "dist/react-datetime.umd.development.js",
-      "maxSize": "6 kB"
+      "maxSize": "10 kB"
     }
   ],
   "keywords": [
