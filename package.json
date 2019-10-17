@@ -85,10 +85,10 @@
     "react-dom": "^16.8.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.5",
-    "@types/react-dom": "^16.9.1",
-    "@typescript-eslint/eslint-plugin": "^2.3.3",
-    "@typescript-eslint/parser": "^2.3.3",
+    "@types/react": "^16.9.9",
+    "@types/react-dom": "^16.9.2",
+    "@typescript-eslint/eslint-plugin": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
     "bundlesize": "^0.18.0",
     "cssnano": "^4.1.10",
     "eslint-plugin-react-hooks": "^2.1.2",
@@ -98,7 +98,7 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "sass": "^1.23.0",
-    "tsdx": "^0.9.3",
+    "tsdx": "^0.10.5",
     "tslib": "^1.10.0",
     "typescript": "^3.6.4"
   },
@@ -107,7 +107,7 @@
     "@babel/preset-react": "^7.6.3",
     "@reach/popover": "^0.3.0",
     "classcat": "^4.0.2",
-    "date-fns": "^2.4.1",
+    "date-fns": "^2.5.0",
     "use-onclickoutside": "^0.3.1"
   }
 }
