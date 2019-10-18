@@ -30,9 +30,11 @@ yarn add @nateradebaugh/react-datetime
 
 ## Usage
 
-[React](https://reactjs.org/) and [date-fns](https://date-fns.org/) are peer dependencies for react-datetime. These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datepicker work. You can then use the datepicker like in the example below.
+[React](https://reactjs.org/) is a peer dependency for react-datetime. It is not installed along with react-datetime automatically, but your project needs to have it installed in order to make the datepicker work. You can then use the datepicker like in the example below.
 
-**Note:** [date-fns](https://github.com/date-fns/date-fns) v2 is required.
+**Note:** [date-fns](https://github.com/date-fns/date-fns) v2 is an internal dependency of the component. This means `dateFormat` and `timeFormat` must be supported in v2. Feel free to use whatever version of date stuff you want outside of this component.
+
+**Note 2:** The latest versions of @nateradebaugh/react-datetime only support controlled components. This means you need a `value` and `onChange` prop for the picker to work as expected!
 
 ```js
 import DateTime from "@nateradebaugh/react-datetime";
@@ -40,12 +42,14 @@ import "@nateradebaugh/react-datetime/scss/styles.scss";
 
 ...
 
-render() {
-    return <DateTime />;
+function ExampleWrapper() {
+    const [value, setValue] = React.useState(new Date());
+
+    return <DateTime value={value} onChange={setValue} />;
 }
 ```
 
-**Don't forget to add the [SCSS stylesheet](https://github.com/NateRadebaugh/react-datetime/blob/master/scss/styles.scss) to make it work out of the box.**
+**Don't forget to import the [SCSS stylesheet](https://github.com/NateRadebaugh/react-datetime/blob/master/scss/styles.scss) to make it work out of the box.**
 
 ## API
 
