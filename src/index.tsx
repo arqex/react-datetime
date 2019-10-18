@@ -23,12 +23,15 @@ function tryGetAsTime(date: any) {
   return date;
 }
 
-function useDefaultStateWithOverride<Type>(defaultValue: Type) {
+function useDefaultStateWithOverride<Type>(
+  defaultValue: Type,
+  maybeDate = true
+) {
   const [override, setOverride] = useState<Type | undefined>(undefined);
   const value = override || defaultValue;
 
   // Clear the override if the default changes
-  const changeVal = tryGetAsTime(defaultValue);
+  const changeVal = maybeDate ? tryGetAsTime(defaultValue) : defaultValue;
   useEffect(() => {
     setOverride(undefined);
   }, [changeVal]);
@@ -239,7 +242,10 @@ function DateTime(
   // ViewMode
   //
   const defaultViewMode = getViewMode(dateFormat, timeFormat);
-  const [viewMode, setViewMode] = useDefaultStateWithOverride(defaultViewMode);
+  const [viewMode, setViewMode] = useDefaultStateWithOverride(
+    defaultViewMode,
+    false
+  );
 
   //
   // ViewTimestamp
