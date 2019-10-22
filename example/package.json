@@ -18,7 +18,7 @@
     "date-fns": "^2.6.0",
     "react": "^16.10.2",
     "react-app-polyfill": "^1.0.4",
-    "react-dom": "^16.10.2"
+    "react-dom": "^16.11.0"
   },
   "alias": {
     "react": "../node_modules/react",
