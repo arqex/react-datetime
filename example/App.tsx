@@ -9,17 +9,19 @@ import ValidatedExample from "./ValidatedExample";
 
 export default function App() {
   return (
-    <div>
-      <SimpleExample />
-      <hr />
-      <LocalizationExample />
-      <hr />
-      <CustomizableExample />
-      <hr />
-      <ViewModeExample />
-      <hr />
-      <ValidatedExample />
-      <hr />
-    </div>
+    <React.StrictMode>
+      <div>
+        <SimpleExample />
+        <hr />
+        <LocalizationExample />
+        <hr />
+        <CustomizableExample />
+        <hr />
+        <ViewModeExample />
+        <hr />
+        <ValidatedExample />
+        <hr />
+      </div>
+    </React.StrictMode>
   );
 }
