@@ -4,9 +4,6 @@
 [![Build Status](https://secure.travis-ci.org/NateRadebaugh/react-datetime.svg)](https://travis-ci.org/NateRadebaugh/react-datetime)
 [![npm version](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime.svg)](https://badge.fury.io/js/%40nateradebaugh%2Freact-datetime)
 
-[![BCH compliance](https://bettercodehub.com/edge/badge/NateRadebaugh/react-datetime)](https://bettercodehub.com/results/NateRadebaugh/react-datetime)
-[![CodeFactor](https://www.codefactor.io/repository/github/NateRadebaugh/react-datetime/badge)](https://www.codefactor.io/repository/github/NateRadebaugh/react-datetime)
-
 ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@nateradebaugh/react-datetime.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/NateRadebaugh/react-datetime/badge.svg)](https://snyk.io/test/github/NateRadebaugh/react-datetime)
 
