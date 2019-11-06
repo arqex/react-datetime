@@ -859,10 +859,10 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@reach/component-component@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@reach/component-component/-/component-component-0.4.0.tgz#eef22d4eb704839301ebd35986448709bf92e411"
-  integrity sha512-5ofEOKLjcm7/jSw2wosliOqVOV0LvQEJ/QJoVa/mCQ8ASYdqJz6scYPoU687fiJlfS7WORIAfFX7n8ojzDNwqQ==
+"@reach/component-component@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@reach/component-component/-/component-component-0.5.0.tgz#db2855a03795566ad301167a33822c7b886cd0fe"
+  integrity sha512-lP2pS7Bx0cVFNUQgC8TP1xRy9hs6Bfd2H4vD5l2SFnnYvOWr7cNWmu4rGQZ1y+fdznS7JgrTz0PrLNA2tDFsTQ==
   dependencies:
     prop-types "^15.7.2"
 
@@ -871,35 +871,35 @@
   resolved "https://registry.yarnpkg.com/@reach/observe-rect/-/observe-rect-1.0.3.tgz#2ea3dcc369ab22bd9f050a92ea319321356a61e8"
   integrity sha1-LqPcw2mrIr2fBQqS6jGTITVqYeg=
 
-"@reach/popover@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@reach/popover/-/popover-0.4.0.tgz#e648a6f4bb43a1f0791a96b274b911bac6c76f22"
-  integrity sha512-up9uzuyRnSpb80iHt5vWrMYfwUSEZsAiVokF6D6e9CiS7FBimKiU6O22aBjIeyda1Lxy0oyrWKjb1p/roS2iPQ==
+"@reach/popover@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@reach/popover/-/popover-0.5.0.tgz#deefde027366f8a2758be0e907da971bb84d97f1"
+  integrity sha512-VgOofkJKFNtT5X61lLvjhTqFSLVBuCj47ZDR0IXkVstkRiRSfwoQDiu3Oze499hAQ8We8IH7MRyIi28yeCLJgA==
   dependencies:
-    "@reach/portal" "^0.4.0"
-    "@reach/rect" "^0.4.0"
-    "@reach/utils" "^0.4.0"
+    "@reach/portal" "^0.5.0"
+    "@reach/rect" "^0.5.0"
+    "@reach/utils" "^0.5.0"
     tabbable "^4.0.0"
 
-"@reach/portal@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@reach/portal/-/portal-0.4.0.tgz#c11e4714cb51fd4eac8dfdf26e25f5c77318c7ac"
-  integrity sha512-pIleAmXipuH4398Drs0Dr8btv+US8I0kgieXdH3I+XcliFbKtANjxFt8k9xgnNgYBSrp+f6l68fOWlmJ5q2FKg==
+"@reach/portal@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@reach/portal/-/portal-0.5.0.tgz#4ea4d345887f5b05861fec6762e33717775cb5e5"
+  integrity sha512-3WB6KLAVegGgWSvCVpXAUuo3tKOQi90l+V2ktzfUOCG5jxFTeEjDAA8MHZ7Zve5h1ZhBscGJKoO9UWxl1UNRhQ==
   dependencies:
-    "@reach/component-component" "^0.4.0"
+    "@reach/component-component" "^0.5.0"
 
-"@reach/rect@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@reach/rect/-/rect-0.4.0.tgz#bd4994866acb2a1512882636041c92d495fb09c1"
-  integrity sha512-tdagmV38JimQZ9lCszV/uFsiYQ8M7s5NHEzVa/Kl1MCH6ESkc1Peyu3ohko51wdgnh6N18KRo85uhDbL1h++2w==
+"@reach/rect@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@reach/rect/-/rect-0.5.0.tgz#943d1c97c2e662b194867badaebf263077df2069"
+  integrity sha512-5GGRDZ3ilO4WQMDtAwkA+mHwWw4Yio9pXx8y5q+Ecswu89Yd2kRs66YjTZR7seEysfwwmlb/EPCI+7QWq22R5Q==
   dependencies:
     "@reach/observe-rect" "^1.0.3"
     prop-types "^15.7.2"
 
-"@reach/utils@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.4.0.tgz#444f3b7384fc0adbe6f3787adb68befd42969b72"
-  integrity sha512-GBvIj0kTQIZpH5YnBmlq80qssJvF7NCf8/GgatNv+dQtBJflbC0qjXmVext9HQN+tajRXxmsGol3LK9SbEAWGw==
+"@reach/utils@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.5.0.tgz#2a64238a5a3ee57ee9742cf2579cacf41ae3a036"
+  integrity sha512-MXYKmCz7BGiCLuZnPI1sBlxQFdpdv3O1Oc13k6oumJGd0eMN3+utGSs20gBH17Ml3IKVqY+9UOLEuqGfyWytHQ==
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
