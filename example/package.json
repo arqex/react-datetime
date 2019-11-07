@@ -15,7 +15,7 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "date-fns": "^2.6.0",
+    "date-fns": "^2.7.0",
     "react": "^16.11.0",
     "react-app-polyfill": "^1.0.4",
     "react-dom": "^16.11.0"
