@@ -51,15 +51,16 @@
     "datetime"
   ],
   "scripts": {
-    "now-build": "yarn tsdx build",
+    "now-build": "build-storybook -c .storybook -o public",
     "build": "tsdx build --format=umd,esm,cjs",
     "dev": "tsdx watch --format=esm",
     "start": "yarn dev",
     "lint": "yarn eslint src --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn eslint src --ext .js,.ts,.jsx,.tsx --fix",
     "prettier": "prettier --write {src,scss}/*.{json,js,jsx,ts,tsx,scss} *.{json,js,md,mdx}",
-    "prepare": "yarn build",
-    "predeploy": "cd example && yarn install && yarn build"
+    "predeploy": "cd example && yarn install && yarn build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook -c .storybook -o .out"
   },
   "lint-staged": {
     "{src}/**/*.{js,jsx,ts,tsx}": [
@@ -86,11 +87,18 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.6.3",
+    "@storybook/addon-actions": "^5.2.6",
+    "@storybook/addon-links": "^5.2.6",
+    "@storybook/addons": "^5.2.6",
+    "@storybook/react": "^5.2.6",
     "@types/react": "^16.9.9",
     "@types/react-dom": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.6",
     "bundlesize": "^0.18.0",
+    "css-loader": "^3.2.0",
     "cssnano": "^4.1.10",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
@@ -99,13 +107,15 @@
     "eslint-plugin-react-hooks": "^2.1.2",
     "husky": "^3.0.5",
     "lint-staged": "^9.4.2",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "sass": "^1.23.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
     "tsdx": "0.11.0",
     "tslib": "^1.10.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.2"
   },
   "dependencies": {
     "@babel/core": "^7.6.3",

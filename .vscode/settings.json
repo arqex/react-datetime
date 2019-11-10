@@ -9,5 +9,6 @@
       "autoFix": true
     }
   ],
-  "tslint.enable": false
+  "tslint.enable": false,
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
