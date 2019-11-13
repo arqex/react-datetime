@@ -10,30 +10,41 @@ interface CalendarContainerProps {
   viewMode: ViewMode | undefined;
 }
 
-function CalendarContainer(
+const CalendarContainer = React.forwardRef(function CalendarContainer(
   props: CalendarContainerProps &
     TimeViewProps &
     DaysViewProps &
     MonthsViewProps &
-    YearsViewProps
+    YearsViewProps,
+  ref: any
 ) {
   const { viewMode, ...rest } = props;
 
+  let el: JSX.Element | undefined;
   switch (viewMode) {
     case "time":
-      return <TimeView {...rest} />;
-
-    case "days":
-      return <DaysView {...rest} />;
+      el = <TimeView {...rest} />;
+      break;
 
     case "months":
-      return <MonthsView {...rest} />;
+      el = <MonthsView {...rest} />;
+      break;
 
     case "years":
-      return <YearsView {...rest} />;
+      el = <YearsView {...rest} />;
+      break;
+
+    case "days":
+    default:
+      el = <DaysView {...rest} />;
+      break;
   }
 
-  throw new Error("Unsupported view mode.");
-}
+  return (
+    <div ref={ref} className="rdtPicker">
+      {el}
+    </div>
+  );
+});
 
 export default CalendarContainer;

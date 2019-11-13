@@ -212,7 +212,7 @@ function TimeView(props: TimeViewProps) {
     viewTimestamp = new Date(),
     dateFormat = false,
     setViewMode,
-    timeFormat,
+    timeFormat = "h:mm a",
     formatOptions,
     setSelectedDate
   } = props;

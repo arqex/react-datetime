@@ -402,9 +402,7 @@ function DateTime(
       <input ref={inputRef} key="i" {...finalInputProps} />
       {isOpen && (
         <Popover targetRef={inputRef}>
-          <div ref={contentRef} className="rdtPicker">
-            <CalendarContainer {...calendarProps} />
-          </div>
+          <CalendarContainer ref={contentRef} {...calendarProps} />
         </Popover>
       )}
     </div>
