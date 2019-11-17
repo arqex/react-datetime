@@ -1,5 +1,4 @@
 import * as React from "react";
-import cc from "classcat";
 import Popover from "@reach/popover";
 import useOnClickOutside from "use-onclickoutside";
 
@@ -371,6 +370,7 @@ function DateTime(
   //
   const finalInputProps = {
     ...rest,
+    ref: inputRef,
     type: "text",
     onClick: open,
     onFocus: open,
@@ -383,6 +383,7 @@ function DateTime(
   // Calendar props
   //
   const calendarProps = {
+    ref: contentRef,
     dateFormat,
     timeFormat,
     viewDate,
@@ -397,15 +398,17 @@ function DateTime(
     isValidDate
   };
 
-  return (
-    <div className={cc(["rdt", { rdtOpen: isOpen }])}>
-      <input ref={inputRef} key="i" {...finalInputProps} />
+  return input ? (
+    <>
+      <input {...finalInputProps} />
       {isOpen && (
         <Popover targetRef={inputRef}>
-          <CalendarContainer ref={contentRef} {...calendarProps} />
+          <CalendarContainer {...calendarProps} />
         </Popover>
       )}
-    </div>
+    </>
+  ) : (
+    <CalendarContainer {...calendarProps} />
   );
 }
 

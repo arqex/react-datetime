@@ -22,14 +22,16 @@ export function SimpleExample() {
     return (
       <div>
         <strong>Props:</strong> {JSON.stringify(props)}
-        <DateTime
-          value={value}
-          onChange={newVal => {
-            console.log({ newVal });
-            setValue(newVal);
-          }}
-          {...props}
-        />
+        <div>
+          <DateTime
+            value={value}
+            onChange={newVal => {
+              console.log({ newVal });
+              setValue(newVal);
+            }}
+            {...props}
+          />
+        </div>
         <br />
       </div>
     );
