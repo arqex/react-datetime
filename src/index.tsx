@@ -109,6 +109,28 @@ function getViewMode(
   return undefined;
 }
 
+function getDateTypeMode(
+  rawDateTypeMode: DateTypeMode | undefined,
+  value: string | number | Date | undefined
+): DateTypeMode {
+  if (typeof rawDateTypeMode === "string") {
+    const lowerRawDateTypeMode = rawDateTypeMode.toLowerCase();
+    switch (lowerRawDateTypeMode) {
+      case "utc-ms-timestamp":
+      case "input-format":
+        return lowerRawDateTypeMode;
+    }
+  } else if (typeof value === "number") {
+    return "utc-ms-timestamp";
+  }
+
+  if (rawDateTypeMode) {
+    return rawDateTypeMode;
+  }
+
+  return "Date";
+}
+
 export type DateTypeMode = "utc-ms-timestamp" | "input-format" | "Date";
 
 interface DateTimeProps {
@@ -124,6 +146,8 @@ interface DateTimeProps {
   timeFormat?: string | boolean;
 
   locale?: any;
+
+  shouldHideInput?: boolean;
 }
 
 function DateTime(
@@ -143,8 +167,9 @@ function DateTime(
     dateFormat: rawDateFormat = true,
     timeFormat: rawTimeFormat = true,
     locale,
+    shouldHideInput = false,
     ...rest
-  } = props;
+  } = props as DateTimeProps;
 
   //
   // Formats
@@ -161,16 +186,7 @@ function DateTime(
   };
 
   const valueAsDate = parse(value, fullFormat, formatOptions);
-  const dateTypeMode: DateTypeMode =
-    typeof rawDateTypeMode === "string"
-      ? rawDateTypeMode.toLowerCase() === "utc-ms-timestamp"
-        ? "utc-ms-timestamp"
-        : rawDateTypeMode.toLowerCase() === "input-format"
-        ? "input-format"
-        : "Date"
-      : value && typeof value === "number"
-      ? "utc-ms-timestamp"
-      : "Date";
+  const dateTypeMode = getDateTypeMode(rawDateTypeMode, value);
 
   const getChangedValue = useCallback(
     (newValue: undefined | string | Date) => {
@@ -273,7 +289,7 @@ function DateTime(
 
     if (typeof onBlur === "function") {
       const changedValue = getChangedValue(newValue);
-      onBlur(changedValue as any);
+      onBlur(changedValue);
     }
   }
 
@@ -320,8 +336,8 @@ function DateTime(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateTypeMode, fullFormat]);
 
-  function onInputChange(e: React.FormEvent<HTMLInputElement>) {
-    const { value: newValue } = e.target as HTMLInputElement;
+  function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { value: newValue } = e.target;
 
     const newValueAsDate = parse(newValue, fullFormat, formatOptions);
     if (newValueAsDate) {
@@ -398,7 +414,7 @@ function DateTime(
     isValidDate
   };
 
-  return input ? (
+  return !shouldHideInput ? (
     <>
       <input {...finalInputProps} />
       {isOpen && (
