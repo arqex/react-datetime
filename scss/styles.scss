@@ -5,8 +5,8 @@
  */
 
 .rdtPicker {
-  width: 250px;
-  min-width: $dropdown-min-width;
+  display: inline-block;
+  min-width: 250px;
   margin-top: $dropdown-spacer;
   margin-bottom: $dropdown-spacer;
   background: $dropdown-bg;
@@ -141,20 +141,30 @@
     }
   }
 
-  .rdtActive,
-  .rdtActive:hover {
+  .rdtActive {
     background-color: $dropdown-link-active-bg;
     color: $dropdown-link-active-color;
     border-radius: $dropdown-border-radius;
+
+    &:hover {
+      background-color: darken($dropdown-link-active-bg, 10%);
+      color: $dropdown-link-active-color;
+    }
+
+    .rdtToday:before {
+      border-bottom-color: $dropdown-link-active-color;
+    }
   }
-  .rdtActive.rdtToday:before {
-    border-bottom-color: $dropdown-link-active-color;
-  }
+
   .rdtDisabled,
   .rdtDisabled:hover {
     background: none;
     color: $dropdown-link-disabled-color;
     cursor: not-allowed;
+  }
+
+  .rdtDays {
+    display: inline-block;
   }
 
   .rdtCounters {
