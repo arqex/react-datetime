@@ -144,7 +144,7 @@ function DateTime(
     timeFormat: rawTimeFormat = true,
     locale,
     ...rest
-  } = props as DateTimeProps;
+  } = props;
 
   //
   // Formats
