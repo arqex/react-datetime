@@ -1272,10 +1272,10 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@reach/component-component@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@reach/component-component/-/component-component-0.5.0.tgz#db2855a03795566ad301167a33822c7b886cd0fe"
-  integrity sha512-lP2pS7Bx0cVFNUQgC8TP1xRy9hs6Bfd2H4vD5l2SFnnYvOWr7cNWmu4rGQZ1y+fdznS7JgrTz0PrLNA2tDFsTQ==
+"@reach/component-component@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@reach/component-component/-/component-component-0.6.1.tgz#f854f024c4b3b15ea45f08e030357b61b27982da"
+  integrity sha512-U7iPkAt/Tk8soRtOhPR+lWNULnSCUSwvQusCQiNmmlh6eLI4gVOw61NO9NNcFmMC3yHQ7z7O6GfoajAbgI0mjA==
   dependencies:
     prop-types "^15.7.2"
 
@@ -1284,27 +1284,27 @@
   resolved "https://registry.yarnpkg.com/@reach/observe-rect/-/observe-rect-1.0.3.tgz#2ea3dcc369ab22bd9f050a92ea319321356a61e8"
   integrity sha1-LqPcw2mrIr2fBQqS6jGTITVqYeg=
 
-"@reach/popover@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@reach/popover/-/popover-0.5.0.tgz#deefde027366f8a2758be0e907da971bb84d97f1"
-  integrity sha512-VgOofkJKFNtT5X61lLvjhTqFSLVBuCj47ZDR0IXkVstkRiRSfwoQDiu3Oze499hAQ8We8IH7MRyIi28yeCLJgA==
+"@reach/popover@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@reach/popover/-/popover-0.6.1.tgz#f00358165505a3d164053cd8c86e0c641c600e33"
+  integrity sha512-tMDm/pdN1CFn9YOYNsnvthnq7AulnTQ9DLMrOXOAV8MiKL3R3h14nTBKfVLA1UM75gGe+xvE+bH4QpjYpirTpw==
   dependencies:
-    "@reach/portal" "^0.5.0"
-    "@reach/rect" "^0.5.0"
-    "@reach/utils" "^0.5.0"
+    "@reach/portal" "^0.6.1"
+    "@reach/rect" "^0.6.1"
+    "@reach/utils" "^0.6.1"
     tabbable "^4.0.0"
 
-"@reach/portal@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@reach/portal/-/portal-0.5.0.tgz#4ea4d345887f5b05861fec6762e33717775cb5e5"
-  integrity sha512-3WB6KLAVegGgWSvCVpXAUuo3tKOQi90l+V2ktzfUOCG5jxFTeEjDAA8MHZ7Zve5h1ZhBscGJKoO9UWxl1UNRhQ==
+"@reach/portal@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@reach/portal/-/portal-0.6.1.tgz#58676b1365d7cb2802b78117e6caa0e5d2d9408b"
+  integrity sha512-qkct8i9z6E3CBY0H26XCDpO5rWxsRicgpFMO9phMR4mKu8EjnADDt4VgOD/Ur51cRuD6Hf3VLRD+HDZIVmXSIw==
   dependencies:
-    "@reach/component-component" "^0.5.0"
+    "@reach/component-component" "^0.6.1"
 
-"@reach/rect@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@reach/rect/-/rect-0.5.0.tgz#943d1c97c2e662b194867badaebf263077df2069"
-  integrity sha512-5GGRDZ3ilO4WQMDtAwkA+mHwWw4Yio9pXx8y5q+Ecswu89Yd2kRs66YjTZR7seEysfwwmlb/EPCI+7QWq22R5Q==
+"@reach/rect@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@reach/rect/-/rect-0.6.1.tgz#7284b08bae7a9e3df44ef7f06cb0fce7b08ebcfe"
+  integrity sha512-S0/KVuyS0iM7GUpOX3L94He+wfwUyAuLEw67/97TTq+6Ll4i1mekAQc4C6eZR3p8xvKdjBf5sSPEcEqXEoq3ew==
   dependencies:
     "@reach/observe-rect" "^1.0.3"
     prop-types "^15.7.2"
@@ -1320,10 +1320,10 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
-"@reach/utils@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.5.0.tgz#2a64238a5a3ee57ee9742cf2579cacf41ae3a036"
-  integrity sha512-MXYKmCz7BGiCLuZnPI1sBlxQFdpdv3O1Oc13k6oumJGd0eMN3+utGSs20gBH17Ml3IKVqY+9UOLEuqGfyWytHQ==
+"@reach/utils@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.6.1.tgz#7345dcd624f92779fb4a0fc4a28ab16d69b53476"
+  integrity sha512-SMGDydSjmvOz3Q4faGGJikdeqHumHmxB1YfYR7XTWrDQxJMod+J7mSkaS12NY4o/uPQ4xOwwL6cXWN+KpFjOQg==
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
@@ -5182,10 +5182,17 @@ escodegen@^1.12.0, escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-prettier@^6.0.0, eslint-config-prettier@^6.4.0:
+eslint-config-prettier@^6.0.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.5.0.tgz#aaf9a495e2a816865e541bfdbb73a65cc162b3eb"
   integrity sha512-cjXp8SbO9VFGW/Z7mbTydqS9to8Z58E5aYhj3e1+Hx7lS9s6gL5ILKNpCqZAFOVYRcSkWPFYljHrEh8QFEK5EQ==
+  dependencies:
+    get-stdin "^6.0.0"
+
+eslint-config-prettier@^6.6.0:
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.6.0.tgz#4e039f65af8245e32d8fba4a2f5b83ed7186852e"
+  integrity sha512-6RGaj7jD+HeuSVHoIT6A0WkBhVEk0ULg74kp2FAWIwkYrOERae0TjIO09Cw33oN//gJWmt7aFhVJErEVta7uvA==
   dependencies:
     get-stdin "^6.0.0"
 
@@ -10477,10 +10484,10 @@ react-dev-utils@^9.0.0:
     strip-ansi "5.2.0"
     text-table "0.2.0"
 
-react-docgen-typescript-loader@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-docgen-typescript-loader/-/react-docgen-typescript-loader-3.3.0.tgz#c1f5c1db9a2b6a6bca220bc50fee0a071bc75499"
-  integrity sha512-gC0TeWTz7s7OMyeABppQGbbrtSNi0yl/gBgZJElBtaBFNSJlHH1sfgQybHZmlZqFcn4UBa+8DOGT6wEJKWTV6g==
+react-docgen-typescript-loader@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/react-docgen-typescript-loader/-/react-docgen-typescript-loader-3.4.0.tgz#9a293fe3129792ff45c58bbbbea2c560e0be0ef8"
+  integrity sha512-81Oev8qDLE3gJOOm3jpuE/6P6hQoZvuDeRmbhkCQfx8DUFaXeQHhbMBg2TNDHuVcuD/VI5AYUgFbMTwulHJuag==
   dependencies:
     "@webpack-contrib/schema-utils" "^1.0.0-beta.0"
     loader-utils "^1.2.3"
@@ -11326,10 +11333,10 @@ sass-loader@^8.0.0:
     schema-utils "^2.1.0"
     semver "^6.3.0"
 
-sass@^1.23.0:
-  version "1.23.3"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.23.3.tgz#f07503b9e8d2bcf06ef69e8beea5d085589b1620"
-  integrity sha512-1DKRZxJMOh4Bme16AbWTyYeJAjTlrvw2+fWshHHaepeJfGq2soFZTnt0YhWit+bohtDu4LdyPoEj6VFD4APHog==
+sass@^1.23.6:
+  version "1.23.6"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.23.6.tgz#7cce6dbeac1b8caeb33301a817642ee2708f7d7e"
+  integrity sha512-awBvj9xrAuiS2TOCcYSUGCmaBV3UW6fVSK4oJ2LHS8IRfnRLc5EJihw90C7ZJ/skcEwFGSf9/XO5NlMiKupBCg==
   dependencies:
     chokidar ">=2.0.0 <4.0.0"
 
