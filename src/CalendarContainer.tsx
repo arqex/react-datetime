@@ -1,4 +1,5 @@
 import * as React from "react";
+import cc from "classcat";
 
 import TimeView, { TimeViewProps } from "./TimeView";
 import DaysView, { DaysViewProps } from "./DaysView";
@@ -8,6 +9,7 @@ import { ViewMode } from "./.";
 
 interface CalendarContainerProps {
   viewMode: ViewMode | undefined;
+  isStatic?: boolean;
 }
 
 const CalendarContainer = React.forwardRef(function CalendarContainer(
@@ -18,7 +20,7 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
     YearsViewProps,
   ref: any
 ) {
-  const { viewMode, ...rest } = props;
+  const { viewMode, isStatic = true, ...rest } = props;
 
   let el: JSX.Element | undefined;
   switch (viewMode) {
@@ -41,7 +43,7 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
   }
 
   return (
-    <div ref={ref} className="rdtPicker">
+    <div ref={ref} className={cc(["rdtPicker", { rdtStatic: isStatic }])}>
       {el}
     </div>
   );

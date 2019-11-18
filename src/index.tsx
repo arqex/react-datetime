@@ -411,7 +411,8 @@ function DateTime(
     formatOptions,
     viewMode,
     setViewMode,
-    isValidDate
+    isValidDate,
+    isStatic: !shouldHideInput
   };
 
   return !shouldHideInput ? (

@@ -7,13 +7,16 @@
 .rdtPicker {
   display: inline-block;
   min-width: 250px;
-  margin-top: $dropdown-spacer;
-  margin-bottom: $dropdown-spacer;
   background: $dropdown-bg;
-  box-shadow: $dropdown-box-shadow;
   border: $dropdown-border-width solid $dropdown-border-color;
   border-radius: $dropdown-border-radius;
   font-size: $dropdown-font-size;
+
+  &:not(.rdtStatic) {
+    box-shadow: $dropdown-box-shadow;
+    margin-top: $dropdown-spacer;
+    margin-bottom: $dropdown-spacer;
+  }
 
   .rdtTimeToggle {
     padding-top: $dropdown-item-padding-y;
