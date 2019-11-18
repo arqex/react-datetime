@@ -412,7 +412,7 @@ function DateTime(
     viewMode,
     setViewMode,
     isValidDate,
-    isStatic: !shouldHideInput
+    isStatic: shouldHideInput
   };
 
   return !shouldHideInput ? (
