@@ -120,7 +120,7 @@
     "sass": "^1.23.6",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
-    "ts-jest": "^24.1.0",
+    "ts-jest": "^24.2.0",
     "ts-loader": "^6.2.1",
     "tsdx": "0.11.0",
     "tslib": "^1.10.0",
@@ -130,7 +130,7 @@
     "@babel/core": "^7.6.3",
     "@reach/popover": "^0.6.1",
     "classcat": "^4.0.2",
-    "date-fns": "^2.5.1",
+    "date-fns": "^2.8.1",
     "use-onclickoutside": "^0.3.1"
   }
 }
