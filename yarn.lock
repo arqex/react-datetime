@@ -353,12 +353,7 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.0.0", "@babel/parser@^7.1.0", "@babel/parser@^7.4.3", "@babel/parser@^7.7.0", "@babel/parser@^7.7.2":
-  version "7.7.2"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.7.2.tgz#ea8334dc77416bfd9473eb470fd00d8245b3943b"
-  integrity sha512-DDaR5e0g4ZTb9aP7cpSZLkACEBdoLGwJDWgHtBhrGX7Q1RjhdoMOfexICj5cqTAtpowjGQWfcvfnQG7G2kAB5w==
-
-"@babel/parser@^7.2.3", "@babel/parser@^7.4.2", "@babel/parser@^7.6.2":
+"@babel/parser@^7.0.0", "@babel/parser@^7.1.0", "@babel/parser@^7.2.3", "@babel/parser@^7.4.2", "@babel/parser@^7.4.3", "@babel/parser@^7.6.2", "@babel/parser@^7.7.0", "@babel/parser@^7.7.2":
   version "7.7.3"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.7.3.tgz#5fad457c2529de476a248f75b0f090b3060af043"
   integrity sha512-bqv+iCo9i+uLVbI0ILzKkvMorqxouI+GbV13ivcARXn9NNEabi2IEz912IgNpT/60BNXac5dgcfjb94NjsF33A==
@@ -1353,9 +1348,9 @@
     uuid "^3.3.2"
 
 "@storybook/addon-docs@^5.3.0-beta.0":
-  version "5.3.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-docs/-/addon-docs-5.3.0-beta.0.tgz#f3f5259f495744a41446929a3333753e3d72d3c3"
-  integrity sha512-BKqnVYYT1FeZGFPvcRXMOEDRHHWuaT05X9abVpJtiW2dQUfo/6td95g+XWjydQCnnEH4XrLIixMept5N/lANeA==
+  version "5.3.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-docs/-/addon-docs-5.3.0-beta.2.tgz#119bb0c9d7de8a1dfdafba0de41ed83c6a2ac088"
+  integrity sha512-5947aC1TYG/eAROmR9cTy05ZJEQJ170Y0Okte1q6J4GixOSEujxo22xVudjf7laT1dz8lQ3dIaoAfY/YSYQ8Pg==
   dependencies:
     "@babel/generator" "^7.4.0"
     "@babel/parser" "^7.4.2"
@@ -1365,13 +1360,13 @@
     "@mdx-js/loader" "^1.1.0"
     "@mdx-js/mdx" "^1.1.0"
     "@mdx-js/react" "^1.0.27"
-    "@storybook/addons" "5.3.0-beta.0"
-    "@storybook/api" "5.3.0-beta.0"
-    "@storybook/components" "5.3.0-beta.0"
-    "@storybook/postinstall" "5.3.0-beta.0"
-    "@storybook/router" "5.3.0-beta.0"
-    "@storybook/source-loader" "5.3.0-beta.0"
-    "@storybook/theming" "5.3.0-beta.0"
+    "@storybook/addons" "5.3.0-beta.2"
+    "@storybook/api" "5.3.0-beta.2"
+    "@storybook/components" "5.3.0-beta.2"
+    "@storybook/postinstall" "5.3.0-beta.2"
+    "@storybook/router" "5.3.0-beta.2"
+    "@storybook/source-loader" "5.3.0-beta.2"
+    "@storybook/theming" "5.3.0-beta.2"
     acorn "^7.1.0"
     acorn-jsx "^5.1.0"
     acorn-walk "^7.0.0"
@@ -1747,10 +1742,10 @@
     pretty-hrtime "^1.0.3"
     regenerator-runtime "^0.13.3"
 
-"@storybook/postinstall@5.3.0-beta.0":
-  version "5.3.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@storybook/postinstall/-/postinstall-5.3.0-beta.0.tgz#c53185ff33f301b898b3fd1f643fe7f9a035dbf1"
-  integrity sha512-HTEmdwMMES1lwAOtBlUNRjsMVb37IbOyu7UWmhvd5FSGVa8wSG8lGUJkbOyryy/eBegI7BJpsnfv96ih5W2ZSQ==
+"@storybook/postinstall@5.3.0-beta.2":
+  version "5.3.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@storybook/postinstall/-/postinstall-5.3.0-beta.2.tgz#2a1883a600034c4b5ea2d31a434eda87e61f4777"
+  integrity sha512-SPecX8EiSVF/iKOKo42hPAbCXj2ZOgSmOkr/sNgnHEnLHU3V9yzSpXUgnm72g4H3I8sfcrC5MPnPNVsBmFR+FA==
   dependencies:
     core-js "^3.0.1"
 
@@ -1812,14 +1807,14 @@
     memoizerific "^1.11.3"
     qs "^6.6.0"
 
-"@storybook/source-loader@5.3.0-beta.0":
-  version "5.3.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@storybook/source-loader/-/source-loader-5.3.0-beta.0.tgz#b9ea060fe15ca6d0db385ba2f1c6db9a2a11440b"
-  integrity sha512-RR+deAyy2U8TO+M+/cSbWVkzLPNpnjMeLlRimQnpdBzjxcvFUl8SpVErr+izvhPP0pkdRD52pjgMLFmy/ZaGbA==
+"@storybook/source-loader@5.3.0-beta.2":
+  version "5.3.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@storybook/source-loader/-/source-loader-5.3.0-beta.2.tgz#70653c448ba1a3a55924d8e6e2ef763dfd7913a5"
+  integrity sha512-ZAO8R5GAU6RyaOw8plrMDr7JyKvjLGuUU7Jzf6AJPQo1G4y6DHHOv7MndnVGcE2OEDYw1rHA6GqxInVQ6sKt/A==
   dependencies:
-    "@storybook/addons" "5.3.0-beta.0"
-    "@storybook/client-logger" "5.3.0-beta.0"
-    "@storybook/router" "5.3.0-beta.0"
+    "@storybook/addons" "5.3.0-beta.2"
+    "@storybook/client-logger" "5.3.0-beta.2"
+    "@storybook/router" "5.3.0-beta.2"
     core-js "^3.0.1"
     estraverse "^4.2.0"
     global "^4.3.2"
