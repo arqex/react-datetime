@@ -169,7 +169,7 @@ declare namespace ReactDatetimeClass {
          When true, keep the picker open when click event is triggered outside of component. When false,
          close it.
          */
-        disableOnClickOutside?: boolean;
+        disableCloseOnClickOutside?: boolean;
     }
 
     export interface DatetimepickerState {
