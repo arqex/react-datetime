@@ -1,0 +1,14 @@
+# .kodiak.toml
+# Minimal config. version is the only required field.
+version = 1
+
+[merge]
+method = "merge"
+delete_branch_on_merge = true
+
+[merge.message]
+title = "pull_request_title"
+body = "pull_request_body"
+include_pr_number = true
+body_type = "markdown"
+strip_html_comments = true # remove html comments to auto remove PR templates
