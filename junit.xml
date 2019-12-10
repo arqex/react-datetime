@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="35" failures="0" time="3.897">
+  <testsuite name="DateTime" errors="0" failures="0" skipped="0" timestamp="2019-12-10T16:53:24" time="2.978" tests="35">
+    <testcase classname="DateTime should render an input" name="DateTime should render an input" time="0.03">
+    </testcase>
+    <testcase classname="DateTime should render an input with className" name="DateTime should render an input with className" time="0.003">
+    </testcase>
+    <testcase classname="DateTime should render an input with id" name="DateTime should render an input with id" time="0.002">
+    </testcase>
+    <testcase classname="DateTime should render an with a invalid string value" name="DateTime should render an with a invalid string value" time="0.002">
+    </testcase>
+    <testcase classname="DateTime should render an with a date string value" name="DateTime should render an with a date string value" time="0.008">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open day picker when clicking" name="DateTime default - day picker should open day picker when clicking" time="0.065">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open day picker on focus" name="DateTime default - day picker should open day picker on focus" time="0.031">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open january day picker when clicking" name="DateTime default - day picker should open various months based on current date should open january day picker when clicking" time="0.038">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open february day picker when clicking" name="DateTime default - day picker should open various months based on current date should open february day picker when clicking" time="0.026">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open march day picker when clicking" name="DateTime default - day picker should open various months based on current date should open march day picker when clicking" time="0.028">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open april day picker when clicking" name="DateTime default - day picker should open various months based on current date should open april day picker when clicking" time="0.025">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open may day picker when clicking" name="DateTime default - day picker should open various months based on current date should open may day picker when clicking" time="0.022">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open june day picker when clicking" name="DateTime default - day picker should open various months based on current date should open june day picker when clicking" time="0.027">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open july day picker when clicking" name="DateTime default - day picker should open various months based on current date should open july day picker when clicking" time="0.024">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open august day picker when clicking" name="DateTime default - day picker should open various months based on current date should open august day picker when clicking" time="0.025">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open september day picker when clicking" name="DateTime default - day picker should open various months based on current date should open september day picker when clicking" time="0.022">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open october day picker when clicking" name="DateTime default - day picker should open various months based on current date should open october day picker when clicking" time="0.023">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open november day picker when clicking" name="DateTime default - day picker should open various months based on current date should open november day picker when clicking" time="0.021">
+    </testcase>
+    <testcase classname="DateTime default - day picker should open various months based on current date should open december day picker when clicking" name="DateTime default - day picker should open various months based on current date should open december day picker when clicking" time="0.017">
+    </testcase>
+    <testcase classname="DateTime default - day picker should choose day from picker" name="DateTime default - day picker should choose day from picker" time="0.024">
+    </testcase>
+    <testcase classname="DateTime default - day picker should mark date value as active with just date" name="DateTime default - day picker should mark date value as active with just date" time="0.017">
+    </testcase>
+    <testcase classname="DateTime default - day picker should mark date value as active with date and time" name="DateTime default - day picker should mark date value as active with date and time" time="0.021">
+    </testcase>
+    <testcase classname="DateTime month picker should open month picker when clicking" name="DateTime month picker should open month picker when clicking" time="0.015">
+    </testcase>
+    <testcase classname="DateTime month picker should open month picker on focus" name="DateTime month picker should open month picker on focus" time="0.014">
+    </testcase>
+    <testcase classname="DateTime month picker should choose month from picker" name="DateTime month picker should choose month from picker" time="0.01">
+    </testcase>
+    <testcase classname="DateTime month picker should mark month value as active with just date" name="DateTime month picker should mark month value as active with just date" time="0.014">
+    </testcase>
+    <testcase classname="DateTime month picker should mark month value as active with date and time" name="DateTime month picker should mark month value as active with date and time" time="0.013">
+    </testcase>
+    <testcase classname="DateTime year picker should open year picker when clicking" name="DateTime year picker should open year picker when clicking" time="0.033">
+    </testcase>
+    <testcase classname="DateTime year picker should open year picker on focus" name="DateTime year picker should open year picker on focus" time="0.03">
+    </testcase>
+    <testcase classname="DateTime year picker should choose year from picker" name="DateTime year picker should choose year from picker" time="0.031">
+    </testcase>
+    <testcase classname="DateTime year picker should mark year value as active with just date" name="DateTime year picker should mark year value as active with just date" time="0.03">
+    </testcase>
+    <testcase classname="DateTime year picker should mark year value as active with date and time" name="DateTime year picker should mark year value as active with date and time" time="0.027">
+    </testcase>
+    <testcase classname="DateTime time picker should open time picker when clicking" name="DateTime time picker should open time picker when clicking" time="0.011">
+    </testcase>
+    <testcase classname="DateTime time picker should open time picker on focus" name="DateTime time picker should open time picker on focus" time="0.011">
+    </testcase>
+    <testcase classname="DateTime time picker should use value when opening" name="DateTime time picker should use value when opening" time="0.012">
+    </testcase>
+  </testsuite>
+</testsuites>
