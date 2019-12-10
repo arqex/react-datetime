@@ -1453,14 +1453,14 @@
     vue-docgen-loader "^1.2.0"
 
 "@storybook/addon-info@^5.3.0-beta.18":
-  version "5.3.0-beta.19"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-5.3.0-beta.19.tgz#d35c91ad1ac66fdd6e8e21f1d7f88b0928089a48"
-  integrity sha512-ul7VVM3QqeNQ3TS7gYIS8tVScNbHh8uuMaGte3XHLOyXhv1Q/hKDGfwlpWFJsYMiD93oRmUmwu3jstqnIFSVTQ==
+  version "5.3.0-beta.20"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-5.3.0-beta.20.tgz#f43172da64d993c86f22da9cc072c15bb07ef853"
+  integrity sha512-8+5uTriPHtzWCNi/ICa81YalSVOwv8yLdFbr20vJjIZ//FZRvWxy9PTiNw+KkyDzRviziPKE8miv44JALZQFyQ==
   dependencies:
-    "@storybook/addons" "5.3.0-beta.19"
-    "@storybook/client-logger" "5.3.0-beta.19"
-    "@storybook/components" "5.3.0-beta.19"
-    "@storybook/theming" "5.3.0-beta.19"
+    "@storybook/addons" "5.3.0-beta.20"
+    "@storybook/client-logger" "5.3.0-beta.20"
+    "@storybook/components" "5.3.0-beta.20"
+    "@storybook/theming" "5.3.0-beta.20"
     core-js "^3.0.1"
     global "^4.3.2"
     marksy "^7.0.0"
@@ -1740,6 +1740,33 @@
   dependencies:
     "@storybook/client-logger" "5.3.0-beta.19"
     "@storybook/theming" "5.3.0-beta.19"
+    "@types/react-syntax-highlighter" "11.0.2"
+    "@types/react-textarea-autosize" "^4.3.3"
+    core-js "^3.0.1"
+    global "^4.3.2"
+    lodash "^4.17.15"
+    markdown-to-jsx "^6.9.1"
+    memoizerific "^1.11.3"
+    polished "^3.3.1"
+    popper.js "^1.14.7"
+    prop-types "^15.7.2"
+    react "^16.8.3"
+    react-dom "^16.8.3"
+    react-focus-lock "^2.1.0"
+    react-helmet-async "^1.0.2"
+    react-popper-tooltip "^2.8.3"
+    react-syntax-highlighter "^11.0.2"
+    react-textarea-autosize "^7.1.0"
+    simplebar-react "^1.0.0-alpha.6"
+    ts-dedent "^1.1.0"
+
+"@storybook/components@5.3.0-beta.20":
+  version "5.3.0-beta.20"
+  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-5.3.0-beta.20.tgz#b9a5392b32173b42c6896e46f4b2025f60984a5e"
+  integrity sha512-H1sQCkeIH6EUbE7h8CWaxBDm5s2tXdeqIefQUzFCwZIaL9zOe4EsGzwa9KCIGPendZpKg2RVtKBolIipadAQkw==
+  dependencies:
+    "@storybook/client-logger" "5.3.0-beta.20"
+    "@storybook/theming" "5.3.0-beta.20"
     "@types/react-syntax-highlighter" "11.0.2"
     "@types/react-textarea-autosize" "^4.3.3"
     core-js "^3.0.1"
