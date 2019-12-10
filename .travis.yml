@@ -8,6 +8,7 @@ node_js:
   - stable
 script:
   - yarn lint
+  - yarn build
   - yarn test:all
 notifications:
   email: false
