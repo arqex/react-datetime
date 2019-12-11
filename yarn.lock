@@ -1320,13 +1320,13 @@
   integrity sha1-LqPcw2mrIr2fBQqS6jGTITVqYeg=
 
 "@reach/popover@^0.6.1":
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/@reach/popover/-/popover-0.6.2.tgz#902091466ec9273412f6676788d85b22f481cfb0"
-  integrity sha512-v+uChUS1cvqOf7YoGm6w3WWHj8u9KLt7DEouETua3pHlS1mLDGasK+ENoiSMBnuz174j2JUSFIXdHSVEy6c54g==
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@reach/popover/-/popover-0.6.4.tgz#f123ed0d822f8c450c912d12c65f53a0b670a7d4"
+  integrity sha512-wQAIp6eprJQ2zuc9NcdfxVdVVuy1aS9ai6VwOumQkoem78BTjcIPe8sPIU/s3hKJu5ugIcDtbBqakMmyfxcOMQ==
   dependencies:
     "@reach/portal" "^0.6.2"
     "@reach/rect" "^0.6.2"
-    "@reach/utils" "^0.6.1"
+    "@reach/utils" "^0.6.4"
     tabbable "^4.0.0"
 
 "@reach/portal@^0.6.2":
@@ -1355,10 +1355,10 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
-"@reach/utils@^0.6.1":
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.6.1.tgz#7345dcd624f92779fb4a0fc4a28ab16d69b53476"
-  integrity sha512-SMGDydSjmvOz3Q4faGGJikdeqHumHmxB1YfYR7XTWrDQxJMod+J7mSkaS12NY4o/uPQ4xOwwL6cXWN+KpFjOQg==
+"@reach/utils@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.6.4.tgz#be268e1a7d04f921596b3672888a932c1832074a"
+  integrity sha512-jUWNb1STgR69WGkV4O/N4XOcUvM0u5LP1b9SR6VZsPRazpmzM8HUl3WsBVgMOnSCefZtk+wM4ig2/iYgdElwPw==
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
