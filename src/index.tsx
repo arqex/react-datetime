@@ -390,6 +390,7 @@ function DateTime(
     type: "text",
     onClick: open,
     onFocus: open,
+    onBlur: close,
     onChange: onInputChange,
     onKeyDown: onInputKeyDown,
     value: valueStr
