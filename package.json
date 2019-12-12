@@ -86,6 +86,11 @@
       "pre-commit": "lint-staged"
     }
   },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      ".stories.tsx"
+    ]
+  },
   "peerDependencies": {
     "react": ">=16.8",
     "react-dom": "^16.8.0"
