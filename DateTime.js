@@ -145,7 +145,8 @@ var Datetime = createClass({
 		return formats;
 	},
 
-	componentWillReceiveProps: function( nextProps ) {
+	// eslint-disable-next-line camelcase
+	UNSAFE_componentWillReceiveProps: function( nextProps ) {
 		var formats = this.getFormats( nextProps ),
 			updatedState = {}
 		;

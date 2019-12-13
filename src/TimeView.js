@@ -107,8 +107,8 @@ var DateTimePickerTime = createClass({
 			])
 		);
 	},
-
-	componentWillMount: function() {
+	// eslint-disable-next-line camelcase
+	UNSAFE_componentWillMount: function() {
 		var me = this;
 		me.timeConstraints = {
 			hours: {
@@ -137,8 +137,8 @@ var DateTimePickerTime = createClass({
 		});
 		this.setState( this.calculateState( this.props ) );
 	},
-
-	componentWillReceiveProps: function( nextProps ) {
+	// eslint-disable-next-line camelcase
+	UNSAFE_componentWillReceiveProps: function( nextProps ) {
 		this.setState( this.calculateState( nextProps ) );
 	},
 
