@@ -1373,16 +1373,16 @@
   integrity sha512-vTCdPp/T/Q3oSqwHmZ5Kpa9oI7iLtGl3RQaA/NyLHikvcrPxACkkKVr/XzkSPJWXHRhKGzVvb0urJsbMlRxi1Q==
 
 "@storybook/addon-actions@^5.3.0-beta.18":
-  version "5.3.0-beta.21"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-5.3.0-beta.21.tgz#e441f33c90abb78452ba168dbb00e13fd07e8c4b"
-  integrity sha512-Pfmj1zKYQXrs1VVz+TwuoWNQzfMNO0WTcnMzsSrJVNMWaw/xDNso41at1y+ldicKRH7DXpmyfLYZNhNO844JUA==
+  version "5.3.0-beta.22"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-5.3.0-beta.22.tgz#95a25f239df1fd7af4ddb5b08687ad389a61bdcc"
+  integrity sha512-ra/Em0ZPXQ14dMSJ3Y3QHL7CNvM/oJok1TiuH0sFwDxlMB5442ixCnCUenoFzNr6TMhBBPv2lcZQrFYUzeV6IQ==
   dependencies:
-    "@storybook/addons" "5.3.0-beta.21"
-    "@storybook/api" "5.3.0-beta.21"
-    "@storybook/client-api" "5.3.0-beta.21"
-    "@storybook/components" "5.3.0-beta.21"
-    "@storybook/core-events" "5.3.0-beta.21"
-    "@storybook/theming" "5.3.0-beta.21"
+    "@storybook/addons" "5.3.0-beta.22"
+    "@storybook/api" "5.3.0-beta.22"
+    "@storybook/client-api" "5.3.0-beta.22"
+    "@storybook/components" "5.3.0-beta.22"
+    "@storybook/core-events" "5.3.0-beta.22"
+    "@storybook/theming" "5.3.0-beta.22"
     core-js "^3.0.1"
     fast-deep-equal "^2.0.1"
     global "^4.3.2"
@@ -1553,6 +1553,17 @@
     global "^4.3.2"
     telejson "^3.2.0"
 
+"@storybook/channel-postmessage@5.3.0-beta.22":
+  version "5.3.0-beta.22"
+  resolved "https://registry.yarnpkg.com/@storybook/channel-postmessage/-/channel-postmessage-5.3.0-beta.22.tgz#8303d37e540e8ee9abb05bbd04f6d69f475efcf9"
+  integrity sha512-Z/hcD8izJ31mM2Wk4lk6PUCbor2nNiy5huMvnWNoBuHWseD0HOfHDl/XQPLZoPTAUFiJHM/04S8hTNwrWdqBUg==
+  dependencies:
+    "@storybook/channels" "5.3.0-beta.22"
+    "@storybook/client-logger" "5.3.0-beta.22"
+    core-js "^3.0.1"
+    global "^4.3.2"
+    telejson "^3.2.0"
+
 "@storybook/channels@5.3.0-beta.21":
   version "5.3.0-beta.21"
   resolved "https://registry.yarnpkg.com/@storybook/channels/-/channels-5.3.0-beta.21.tgz#2452633aa728c1962b86f6f101d9dc8432c49915"
@@ -1589,6 +1600,28 @@
     ts-dedent "^1.1.0"
     util-deprecate "^1.0.2"
 
+"@storybook/client-api@5.3.0-beta.22":
+  version "5.3.0-beta.22"
+  resolved "https://registry.yarnpkg.com/@storybook/client-api/-/client-api-5.3.0-beta.22.tgz#e0008dff9c705ad63cb93b966f4c17072885e3b7"
+  integrity sha512-5f9H9LeHo/a+YN7uImruwuu+FaPtk0xVYOjEWVEZNRLzDbW8XbfTU3AItJeBBErbgm4eYFj/jiDY0gmEdRir3w==
+  dependencies:
+    "@storybook/addons" "5.3.0-beta.22"
+    "@storybook/channel-postmessage" "5.3.0-beta.22"
+    "@storybook/channels" "5.3.0-beta.22"
+    "@storybook/client-logger" "5.3.0-beta.22"
+    "@storybook/core-events" "5.3.0-beta.22"
+    "@storybook/csf" "0.0.1"
+    core-js "^3.0.1"
+    eventemitter3 "^4.0.0"
+    global "^4.3.2"
+    is-plain-object "^3.0.0"
+    lodash "^4.17.15"
+    memoizerific "^1.11.3"
+    qs "^6.6.0"
+    stable "^0.1.8"
+    ts-dedent "^1.1.0"
+    util-deprecate "^1.0.2"
+
 "@storybook/client-logger@5.3.0-beta.21":
   version "5.3.0-beta.21"
   resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-5.3.0-beta.21.tgz#58f212c063a096090ade6d2043269a3a70c4c3a8"
@@ -1610,6 +1643,33 @@
   dependencies:
     "@storybook/client-logger" "5.3.0-beta.21"
     "@storybook/theming" "5.3.0-beta.21"
+    "@types/react-syntax-highlighter" "11.0.2"
+    "@types/react-textarea-autosize" "^4.3.3"
+    core-js "^3.0.1"
+    global "^4.3.2"
+    lodash "^4.17.15"
+    markdown-to-jsx "^6.9.1"
+    memoizerific "^1.11.3"
+    polished "^3.3.1"
+    popper.js "^1.14.7"
+    prop-types "^15.7.2"
+    react "^16.8.3"
+    react-dom "^16.8.3"
+    react-focus-lock "^2.1.0"
+    react-helmet-async "^1.0.2"
+    react-popper-tooltip "^2.8.3"
+    react-syntax-highlighter "^11.0.2"
+    react-textarea-autosize "^7.1.0"
+    simplebar-react "^1.0.0-alpha.6"
+    ts-dedent "^1.1.0"
+
+"@storybook/components@5.3.0-beta.22":
+  version "5.3.0-beta.22"
+  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-5.3.0-beta.22.tgz#cde38658462e0a8259150060e09cdf64654ac00d"
+  integrity sha512-IChpRTOo502Ins+fd/vsMVvIjSQOkLVUdczUIBU6+YMODIoD58Aark3d5/YZGpaNypP2FDGNRcSkCsn8yWyXsg==
+  dependencies:
+    "@storybook/client-logger" "5.3.0-beta.22"
+    "@storybook/theming" "5.3.0-beta.22"
     "@types/react-syntax-highlighter" "11.0.2"
     "@types/react-textarea-autosize" "^4.3.3"
     core-js "^3.0.1"
