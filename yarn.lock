@@ -1453,15 +1453,15 @@
     util-deprecate "^1.0.2"
 
 "@storybook/addon-links@^5.3.0-beta.18":
-  version "5.3.0-beta.22"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-5.3.0-beta.22.tgz#a714e43cab94d3c3811bca32363167bfd201e4f1"
-  integrity sha512-dkeKPhq/T5tdPvB05NFYSboBxW7nCYImo0PcWk248ofeV1GXOWm43dAOK8Khq2uRrfrGYI4GxtS9B53txz+Eng==
+  version "5.3.0-beta.23"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-5.3.0-beta.23.tgz#649943d257dafb2c66ab75f37d5394f3b07dbac2"
+  integrity sha512-t0vc5Uf0dl8c34JEmbXNe7hC0e0GLnRS2qCTM3xApIi48fASof7x4kViixZK0Ng08LOJYJc4+FH3hyRwwSaXQg==
   dependencies:
-    "@storybook/addons" "5.3.0-beta.22"
-    "@storybook/client-logger" "5.3.0-beta.22"
-    "@storybook/core-events" "5.3.0-beta.22"
+    "@storybook/addons" "5.3.0-beta.23"
+    "@storybook/client-logger" "5.3.0-beta.23"
+    "@storybook/core-events" "5.3.0-beta.23"
     "@storybook/csf" "0.0.1"
-    "@storybook/router" "5.3.0-beta.22"
+    "@storybook/router" "5.3.0-beta.23"
     core-js "^3.0.1"
     global "^4.3.2"
     prop-types "^15.7.2"
