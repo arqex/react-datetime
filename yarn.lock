@@ -1634,17 +1634,6 @@
     telejson "^3.2.0"
     util-deprecate "^1.0.2"
 
-"@storybook/channel-postmessage@5.3.0-beta.25":
-  version "5.3.0-beta.25"
-  resolved "https://registry.yarnpkg.com/@storybook/channel-postmessage/-/channel-postmessage-5.3.0-beta.25.tgz#962440e9951e7724ad1e9cafc495fb52957130b7"
-  integrity sha512-uJ7FErGVrOXkAuG3BzyYXaUsMCY0EFPgQmxFH+GyotHUHfiiPPe+28INZMzuTCun26QGc4kUlsfQmBrRePlBMg==
-  dependencies:
-    "@storybook/channels" "5.3.0-beta.25"
-    "@storybook/client-logger" "5.3.0-beta.25"
-    core-js "^3.0.1"
-    global "^4.3.2"
-    telejson "^3.2.0"
-
 "@storybook/channel-postmessage@5.3.0-beta.31":
   version "5.3.0-beta.31"
   resolved "https://registry.yarnpkg.com/@storybook/channel-postmessage/-/channel-postmessage-5.3.0-beta.31.tgz#aa57210ecbd4132096044a20431d27f0279e574e"
@@ -1676,28 +1665,6 @@
   integrity sha512-bDMm/CKReXmE6W24OOA3IDowvMds2eh/ITbppBSXjWZJn5QudXM7WWbW/SIMiiG22ZFhiWq6PAkZsc7BEfQlng==
   dependencies:
     core-js "^3.0.1"
-
-"@storybook/client-api@5.3.0-beta.25":
-  version "5.3.0-beta.25"
-  resolved "https://registry.yarnpkg.com/@storybook/client-api/-/client-api-5.3.0-beta.25.tgz#be9742251658515f4d140fd325c42c8aeb606e3a"
-  integrity sha512-2XcslfMnEH83JeyVF4D8aNA8nml24H7VJtfYxKwHVCXNerDbD0yKa/a4IQ5BqtUkRO6+pB4nG+t2PFyuk9IguQ==
-  dependencies:
-    "@storybook/addons" "5.3.0-beta.25"
-    "@storybook/channel-postmessage" "5.3.0-beta.25"
-    "@storybook/channels" "5.3.0-beta.25"
-    "@storybook/client-logger" "5.3.0-beta.25"
-    "@storybook/core-events" "5.3.0-beta.25"
-    "@storybook/csf" "0.0.1"
-    core-js "^3.0.1"
-    eventemitter3 "^4.0.0"
-    global "^4.3.2"
-    is-plain-object "^3.0.0"
-    lodash "^4.17.15"
-    memoizerific "^1.11.3"
-    qs "^6.6.0"
-    stable "^0.1.8"
-    ts-dedent "^1.1.0"
-    util-deprecate "^1.0.2"
 
 "@storybook/client-api@5.3.0-beta.31":
   version "5.3.0-beta.31"
@@ -12713,18 +12680,10 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
-style-loader@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-1.0.0.tgz#1d5296f9165e8e2c85d24eee0b7caf9ec8ca1f82"
-  integrity sha512-B0dOCFwv7/eY31a5PCieNwMgMhVGFe9w+rh7s/Bx8kfFkrth9zfTZquoYvdw8URgiqxObQKcpW51Ugz1HjfdZw==
-  dependencies:
-    loader-utils "^1.2.3"
-    schema-utils "^2.0.1"
-
-style-loader@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-1.0.1.tgz#aec6d4c61d0ed8d0a442faed741d4dfc6573888a"
-  integrity sha512-CnpEkSR1C+REjudiTWCv4+ssP7SCiuaQZJTZDWBRwTJoS90mdqkB8uOGMHKgVeUzpaU7IfLWoyQbvvs5Joj3Xw==
+style-loader@^1.0.0, style-loader@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-1.0.2.tgz#433d72eab8d1dd7d64c648b8ad7d9cbff3184111"
+  integrity sha512-xehHGWeCPrr+R/bU82To0j7L7ENzH30RHYmMhmAumbuIpQ/bHmv3SAj1aTRfBSszkXoqNtpKnJyWXEDydS+KeA==
   dependencies:
     loader-utils "^1.2.3"
     schema-utils "^2.0.1"
