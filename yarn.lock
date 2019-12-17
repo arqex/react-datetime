@@ -1428,16 +1428,16 @@
   integrity sha512-vTCdPp/T/Q3oSqwHmZ5Kpa9oI7iLtGl3RQaA/NyLHikvcrPxACkkKVr/XzkSPJWXHRhKGzVvb0urJsbMlRxi1Q==
 
 "@storybook/addon-actions@^5.3.0-beta.18":
-  version "5.3.0-beta.25"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-5.3.0-beta.25.tgz#a8212f879b4869b94afc9e83bb8fb76968227b49"
-  integrity sha512-+gXcIeAkzNEbEcAO0rm6Sdabv+XJSjOS3dLwW1hZTGcCwWxU0UXfI4YDJyJ/azbhWdq+jdplZH8WqB9oPrcnjg==
+  version "5.3.0-beta.31"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-5.3.0-beta.31.tgz#712bf1dff0ac077b0921a1a74c7d009bf92fd707"
+  integrity sha512-0Z0Eoklhxv0O4B3Vae1gbj2IAg7UWdo5f3EMetqbXFMSlg+khmhEQyTu6jaXUwXQHh+eHk83tHkskJIeHrPh4w==
   dependencies:
-    "@storybook/addons" "5.3.0-beta.25"
-    "@storybook/api" "5.3.0-beta.25"
-    "@storybook/client-api" "5.3.0-beta.25"
-    "@storybook/components" "5.3.0-beta.25"
-    "@storybook/core-events" "5.3.0-beta.25"
-    "@storybook/theming" "5.3.0-beta.25"
+    "@storybook/addons" "5.3.0-beta.31"
+    "@storybook/api" "5.3.0-beta.31"
+    "@storybook/client-api" "5.3.0-beta.31"
+    "@storybook/components" "5.3.0-beta.31"
+    "@storybook/core-events" "5.3.0-beta.31"
+    "@storybook/theming" "5.3.0-beta.31"
     core-js "^3.0.1"
     fast-deep-equal "^2.0.1"
     global "^4.3.2"
