@@ -172,8 +172,8 @@ export function CustomizableExample() {
         <option value="">false</option>
         <option>hh:mm a</option>
         <option>HH:mm:ss</option>
-        <option>HH:mm:SSS</option>
-        <option>hh:mm:SSS a</option>
+        <option>HH:mm:ss.SSS</option>
+        <option>hh:mm:ss.SSS a</option>
         <option>hmm</option>
         <option>HH:mm xxx</option>
       </Select>

@@ -32,7 +32,7 @@ function YearsView(props: YearsViewProps) {
   const startYear = Math.floor(getYear(viewDate) / 10) * 10;
 
   return (
-    <div className="rdtYears">
+    <div className="rdtYears" data-testid="year-picker">
       <table>
         <thead>
           <tr>
@@ -44,6 +44,7 @@ function YearsView(props: YearsViewProps) {
             </th>
             <th
               className="rdtSwitch"
+              data-testid="year-mode-switcher"
               onClick={() => setViewMode("years")}
               colSpan={2}
             >
