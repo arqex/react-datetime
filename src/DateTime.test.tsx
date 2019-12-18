@@ -2,7 +2,10 @@ import * as React from "react";
 import {
   render,
   fireEvent,
-  getByText
+  getByText,
+  getByTestId,
+  queryByTestId,
+  getAllByText
   //queryByText
 } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
@@ -91,11 +94,8 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const monthName = getByText(document.body, /january/i);
-      expect(monthName).toBeVisible();
-
-      const dayOfWeekRow = getByText(document.body, "Su");
-      expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+      const picker = getByTestId(document.body, "day-picker");
+      expect(picker).toBeVisible();
     });
 
     it("should open day picker on focus", () => {
@@ -114,11 +114,8 @@ describe("DateTime", () => {
       fireEvent.focus(element);
 
       // Assert
-      const monthName = getByText(document.body, /january/i);
-      expect(monthName).toBeVisible();
-
-      const dayOfWeekRow = getByText(document.body, "Su");
-      expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+      const picker = getByTestId(document.body, "day-picker");
+      expect(picker).toBeVisible();
     });
 
     // it("should close day picker on blur", () => {
@@ -163,6 +160,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /january/i);
         expect(monthName).toBeVisible();
 
@@ -186,6 +185,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /february/i);
         expect(monthName).toBeVisible();
 
@@ -209,6 +210,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /march/i);
         expect(monthName).toBeVisible();
 
@@ -232,6 +235,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /april/i);
         expect(monthName).toBeVisible();
 
@@ -255,6 +260,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /may/i);
         expect(monthName).toBeVisible();
 
@@ -278,6 +285,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /june/i);
         expect(monthName).toBeVisible();
 
@@ -301,6 +310,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /july/i);
         expect(monthName).toBeVisible();
 
@@ -324,6 +335,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /august/i);
         expect(monthName).toBeVisible();
 
@@ -347,6 +360,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /september/i);
         expect(monthName).toBeVisible();
 
@@ -370,6 +385,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /october/i);
         expect(monthName).toBeVisible();
 
@@ -393,6 +410,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /november/i);
         expect(monthName).toBeVisible();
 
@@ -416,6 +435,8 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
         const monthName = getByText(document.body, /december/i);
         expect(monthName).toBeVisible();
 
@@ -443,6 +464,8 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
+      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
       const someDay = getByText(document.body, "16");
       expect(someDay).toBeVisible();
 
@@ -476,6 +499,8 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
+      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
       const someDay = getByText(document.body, "16");
       expect(someDay).toBeVisible();
       expect(someDay).toHaveClass("rdtActive");
@@ -505,6 +530,8 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
+      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
       const someDay = getByText(document.body, "16");
       expect(someDay).toBeVisible();
       expect(someDay).toHaveClass("rdtActive");
@@ -528,7 +555,7 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const picker = getByText(document.body, /jan/i);
+      const picker = getByTestId(document.body, "month-picker");
       expect(picker).toBeVisible();
 
       {
@@ -563,7 +590,7 @@ describe("DateTime", () => {
       fireEvent.focus(element);
 
       // Assert
-      const picker = getByText(document.body, /jan/i);
+      const picker = getByTestId(document.body, "month-picker");
       expect(picker).toBeVisible();
 
       {
@@ -599,7 +626,7 @@ describe("DateTime", () => {
     //   fireEvent.focus(element);
 
     //   // Assert
-    //   const picker = getByText(document.body, /jan/i);
+    //   const picker = getByTestId(document.body, "month-picker");
     //   expect(picker).toBeVisible();
 
     //   fireEvent.blur(element);
@@ -980,5 +1007,229 @@ describe("DateTime", () => {
       );
       expect(textContent).toMatch(/213pm/i);
     });
+  });
+
+  describe("switchers", () => {
+    it("should switch to 'month mode' from 'day mode' when month picker is supported", () => {
+      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+
+      // Act
+      fireEvent.focus(element);
+
+      const dayPicker = getByTestId(document.body, "day-picker");
+      expect(dayPicker).toBeVisible();
+
+      const switcher = getByTestId(document.body, "day-mode-switcher");
+      expect(switcher).toBeVisible();
+
+      fireEvent.click(switcher);
+
+      // Assert
+      const monthPicker = getByTestId(document.body, "month-picker");
+      expect(monthPicker).toBeVisible();
+    });
+
+    it("should switch to 'time mode' when time picker is supported", () => {
+      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat="h:mm a" />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+
+      // Act
+      fireEvent.focus(element);
+
+      const dayPicker = getByTestId(document.body, "day-picker");
+      expect(dayPicker).toBeVisible();
+
+      const switcher = getByTestId(document.body, "day-to-time-mode-switcher");
+      expect(switcher).toBeVisible();
+
+      fireEvent.click(switcher);
+
+      // Assert
+      const timePicker = getByTestId(document.body, "time-picker");
+      expect(timePicker).toBeVisible();
+    });
+
+    it("should not switch to 'time mode' when time picker is not supported", () => {
+      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+
+      // Act
+      fireEvent.focus(element);
+
+      const dayPicker = getByTestId(document.body, "day-picker");
+      expect(dayPicker).toBeVisible();
+
+      // Assert
+      const switcher = queryByTestId(
+        document.body,
+        "day-to-time-mode-switcher"
+      );
+      expect(switcher).toBeNull();
+    });
+  });
+
+  it("should switch through to year mode, and pick a specific date through various pickers", () => {
+    mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+    // Arrange
+    const { getByLabelText } = render(
+      <>
+        <label htmlFor="some-id">Some Field</label>
+        <DateTime
+          id="some-id"
+          dateFormat="LL/dd/yyyy"
+          timeFormat="h:mm:ss.SSS a"
+        />
+      </>
+    );
+
+    const element = getByLabelText("Some Field");
+
+    // Act
+    fireEvent.focus(element);
+
+    {
+      const picker = getByTestId(document.body, "day-picker");
+      expect(picker).toBeVisible();
+    }
+
+    // day -> month picker
+    {
+      const switcher = getByTestId(document.body, "day-mode-switcher");
+      expect(switcher).toBeVisible();
+
+      fireEvent.click(switcher);
+
+      // Assert
+      const picker = getByTestId(document.body, "month-picker");
+      expect(picker).toBeVisible();
+    }
+
+    // month -> year picker
+    {
+      const switcher = getByTestId(document.body, "month-mode-switcher");
+      expect(switcher).toBeVisible();
+
+      fireEvent.click(switcher);
+
+      // Assert
+      const picker = getByTestId(document.body, "year-picker");
+      expect(picker).toBeVisible();
+    }
+
+    {
+      // click a year (switch to month picker)
+      fireEvent.click(getByText(document.body, "2020"));
+
+      const picker = getByTestId(document.body, "month-picker");
+      expect(picker).toBeVisible();
+    }
+
+    {
+      // click a month (switch to day picker)
+      fireEvent.click(getByText(document.body, "Feb"));
+
+      const picker = getByTestId(document.body, "day-picker");
+      expect(picker).toBeVisible();
+    }
+
+    // Switch to time mode
+    {
+      const switcher = getByTestId(document.body, "day-to-time-mode-switcher");
+      expect(switcher).toBeVisible();
+
+      fireEvent.click(switcher);
+    }
+
+    {
+      // Assert
+      const picker = getByTestId(document.body, "time-picker");
+      expect(picker).toBeVisible();
+
+      expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
+        /02\/01\/2020120000000AM/i
+      );
+
+      // Click to change the time
+      const upArrows = getAllByText(document.body, "▲");
+      expect(upArrows?.length).toBe(5);
+
+      const downArrows = getAllByText(document.body, "▼");
+      expect(downArrows?.length).toBe(5);
+
+      // Increase hours from 12 to 1
+      fireEvent.mouseDown(upArrows[0]);
+      fireEvent.mouseUp(upArrows[0]);
+
+      // Increase minutes from 00 to 05
+      for (let i = 0; i < 5; i++) {
+        fireEvent.mouseDown(upArrows[1]);
+        fireEvent.mouseUp(upArrows[1]);
+      }
+
+      // Increase seconds from 00 to 35
+      for (let i = 0; i < 35; i++) {
+        fireEvent.mouseDown(upArrows[2]);
+        fireEvent.mouseUp(upArrows[2]);
+      }
+
+      // Increase milliseconds from 000 to 321
+      for (let i = 0; i < 321; i++) {
+        fireEvent.mouseDown(upArrows[3]);
+        fireEvent.mouseUp(upArrows[3]);
+      }
+
+      // Decrease from AM to PM
+      fireEvent.mouseDown(downArrows[4]);
+      fireEvent.mouseUp(downArrows[4]);
+
+      expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
+        /02\/01\/202010535321PM/i
+      );
+    }
+
+    // Switch back to day mode
+    {
+      const switcher = getByTestId(document.body, "time-mode-switcher");
+      expect(switcher).toBeVisible();
+
+      fireEvent.click(switcher);
+    }
+
+    // click a day
+    fireEvent.click(getByText(document.body, "11"));
+
+    // Assert
+    expect(getByLabelText("Some Field")).toHaveValue(
+      "02/11/2020 1:05:35.321 PM"
+    );
   });
 });

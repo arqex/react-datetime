@@ -30,7 +30,7 @@ function MonthsView(props: MonthsViewProps) {
   } = props;
 
   return (
-    <div className="rdtMonths">
+    <div className="rdtMonths" data-testid="month-picker">
       <table>
         <thead>
           <tr>
@@ -42,6 +42,7 @@ function MonthsView(props: MonthsViewProps) {
             </th>
             <th
               className="rdtSwitch"
+              data-testid="month-mode-switcher"
               onClick={() => setViewMode("years")}
               colSpan={2}
             >

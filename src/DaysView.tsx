@@ -48,7 +48,7 @@ function DaysView(props: DaysViewProps) {
   );
 
   return (
-    <div className="rdtDays">
+    <div className="rdtDays" data-testid="day-picker">
       <table>
         <thead>
           <tr>
@@ -60,6 +60,7 @@ function DaysView(props: DaysViewProps) {
             </th>
             <th
               className="rdtSwitch"
+              data-testid="day-mode-switcher"
               onClick={() => setViewMode("months")}
               colSpan={5}
             >
@@ -135,6 +136,7 @@ function DaysView(props: DaysViewProps) {
                 onClick={() => setViewMode("time")}
                 colSpan={7}
                 className="rdtTimeToggle"
+                data-testid="day-to-time-mode-switcher"
               >
                 {format(viewDate, timeFormat, formatOptions)}
               </td>

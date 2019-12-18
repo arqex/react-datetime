@@ -220,13 +220,14 @@ function TimeView(props: TimeViewProps) {
   let numCounters = 0;
 
   return (
-    <div className="rdtTime">
+    <div className="rdtTime" data-testid="time-picker">
       <table>
         {dateFormat ? (
           <thead>
             <tr>
               <th
                 className="rdtSwitch"
+                data-testid="time-mode-switcher"
                 colSpan={4}
                 onClick={() => setViewMode("days")}
               >
