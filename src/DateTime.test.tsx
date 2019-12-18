@@ -475,6 +475,72 @@ describe("DateTime", () => {
       expect(element).toHaveValue("01/16/2019");
     });
 
+    it("should navigate to previous months from picker", () => {
+      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
+      // Go to previous month (twice)
+      const prevButton = getByText(document.body, "‹");
+      expect(prevButton).toBeVisible();
+      fireEvent.click(prevButton);
+      fireEvent.click(prevButton);
+
+      // Pick date
+      fireEvent.click(getByText(document.body, "16"));
+
+      expect(element).toHaveValue("11/16/2018");
+    });
+
+    it("should navigate to next months from picker", () => {
+      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
+      // Go to next month (twice)
+      const nextButton = getByText(document.body, "›");
+      expect(nextButton).toBeVisible();
+      fireEvent.click(nextButton);
+      fireEvent.click(nextButton);
+
+      // Pick date
+      fireEvent.click(getByText(document.body, "16"));
+
+      expect(element).toHaveValue("03/16/2019");
+    });
+
     it("should mark date value as active with just date", () => {
       mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
 
@@ -658,6 +724,66 @@ describe("DateTime", () => {
       expect(element).toHaveValue("06/2019");
     });
 
+    it("should navigate to previous year's months from picker", () => {
+      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="LL/yyyy" timeFormat={false} />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+
+      // Act
+      fireEvent.click(element);
+
+      // Go to previous year (twice)
+      const prevButton = getByText(document.body, "‹");
+      expect(prevButton).toBeVisible();
+      fireEvent.click(prevButton);
+      fireEvent.click(prevButton);
+
+      const someMonth = getByText(document.body, /jun/i);
+      fireEvent.click(someMonth);
+
+      // Assert
+      expect(element).toHaveValue("06/2017");
+    });
+
+    it("should navigate to next year's months from picker", () => {
+      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="LL/yyyy" timeFormat={false} />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+
+      // Act
+      fireEvent.click(element);
+
+      // Go to previous year (twice)
+      const nextButton = getByText(document.body, "›");
+      expect(nextButton).toBeVisible();
+      fireEvent.click(nextButton);
+      fireEvent.click(nextButton);
+
+      const someMonth = getByText(document.body, /jun/i);
+      fireEvent.click(someMonth);
+
+      // Assert
+      expect(element).toHaveValue("06/2021");
+    });
+
     it("should mark month value as active with just date", () => {
       mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
 
@@ -835,6 +961,8 @@ describe("DateTime", () => {
       // Act
       fireEvent.click(element);
 
+      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+
       const someYear = getByText(document.body, "2015");
       expect(someYear).toBeVisible();
 
@@ -842,6 +970,68 @@ describe("DateTime", () => {
 
       // Assert
       expect(element).toHaveValue("2015");
+    });
+
+    it("should navigate to previous decades from picker", () => {
+      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="yyyy" timeFormat={false} />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+
+      // Act
+      fireEvent.click(element);
+      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+
+      // Go to previous decade (twice)
+      const prevButton = getByText(document.body, "‹");
+      expect(prevButton).toBeVisible();
+      fireEvent.click(prevButton);
+      fireEvent.click(prevButton);
+
+      const someYear = getByText(document.body, "1990");
+      fireEvent.click(someYear);
+
+      // Assert
+      expect(element).toHaveValue("1990");
+    });
+
+    it("should navigate to next decades from picker", () => {
+      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="yyyy" timeFormat={false} />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+
+      // Act
+      fireEvent.click(element);
+      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+
+      // Go to next decade (twice)
+      const nextButton = getByText(document.body, "›");
+      expect(nextButton).toBeVisible();
+      fireEvent.click(nextButton);
+      fireEvent.click(nextButton);
+
+      const someYear = getByText(document.body, "2035");
+      fireEvent.click(someYear);
+
+      // Assert
+      expect(element).toHaveValue("2035");
     });
 
     it("should mark year value as active with just date", () => {
