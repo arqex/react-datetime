@@ -355,11 +355,15 @@ function DateTime(
       switch (e.which) {
         // Enter key
         case 13:
+          // Eat enter key
+          e.preventDefault();
+
         // Escape key
         case 27:
         // Tab key
         case 9:
           close();
+
           break;
       }
     } else {
