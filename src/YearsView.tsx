@@ -7,15 +7,16 @@ import getYear from "date-fns/getYear";
 import setYear from "date-fns/setYear";
 import getDaysInYear from "date-fns/getDaysInYear";
 import setDayOfYear from "date-fns/setDayOfYear";
+import { FormatOptions, ViewMode } from "./index";
 
 export interface YearsViewProps {
   viewDate: Date;
-  setViewDate: any;
+  setViewDate: (newViewDate: Date | undefined) => void;
   selectedDate: Date | undefined;
-  setSelectedDate: any;
-  formatOptions: any;
-  setViewMode: any;
-  isValidDate: any;
+  setSelectedDate: (newDate: Date, tryClose?: boolean) => void;
+  formatOptions: FormatOptions;
+  setViewMode: (newViewMode: ViewMode) => void;
+  isValidDate?: (date: Date) => boolean;
 }
 
 function YearsView(props: YearsViewProps) {

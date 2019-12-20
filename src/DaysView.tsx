@@ -11,16 +11,17 @@ import isSameDay from "date-fns/isSameDay";
 import isBefore from "date-fns/isBefore";
 import addMonths from "date-fns/addMonths";
 import getDate from "date-fns/getDate";
+import { FormatOptions, ViewMode } from "./index";
 
 export interface DaysViewProps {
   timeFormat: string | false;
   viewDate: Date;
-  setViewDate: any;
+  setViewDate: (newViewDate: Date | undefined) => void;
   selectedDate: Date | undefined;
-  setSelectedDate: any;
-  formatOptions: any;
-  setViewMode: any;
-  isValidDate: any;
+  setSelectedDate: (newDate: Date, tryClose?: boolean) => void;
+  formatOptions: FormatOptions;
+  setViewMode: (newViewMode: ViewMode) => void;
+  isValidDate?: (date: Date) => boolean;
 }
 
 function DaysView(props: DaysViewProps) {
