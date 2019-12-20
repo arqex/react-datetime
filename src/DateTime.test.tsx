@@ -81,7 +81,7 @@ describe("DateTime", () => {
 
   describe("day picker", () => {
     it("should open day picker when clicking", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -101,7 +101,7 @@ describe("DateTime", () => {
     });
 
     it("should open day picker on focus", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -121,7 +121,7 @@ describe("DateTime", () => {
     });
 
     // it("should close day picker on blur", () => {
-    //   mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+    //   mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
     //   // Arrange
     //   const { getByLabelText } = render(
@@ -147,7 +147,7 @@ describe("DateTime", () => {
 
     describe("should open various months based on current date", () => {
       it("should open january day picker when clicking", () => {
-        mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -172,7 +172,7 @@ describe("DateTime", () => {
       });
 
       it("should open february day picker when clicking", () => {
-        mockDate(new Date(2019, 1, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 1, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -197,7 +197,7 @@ describe("DateTime", () => {
       });
 
       it("should open march day picker when clicking", () => {
-        mockDate(new Date(2019, 2, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 2, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -222,7 +222,7 @@ describe("DateTime", () => {
       });
 
       it("should open april day picker when clicking", () => {
-        mockDate(new Date(2019, 3, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 3, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -247,7 +247,7 @@ describe("DateTime", () => {
       });
 
       it("should open may day picker when clicking", () => {
-        mockDate(new Date(2019, 4, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 4, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -272,7 +272,7 @@ describe("DateTime", () => {
       });
 
       it("should open june day picker when clicking", () => {
-        mockDate(new Date(2019, 5, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 5, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -297,7 +297,7 @@ describe("DateTime", () => {
       });
 
       it("should open july day picker when clicking", () => {
-        mockDate(new Date(2019, 6, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 6, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -322,7 +322,7 @@ describe("DateTime", () => {
       });
 
       it("should open august day picker when clicking", () => {
-        mockDate(new Date(2019, 7, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 7, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -347,7 +347,7 @@ describe("DateTime", () => {
       });
 
       it("should open september day picker when clicking", () => {
-        mockDate(new Date(2019, 8, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 8, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -372,7 +372,7 @@ describe("DateTime", () => {
       });
 
       it("should open october day picker when clicking", () => {
-        mockDate(new Date(2019, 9, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 9, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -397,7 +397,7 @@ describe("DateTime", () => {
       });
 
       it("should open november day picker when clicking", () => {
-        mockDate(new Date(2019, 10, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 10, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -422,7 +422,7 @@ describe("DateTime", () => {
       });
 
       it("should open december day picker when clicking", () => {
-        mockDate(new Date(2019, 11, 1, 12, 0, 0, 0));
+        mockDate(new Date(2019, 11, 1, 12, 1, 12, 34));
 
         // Arrange
         const { getByLabelText } = render(
@@ -448,7 +448,7 @@ describe("DateTime", () => {
     });
 
     it("should choose day from picker", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -478,7 +478,7 @@ describe("DateTime", () => {
     });
 
     it("should navigate to previous months from picker", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -511,7 +511,7 @@ describe("DateTime", () => {
     });
 
     it("should navigate to next months from picker", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -544,7 +544,7 @@ describe("DateTime", () => {
     });
 
     it("should mark date value as active with just date", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -575,7 +575,7 @@ describe("DateTime", () => {
     });
 
     it("should mark date value as active with date and time", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -608,7 +608,7 @@ describe("DateTime", () => {
 
   describe("month picker", () => {
     it("should open month picker when clicking", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -643,7 +643,7 @@ describe("DateTime", () => {
     });
 
     it("should open month picker on focus", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -678,7 +678,7 @@ describe("DateTime", () => {
     });
 
     // it("should close month picker on blur", () => {
-    //   mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+    //   mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
     //   // Arrange
     //   const { getByLabelText } = render(
@@ -703,7 +703,7 @@ describe("DateTime", () => {
     // });
 
     it("should choose month from picker", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -727,7 +727,7 @@ describe("DateTime", () => {
     });
 
     it("should navigate to previous year's months from picker", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -757,7 +757,7 @@ describe("DateTime", () => {
     });
 
     it("should navigate to next year's months from picker", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -787,7 +787,7 @@ describe("DateTime", () => {
     });
 
     it("should mark month value as active with just date", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -816,7 +816,7 @@ describe("DateTime", () => {
     });
 
     it("should mark month value as active with date and time", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -847,7 +847,7 @@ describe("DateTime", () => {
 
   describe("year picker", () => {
     it("should open year picker when clicking", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -884,7 +884,7 @@ describe("DateTime", () => {
     });
 
     it("should open year picker on focus", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -921,7 +921,7 @@ describe("DateTime", () => {
     });
 
     // it("should close year picker on blur", () => {
-    //   mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+    //   mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
     //   // Arrange
     //   const { getByLabelText } = render(
@@ -947,7 +947,7 @@ describe("DateTime", () => {
     // });
 
     it("should choose year from picker", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -975,7 +975,7 @@ describe("DateTime", () => {
     });
 
     it("should navigate to previous decades from picker", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1006,7 +1006,7 @@ describe("DateTime", () => {
     });
 
     it("should navigate to next decades from picker", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1037,7 +1037,7 @@ describe("DateTime", () => {
     });
 
     it("should mark year value as active with just date", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1066,7 +1066,7 @@ describe("DateTime", () => {
     });
 
     it("should mark year value as active with date and time", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1097,7 +1097,7 @@ describe("DateTime", () => {
 
   describe("time picker", () => {
     it("should open time picker when clicking", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1122,7 +1122,7 @@ describe("DateTime", () => {
     });
 
     it("should open time picker on focus", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1147,7 +1147,7 @@ describe("DateTime", () => {
     });
 
     // it("should close time picker on blur", () => {
-    //   mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+    //   mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
     //   // Arrange
     //   const { getByLabelText } = render(
@@ -1171,7 +1171,7 @@ describe("DateTime", () => {
     // });
 
     it("should use value when opening", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1203,7 +1203,7 @@ describe("DateTime", () => {
 
   describe("switchers", () => {
     it("should switch to 'month mode' from 'day mode' when month picker is supported", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1232,7 +1232,7 @@ describe("DateTime", () => {
     });
 
     it("should switch to 'time mode' when time picker is supported", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1261,7 +1261,7 @@ describe("DateTime", () => {
     });
 
     it("should not switch to 'time mode' when time picker is not supported", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
       const { getByLabelText } = render(
@@ -1289,7 +1289,7 @@ describe("DateTime", () => {
   });
 
   it("should switch through to year mode, and pick a specific date through various pickers", () => {
-    mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+    mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
     // Arrange
     const { getByLabelText } = render(
@@ -1432,7 +1432,7 @@ describe("DateTime", () => {
 
   describe("events", () => {
     it("should trigger onChange Date when picking a date", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       const handleChange = jest.fn();
 
@@ -1468,11 +1468,13 @@ describe("DateTime", () => {
       expect(element).toHaveValue("01/16/2019");
 
       expect(handleChange).toHaveBeenCalledTimes(1);
-      expect(handleChange).toHaveBeenCalledWith(new Date(1547618400000));
+      expect(handleChange).toHaveBeenCalledWith(
+        new Date(2019, 0, 16, 0, 0, 0, 0)
+      );
     });
 
     it("should trigger onChange input string when picking a date", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       const handleChange = jest.fn();
 
@@ -1512,8 +1514,49 @@ describe("DateTime", () => {
       expect(handleChange).toHaveBeenCalledWith("01/16/2019");
     });
 
+    it("should trigger onChange input string when picking a date/time", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      const handleChange = jest.fn();
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat="LL/dd/yyyy"
+            timeFormat="h:mm a"
+            onChange={handleChange}
+            dateTypeMode="input-format"
+          />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
+      const someDay = getByText(document.body, "16");
+      expect(someDay).toBeVisible();
+
+      // Pick date
+      fireEvent.click(someDay);
+
+      expect(element).toHaveValue("01/16/2019 12:00 AM");
+
+      expect(handleChange).toHaveBeenCalledTimes(1);
+      expect(handleChange).toHaveBeenCalledWith("01/16/2019 12:00 AM");
+    });
+
     it("should trigger onChange utc-ms-timestamp when picking a date", () => {
-      mockDate(new Date(2019, 0, 1, 12, 0, 0, 0));
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       const handleChange = jest.fn();
 
@@ -1550,7 +1593,9 @@ describe("DateTime", () => {
       expect(element).toHaveValue("01/16/2019");
 
       expect(handleChange).toHaveBeenCalledTimes(1);
-      expect(handleChange).toHaveBeenCalledWith(1547618400000);
+      expect(handleChange).toHaveBeenCalledWith(
+        new Date(2019, 0, 16, 0, 0, 0, 0).getTime()
+      );
     });
   });
 });
