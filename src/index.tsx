@@ -4,7 +4,7 @@ import useOnClickOutside from "use-onclickoutside";
 
 import format from "date-fns/format";
 import rawParse from "date-fns/parse";
-import isEqual from "date-fns/isEqual";
+import isDate from "date-fns/isDate";
 import toDate from "date-fns/toDate";
 import isDateValid from "date-fns/isValid";
 import startOfDay from "date-fns/startOfDay";
@@ -41,7 +41,7 @@ function useDefaultStateWithOverride<Type>(
 function parse(
   date: Date | string | number | undefined,
   fullFormat: string,
-  formatOptions: any
+  formatOptions: FormatOptions
 ): Date | undefined {
   if (typeof date === "string") {
     const asDate = rawParse(date, fullFormat, new Date(), formatOptions);
@@ -61,9 +61,11 @@ function parse(
   return undefined;
 }
 
+export interface FormatOptions {
+  locale: any;
+}
+
 export interface TimeConstraint {
-  min: number;
-  max: number;
   step: number;
 }
 
@@ -124,10 +126,6 @@ function getDateTypeMode(
     return "utc-ms-timestamp";
   }
 
-  if (rawDateTypeMode) {
-    return rawDateTypeMode;
-  }
-
   return "Date";
 }
 
@@ -148,6 +146,7 @@ interface DateTimeProps {
   locale?: any;
 
   shouldHideInput?: boolean;
+  timeConstraints?: TimeConstraints;
 }
 
 function DateTime(
@@ -168,6 +167,7 @@ function DateTime(
     timeFormat: rawTimeFormat = true,
     locale,
     shouldHideInput = false,
+    timeConstraints,
     ...rest
   } = props as DateTimeProps;
 
@@ -181,7 +181,7 @@ function DateTime(
       ? `${dateFormat} ${timeFormat}`
       : dateFormat || timeFormat || "";
 
-  const formatOptions = {
+  const formatOptions: FormatOptions = {
     locale
   };
 
@@ -229,12 +229,18 @@ function DateTime(
       //
       // Suppress change event when the value didn't change!
       //
-      if (
-        value instanceof Date &&
-        changedValue instanceof Date &&
-        isEqual(value, changedValue)
-      ) {
-        return;
+      if (value && changedValue && isDate(value) && isDate(changedValue)) {
+        const oldValStr =
+          typeof value === "string"
+            ? value
+            : format(value, fullFormat, formatOptions);
+        const newValStr =
+          typeof changedValue === "string"
+            ? changedValue
+            : format(changedValue, fullFormat, formatOptions);
+        if (oldValStr === newValStr) {
+          return;
+        }
       }
 
       if (value === changedValue) {
@@ -243,7 +249,7 @@ function DateTime(
 
       rawOnChange(changedValue);
     },
-    [getChangedValue, rawOnChange, value]
+    [formatOptions, fullFormat, getChangedValue, rawOnChange, value]
   );
 
   //
@@ -413,7 +419,8 @@ function DateTime(
     viewMode,
     setViewMode,
     isValidDate,
-    isStatic: shouldHideInput
+    isStatic: shouldHideInput,
+    timeConstraints
   };
 
   return !shouldHideInput ? (

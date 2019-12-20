@@ -8,7 +8,7 @@ import addSeconds from "date-fns/addSeconds";
 import addMilliseconds from "date-fns/addMilliseconds";
 import setHours from "date-fns/setHours";
 
-import { TimeConstraint, TimeConstraints } from "./index";
+import { TimeConstraints, FormatOptions, ViewMode } from "./index";
 
 const allCounters: Array<"hours" | "minutes" | "seconds" | "milliseconds"> = [
   "hours",
@@ -17,25 +17,17 @@ const allCounters: Array<"hours" | "minutes" | "seconds" | "milliseconds"> = [
   "milliseconds"
 ];
 
-const defaultTimeConstraints: AlwaysTimeConstraints = {
+const defaultTimeConstraints = {
   hours: {
-    min: 0,
-    max: 23,
     step: 1
   },
   minutes: {
-    min: 0,
-    max: 59,
     step: 1
   },
   seconds: {
-    min: 0,
-    max: 59,
     step: 1
   },
   milliseconds: {
-    min: 0,
-    max: 999,
     step: 1
   }
 };
@@ -66,16 +58,9 @@ const TimePart = (props: TimePartInterface) => {
   ) : null;
 };
 
-interface AlwaysTimeConstraints {
-  hours: TimeConstraint;
-  minutes: TimeConstraint;
-  seconds: TimeConstraint;
-  milliseconds: TimeConstraint;
-}
-
 function getStepSize(
   type: "hours" | "minutes" | "seconds" | "milliseconds",
-  timeConstraints?: TimeConstraints
+  timeConstraints: TimeConstraints | undefined
 ) {
   let step = defaultTimeConstraints[type].step;
   const config = timeConstraints ? timeConstraints[type] : undefined;
@@ -90,7 +75,7 @@ function change(
   op: "add" | "sub",
   type: "hours" | "minutes" | "seconds" | "milliseconds",
   timestamp: Date,
-  timeConstraints?: TimeConstraints
+  timeConstraints: TimeConstraints | undefined
 ) {
   const mult = op === "sub" ? -1 : 1;
 
@@ -163,7 +148,7 @@ let mouseUpListener: () => void;
 function onStartClicking(
   op: "add" | "sub",
   type: "hours" | "minutes" | "seconds" | "milliseconds",
-  props
+  props: TimeViewProps
 ) {
   return () => {
     const {
@@ -201,10 +186,13 @@ function onStartClicking(
 export interface TimeViewProps {
   viewTimestamp: Date;
   dateFormat: string | false;
-  setViewMode: any;
+  setViewMode: (newViewMode: ViewMode) => void;
   timeFormat: string | false;
-  formatOptions: any;
-  setSelectedDate: any;
+  formatOptions: FormatOptions;
+  setSelectedDate: (newDate: Date, tryClose?: boolean) => void;
+  setViewTimestamp: (newViewTimestamp: Date | undefined) => void;
+  readonly?: boolean;
+  timeConstraints?: TimeConstraints;
 }
 
 function TimeView(props: TimeViewProps) {

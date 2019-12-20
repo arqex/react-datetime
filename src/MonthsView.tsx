@@ -7,15 +7,16 @@ import isSameMonth from "date-fns/isSameMonth";
 import setMonth from "date-fns/setMonth";
 import getDaysInMonth from "date-fns/getDaysInMonth";
 import setDate from "date-fns/setDate";
+import { FormatOptions, ViewMode } from "./index";
 
 export interface MonthsViewProps {
   viewDate: Date;
-  setViewDate: any;
+  setViewDate: (newViewDate: Date | undefined) => void;
   selectedDate: Date | undefined;
-  setSelectedDate: any;
-  formatOptions: any;
-  setViewMode: any;
-  isValidDate: any;
+  setSelectedDate: (newDate: Date, tryClose?: boolean) => void;
+  formatOptions: FormatOptions;
+  setViewMode: (newViewMode: ViewMode) => void;
+  isValidDate?: (date: Date) => boolean;
 }
 
 function MonthsView(props: MonthsViewProps) {

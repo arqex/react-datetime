@@ -11,7 +11,7 @@ import {
 } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
-import RawDateTime from ".";
+import RawDateTime from "./index";
 
 function DateTime(props) {
   const [value, setValue] = React.useState(props.value);
@@ -1199,6 +1199,36 @@ describe("DateTime", () => {
       );
       expect(textContent).toMatch(/213pm/i);
     });
+
+    it("should show Date value as time when opening", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={false}
+            timeFormat="h:mm:ss.SSS a"
+            value={new Date()}
+          />
+        </>
+      );
+
+      // Act
+      const element = getByLabelText("Some Field");
+      fireEvent.focus(element);
+
+      const picker = getByText(document.body, /pm/i);
+      expect(picker).toBeVisible();
+
+      const textContent = picker.parentNode?.parentNode?.textContent?.replace(
+        /\W+/g,
+        ""
+      );
+      expect(textContent).toMatch(/120112034pm/i);
+    });
   });
 
   describe("switchers", () => {
@@ -1286,316 +1316,897 @@ describe("DateTime", () => {
       );
       expect(switcher).toBeNull();
     });
-  });
 
-  it("should switch through to year mode, and pick a specific date through various pickers", () => {
-    mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+    it("should stay on year picker when already on year picker", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-    // Arrange
-    const { getByLabelText } = render(
-      <>
-        <label htmlFor="some-id">Some Field</label>
-        <DateTime
-          id="some-id"
-          dateFormat="LL/dd/yyyy"
-          timeFormat="h:mm:ss.SSS a"
-        />
-      </>
-    );
-
-    const element = getByLabelText("Some Field");
-
-    // Act
-    fireEvent.focus(element);
-
-    {
-      const picker = getByTestId(document.body, "day-picker");
-      expect(picker).toBeVisible();
-    }
-
-    // day -> month picker
-    {
-      const switcher = getByTestId(document.body, "day-mode-switcher");
-      expect(switcher).toBeVisible();
-
-      fireEvent.click(switcher);
-
-      // Assert
-      const picker = getByTestId(document.body, "month-picker");
-      expect(picker).toBeVisible();
-    }
-
-    // month -> year picker
-    {
-      const switcher = getByTestId(document.body, "month-mode-switcher");
-      expect(switcher).toBeVisible();
-
-      fireEvent.click(switcher);
-
-      // Assert
-      const picker = getByTestId(document.body, "year-picker");
-      expect(picker).toBeVisible();
-    }
-
-    {
-      // click a year (switch to month picker)
-      fireEvent.click(getByText(document.body, "2020"));
-
-      const picker = getByTestId(document.body, "month-picker");
-      expect(picker).toBeVisible();
-    }
-
-    {
-      // click a month (switch to day picker)
-      fireEvent.click(getByText(document.body, "Feb"));
-
-      const picker = getByTestId(document.body, "day-picker");
-      expect(picker).toBeVisible();
-    }
-
-    // Switch to time mode
-    {
-      const switcher = getByTestId(document.body, "day-to-time-mode-switcher");
-      expect(switcher).toBeVisible();
-
-      fireEvent.click(switcher);
-    }
-
-    {
-      // Assert
-      const picker = getByTestId(document.body, "time-picker");
-      expect(picker).toBeVisible();
-
-      expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
-        /02\/01\/2020120000000AM/i
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+        </>
       );
 
-      // Click to change the time
-      const upArrows = getAllByText(document.body, "▲");
-      expect(upArrows?.length).toBe(5);
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
 
-      const downArrows = getAllByText(document.body, "▼");
-      expect(downArrows?.length).toBe(5);
+      // Act
+      fireEvent.click(element);
+      expect(getByTestId(document.body, "day-picker")).toBeVisible();
 
-      // Increase hours from 12 to 1
-      act(() => {
-        userEvent.click(upArrows[0]);
+      fireEvent.click(getByTestId(document.body, "day-mode-switcher"));
+
+      expect(getByTestId(document.body, "month-picker")).toBeVisible();
+
+      fireEvent.click(getByTestId(document.body, "month-mode-switcher"));
+
+      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+
+      fireEvent.click(getByTestId(document.body, "year-mode-switcher"));
+
+      // Assert
+      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+    });
+  });
+
+  describe("e2e", () => {
+    it("should switch through to year mode, and pick a specific date through various pickers", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+
+      // Act
+      fireEvent.focus(element);
+
+      {
+        const picker = getByTestId(document.body, "day-picker");
+        expect(picker).toBeVisible();
+      }
+
+      // day -> month picker
+      {
+        const switcher = getByTestId(document.body, "day-mode-switcher");
+        expect(switcher).toBeVisible();
+
+        fireEvent.click(switcher);
+
+        // Assert
+        const picker = getByTestId(document.body, "month-picker");
+        expect(picker).toBeVisible();
+      }
+
+      // month -> year picker
+      {
+        const switcher = getByTestId(document.body, "month-mode-switcher");
+        expect(switcher).toBeVisible();
+
+        fireEvent.click(switcher);
+
+        // Assert
+        const picker = getByTestId(document.body, "year-picker");
+        expect(picker).toBeVisible();
+      }
+
+      {
+        // click a year (switch to month picker)
+        fireEvent.click(getByText(document.body, "2020"));
+
+        const picker = getByTestId(document.body, "month-picker");
+        expect(picker).toBeVisible();
+      }
+
+      {
+        // click a month (switch to day picker)
+        fireEvent.click(getByText(document.body, "Feb"));
+
+        const picker = getByTestId(document.body, "day-picker");
+        expect(picker).toBeVisible();
+      }
+
+      // click a day
+      fireEvent.click(getByText(document.body, "11"));
+
+      // Assert
+      expect(getByLabelText("Some Field")).toHaveValue("02/11/2020");
+    });
+
+    it("should switch through to year mode, and pick a specific date/time through various pickers", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat="LL/dd/yyyy"
+            timeFormat="h:mm:ss.SSS a"
+          />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+
+      // Act
+      fireEvent.focus(element);
+
+      {
+        const picker = getByTestId(document.body, "day-picker");
+        expect(picker).toBeVisible();
+      }
+
+      // day -> month picker
+      {
+        const switcher = getByTestId(document.body, "day-mode-switcher");
+        expect(switcher).toBeVisible();
+
+        fireEvent.click(switcher);
+
+        // Assert
+        const picker = getByTestId(document.body, "month-picker");
+        expect(picker).toBeVisible();
+      }
+
+      // month -> year picker
+      {
+        const switcher = getByTestId(document.body, "month-mode-switcher");
+        expect(switcher).toBeVisible();
+
+        fireEvent.click(switcher);
+
+        // Assert
+        const picker = getByTestId(document.body, "year-picker");
+        expect(picker).toBeVisible();
+      }
+
+      {
+        // click a year (switch to month picker)
+        fireEvent.click(getByText(document.body, "2020"));
+
+        const picker = getByTestId(document.body, "month-picker");
+        expect(picker).toBeVisible();
+      }
+
+      {
+        // click a month (switch to day picker)
+        fireEvent.click(getByText(document.body, "Feb"));
+
+        const picker = getByTestId(document.body, "day-picker");
+        expect(picker).toBeVisible();
+      }
+
+      // Switch to time mode
+      {
+        const switcher = getByTestId(
+          document.body,
+          "day-to-time-mode-switcher"
+        );
+        expect(switcher).toBeVisible();
+
+        fireEvent.click(switcher);
+      }
+
+      {
+        // Assert
+        const picker = getByTestId(document.body, "time-picker");
+        expect(picker).toBeVisible();
+
+        expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
+          /02\/01\/2020120000000AM/i
+        );
+
+        // Click to change the time
+        const upArrows = getAllByText(document.body, "▲");
+        expect(upArrows?.length).toBe(5);
+
+        const downArrows = getAllByText(document.body, "▼");
+        expect(downArrows?.length).toBe(5);
+
+        // Increase hours from 12 to 1
+        act(() => {
+          userEvent.click(upArrows[0]);
+        });
+
+        // Increase minutes from 00 to 05
+        for (let i = 0; i < 5; i++) {
+          act(() => {
+            userEvent.click(upArrows[1]);
+          });
+        }
+
+        // Increase seconds from 00 to 35
+        for (let i = 0; i < 35; i++) {
+          act(() => {
+            userEvent.click(upArrows[2]);
+          });
+        }
+
+        // Increase milliseconds from 000 to 321
+        for (let i = 0; i < 321; i++) {
+          act(() => {
+            userEvent.click(upArrows[3]);
+          });
+        }
+
+        // Decrease from AM to PM
+        act(() => {
+          userEvent.click(upArrows[4]);
+        });
+
+        expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
+          /02\/01\/202010535321PM/i
+        );
+      }
+
+      // Switch back to day mode
+      {
+        const switcher = getByTestId(document.body, "time-mode-switcher");
+        expect(switcher).toBeVisible();
+
+        fireEvent.click(switcher);
+      }
+
+      // click a day
+      fireEvent.click(getByText(document.body, "11"));
+
+      // Assert
+      expect(getByLabelText("Some Field")).toHaveValue(
+        "02/11/2020 1:05:35.321 PM"
+      );
+    });
+
+    describe("events", () => {
+      it("should not trigger onChange Date with no change", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat="LL/dd/yyyy"
+              timeFormat={false}
+              onChange={handleChange}
+              value={new Date(2019, 0, 16, 12, 1, 12, 34)}
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("01/16/2019");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        expect(handleChange).toHaveBeenCalledTimes(0);
       });
 
-      // Increase minutes from 00 to 05
-      for (let i = 0; i < 5; i++) {
+      it("should not trigger onChange Date when clicking same date", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat="LL/dd/yyyy"
+              timeFormat={false}
+              onChange={handleChange}
+              value={new Date(2019, 0, 16, 12, 1, 12, 34)}
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("01/16/2019");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
+        const someDay = getByText(document.body, "16");
+        expect(someDay).toBeVisible();
+
+        // Pick date
+        fireEvent.click(someDay);
+
+        expect(element).toHaveValue("01/16/2019");
+
+        expect(handleChange).toHaveBeenCalledTimes(0);
+      });
+
+      it("should trigger onChange Date when picking a first date", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat="LL/dd/yyyy"
+              timeFormat={false}
+              onChange={handleChange}
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
+        const someDay = getByText(document.body, "16");
+        expect(someDay).toBeVisible();
+
+        // Pick date
+        fireEvent.click(someDay);
+
+        expect(element).toHaveValue("01/16/2019");
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith(
+          new Date(2019, 0, 16, 0, 0, 0, 0)
+        );
+      });
+
+      it("should trigger onChange Date when picking a new date", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat="LL/dd/yyyy"
+              timeFormat={false}
+              onChange={handleChange}
+              value={new Date(2019, 0, 16, 12, 1, 12, 34)}
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("01/16/2019");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
+        const someDay = getByText(document.body, "17");
+        expect(someDay).toBeVisible();
+
+        // Pick date
+        fireEvent.click(someDay);
+
+        expect(element).toHaveValue("01/17/2019");
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith(
+          new Date(2019, 0, 17, 12, 1, 12, 34)
+        );
+      });
+
+      it("should trigger onChange input string when picking a date", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat="LL/dd/yyyy"
+              timeFormat={false}
+              onChange={handleChange}
+              dateTypeMode="input-format"
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
+        const someDay = getByText(document.body, "16");
+        expect(someDay).toBeVisible();
+
+        // Pick date
+        fireEvent.click(someDay);
+
+        expect(element).toHaveValue("01/16/2019");
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith("01/16/2019");
+      });
+
+      it("should trigger onChange input string when picking a date/time", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat="LL/dd/yyyy"
+              timeFormat="h:mm a"
+              onChange={handleChange}
+              dateTypeMode="input-format"
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+
+        const someDay = getByText(document.body, "16");
+        expect(someDay).toBeVisible();
+
+        // Pick date
+        fireEvent.click(someDay);
+
+        expect(element).toHaveValue("01/16/2019 12:00 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith("01/16/2019 12:00 AM");
+      });
+
+      it("should trigger onChange input string when increasing time by one step", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat={false}
+              timeFormat="h:mm a"
+              onChange={handleChange}
+              dateTypeMode="input-format"
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+
+        // Click to change the time
+        const upArrows = getAllByText(document.body, "▲");
+        expect(upArrows?.length).toBe(3);
+
+        const downArrows = getAllByText(document.body, "▼");
+        expect(downArrows?.length).toBe(3);
+
+        // Increase hours from 12 to 1
+        act(() => {
+          userEvent.click(upArrows[0]);
+        });
+
+        expect(element).toHaveValue("1:00 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith("1:00 AM");
+      });
+
+      it("should trigger onChange input string when increasing time by 3 hour increment", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat={false}
+              timeFormat="h:mm a"
+              onChange={handleChange}
+              dateTypeMode="input-format"
+              timeConstraints={{
+                hours: {
+                  step: 3
+                }
+              }}
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+
+        // Click to change the time
+        const upArrows = getAllByText(document.body, "▲");
+        expect(upArrows?.length).toBe(3);
+
+        const downArrows = getAllByText(document.body, "▼");
+        expect(downArrows?.length).toBe(3);
+
+        // Increase hours from 12 to 3
+        act(() => {
+          userEvent.click(upArrows[0]);
+        });
+
+        expect(element).toHaveValue("3:00 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith("3:00 AM");
+
+        // Decrease hours from 3 to 12
+        act(() => {
+          userEvent.click(downArrows[0]);
+        });
+
+        expect(element).toHaveValue("12:00 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(2);
+        expect(handleChange).toHaveBeenCalledWith("12:00 AM");
+      });
+
+      it("should trigger onChange input string when increasing time by 15 min increment", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat={false}
+              timeFormat="h:mm a"
+              onChange={handleChange}
+              dateTypeMode="input-format"
+              timeConstraints={{
+                minutes: {
+                  step: 15
+                }
+              }}
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+
+        // Click to change the time
+        const upArrows = getAllByText(document.body, "▲");
+        expect(upArrows?.length).toBe(3);
+
+        const downArrows = getAllByText(document.body, "▼");
+        expect(downArrows?.length).toBe(3);
+
+        // Increase minutes from 0 to 15
         act(() => {
           userEvent.click(upArrows[1]);
         });
-      }
 
-      // Increase seconds from 00 to 35
-      for (let i = 0; i < 35; i++) {
+        expect(element).toHaveValue("12:15 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith("12:15 AM");
+
+        // Decrease minutes from 15 to 0
+        act(() => {
+          userEvent.click(downArrows[1]);
+        });
+
+        expect(element).toHaveValue("12:00 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(2);
+        expect(handleChange).toHaveBeenCalledWith("12:00 AM");
+      });
+
+      it("should trigger onChange input string when increasing time by 30 second increment", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat={false}
+              timeFormat="h:mm:ss a"
+              onChange={handleChange}
+              dateTypeMode="input-format"
+              timeConstraints={{
+                seconds: {
+                  step: 30
+                }
+              }}
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+
+        // Click to change the time
+        const upArrows = getAllByText(document.body, "▲");
+        expect(upArrows?.length).toBe(4);
+
+        const downArrows = getAllByText(document.body, "▼");
+        expect(downArrows?.length).toBe(4);
+
+        // Increase seconds from 0 to 30
         act(() => {
           userEvent.click(upArrows[2]);
         });
-      }
 
-      // Increase milliseconds from 000 to 321
-      for (let i = 0; i < 321; i++) {
+        expect(element).toHaveValue("12:00:30 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith("12:00:30 AM");
+
+        // Decrease seconds from 30 to 0
+        act(() => {
+          userEvent.click(downArrows[2]);
+        });
+
+        expect(element).toHaveValue("12:00:00 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(2);
+        expect(handleChange).toHaveBeenCalledWith("12:00:00 AM");
+      });
+
+      it("should trigger onChange input string when increasing time by 10 milliseconds increment", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        const handleChange = jest.fn();
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat={false}
+              timeFormat="h:mm:ss.SSS a"
+              onChange={handleChange}
+              dateTypeMode="input-format"
+              timeConstraints={{
+                milliseconds: {
+                  step: 10
+                }
+              }}
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+
+        // Act
+        // Open picker
+        fireEvent.click(element);
+
+        // Assert
+        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+
+        // Click to change the time
+        const upArrows = getAllByText(document.body, "▲");
+        expect(upArrows?.length).toBe(5);
+
+        const downArrows = getAllByText(document.body, "▼");
+        expect(downArrows?.length).toBe(5);
+
+        // Increase milliseconds from 0 to 10
         act(() => {
           userEvent.click(upArrows[3]);
         });
-      }
 
-      // Decrease from AM to PM
-      act(() => {
-        userEvent.click(upArrows[4]);
+        expect(element).toHaveValue("12:00:00.010 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith("12:00:00.010 AM");
+
+        // Decrease milliseconds from 10 to 0
+        act(() => {
+          userEvent.click(downArrows[3]);
+        });
+
+        expect(element).toHaveValue("12:00:00.000 AM");
+
+        expect(handleChange).toHaveBeenCalledTimes(2);
+        expect(handleChange).toHaveBeenCalledWith("12:00:00.000 AM");
       });
 
-      expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
-        /02\/01\/202010535321PM/i
-      );
-    }
+      it('should trigger onChange input string once holding down the "up" seconds for a bit of time', () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-    // Switch back to day mode
-    {
-      const switcher = getByTestId(document.body, "time-mode-switcher");
-      expect(switcher).toBeVisible();
+        const handleChange = jest.fn();
 
-      fireEvent.click(switcher);
-    }
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat={false}
+              timeFormat="h:mm:ss a"
+              onChange={handleChange}
+              dateTypeMode="input-format"
+            />
+          </>
+        );
 
-    // click a day
-    fireEvent.click(getByText(document.body, "11"));
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
 
-    // Assert
-    expect(getByLabelText("Some Field")).toHaveValue(
-      "02/11/2020 1:05:35.321 PM"
-    );
-  });
+        // Act
+        // Open picker
+        fireEvent.click(element);
 
-  describe("events", () => {
-    it("should trigger onChange Date when picking a date", () => {
-      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+        // Assert
+        expect(getByTestId(document.body, "time-picker")).toBeVisible();
 
-      const handleChange = jest.fn();
+        // Click to change the time
+        const upArrows = getAllByText(document.body, "▲");
+        expect(upArrows?.length).toBe(4);
 
-      // Arrange
-      const { getByLabelText } = render(
-        <>
-          <label htmlFor="some-id">Some Field</label>
-          <DateTime
-            id="some-id"
-            dateFormat="LL/dd/yyyy"
-            timeFormat={false}
-            onChange={handleChange}
-          />
-        </>
-      );
+        const downArrows = getAllByText(document.body, "▼");
+        expect(downArrows?.length).toBe(4);
 
-      const element = getByLabelText("Some Field");
-      expect(element).toHaveValue("");
+        // Increase seconds
+        act(() => {
+          jest.useFakeTimers();
 
-      // Act
-      // Open picker
-      fireEvent.click(element);
+          fireEvent.mouseDown(upArrows[2]);
 
-      // Assert
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+          // Fast forward and exhaust only currently pending timers
+          // (but not any new timers that get created during that process)
+          jest.runOnlyPendingTimers();
 
-      const someDay = getByText(document.body, "16");
-      expect(someDay).toBeVisible();
+          // Fast forward and exhaust only currently pending timers
+          // (but not any new timers that get created during that process)
+          jest.runOnlyPendingTimers();
 
-      // Pick date
-      fireEvent.click(someDay);
+          // Fast forward and exhaust only currently pending timers
+          // (but not any new timers that get created during that process)
+          jest.runOnlyPendingTimers();
 
-      expect(element).toHaveValue("01/16/2019");
+          // Fast forward and exhaust only currently pending timers
+          // (but not any new timers that get created during that process)
+          jest.runOnlyPendingTimers();
 
-      expect(handleChange).toHaveBeenCalledTimes(1);
-      expect(handleChange).toHaveBeenCalledWith(
-        new Date(2019, 0, 16, 0, 0, 0, 0)
-      );
-    });
+          fireEvent.mouseUp(upArrows[2]);
 
-    it("should trigger onChange input string when picking a date", () => {
-      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+          jest.useRealTimers();
+        });
 
-      const handleChange = jest.fn();
+        expect(element).toHaveValue("12:00:04 AM");
 
-      // Arrange
-      const { getByLabelText } = render(
-        <>
-          <label htmlFor="some-id">Some Field</label>
-          <DateTime
-            id="some-id"
-            dateFormat="LL/dd/yyyy"
-            timeFormat={false}
-            onChange={handleChange}
-            dateTypeMode="input-format"
-          />
-        </>
-      );
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith("12:00:04 AM");
+      });
 
-      const element = getByLabelText("Some Field");
-      expect(element).toHaveValue("");
+      it("should trigger onChange utc-ms-timestamp when picking a date", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-      // Act
-      // Open picker
-      fireEvent.click(element);
+        const handleChange = jest.fn();
 
-      // Assert
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat="LL/dd/yyyy"
+              timeFormat={false}
+              onChange={handleChange}
+              dateTypeMode="utc-ms-timestamp"
+            />
+          </>
+        );
 
-      const someDay = getByText(document.body, "16");
-      expect(someDay).toBeVisible();
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
 
-      // Pick date
-      fireEvent.click(someDay);
+        // Act
+        // Open picker
+        fireEvent.click(element);
 
-      expect(element).toHaveValue("01/16/2019");
+        // Assert
+        expect(getByTestId(document.body, "day-picker")).toBeVisible();
 
-      expect(handleChange).toHaveBeenCalledTimes(1);
-      expect(handleChange).toHaveBeenCalledWith("01/16/2019");
-    });
+        const someDay = getByText(document.body, "16");
+        expect(someDay).toBeVisible();
 
-    it("should trigger onChange input string when picking a date/time", () => {
-      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+        // Pick date
+        fireEvent.click(someDay);
 
-      const handleChange = jest.fn();
+        expect(element).toHaveValue("01/16/2019");
 
-      // Arrange
-      const { getByLabelText } = render(
-        <>
-          <label htmlFor="some-id">Some Field</label>
-          <DateTime
-            id="some-id"
-            dateFormat="LL/dd/yyyy"
-            timeFormat="h:mm a"
-            onChange={handleChange}
-            dateTypeMode="input-format"
-          />
-        </>
-      );
-
-      const element = getByLabelText("Some Field");
-      expect(element).toHaveValue("");
-
-      // Act
-      // Open picker
-      fireEvent.click(element);
-
-      // Assert
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
-
-      const someDay = getByText(document.body, "16");
-      expect(someDay).toBeVisible();
-
-      // Pick date
-      fireEvent.click(someDay);
-
-      expect(element).toHaveValue("01/16/2019 12:00 AM");
-
-      expect(handleChange).toHaveBeenCalledTimes(1);
-      expect(handleChange).toHaveBeenCalledWith("01/16/2019 12:00 AM");
-    });
-
-    it("should trigger onChange utc-ms-timestamp when picking a date", () => {
-      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-      const handleChange = jest.fn();
-
-      // Arrange
-      const { getByLabelText } = render(
-        <>
-          <label htmlFor="some-id">Some Field</label>
-          <DateTime
-            id="some-id"
-            dateFormat="LL/dd/yyyy"
-            timeFormat={false}
-            onChange={handleChange}
-            dateTypeMode="utc-ms-timestamp"
-          />
-        </>
-      );
-
-      const element = getByLabelText("Some Field");
-      expect(element).toHaveValue("");
-
-      // Act
-      // Open picker
-      fireEvent.click(element);
-
-      // Assert
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
-
-      const someDay = getByText(document.body, "16");
-      expect(someDay).toBeVisible();
-
-      // Pick date
-      fireEvent.click(someDay);
-
-      expect(element).toHaveValue("01/16/2019");
-
-      expect(handleChange).toHaveBeenCalledTimes(1);
-      expect(handleChange).toHaveBeenCalledWith(
-        new Date(2019, 0, 16, 0, 0, 0, 0).getTime()
-      );
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalledWith(
+          new Date(2019, 0, 16, 0, 0, 0, 0).getTime()
+        );
+      });
     });
   });
 });
