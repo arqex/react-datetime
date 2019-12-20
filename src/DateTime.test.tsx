@@ -1146,6 +1146,28 @@ describe("DateTime", () => {
       expect(textContent).toMatch(/1200AM/i);
     });
 
+    it("should open time picker in military time when clicking", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat={false} timeFormat="H:mm" />
+        </>
+      );
+
+      // Act
+      const element = getByLabelText("Some Field");
+      fireEvent.click(element);
+
+      const picker = getByTestId(document.body, "time-picker");
+      expect(picker).toBeVisible();
+
+      const textContent = picker.textContent?.replace(/\W+/g, "");
+      expect(textContent).toMatch(/000/i);
+    });
+
     // it("should close time picker on blur", () => {
     //   mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -1198,6 +1220,33 @@ describe("DateTime", () => {
         ""
       );
       expect(textContent).toMatch(/213pm/i);
+    });
+
+    it("should use late military time value when opening", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={false}
+            timeFormat="H:mm"
+            value="21:13"
+          />
+        </>
+      );
+
+      // Act
+      const element = getByLabelText("Some Field");
+      fireEvent.focus(element);
+
+      const picker = getByTestId(document.body, "time-picker");
+      expect(picker).toBeVisible();
+
+      const textContent = picker.textContent?.replace(/\W+/g, "");
+      expect(textContent).toMatch(/2113/i);
     });
 
     it("should show Date value as time when opening", () => {
