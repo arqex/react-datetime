@@ -1,16 +1,16 @@
 import * as React from "react";
-import {
-  render,
-  act,
-  fireEvent,
+import { render, act, fireEvent, screen } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import userEvent from "@testing-library/user-event";
+
+const {
   getByText,
   getByTestId,
   queryByTestId,
   getAllByText
   //queryByText
-} from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
-import userEvent from "@testing-library/user-event";
+} = screen;
+
 import RawDateTime from "./index";
 
 function DateTime(props) {
@@ -96,7 +96,7 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const picker = getByTestId(document.body, "day-picker");
+      const picker = getByTestId("day-picker");
       expect(picker).toBeVisible();
     });
 
@@ -116,7 +116,7 @@ describe("DateTime", () => {
       fireEvent.focus(element);
 
       // Assert
-      const picker = getByTestId(document.body, "day-picker");
+      const picker = getByTestId("day-picker");
       expect(picker).toBeVisible();
     });
 
@@ -137,12 +137,12 @@ describe("DateTime", () => {
     //   fireEvent.focus(element);
 
     //   // Assert
-    //   const monthName = getByText(document.body, /january/i);
+    //   const monthName = getByText(/january/i);
     //   expect(monthName).toBeVisible();
 
     //   fireEvent.blur(element);
 
-    //   expect(queryByText(document.body, /january/i)).toBeNull();
+    //   expect(queryByText(/january/i)).toBeNull();
     // });
 
     describe("should open various months based on current date", () => {
@@ -162,12 +162,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /january/i);
+        const monthName = getByText(/january/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -187,12 +187,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /february/i);
+        const monthName = getByText(/february/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -212,12 +212,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /march/i);
+        const monthName = getByText(/march/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -237,12 +237,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /april/i);
+        const monthName = getByText(/april/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -262,12 +262,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /may/i);
+        const monthName = getByText(/may/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -287,12 +287,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /june/i);
+        const monthName = getByText(/june/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -312,12 +312,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /july/i);
+        const monthName = getByText(/july/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -337,12 +337,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /august/i);
+        const monthName = getByText(/august/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -362,12 +362,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /september/i);
+        const monthName = getByText(/september/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -387,12 +387,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /october/i);
+        const monthName = getByText(/october/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -412,12 +412,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /november/i);
+        const monthName = getByText(/november/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
@@ -437,12 +437,12 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const monthName = getByText(document.body, /december/i);
+        const monthName = getByText(/december/i);
         expect(monthName).toBeVisible();
 
-        const dayOfWeekRow = getByText(document.body, "Su");
+        const dayOfWeekRow = getByText("Su");
         expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
       });
     });
@@ -466,9 +466,9 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+      expect(getByTestId("day-picker")).toBeVisible();
 
-      const someDay = getByText(document.body, "16");
+      const someDay = getByText("16");
       expect(someDay).toBeVisible();
 
       // Pick date
@@ -496,16 +496,16 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+      expect(getByTestId("day-picker")).toBeVisible();
 
       // Go to previous month (twice)
-      const prevButton = getByText(document.body, "‹");
+      const prevButton = getByText("‹");
       expect(prevButton).toBeVisible();
       fireEvent.click(prevButton);
       fireEvent.click(prevButton);
 
       // Pick date
-      fireEvent.click(getByText(document.body, "16"));
+      fireEvent.click(getByText("16"));
 
       expect(element).toHaveValue("11/16/2018");
     });
@@ -529,16 +529,16 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+      expect(getByTestId("day-picker")).toBeVisible();
 
       // Go to next month (twice)
-      const nextButton = getByText(document.body, "›");
+      const nextButton = getByText("›");
       expect(nextButton).toBeVisible();
       fireEvent.click(nextButton);
       fireEvent.click(nextButton);
 
       // Pick date
-      fireEvent.click(getByText(document.body, "16"));
+      fireEvent.click(getByText("16"));
 
       expect(element).toHaveValue("03/16/2019");
     });
@@ -567,9 +567,9 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+      expect(getByTestId("day-picker")).toBeVisible();
 
-      const someDay = getByText(document.body, "16");
+      const someDay = getByText("16");
       expect(someDay).toBeVisible();
       expect(someDay).toHaveClass("rdtActive");
     });
@@ -598,9 +598,9 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+      expect(getByTestId("day-picker")).toBeVisible();
 
-      const someDay = getByText(document.body, "16");
+      const someDay = getByText("16");
       expect(someDay).toBeVisible();
       expect(someDay).toHaveClass("rdtActive");
     });
@@ -623,21 +623,21 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const picker = getByTestId(document.body, "month-picker");
+      const picker = getByTestId("month-picker");
       expect(picker).toBeVisible();
 
       {
-        const row = getByText(document.body, /jan/i);
+        const row = getByText(/jan/i);
         expect(row.parentNode).toHaveTextContent("JanFebMarApr");
       }
 
       {
-        const row = getByText(document.body, /may/i);
+        const row = getByText(/may/i);
         expect(row.parentNode).toHaveTextContent("MayJunJulAug");
       }
 
       {
-        const row = getByText(document.body, /sep/i);
+        const row = getByText(/sep/i);
         expect(row.parentNode).toHaveTextContent("SepOctNovDec");
       }
     });
@@ -658,21 +658,21 @@ describe("DateTime", () => {
       fireEvent.focus(element);
 
       // Assert
-      const picker = getByTestId(document.body, "month-picker");
+      const picker = getByTestId("month-picker");
       expect(picker).toBeVisible();
 
       {
-        const row = getByText(document.body, /jan/i);
+        const row = getByText(/jan/i);
         expect(row.parentNode).toHaveTextContent("JanFebMarApr");
       }
 
       {
-        const row = getByText(document.body, /may/i);
+        const row = getByText(/may/i);
         expect(row.parentNode).toHaveTextContent("MayJunJulAug");
       }
 
       {
-        const row = getByText(document.body, /sep/i);
+        const row = getByText(/sep/i);
         expect(row.parentNode).toHaveTextContent("SepOctNovDec");
       }
     });
@@ -694,12 +694,12 @@ describe("DateTime", () => {
     //   fireEvent.focus(element);
 
     //   // Assert
-    //   const picker = getByTestId(document.body, "month-picker");
+    //   const picker = getByTestId("month-picker");
     //   expect(picker).toBeVisible();
 
     //   fireEvent.blur(element);
 
-    //   expect(queryByText(document.body, /jan/i)).toBeNull();
+    //   expect(queryByText(/jan/i)).toBeNull();
     // });
 
     it("should choose month from picker", () => {
@@ -720,7 +720,7 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const someMonth = getByText(document.body, /jun/i);
+      const someMonth = getByText(/jun/i);
       fireEvent.click(someMonth);
 
       expect(element).toHaveValue("06/2019");
@@ -744,12 +744,12 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Go to previous year (twice)
-      const prevButton = getByText(document.body, "‹");
+      const prevButton = getByText("‹");
       expect(prevButton).toBeVisible();
       fireEvent.click(prevButton);
       fireEvent.click(prevButton);
 
-      const someMonth = getByText(document.body, /jun/i);
+      const someMonth = getByText(/jun/i);
       fireEvent.click(someMonth);
 
       // Assert
@@ -774,12 +774,12 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Go to previous year (twice)
-      const nextButton = getByText(document.body, "›");
+      const nextButton = getByText("›");
       expect(nextButton).toBeVisible();
       fireEvent.click(nextButton);
       fireEvent.click(nextButton);
 
-      const someMonth = getByText(document.body, /jun/i);
+      const someMonth = getByText(/jun/i);
       fireEvent.click(someMonth);
 
       // Assert
@@ -810,7 +810,7 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const someMonth = getByText(document.body, /jun/i);
+      const someMonth = getByText(/jun/i);
       expect(someMonth).toBeVisible();
       expect(someMonth).toHaveClass("rdtActive");
     });
@@ -839,7 +839,7 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const someMonth = getByText(document.body, /jun/i);
+      const someMonth = getByText(/jun/i);
       expect(someMonth).toBeVisible();
       expect(someMonth).toHaveClass("rdtActive");
     });
@@ -864,21 +864,21 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const picker = getByText(document.body, /2010-2019/i);
+      const picker = getByText(/2010-2019/i);
       expect(picker).toBeVisible();
 
       {
-        const row = getByText(document.body, /2009/i);
+        const row = getByText(/2009/i);
         expect(row.parentNode).toHaveTextContent("2009201020112012");
       }
 
       {
-        const row = getByText(document.body, /2013/i);
+        const row = getByText(/2013/i);
         expect(row.parentNode).toHaveTextContent("2013201420152016");
       }
 
       {
-        const row = getByText(document.body, /2017/i);
+        const row = getByText(/2017/i);
         expect(row.parentNode).toHaveTextContent("2017201820192020");
       }
     });
@@ -901,21 +901,21 @@ describe("DateTime", () => {
       fireEvent.focus(element);
 
       // Assert
-      const picker = getByText(document.body, /2010-2019/i);
+      const picker = getByText(/2010-2019/i);
       expect(picker).toBeVisible();
 
       {
-        const row = getByText(document.body, /2009/i);
+        const row = getByText(/2009/i);
         expect(row.parentNode).toHaveTextContent("2009201020112012");
       }
 
       {
-        const row = getByText(document.body, /2013/i);
+        const row = getByText(/2013/i);
         expect(row.parentNode).toHaveTextContent("2013201420152016");
       }
 
       {
-        const row = getByText(document.body, /2017/i);
+        const row = getByText(/2017/i);
         expect(row.parentNode).toHaveTextContent("2017201820192020");
       }
     });
@@ -938,12 +938,12 @@ describe("DateTime", () => {
     //   fireEvent.focus(element);
 
     //   // Assert
-    //   const picker = getByText(document.body, /2010-2019/i);
+    //   const picker = getByText(/2010-2019/i);
     //   expect(picker).toBeVisible();
 
     //   fireEvent.blur(element);
 
-    //   expect(queryByText(document.body, /2010-2019/i)).toBeNull();
+    //   expect(queryByText(/2010-2019/i)).toBeNull();
     // });
 
     it("should choose year from picker", () => {
@@ -963,9 +963,9 @@ describe("DateTime", () => {
       // Act
       fireEvent.click(element);
 
-      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+      expect(getByTestId("year-picker")).toBeVisible();
 
-      const someYear = getByText(document.body, "2015");
+      const someYear = getByText("2015");
       expect(someYear).toBeVisible();
 
       fireEvent.click(someYear);
@@ -990,15 +990,15 @@ describe("DateTime", () => {
 
       // Act
       fireEvent.click(element);
-      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+      expect(getByTestId("year-picker")).toBeVisible();
 
       // Go to previous decade (twice)
-      const prevButton = getByText(document.body, "‹");
+      const prevButton = getByText("‹");
       expect(prevButton).toBeVisible();
       fireEvent.click(prevButton);
       fireEvent.click(prevButton);
 
-      const someYear = getByText(document.body, "1990");
+      const someYear = getByText("1990");
       fireEvent.click(someYear);
 
       // Assert
@@ -1021,15 +1021,15 @@ describe("DateTime", () => {
 
       // Act
       fireEvent.click(element);
-      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+      expect(getByTestId("year-picker")).toBeVisible();
 
       // Go to next decade (twice)
-      const nextButton = getByText(document.body, "›");
+      const nextButton = getByText("›");
       expect(nextButton).toBeVisible();
       fireEvent.click(nextButton);
       fireEvent.click(nextButton);
 
-      const someYear = getByText(document.body, "2035");
+      const someYear = getByText("2035");
       fireEvent.click(someYear);
 
       // Assert
@@ -1060,7 +1060,7 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const someYear = getByText(document.body, "2015");
+      const someYear = getByText("2015");
       expect(someYear).toBeVisible();
       expect(someYear).toHaveClass("rdtActive");
     });
@@ -1089,7 +1089,7 @@ describe("DateTime", () => {
       fireEvent.click(element);
 
       // Assert
-      const someYear = getByText(document.body, "2015");
+      const someYear = getByText("2015");
       expect(someYear).toBeVisible();
       expect(someYear).toHaveClass("rdtActive");
     });
@@ -1111,7 +1111,7 @@ describe("DateTime", () => {
       const element = getByLabelText("Some Field");
       fireEvent.click(element);
 
-      const picker = getByText(document.body, /am/i);
+      const picker = getByText(/am/i);
       expect(picker).toBeVisible();
 
       const textContent = picker.parentNode?.parentNode?.textContent?.replace(
@@ -1136,7 +1136,7 @@ describe("DateTime", () => {
       const element = getByLabelText("Some Field");
       fireEvent.focus(element);
 
-      const picker = getByText(document.body, /am/i);
+      const picker = getByText(/am/i);
       expect(picker).toBeVisible();
 
       const textContent = picker.parentNode?.parentNode?.textContent?.replace(
@@ -1161,7 +1161,7 @@ describe("DateTime", () => {
       const element = getByLabelText("Some Field");
       fireEvent.click(element);
 
-      const picker = getByTestId(document.body, "time-picker");
+      const picker = getByTestId("time-picker");
       expect(picker).toBeVisible();
 
       const textContent = picker.textContent?.replace(/\W+/g, "");
@@ -1184,12 +1184,12 @@ describe("DateTime", () => {
     //   // Act
     //   fireEvent.focus(element);
 
-    //   const picker = getByText(document.body, /am/i);
+    //   const picker = getByText(/am/i);
     //   expect(picker).toBeVisible();
 
     //   fireEvent.blur(element);
 
-    //   expect(queryByText(document.body, /am/i)).toBeNull();
+    //   expect(queryByText(/am/i)).toBeNull();
     // });
 
     it("should use value when opening", () => {
@@ -1212,7 +1212,7 @@ describe("DateTime", () => {
       const element = getByLabelText("Some Field");
       fireEvent.focus(element);
 
-      const picker = getByText(document.body, /pm/i);
+      const picker = getByText(/pm/i);
       expect(picker).toBeVisible();
 
       const textContent = picker.parentNode?.parentNode?.textContent?.replace(
@@ -1242,7 +1242,7 @@ describe("DateTime", () => {
       const element = getByLabelText("Some Field");
       fireEvent.focus(element);
 
-      const picker = getByTestId(document.body, "time-picker");
+      const picker = getByTestId("time-picker");
       expect(picker).toBeVisible();
 
       const textContent = picker.textContent?.replace(/\W+/g, "");
@@ -1269,7 +1269,7 @@ describe("DateTime", () => {
       const element = getByLabelText("Some Field");
       fireEvent.focus(element);
 
-      const picker = getByText(document.body, /pm/i);
+      const picker = getByText(/pm/i);
       expect(picker).toBeVisible();
 
       const textContent = picker.parentNode?.parentNode?.textContent?.replace(
@@ -1297,16 +1297,16 @@ describe("DateTime", () => {
       // Act
       fireEvent.focus(element);
 
-      const dayPicker = getByTestId(document.body, "day-picker");
+      const dayPicker = getByTestId("day-picker");
       expect(dayPicker).toBeVisible();
 
-      const switcher = getByTestId(document.body, "day-mode-switcher");
+      const switcher = getByTestId("day-mode-switcher");
       expect(switcher).toBeVisible();
 
       fireEvent.click(switcher);
 
       // Assert
-      const monthPicker = getByTestId(document.body, "month-picker");
+      const monthPicker = getByTestId("month-picker");
       expect(monthPicker).toBeVisible();
     });
 
@@ -1326,16 +1326,16 @@ describe("DateTime", () => {
       // Act
       fireEvent.focus(element);
 
-      const dayPicker = getByTestId(document.body, "day-picker");
+      const dayPicker = getByTestId("day-picker");
       expect(dayPicker).toBeVisible();
 
-      const switcher = getByTestId(document.body, "day-to-time-mode-switcher");
+      const switcher = getByTestId("day-to-time-mode-switcher");
       expect(switcher).toBeVisible();
 
       fireEvent.click(switcher);
 
       // Assert
-      const timePicker = getByTestId(document.body, "time-picker");
+      const timePicker = getByTestId("time-picker");
       expect(timePicker).toBeVisible();
     });
 
@@ -1355,14 +1355,11 @@ describe("DateTime", () => {
       // Act
       fireEvent.focus(element);
 
-      const dayPicker = getByTestId(document.body, "day-picker");
+      const dayPicker = getByTestId("day-picker");
       expect(dayPicker).toBeVisible();
 
       // Assert
-      const switcher = queryByTestId(
-        document.body,
-        "day-to-time-mode-switcher"
-      );
+      const switcher = queryByTestId("day-to-time-mode-switcher");
       expect(switcher).toBeNull();
     });
 
@@ -1382,20 +1379,20 @@ describe("DateTime", () => {
 
       // Act
       fireEvent.click(element);
-      expect(getByTestId(document.body, "day-picker")).toBeVisible();
+      expect(getByTestId("day-picker")).toBeVisible();
 
-      fireEvent.click(getByTestId(document.body, "day-mode-switcher"));
+      fireEvent.click(getByTestId("day-mode-switcher"));
 
-      expect(getByTestId(document.body, "month-picker")).toBeVisible();
+      expect(getByTestId("month-picker")).toBeVisible();
 
-      fireEvent.click(getByTestId(document.body, "month-mode-switcher"));
+      fireEvent.click(getByTestId("month-mode-switcher"));
 
-      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+      expect(getByTestId("year-picker")).toBeVisible();
 
-      fireEvent.click(getByTestId(document.body, "year-mode-switcher"));
+      fireEvent.click(getByTestId("year-mode-switcher"));
 
       // Assert
-      expect(getByTestId(document.body, "year-picker")).toBeVisible();
+      expect(getByTestId("year-picker")).toBeVisible();
     });
   });
 
@@ -1417,52 +1414,52 @@ describe("DateTime", () => {
       fireEvent.focus(element);
 
       {
-        const picker = getByTestId(document.body, "day-picker");
+        const picker = getByTestId("day-picker");
         expect(picker).toBeVisible();
       }
 
       // day -> month picker
       {
-        const switcher = getByTestId(document.body, "day-mode-switcher");
+        const switcher = getByTestId("day-mode-switcher");
         expect(switcher).toBeVisible();
 
         fireEvent.click(switcher);
 
         // Assert
-        const picker = getByTestId(document.body, "month-picker");
+        const picker = getByTestId("month-picker");
         expect(picker).toBeVisible();
       }
 
       // month -> year picker
       {
-        const switcher = getByTestId(document.body, "month-mode-switcher");
+        const switcher = getByTestId("month-mode-switcher");
         expect(switcher).toBeVisible();
 
         fireEvent.click(switcher);
 
         // Assert
-        const picker = getByTestId(document.body, "year-picker");
+        const picker = getByTestId("year-picker");
         expect(picker).toBeVisible();
       }
 
       {
         // click a year (switch to month picker)
-        fireEvent.click(getByText(document.body, "2020"));
+        fireEvent.click(getByText("2020"));
 
-        const picker = getByTestId(document.body, "month-picker");
+        const picker = getByTestId("month-picker");
         expect(picker).toBeVisible();
       }
 
       {
         // click a month (switch to day picker)
-        fireEvent.click(getByText(document.body, "Feb"));
+        fireEvent.click(getByText("Feb"));
 
-        const picker = getByTestId(document.body, "day-picker");
+        const picker = getByTestId("day-picker");
         expect(picker).toBeVisible();
       }
 
       // click a day
-      fireEvent.click(getByText(document.body, "11"));
+      fireEvent.click(getByText("11"));
 
       // Assert
       expect(getByLabelText("Some Field")).toHaveValue("02/11/2020");
@@ -1489,56 +1486,53 @@ describe("DateTime", () => {
       fireEvent.focus(element);
 
       {
-        const picker = getByTestId(document.body, "day-picker");
+        const picker = getByTestId("day-picker");
         expect(picker).toBeVisible();
       }
 
       // day -> month picker
       {
-        const switcher = getByTestId(document.body, "day-mode-switcher");
+        const switcher = getByTestId("day-mode-switcher");
         expect(switcher).toBeVisible();
 
         fireEvent.click(switcher);
 
         // Assert
-        const picker = getByTestId(document.body, "month-picker");
+        const picker = getByTestId("month-picker");
         expect(picker).toBeVisible();
       }
 
       // month -> year picker
       {
-        const switcher = getByTestId(document.body, "month-mode-switcher");
+        const switcher = getByTestId("month-mode-switcher");
         expect(switcher).toBeVisible();
 
         fireEvent.click(switcher);
 
         // Assert
-        const picker = getByTestId(document.body, "year-picker");
+        const picker = getByTestId("year-picker");
         expect(picker).toBeVisible();
       }
 
       {
         // click a year (switch to month picker)
-        fireEvent.click(getByText(document.body, "2020"));
+        fireEvent.click(getByText("2020"));
 
-        const picker = getByTestId(document.body, "month-picker");
+        const picker = getByTestId("month-picker");
         expect(picker).toBeVisible();
       }
 
       {
         // click a month (switch to day picker)
-        fireEvent.click(getByText(document.body, "Feb"));
+        fireEvent.click(getByText("Feb"));
 
-        const picker = getByTestId(document.body, "day-picker");
+        const picker = getByTestId("day-picker");
         expect(picker).toBeVisible();
       }
 
       // Switch to time mode
       {
-        const switcher = getByTestId(
-          document.body,
-          "day-to-time-mode-switcher"
-        );
+        const switcher = getByTestId("day-to-time-mode-switcher");
         expect(switcher).toBeVisible();
 
         fireEvent.click(switcher);
@@ -1546,7 +1540,7 @@ describe("DateTime", () => {
 
       {
         // Assert
-        const picker = getByTestId(document.body, "time-picker");
+        const picker = getByTestId("time-picker");
         expect(picker).toBeVisible();
 
         expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
@@ -1554,10 +1548,10 @@ describe("DateTime", () => {
         );
 
         // Click to change the time
-        const upArrows = getAllByText(document.body, "▲");
+        const upArrows = getAllByText("▲");
         expect(upArrows?.length).toBe(5);
 
-        const downArrows = getAllByText(document.body, "▼");
+        const downArrows = getAllByText("▼");
         expect(downArrows?.length).toBe(5);
 
         // Increase hours from 12 to 1
@@ -1598,14 +1592,14 @@ describe("DateTime", () => {
 
       // Switch back to day mode
       {
-        const switcher = getByTestId(document.body, "time-mode-switcher");
+        const switcher = getByTestId("time-mode-switcher");
         expect(switcher).toBeVisible();
 
         fireEvent.click(switcher);
       }
 
       // click a day
-      fireEvent.click(getByText(document.body, "11"));
+      fireEvent.click(getByText("11"));
 
       // Assert
       expect(getByLabelText("Some Field")).toHaveValue(
@@ -1670,9 +1664,9 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const someDay = getByText(document.body, "16");
+        const someDay = getByText("16");
         expect(someDay).toBeVisible();
 
         // Pick date
@@ -1709,9 +1703,9 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const someDay = getByText(document.body, "16");
+        const someDay = getByText("16");
         expect(someDay).toBeVisible();
 
         // Pick date
@@ -1752,9 +1746,9 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const someDay = getByText(document.body, "17");
+        const someDay = getByText("17");
         expect(someDay).toBeVisible();
 
         // Pick date
@@ -1795,9 +1789,9 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const someDay = getByText(document.body, "16");
+        const someDay = getByText("16");
         expect(someDay).toBeVisible();
 
         // Pick date
@@ -1836,9 +1830,9 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const someDay = getByText(document.body, "16");
+        const someDay = getByText("16");
         expect(someDay).toBeVisible();
 
         // Pick date
@@ -1877,13 +1871,13 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+        expect(getByTestId("time-picker")).toBeVisible();
 
         // Click to change the time
-        const upArrows = getAllByText(document.body, "▲");
+        const upArrows = getAllByText("▲");
         expect(upArrows?.length).toBe(3);
 
-        const downArrows = getAllByText(document.body, "▼");
+        const downArrows = getAllByText("▼");
         expect(downArrows?.length).toBe(3);
 
         // Increase hours from 12 to 1
@@ -1929,13 +1923,13 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+        expect(getByTestId("time-picker")).toBeVisible();
 
         // Click to change the time
-        const upArrows = getAllByText(document.body, "▲");
+        const upArrows = getAllByText("▲");
         expect(upArrows?.length).toBe(3);
 
-        const downArrows = getAllByText(document.body, "▼");
+        const downArrows = getAllByText("▼");
         expect(downArrows?.length).toBe(3);
 
         // Increase hours from 12 to 3
@@ -1991,13 +1985,13 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+        expect(getByTestId("time-picker")).toBeVisible();
 
         // Click to change the time
-        const upArrows = getAllByText(document.body, "▲");
+        const upArrows = getAllByText("▲");
         expect(upArrows?.length).toBe(3);
 
-        const downArrows = getAllByText(document.body, "▼");
+        const downArrows = getAllByText("▼");
         expect(downArrows?.length).toBe(3);
 
         // Increase minutes from 0 to 15
@@ -2053,13 +2047,13 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+        expect(getByTestId("time-picker")).toBeVisible();
 
         // Click to change the time
-        const upArrows = getAllByText(document.body, "▲");
+        const upArrows = getAllByText("▲");
         expect(upArrows?.length).toBe(4);
 
-        const downArrows = getAllByText(document.body, "▼");
+        const downArrows = getAllByText("▼");
         expect(downArrows?.length).toBe(4);
 
         // Increase seconds from 0 to 30
@@ -2115,13 +2109,13 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+        expect(getByTestId("time-picker")).toBeVisible();
 
         // Click to change the time
-        const upArrows = getAllByText(document.body, "▲");
+        const upArrows = getAllByText("▲");
         expect(upArrows?.length).toBe(5);
 
-        const downArrows = getAllByText(document.body, "▼");
+        const downArrows = getAllByText("▼");
         expect(downArrows?.length).toBe(5);
 
         // Increase milliseconds from 0 to 10
@@ -2172,13 +2166,13 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "time-picker")).toBeVisible();
+        expect(getByTestId("time-picker")).toBeVisible();
 
         // Click to change the time
-        const upArrows = getAllByText(document.body, "▲");
+        const upArrows = getAllByText("▲");
         expect(upArrows?.length).toBe(4);
 
-        const downArrows = getAllByText(document.body, "▼");
+        const downArrows = getAllByText("▼");
         expect(downArrows?.length).toBe(4);
 
         // Increase seconds
@@ -2241,9 +2235,9 @@ describe("DateTime", () => {
         fireEvent.click(element);
 
         // Assert
-        expect(getByTestId(document.body, "day-picker")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
 
-        const someDay = getByText(document.body, "16");
+        const someDay = getByText("16");
         expect(someDay).toBeVisible();
 
         // Pick date
