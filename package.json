@@ -23,7 +23,7 @@
   "bundlesize": [
     {
       "path": "dist/react-datetime.cjs.production.min.js",
-      "maxSize": "3.5 kB"
+      "maxSize": "4.0 kB"
     },
     {
       "path": "dist/react-datetime.cjs.development.js",

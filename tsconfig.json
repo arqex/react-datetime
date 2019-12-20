@@ -20,7 +20,6 @@
     "sourceMap": true,
     "declaration": true,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true,
     "baseUrl": "./",
     "paths": {
       "*": ["src/*", "node_modules/*"]

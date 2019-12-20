@@ -146,14 +146,21 @@ export function CustomizableExample() {
         <strong>Value:</strong> {JSON.stringify(state.value)}
       </div>
 
-      <DateTime
-        value={state.value}
-        onChange={newValue => {
-          console.log(newValue);
-          setState({ ...state, value: newValue });
+      <form
+        onSubmit={e => {
+          alert("submitted");
+          e.preventDefault();
         }}
-        {...state}
-      />
+      >
+        <DateTime
+          value={state.value}
+          onChange={newValue => {
+            console.log(newValue);
+            setState({ ...state, value: newValue });
+          }}
+          {...state}
+        />
+      </form>
 
       <hr />
 

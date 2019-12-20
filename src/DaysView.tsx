@@ -101,6 +101,9 @@ function DaysView(props: DaysViewProps) {
                     typeof isValidDate === "function" &&
                     !isValidDate(workingDate);
 
+                  const isActive =
+                    selectedDate && isSameDay(workingDate, selectedDate);
+
                   return (
                     <td
                       key={getDate(workingDate)}
@@ -109,9 +112,7 @@ function DaysView(props: DaysViewProps) {
                         {
                           rdtOld: isBefore(workingDate, startOfMonth(viewDate)),
                           rdtNew: isBefore(endOfMonth(viewDate), workingDate),
-                          rdtActive:
-                            selectedDate &&
-                            isSameDay(workingDate, selectedDate),
+                          rdtActive: isActive,
                           rdtToday: isSameDay(workingDate, new Date()),
                           rdtDisabled: isDisabled
                         }
