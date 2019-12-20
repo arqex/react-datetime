@@ -43,7 +43,11 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
   }
 
   return (
-    <div ref={ref} className={cc(["rdtPicker", { rdtStatic: isStatic }])}>
+    <div
+      ref={ref}
+      data-testid="picker-wrapper"
+      className={cc(["rdtPicker", { rdtStatic: isStatic }])}
+    >
       {el}
     </div>
   );

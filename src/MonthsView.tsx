@@ -80,6 +80,9 @@ function MonthsView(props: MonthsViewProps) {
                   );
                   const monthDate = setMonth(new Date(), month);
 
+                  const isActive =
+                    selectedDate && isSameMonth(selectedDate, currentMonth);
+
                   return (
                     <td
                       key={month}
@@ -87,9 +90,7 @@ function MonthsView(props: MonthsViewProps) {
                         "rdtMonth",
                         {
                           rdtDisabled: isDisabled,
-                          rdtActive:
-                            selectedDate &&
-                            isSameMonth(selectedDate, currentMonth)
+                          rdtActive: isActive
                         }
                       ])}
                       onClick={() => {

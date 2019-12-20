@@ -7,6 +7,7 @@ import getYear from "date-fns/getYear";
 import setYear from "date-fns/setYear";
 import getDaysInYear from "date-fns/getDaysInYear";
 import setDayOfYear from "date-fns/setDayOfYear";
+import isSameYear from "date-fns/isSameYear";
 import { FormatOptions, ViewMode } from "./index";
 
 export interface YearsViewProps {
@@ -81,6 +82,9 @@ function YearsView(props: YearsViewProps) {
                     d => typeof isValidDate === "function" && !isValidDate(d)
                   );
 
+                  const isActive =
+                    selectedDate && isSameYear(selectedDate, currentYear);
+
                   return (
                     <td
                       key={year}
@@ -88,8 +92,7 @@ function YearsView(props: YearsViewProps) {
                         "rdtYear",
                         {
                           rdtDisabled: isDisabled,
-                          rdtActive:
-                            selectedDate && getYear(selectedDate) === year
+                          rdtActive: isActive
                         }
                       ])}
                       onClick={() => {

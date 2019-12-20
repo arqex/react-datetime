@@ -460,6 +460,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       // Open picker
@@ -490,6 +491,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       // Open picker
@@ -523,6 +525,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       // Open picker
@@ -715,6 +718,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       fireEvent.click(element);
@@ -739,6 +743,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       fireEvent.click(element);
@@ -769,6 +774,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       fireEvent.click(element);
@@ -859,6 +865,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       fireEvent.click(element);
@@ -896,6 +903,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       fireEvent.focus(element);
@@ -933,6 +941,7 @@ describe("DateTime", () => {
 
     //   const element = getByLabelText("Some Field");
     //   expect(element).toHaveValue("");
+    expect(queryByTestId("picker-wrapper")).toBeNull();
 
     //   // Act
     //   fireEvent.focus(element);
@@ -959,6 +968,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       fireEvent.click(element);
@@ -987,6 +997,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       fireEvent.click(element);
@@ -1018,6 +1029,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       fireEvent.click(element);
@@ -1376,6 +1388,7 @@ describe("DateTime", () => {
 
       const element = getByLabelText("Some Field");
       expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
 
       // Act
       fireEvent.click(element);
@@ -1396,7 +1409,7 @@ describe("DateTime", () => {
     });
   });
 
-  describe("e2e", () => {
+  describe("end-to-end", () => {
     it("should switch through to year mode, and pick a specific date through various pickers", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -1697,6 +1710,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -1783,6 +1797,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -1824,6 +1839,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -1865,6 +1881,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -1917,6 +1934,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -1979,6 +1997,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -2041,6 +2060,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -2103,6 +2123,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -2160,6 +2181,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -2229,6 +2251,7 @@ describe("DateTime", () => {
 
         const element = getByLabelText("Some Field");
         expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
 
         // Act
         // Open picker
@@ -2249,6 +2272,330 @@ describe("DateTime", () => {
         expect(handleChange).toHaveBeenCalledWith(
           new Date(2019, 0, 16, 0, 0, 0, 0).getTime()
         );
+      });
+    });
+
+    describe("keyboard", () => {
+      it("should let you type to mark a full date active", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Act
+        // Open picker
+        fireEvent.focus(element);
+
+        // Should start visible with nothing active
+        expect(getByTestId("day-picker")).toBeVisible();
+        expect(getByText("16")).toBeVisible();
+        expect(getByText("16")).not.toHaveClass("rdtActive");
+
+        userEvent.type(element, "06/16/2015");
+
+        // Assert the typed value is now active
+        expect(getByTestId("day-picker")).toBeVisible();
+        expect(getByText("16")).toBeVisible();
+        expect(getByText("16")).toHaveClass("rdtActive");
+      });
+
+      it("should let you type to mark a month/year active", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime id="some-id" dateFormat="LL/yyyy" timeFormat={false} />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Act
+        // Open picker
+        fireEvent.focus(element);
+
+        // Should start visible with nothing active
+        expect(getByTestId("month-picker")).toBeVisible();
+        expect(getByText(/jun/i)).toBeVisible();
+        expect(getByText(/jun/i)).not.toHaveClass("rdtActive");
+
+        userEvent.type(element, "06/2015");
+
+        // Assert the typed value is now active
+        expect(getByTestId("month-picker")).toBeVisible();
+        expect(getByText(/jun/i)).toBeVisible();
+        expect(getByText(/jun/i)).toHaveClass("rdtActive");
+      });
+
+      it("should let you type to mark a year active", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime id="some-id" dateFormat="yyyy" timeFormat={false} />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Act
+        // Open picker
+        fireEvent.focus(element);
+
+        // Should start visible with nothing active
+        expect(getByTestId("year-picker")).toBeVisible();
+        expect(getByText(/2015/i)).toBeVisible();
+        expect(getByText(/2015/i)).not.toHaveClass("rdtActive");
+
+        userEvent.type(element, "2015");
+
+        // Assert the typed value is now active
+        expect(getByTestId("year-picker")).toBeVisible();
+        expect(getByText(/2015/i)).toBeVisible();
+        expect(getByText(/2015/i)).toHaveClass("rdtActive");
+      });
+
+      it("should let you type to mark a time active", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime id="some-id" dateFormat={false} timeFormat="h:mm a" />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Act
+        // Open picker
+        fireEvent.focus(element);
+
+        // Should start visible with nothing active
+        const picker = getByTestId("time-picker");
+        expect(picker).toBeVisible();
+        {
+          const textContent = picker.textContent?.replace(/\W+/g, "");
+          expect(textContent).toMatch(/1200AM/i);
+        }
+
+        userEvent.type(element, "4:13 PM");
+
+        // Assert the typed value is now active
+        expect(getByTestId("time-picker")).toBeVisible();
+        {
+          const textContent = picker.textContent?.replace(/\W+/g, "");
+          expect(textContent).toMatch(/413PM/i);
+        }
+      });
+
+      it("should let you type to mark a date/time active", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat="LL/dd/yyyy"
+              timeFormat="h:mm a"
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Act
+        // Open picker
+        fireEvent.focus(element);
+
+        // Should start visible with nothing active
+        expect(getByTestId("day-picker")).toBeVisible();
+        expect(getByText("16")).toBeVisible();
+        expect(getByText("16")).not.toHaveClass("rdtActive");
+
+        userEvent.type(element, "06/16/2015 12:00 AM");
+
+        // Assert the typed value is now active
+        expect(getByTestId("day-picker")).toBeVisible();
+        expect(getByText("16")).toBeVisible();
+        expect(getByText("16")).toHaveClass("rdtActive");
+      });
+
+      it("should show when tabbed in", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Act
+        expect(document.body).toHaveFocus();
+
+        // Open picker
+        userEvent.tab();
+        expect(element).toHaveFocus();
+
+        // Should become visible
+        expect(getByTestId("picker-wrapper")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
+      });
+
+      it("should hide when open and hitting enter", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Act
+        // Open picker
+        fireEvent.focus(element);
+
+        // Should become visible
+        expect(getByTestId("picker-wrapper")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
+
+        // Hit enter
+        fireEvent.keyDown(element, {
+          key: "Enter",
+          code: 13,
+          keyCode: 13,
+          charCode: 13
+        });
+        fireEvent.keyUp(element, {
+          key: "Enter",
+          code: 13,
+          keyCode: 13,
+          charCode: 13
+        });
+
+        // Assert the picker is closed
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(queryByTestId("day-picker")).toBeNull();
+      });
+
+      it("should hide when open and hitting escape", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Act
+        // Open picker
+        fireEvent.focus(element);
+
+        // Should become visible
+        expect(getByTestId("picker-wrapper")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
+
+        // Hit escape
+        fireEvent.keyDown(element, {
+          key: "Escape",
+          code: 27,
+          keyCode: 27,
+          charCode: 27
+        });
+        fireEvent.keyUp(element, {
+          key: "Escape",
+          code: 27,
+          keyCode: 27,
+          charCode: 27
+        });
+
+        // Assert the picker is closed
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(queryByTestId("day-picker")).toBeNull();
+      });
+
+      it("should hide when open and hitting tab", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Act
+        // Open picker
+        fireEvent.focus(element);
+
+        // Should become visible
+        expect(getByTestId("picker-wrapper")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
+
+        // Hit tab
+        fireEvent.keyDown(element, {
+          key: "Tab",
+          code: 9,
+          keyCode: 9,
+          charCode: 9
+        });
+        fireEvent.keyUp(element, {
+          key: "Tab",
+          code: 9,
+          keyCode: 9,
+          charCode: 9
+        });
+
+        // Assert the picker is closed
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(queryByTestId("day-picker")).toBeNull();
       });
     });
   });
