@@ -112,8 +112,7 @@ function getViewMode(
 }
 
 function getDateTypeMode(
-  rawDateTypeMode: DateTypeMode | undefined,
-  value: string | number | Date | undefined
+  rawDateTypeMode: DateTypeMode | undefined
 ): DateTypeMode {
   if (typeof rawDateTypeMode === "string") {
     const lowerRawDateTypeMode = rawDateTypeMode.toLowerCase();
@@ -122,8 +121,6 @@ function getDateTypeMode(
       case "input-format":
         return lowerRawDateTypeMode;
     }
-  } else if (typeof value === "number") {
-    return "utc-ms-timestamp";
   }
 
   return "Date";
@@ -186,7 +183,7 @@ function DateTime(
   };
 
   const valueAsDate = parse(value, fullFormat, formatOptions);
-  const dateTypeMode = getDateTypeMode(rawDateTypeMode, value);
+  const dateTypeMode = getDateTypeMode(rawDateTypeMode);
 
   const getChangedValue = useCallback(
     (newValue: undefined | string | Date) => {
