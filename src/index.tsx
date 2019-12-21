@@ -90,7 +90,7 @@ const nextViewModes: NextViewModes = {
   years: "months"
 };
 
-function getViewMode(
+function getDefaultViewMode(
   dateFormat: string | false,
   timeFormat: string | false
 ): ViewMode | undefined {
@@ -259,7 +259,7 @@ function DateTime(
   //
   // ViewMode
   //
-  const defaultViewMode = getViewMode(dateFormat, timeFormat);
+  const defaultViewMode = getDefaultViewMode(dateFormat, timeFormat);
   const [viewMode, setViewMode] = useDefaultStateWithOverride(
     defaultViewMode,
     false
