@@ -79,6 +79,31 @@ describe("DateTime", () => {
     expect(container.firstChild).toHaveValue("06/16/2015 12:00 AM");
   });
 
+  describe("invalid pickers", () => {
+    it("should not open if there's no date/time formats", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat={false} timeFormat={false} />
+        </>
+      );
+
+      // Act
+      const element = getByLabelText("Some Field");
+      fireEvent.click(element);
+
+      // Assert
+      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(queryByTestId("day-picker")).toBeNull();
+      expect(queryByTestId("month-picker")).toBeNull();
+      expect(queryByTestId("year-picker")).toBeNull();
+      expect(queryByTestId("time-picker")).toBeNull();
+    });
+  });
+
   describe("day picker", () => {
     it("should open day picker when clicking", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
