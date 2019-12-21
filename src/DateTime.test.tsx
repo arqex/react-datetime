@@ -503,6 +503,41 @@ describe("DateTime", () => {
       expect(element).toHaveValue("01/16/2019");
     });
 
+    it("should do nothing when picking day from picker without onChange function", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <RawDateTime
+            id="some-id"
+            dateFormat="LL/dd/yyyy"
+            timeFormat={false}
+          />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId("day-picker")).toBeVisible();
+
+      const someDay = getByText("16");
+      expect(someDay).toBeVisible();
+
+      // Pick date
+      fireEvent.click(someDay);
+
+      expect(element).toHaveValue("");
+    });
+
     it("should navigate to previous months from picker", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -1646,7 +1681,7 @@ describe("DateTime", () => {
     });
 
     describe("events", () => {
-      it("should not trigger onChange Date with no change", () => {
+      it("should not trigger onChange Date when opening w/ Date", () => {
         mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
         const handleChange = jest.fn();
