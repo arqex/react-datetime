@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "build": "webpack --config webpack.config.js",
+    "eject": "react-scripts eject",
     "lint": "eslint src/datetime/Datetime.js test/ && echo 'Linting OK! 💪'",
     "notify-pre-commit-hook": "echo '### Starting pre-commit hook 🦄'",
     "playground": "react-scripts start",
