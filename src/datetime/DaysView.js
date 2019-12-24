@@ -1,5 +1,3 @@
-'use strict';
-
 var React = require('react'),
 	createClass = require('create-react-class'),
 	moment = require('moment')
@@ -95,7 +93,6 @@ var DateTimePickerDays = createClass({
 				classes += ' rdtActive';
 
 			if (prevMonth.isSame(moment(), 'day')) {
-				console.log( 'TOOOOOOOODAYYYYY' );
 				classes += ' rdtToday';
 			}
 

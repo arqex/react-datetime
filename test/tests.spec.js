@@ -1,8 +1,8 @@
 /* global it, xit, describe, expect, jasmine, done, jest */
 
-import React from 'react'; // eslint-disable-line no-unused-vars
+import React from 'react'; 
 import moment from 'moment';
-import _momentTimezone from 'moment-timezone'; // eslint-disable-line no-unused-vars
+import _momentTimezone from 'moment-timezone'; // eslint-disable-line
 import utils from './testUtils';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -28,9 +28,9 @@ describe('Datetime', () => {
 
 		// Week days
 		const expectedWeekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-		actualWeekdays = component.find('.rdtDays .dow').map((element) =>
-			element.text()
-		);
+			actualWeekdays = component.find('.rdtDays .dow').map((element) =>
+				element.text()
+			);
 		expect(actualWeekdays).toEqual(expectedWeekDays);
 
 		// Dates
@@ -288,17 +288,13 @@ describe('Datetime', () => {
 	});
 
 	it('sets CSS class on today date', () => {
-		console.log('TRYING TODAY');
-
-		const specificDate = moment('2015-04-19'),
+		const specificDate = moment(),
+			day = specificDate.date(),
 			component = utils.createDatetime({ initialValue: specificDate })
 		;
 
 		utils.openDatepicker(component);
-		console.log('TRIED');
-		
-		expect(component.find('.rdtToday').text()).toEqual('19');
-
+		expect(component.find('.rdtToday').text()).toEqual( day+'' );
 	});
 
 	describe('with custom props', () => {
@@ -704,7 +700,6 @@ describe('Datetime', () => {
 				invalidStrDate = strDate + 'x',
 				component = utils.createDatetime({ initialValue: '', strictParsing: true,
 					onChange: updated => {
-						console.log( 'UPDATED', updated );
 						expect(updated).toBe( invalidStrDate );
 						done();
 					}
@@ -927,12 +922,13 @@ describe('Datetime', () => {
 			});
 
 			it('locale -> picker should change language (initialViewMode=days)', () => {
-				const component = utils.createDatetime({ initialViewMode: 'days', locale: 'nl' }),
-					weekdaysBefore = component.find('.rdtDays .dow').map((element) =>
-						element.text()
-					);
+				const component = utils.createDatetime({ initialViewMode: 'days', locale: 'nl' });
+				const	weekdaysBefore = component.find('.rdtDays .dow').map( element =>
+					element.text()
+				);
 
 				component.setProps({ locale: 'sv' });
+				
 				const weekdaysAfter = component.find('.rdtDays .dow').map((element) =>
 					element.text()
 				);

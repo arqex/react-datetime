@@ -1,5 +1,3 @@
-'use strict';
-
 var React = require('react'),
 	createClass = require('create-react-class')
 ;
@@ -93,8 +91,8 @@ var DateTimePickerTime = createClass({
 			counters.push(
 				React.createElement('div', { className: 'rdtCounter rdtMilli', key: 'm' },
 					React.createElement('input', { value: this.state.milliseconds, type: 'text', onChange: this.updateMilli } )
-					)
-				);
+				)
+			);
 		}
 
 		return React.createElement('div', { className: 'rdtTime' },
