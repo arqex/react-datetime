@@ -1,16 +1,15 @@
 'use strict';
 
-var assign = require('object-assign'),
-	PropTypes = require('prop-types'),
+var PropTypes = require('prop-types'),
 	createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
-	DaysView = require('./src/DaysView'),
-	MonthsView = require('./src/MonthsView'),
-	YearsView = require('./src/YearsView'),
-	TimeView = require('./src/TimeView'),
+	DaysView = require('./DaysView'),
+	MonthsView = require('./MonthsView'),
+	YearsView = require('./YearsView'),
+	TimeView = require('./TimeView'),
 	onClickOutside = require('react-onclickoutside').default
-	;
+;
 
 var viewModes = {
 	YEARS: 'years',
@@ -524,7 +523,7 @@ var Datetime = createClass({
 		var children = [];
 
 		if ( this.props.input ) {
-			var finalInputProps = assign(
+			var finalInputProps = Object.assign(
 				{ type: 'text', className: 'form-control', value: this.getInputValue() },
 				this.props.inputProps,
 				{
@@ -537,7 +536,7 @@ var Datetime = createClass({
 			if ( this.props.renderInput ) {
 				children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar, this.closeCalendar )) ];
 			} else {
-				children = [ React.createElement('input', assign({ key: 'i' }, finalInputProps ))];
+				children = [ React.createElement('input', Object.assign({ key: 'i' }, finalInputProps ))];
 			}
 		}
 

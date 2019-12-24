@@ -1,9 +1,8 @@
 'use strict';
 
 var React = require('react'),
-	createClass = require('create-react-class'),
-	assign = require('object-assign')
-	;
+	createClass = require('create-react-class')
+;
 
 var DateTimePickerTime = createClass({
 	getInitialState: function() {
@@ -133,7 +132,7 @@ var DateTimePickerTime = createClass({
 			}
 		};
 		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
-			assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
+			Object.assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
 		});
 		this.setState( this.calculateState( this.props ) );
 	},
