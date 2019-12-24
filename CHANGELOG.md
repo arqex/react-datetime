@@ -13,6 +13,7 @@ Changelog
 * Creates `setViewData` and `setViewMode` methods.
 * Fixes error clicking on days from the previous or next month in the days view
 * Fixes month, year and time views for locales that doesn't use gregorian numbers
+* Adds a playground to make simpler to try out the library by `npm run playground`
 
 ## 2.16.2
 * Turns moment timezone peer dependency in a runtime error when missing using `displayTimezone`.

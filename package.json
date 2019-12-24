@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/YouCanBookMe/react-datetime"
   },
-  "main": "./DateTime.js",
+  "main": "./dist/react-datetime.cjs.js",
   "typings": "./DateTime.d.ts",
   "files": [
     "DateTime.js",
@@ -17,18 +17,16 @@
     "dist"
   ],
   "scripts": {
-    "build:mac": "./node_modules/.bin/gulp",
-    "build:win": "./node_modules/.bin/gulp.cmd",
-    "dev": "./node_modules/.bin/webpack-dev-server --config example/webpack.config.js --devtool eval --progress --colors --hot --content-base example",
-    "lint": "node ./node_modules/eslint/bin/eslint.js src/ DateTime.js test/ && echo 'Linting OK! 💪'",
+    "build": "webpack --config webpack.config.js",
+    "lint": "eslint src/datetime/Datetime.js test/ && echo 'Linting OK! 💪'",
     "notify-pre-commit-hook": "echo '### Starting pre-commit hook 🦄'",
     "playground": "react-scripts start",
-    "test": "node ./node_modules/jest/bin/jest.js",
-    "test:typings": "node ./node_modules/typescript/bin/tsc -p ./typings",
-    "test:snapshot": "node ./node_modules/jest/bin/jest.js snapshot",
-    "test:snapshot:update": "node ./node_modules/jest/bin/jest.js snapshot --updateSnapshot",
+    "test": "jest",
+    "test:typings": "tsc -p ./typings",
+    "test:snapshot": "jest.js snapshot",
+    "test:snapshot:update": "jest snapshot --updateSnapshot",
     "test:all": "echo 'Running tests...' && npm run test:typings && npm run test && echo 'All tests passed! 🤘'",
-    "test:watch": "node ./node_modules/jest/bin/jest.js --watch"
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "react",
@@ -52,12 +50,6 @@
     "@types/react": ">=15",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-15": "^1.0.5",
-    "gulp": "^3.9.0",
-    "gulp-insert": "^0.4.0",
-    "gulp-plumber": "^1.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^2.4.0",
-    "gulp-uglify": "^1.2.0",
     "jsdom": "^7.0.2",
     "mocha": "^5.2.0",
     "moment": "^2.16.0",
@@ -69,8 +61,7 @@
     "react-scripts": "3.3.0",
     "react-test-renderer": "^15.5.0",
     "through2": "^2.0.3",
-    "typescript": "^3.7.4",
-    "webpack-stream": "^3.2.0"
+    "typescript": "^3.7.4"
   },
   "dependencies": {
     "create-react-class": "^15.6.3",

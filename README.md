@@ -263,11 +263,9 @@ For information about how to contribute, see the [CONTRIBUTING](.github/CONTRIBU
 
 ## Development
 ```sh
-npm run dev
+npm run playground
 ```
-This will start a local `webpack-dev-server` based on `example/example.js` where most development can be done.
-
-If you want to develop using the component inside a React application, we recommend that you use [react-datetime-playground](https://github.com/arqex/react-datetime-playground).
+This will start a local development server building `src/index.js` where most development can be done.
 
 ### [Changelog](CHANGELOG.md)
 
