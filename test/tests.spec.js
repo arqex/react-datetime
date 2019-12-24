@@ -5,7 +5,7 @@ import moment from 'moment';
 import _momentTimezone from 'moment-timezone'; // eslint-disable-line no-unused-vars
 import utils from './testUtils';
 import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-15';
+import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -288,14 +288,17 @@ describe('Datetime', () => {
 	});
 
 	it('sets CSS class on today date', () => {
-		const specificDate = moment('2015-04-19'),
-			component = utils.createDatetime({ initialValue: specificDate });
+		console.log('TRYING TODAY');
 
-		// Mock the today date
-		jasmine.clock().mockDate(specificDate.toDate());
+		const specificDate = moment('2015-04-19'),
+			component = utils.createDatetime({ initialValue: specificDate })
+		;
 
 		utils.openDatepicker(component);
-		expect(component.find('.rdtDay.rdtToday').text()).toEqual('19');
+		console.log('TRIED');
+		
+		expect(component.find('.rdtToday').text()).toEqual('19');
+
 	});
 
 	describe('with custom props', () => {
@@ -700,10 +703,13 @@ describe('Datetime', () => {
 				strDate = mDate.format('L') + ' ' + mDate.format('LT'),
 				invalidStrDate = strDate + 'x',
 				component = utils.createDatetime({ initialValue: '', strictParsing: true,
-					onChange: (updated) => {
-						expect(updated, invalidStrDate);
+					onChange: updated => {
+						console.log( 'UPDATED', updated );
+						expect(updated).toBe( invalidStrDate );
 						done();
-					}});
+					}
+				})
+			;
 
 			component.find('.form-control').simulate('change', { target: { value: invalidStrDate }});
 		});

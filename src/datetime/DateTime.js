@@ -511,7 +511,9 @@ var Datetime = createClass({
 	},
 
 	log: function( message, method ) {
-		var con = console;
+		var con = typeof window !== 'undefined' && window.console;
+		if ( !con ) return;
+
 		if ( !method ) {
 			method = 'warn';
 		}

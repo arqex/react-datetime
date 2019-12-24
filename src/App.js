@@ -5,7 +5,7 @@ import DateTime from './datetime/DateTime';
 function App() {
 	return (
 		<div className="App">
-			<DateTime />
+			<DateTime initialValue={moment('2015-04-19')} />
 		</div>
 	);
 }

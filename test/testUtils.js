@@ -1,6 +1,6 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import { mount, shallow } from 'enzyme';
-import Datetime from '../DateTime'; // eslint-disable-line no-unused-vars
+import Datetime from '../src/datetime/DateTime'; // eslint-disable-line no-unused-vars
 
 const _simulateClickOnElement = (element) => {
 	if (element.length === 0) {
