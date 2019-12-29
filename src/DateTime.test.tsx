@@ -13,6 +13,18 @@ const {
 
 import RawDateTime from "./index";
 
+const FORMATS = {
+  MONTH: "LL",
+  DAY: "dd",
+  YEAR: "yyyy",
+  MILITARY_HOUR: "H",
+  HOUR: "h",
+  MINUTE: "mm",
+  SECOND: "ss",
+  MILLISECOND: "SSS",
+  AM_PM: "a"
+};
+
 function DateTime(props) {
   const [value, setValue] = React.useState(props.value);
 
@@ -112,7 +124,10 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+          />
         </>
       );
 
@@ -132,7 +147,10 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+          />
         </>
       );
 
@@ -152,7 +170,7 @@ describe("DateTime", () => {
     //   const { getByLabelText } = render(
     //     <>
     //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat="LL/dd/yyyy" />
+    //       <DateTime id="some-id" dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`} />
     //     </>
     //   );
 
@@ -479,7 +497,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -512,7 +534,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <RawDateTime
             id="some-id"
-            dateFormat="LL/dd/yyyy"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
             timeFormat={false}
           />
         </>
@@ -545,7 +567,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -579,7 +605,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -615,7 +645,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat="LL/dd/yyyy"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
             timeFormat={false}
             value="06/16/2015"
           />
@@ -646,8 +676,8 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat="LL/dd/yyyy"
-            timeFormat="h:mm a"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
             value="06/16/2015 12:00 AM"
           />
         </>
@@ -677,7 +707,10 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/yyyy" />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+          />
         </>
       );
 
@@ -712,7 +745,10 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/yyyy" />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+          />
         </>
       );
 
@@ -747,7 +783,7 @@ describe("DateTime", () => {
     //   const { getByLabelText } = render(
     //     <>
     //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat="LL/yyyy" />
+    //       <DateTime id="some-id" dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`} />
     //     </>
     //   );
 
@@ -772,7 +808,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -797,7 +837,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -828,7 +872,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -861,7 +909,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat="LL/yyyy"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
             timeFormat={false}
             value="06/2015"
           />
@@ -890,8 +938,8 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat="LL/yyyy"
-            timeFormat="h:mm a"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
             value="06/2015 12:00 AM"
           />
         </>
@@ -919,7 +967,7 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="yyyy" />
+          <DateTime id="some-id" dateFormat={FORMATS.YEAR} />
         </>
       );
 
@@ -957,7 +1005,7 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="yyyy" />
+          <DateTime id="some-id" dateFormat={FORMATS.YEAR} />
         </>
       );
 
@@ -995,7 +1043,7 @@ describe("DateTime", () => {
     //   const { getByLabelText } = render(
     //     <>
     //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat="yyyy" />
+    //       <DateTime id="some-id" dateFormat={FORMATS.YEAR} />
     //     </>
     //   );
 
@@ -1022,7 +1070,7 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="yyyy" timeFormat={false} />
+          <DateTime id="some-id" dateFormat={FORMATS.YEAR} timeFormat={false} />
         </>
       );
 
@@ -1051,7 +1099,7 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="yyyy" timeFormat={false} />
+          <DateTime id="some-id" dateFormat={FORMATS.YEAR} timeFormat={false} />
         </>
       );
 
@@ -1083,7 +1131,7 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="yyyy" timeFormat={false} />
+          <DateTime id="some-id" dateFormat={FORMATS.YEAR} timeFormat={false} />
         </>
       );
 
@@ -1117,7 +1165,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat="yyyy"
+            dateFormat={FORMATS.YEAR}
             timeFormat={false}
             value="2015"
           />
@@ -1146,8 +1194,8 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat="yyyy"
-            timeFormat="h:mm a"
+            dateFormat={FORMATS.YEAR}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
             value="2015 12:00 AM"
           />
         </>
@@ -1175,7 +1223,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat={false} timeFormat="h:mm a" />
+          <DateTime
+            id="some-id"
+            dateFormat={false}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+          />
         </>
       );
 
@@ -1200,7 +1252,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat={false} timeFormat="h:mm a" />
+          <DateTime
+            id="some-id"
+            dateFormat={false}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+          />
         </>
       );
 
@@ -1225,7 +1281,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat={false} timeFormat="H:mm" />
+          <DateTime
+            id="some-id"
+            dateFormat={false}
+            timeFormat={`${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}`}
+          />
         </>
       );
 
@@ -1247,7 +1307,7 @@ describe("DateTime", () => {
     //   const { getByLabelText } = render(
     //     <>
     //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat={false} timeFormat="h:mm a" />
+    //       <DateTime id="some-id" dateFormat={false} timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`} />
     //     </>
     //   );
 
@@ -1274,7 +1334,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={false}
-            timeFormat="h:mm a"
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
             value="2:13 PM"
           />
         </>
@@ -1304,7 +1364,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={false}
-            timeFormat="H:mm"
+            timeFormat={`${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}`}
             value="21:13"
           />
         </>
@@ -1331,7 +1391,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={false}
-            timeFormat="h:mm:ss.SSS a"
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`}
             value={new Date()}
           />
         </>
@@ -1360,7 +1420,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -1389,7 +1453,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat="h:mm a" />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+          />
         </>
       );
 
@@ -1418,7 +1486,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -1442,7 +1514,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -1477,7 +1553,11 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
         </>
       );
 
@@ -1547,8 +1627,8 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat="LL/dd/yyyy"
-            timeFormat="h:mm:ss.SSS a"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`}
           />
         </>
       );
@@ -1692,7 +1772,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat="LL/dd/yyyy"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
               timeFormat={false}
               onChange={handleChange}
               value={new Date(2019, 0, 16, 12, 1, 12, 34)}
@@ -1721,7 +1801,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat="LL/dd/yyyy"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
               timeFormat={false}
               onChange={handleChange}
               value={new Date(2019, 0, 16, 12, 1, 12, 34)}
@@ -1761,7 +1841,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat="LL/dd/yyyy"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
               timeFormat={false}
               onChange={handleChange}
             />
@@ -1804,7 +1884,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat="LL/dd/yyyy"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
               timeFormat={false}
               onChange={handleChange}
               value={new Date(2019, 0, 16, 12, 1, 12, 34)}
@@ -1847,7 +1927,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat="LL/dd/yyyy"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
               timeFormat={false}
               onChange={handleChange}
               dateTypeMode="input-format"
@@ -1889,8 +1969,8 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat="LL/dd/yyyy"
-              timeFormat="h:mm a"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
               onChange={handleChange}
               dateTypeMode="input-format"
             />
@@ -1932,7 +2012,7 @@ describe("DateTime", () => {
             <DateTime
               id="some-id"
               dateFormat={false}
-              timeFormat="h:mm a"
+              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
               onChange={handleChange}
               dateTypeMode="input-format"
             />
@@ -1980,7 +2060,7 @@ describe("DateTime", () => {
             <DateTime
               id="some-id"
               dateFormat={false}
-              timeFormat="h:mm a"
+              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
               onChange={handleChange}
               dateTypeMode="input-format"
               timeConstraints={{
@@ -2043,7 +2123,7 @@ describe("DateTime", () => {
             <DateTime
               id="some-id"
               dateFormat={false}
-              timeFormat="h:mm a"
+              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
               onChange={handleChange}
               dateTypeMode="input-format"
               timeConstraints={{
@@ -2106,7 +2186,7 @@ describe("DateTime", () => {
             <DateTime
               id="some-id"
               dateFormat={false}
-              timeFormat="h:mm:ss a"
+              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND} ${FORMATS.AM_PM}`}
               onChange={handleChange}
               dateTypeMode="input-format"
               timeConstraints={{
@@ -2169,7 +2249,7 @@ describe("DateTime", () => {
             <DateTime
               id="some-id"
               dateFormat={false}
-              timeFormat="h:mm:ss.SSS a"
+              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`}
               onChange={handleChange}
               dateTypeMode="input-format"
               timeConstraints={{
@@ -2232,7 +2312,7 @@ describe("DateTime", () => {
             <DateTime
               id="some-id"
               dateFormat={false}
-              timeFormat="h:mm:ss a"
+              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND} ${FORMATS.AM_PM}`}
               onChange={handleChange}
               dateTypeMode="input-format"
             />
@@ -2301,7 +2381,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat="LL/dd/yyyy"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
               timeFormat={false}
               onChange={handleChange}
               dateTypeMode="utc-ms-timestamp"
@@ -2343,7 +2423,11 @@ describe("DateTime", () => {
         const { getByLabelText } = render(
           <>
             <label htmlFor="some-id">Some Field</label>
-            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+            <DateTime
+              id="some-id"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              timeFormat={false}
+            />
           </>
         );
 
@@ -2375,7 +2459,11 @@ describe("DateTime", () => {
         const { getByLabelText } = render(
           <>
             <label htmlFor="some-id">Some Field</label>
-            <DateTime id="some-id" dateFormat="LL/yyyy" timeFormat={false} />
+            <DateTime
+              id="some-id"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+              timeFormat={false}
+            />
           </>
         );
 
@@ -2407,7 +2495,11 @@ describe("DateTime", () => {
         const { getByLabelText } = render(
           <>
             <label htmlFor="some-id">Some Field</label>
-            <DateTime id="some-id" dateFormat="yyyy" timeFormat={false} />
+            <DateTime
+              id="some-id"
+              dateFormat={FORMATS.YEAR}
+              timeFormat={false}
+            />
           </>
         );
 
@@ -2439,7 +2531,11 @@ describe("DateTime", () => {
         const { getByLabelText } = render(
           <>
             <label htmlFor="some-id">Some Field</label>
-            <DateTime id="some-id" dateFormat={false} timeFormat="h:mm a" />
+            <DateTime
+              id="some-id"
+              dateFormat={false}
+              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            />
           </>
         );
 
@@ -2478,8 +2574,8 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat="LL/dd/yyyy"
-              timeFormat="h:mm a"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
             />
           </>
         );
@@ -2512,7 +2608,11 @@ describe("DateTime", () => {
         const { getByLabelText } = render(
           <>
             <label htmlFor="some-id">Some Field</label>
-            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+            <DateTime
+              id="some-id"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              timeFormat={false}
+            />
           </>
         );
 
@@ -2539,7 +2639,11 @@ describe("DateTime", () => {
         const { getByLabelText } = render(
           <>
             <label htmlFor="some-id">Some Field</label>
-            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+            <DateTime
+              id="some-id"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              timeFormat={false}
+            />
           </>
         );
 
@@ -2581,7 +2685,11 @@ describe("DateTime", () => {
         const { getByLabelText } = render(
           <>
             <label htmlFor="some-id">Some Field</label>
-            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+            <DateTime
+              id="some-id"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              timeFormat={false}
+            />
           </>
         );
 
@@ -2623,7 +2731,11 @@ describe("DateTime", () => {
         const { getByLabelText } = render(
           <>
             <label htmlFor="some-id">Some Field</label>
-            <DateTime id="some-id" dateFormat="LL/dd/yyyy" timeFormat={false} />
+            <DateTime
+              id="some-id"
+              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              timeFormat={false}
+            />
           </>
         );
 
