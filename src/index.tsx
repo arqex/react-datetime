@@ -441,7 +441,7 @@ function DateTime(
       )}
     </>
   ) : (
-    <CalendarContainer {...calendarProps} />
+    <CalendarContainer {...finalInputProps} {...calendarProps} />
   );
 }
 
