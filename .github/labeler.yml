@@ -1,3 +1,8 @@
-# Add 'test' label to any change to *.spec.js files within the source dir
+# Add 'test' label to any change to *.test.* files within the source dir
 test:
   - src/**/*.test.*
+
+# Add 'storybook' label
+storybook:
+  - .storybook/**/*
+  - src/**/*.stories.*
