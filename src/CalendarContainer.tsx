@@ -10,6 +10,8 @@ import { ViewMode } from "./.";
 interface CalendarContainerProps {
   viewMode: ViewMode | undefined;
   isStatic?: boolean;
+  id?: string;
+  className?: string;
 }
 
 const CalendarContainer = React.forwardRef(function CalendarContainer(
@@ -20,7 +22,7 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
     YearsViewProps,
   ref: any
 ) {
-  const { viewMode, isStatic = true, ...rest } = props;
+  const { viewMode, isStatic = true, id, className, ...rest } = props;
 
   let el: JSX.Element | undefined;
   switch (viewMode) {
@@ -45,8 +47,9 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
   return (
     <div
       ref={ref}
+      id={id}
       data-testid="picker-wrapper"
-      className={cc(["rdtPicker", { rdtStatic: isStatic }])}
+      className={cc(["rdtPicker", className, { rdtStatic: isStatic }])}
     >
       {el}
     </div>
