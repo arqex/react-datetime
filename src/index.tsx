@@ -278,7 +278,7 @@ function DateTime(
   const [isOpen, setIsOpen] = useState(false);
 
   function open() {
-    if (viewMode) {
+    if (!isOpen && viewMode) {
       setIsOpen(true);
 
       if (typeof onFocus === "function") {
