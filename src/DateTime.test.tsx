@@ -25,6 +25,8 @@ const FORMATS = {
   AM_PM: "a"
 };
 
+const FULL_DATE_FORMAT = `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`;
+
 function DateTime(props) {
   const [value, setValue] = React.useState(props.value);
 
@@ -124,10 +126,7 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime
-            id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
-          />
+          <DateTime id="some-id" dateFormat={FULL_DATE_FORMAT} />
         </>
       );
 
@@ -147,10 +146,7 @@ describe("DateTime", () => {
       const { getByLabelText } = render(
         <>
           <label htmlFor="some-id">Some Field</label>
-          <DateTime
-            id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
-          />
+          <DateTime id="some-id" dateFormat={FULL_DATE_FORMAT} />
         </>
       );
 
@@ -170,7 +166,7 @@ describe("DateTime", () => {
     //   const { getByLabelText } = render(
     //     <>
     //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`} />
+    //       <DateTime id="some-id" dateFormat={FULL_DATE_FORMAT} />
     //     </>
     //   );
 
@@ -499,7 +495,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={false}
           />
         </>
@@ -534,7 +530,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <RawDateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={false}
           />
         </>
@@ -569,7 +565,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={false}
           />
         </>
@@ -607,7 +603,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={false}
           />
         </>
@@ -645,7 +641,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={false}
             value="06/16/2015"
           />
@@ -676,7 +672,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
             value="06/16/2015 12:00 AM"
           />
@@ -1422,7 +1418,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={false}
           />
         </>
@@ -1455,7 +1451,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
           />
         </>
@@ -1488,7 +1484,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={false}
           />
         </>
@@ -1516,7 +1512,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={false}
           />
         </>
@@ -1555,7 +1551,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={false}
           />
         </>
@@ -1627,7 +1623,7 @@ describe("DateTime", () => {
           <label htmlFor="some-id">Some Field</label>
           <DateTime
             id="some-id"
-            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            dateFormat={FULL_DATE_FORMAT}
             timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`}
           />
         </>
@@ -1761,657 +1757,659 @@ describe("DateTime", () => {
     });
 
     describe("events", () => {
-      it("should not trigger onChange Date when opening w/ Date", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-        const handleChange = jest.fn();
-
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
-              timeFormat={false}
-              onChange={handleChange}
-              value={new Date(2019, 0, 16, 12, 1, 12, 34)}
-            />
-          </>
-        );
-
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("01/16/2019");
-
-        // Act
-        // Open picker
-        fireEvent.click(element);
-
-        expect(handleChange).toHaveBeenCalledTimes(0);
-      });
-
-      it("should not trigger onChange Date when clicking same date", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-        const handleChange = jest.fn();
-
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
-              timeFormat={false}
-              onChange={handleChange}
-              value={new Date(2019, 0, 16, 12, 1, 12, 34)}
-            />
-          </>
-        );
-
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("01/16/2019");
-
-        // Act
-        // Open picker
-        fireEvent.click(element);
-
-        // Assert
-        expect(getByTestId("day-picker")).toBeVisible();
-
-        const someDay = getByText("16");
-        expect(someDay).toBeVisible();
-
-        // Pick date
-        fireEvent.click(someDay);
-
-        expect(element).toHaveValue("01/16/2019");
-
-        expect(handleChange).toHaveBeenCalledTimes(0);
-      });
-
-      it("should trigger onChange Date when picking a first date", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-        const handleChange = jest.fn();
-
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
-              timeFormat={false}
-              onChange={handleChange}
-            />
-          </>
-        );
-
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
-
-        // Act
-        // Open picker
-        fireEvent.click(element);
-
-        // Assert
-        expect(getByTestId("day-picker")).toBeVisible();
-
-        const someDay = getByText("16");
-        expect(someDay).toBeVisible();
-
-        // Pick date
-        fireEvent.click(someDay);
-
-        expect(element).toHaveValue("01/16/2019");
-
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith(
-          new Date(2019, 0, 16, 0, 0, 0, 0)
-        );
-      });
-
-      it("should trigger onChange Date when picking a new date", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-        const handleChange = jest.fn();
-
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
-              timeFormat={false}
-              onChange={handleChange}
-              value={new Date(2019, 0, 16, 12, 1, 12, 34)}
-            />
-          </>
-        );
-
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("01/16/2019");
-
-        // Act
-        // Open picker
-        fireEvent.click(element);
-
-        // Assert
-        expect(getByTestId("day-picker")).toBeVisible();
-
-        const someDay = getByText("17");
-        expect(someDay).toBeVisible();
-
-        // Pick date
-        fireEvent.click(someDay);
-
-        expect(element).toHaveValue("01/17/2019");
-
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith(
-          new Date(2019, 0, 17, 12, 1, 12, 34)
-        );
-      });
-
-      it("should trigger onChange input string when picking a date", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-        const handleChange = jest.fn();
-
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
-              timeFormat={false}
-              onChange={handleChange}
-              dateTypeMode="input-format"
-            />
-          </>
-        );
-
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
-
-        // Act
-        // Open picker
-        fireEvent.click(element);
-
-        // Assert
-        expect(getByTestId("day-picker")).toBeVisible();
-
-        const someDay = getByText("16");
-        expect(someDay).toBeVisible();
-
-        // Pick date
-        fireEvent.click(someDay);
-
-        expect(element).toHaveValue("01/16/2019");
-
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith("01/16/2019");
-      });
-
-      it("should trigger onChange input string when picking a date/time", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-        const handleChange = jest.fn();
-
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
-              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
-              onChange={handleChange}
-              dateTypeMode="input-format"
-            />
-          </>
-        );
-
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
-
-        // Act
-        // Open picker
-        fireEvent.click(element);
-
-        // Assert
-        expect(getByTestId("day-picker")).toBeVisible();
-
-        const someDay = getByText("16");
-        expect(someDay).toBeVisible();
-
-        // Pick date
-        fireEvent.click(someDay);
-
-        expect(element).toHaveValue("01/16/2019 12:00 AM");
-
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith("01/16/2019 12:00 AM");
-      });
-
-      it("should trigger onChange input string when increasing time by one step", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-        const handleChange = jest.fn();
-
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={false}
-              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
-              onChange={handleChange}
-              dateTypeMode="input-format"
-            />
-          </>
-        );
-
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
-
-        // Act
-        // Open picker
-        fireEvent.click(element);
-
-        // Assert
-        expect(getByTestId("time-picker")).toBeVisible();
-
-        // Click to change the time
-        const upArrows = getAllByText("▲");
-        expect(upArrows?.length).toBe(3);
-
-        const downArrows = getAllByText("▼");
-        expect(downArrows?.length).toBe(3);
-
-        // Increase hours from 12 to 1
-        act(() => {
-          userEvent.click(upArrows[0]);
+      describe("onChange", () => {
+        it("should not trigger onChange Date when opening w/ Date", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+          const handleChange = jest.fn();
+
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onChange={handleChange}
+                value={new Date(2019, 0, 16, 12, 1, 12, 34)}
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("01/16/2019");
+
+          // Act
+          // Open picker
+          fireEvent.click(element);
+
+          expect(handleChange).toHaveBeenCalledTimes(0);
         });
 
-        expect(element).toHaveValue("1:00 AM");
+        it("should not trigger onChange Date when clicking same date", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith("1:00 AM");
-      });
+          const handleChange = jest.fn();
 
-      it("should trigger onChange input string when increasing time by 3 hour increment", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onChange={handleChange}
+                value={new Date(2019, 0, 16, 12, 1, 12, 34)}
+              />
+            </>
+          );
 
-        const handleChange = jest.fn();
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("01/16/2019");
 
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={false}
-              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
-              onChange={handleChange}
-              dateTypeMode="input-format"
-              timeConstraints={{
-                hours: {
-                  step: 3
-                }
-              }}
-            />
-          </>
-        );
+          // Act
+          // Open picker
+          fireEvent.click(element);
 
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+          // Assert
+          expect(getByTestId("day-picker")).toBeVisible();
 
-        // Act
-        // Open picker
-        fireEvent.click(element);
+          const someDay = getByText("16");
+          expect(someDay).toBeVisible();
 
-        // Assert
-        expect(getByTestId("time-picker")).toBeVisible();
+          // Pick date
+          fireEvent.click(someDay);
 
-        // Click to change the time
-        const upArrows = getAllByText("▲");
-        expect(upArrows?.length).toBe(3);
+          expect(element).toHaveValue("01/16/2019");
 
-        const downArrows = getAllByText("▼");
-        expect(downArrows?.length).toBe(3);
-
-        // Increase hours from 12 to 3
-        act(() => {
-          userEvent.click(upArrows[0]);
+          expect(handleChange).toHaveBeenCalledTimes(0);
         });
 
-        expect(element).toHaveValue("3:00 AM");
+        it("should trigger onChange Date when picking a first date", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith("3:00 AM");
+          const handleChange = jest.fn();
 
-        // Decrease hours from 3 to 12
-        act(() => {
-          userEvent.click(downArrows[0]);
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onChange={handleChange}
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          // Open picker
+          fireEvent.click(element);
+
+          // Assert
+          expect(getByTestId("day-picker")).toBeVisible();
+
+          const someDay = getByText("16");
+          expect(someDay).toBeVisible();
+
+          // Pick date
+          fireEvent.click(someDay);
+
+          expect(element).toHaveValue("01/16/2019");
+
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith(
+            new Date(2019, 0, 16, 0, 0, 0, 0)
+          );
         });
 
-        expect(element).toHaveValue("12:00 AM");
+        it("should trigger onChange Date when picking a new date", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(2);
-        expect(handleChange).toHaveBeenCalledWith("12:00 AM");
-      });
+          const handleChange = jest.fn();
 
-      it("should trigger onChange input string when increasing time by 15 min increment", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onChange={handleChange}
+                value={new Date(2019, 0, 16, 12, 1, 12, 34)}
+              />
+            </>
+          );
 
-        const handleChange = jest.fn();
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("01/16/2019");
 
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={false}
-              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
-              onChange={handleChange}
-              dateTypeMode="input-format"
-              timeConstraints={{
-                minutes: {
-                  step: 15
-                }
-              }}
-            />
-          </>
-        );
+          // Act
+          // Open picker
+          fireEvent.click(element);
 
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+          // Assert
+          expect(getByTestId("day-picker")).toBeVisible();
 
-        // Act
-        // Open picker
-        fireEvent.click(element);
+          const someDay = getByText("17");
+          expect(someDay).toBeVisible();
 
-        // Assert
-        expect(getByTestId("time-picker")).toBeVisible();
+          // Pick date
+          fireEvent.click(someDay);
 
-        // Click to change the time
-        const upArrows = getAllByText("▲");
-        expect(upArrows?.length).toBe(3);
+          expect(element).toHaveValue("01/17/2019");
 
-        const downArrows = getAllByText("▼");
-        expect(downArrows?.length).toBe(3);
-
-        // Increase minutes from 0 to 15
-        act(() => {
-          userEvent.click(upArrows[1]);
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith(
+            new Date(2019, 0, 17, 12, 1, 12, 34)
+          );
         });
 
-        expect(element).toHaveValue("12:15 AM");
+        it("should trigger onChange input string when picking a date", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith("12:15 AM");
+          const handleChange = jest.fn();
 
-        // Decrease minutes from 15 to 0
-        act(() => {
-          userEvent.click(downArrows[1]);
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onChange={handleChange}
+                dateTypeMode="input-format"
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          // Open picker
+          fireEvent.click(element);
+
+          // Assert
+          expect(getByTestId("day-picker")).toBeVisible();
+
+          const someDay = getByText("16");
+          expect(someDay).toBeVisible();
+
+          // Pick date
+          fireEvent.click(someDay);
+
+          expect(element).toHaveValue("01/16/2019");
+
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith("01/16/2019");
         });
 
-        expect(element).toHaveValue("12:00 AM");
+        it("should trigger onChange input string when picking a date/time", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(2);
-        expect(handleChange).toHaveBeenCalledWith("12:00 AM");
-      });
+          const handleChange = jest.fn();
 
-      it("should trigger onChange input string when increasing time by 30 second increment", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+                onChange={handleChange}
+                dateTypeMode="input-format"
+              />
+            </>
+          );
 
-        const handleChange = jest.fn();
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
 
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={false}
-              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND} ${FORMATS.AM_PM}`}
-              onChange={handleChange}
-              dateTypeMode="input-format"
-              timeConstraints={{
-                seconds: {
-                  step: 30
-                }
-              }}
-            />
-          </>
-        );
+          // Act
+          // Open picker
+          fireEvent.click(element);
 
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+          // Assert
+          expect(getByTestId("day-picker")).toBeVisible();
 
-        // Act
-        // Open picker
-        fireEvent.click(element);
+          const someDay = getByText("16");
+          expect(someDay).toBeVisible();
 
-        // Assert
-        expect(getByTestId("time-picker")).toBeVisible();
+          // Pick date
+          fireEvent.click(someDay);
 
-        // Click to change the time
-        const upArrows = getAllByText("▲");
-        expect(upArrows?.length).toBe(4);
+          expect(element).toHaveValue("01/16/2019 12:00 AM");
 
-        const downArrows = getAllByText("▼");
-        expect(downArrows?.length).toBe(4);
-
-        // Increase seconds from 0 to 30
-        act(() => {
-          userEvent.click(upArrows[2]);
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith("01/16/2019 12:00 AM");
         });
 
-        expect(element).toHaveValue("12:00:30 AM");
+        it("should trigger onChange input string when increasing time by one step", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith("12:00:30 AM");
+          const handleChange = jest.fn();
 
-        // Decrease seconds from 30 to 0
-        act(() => {
-          userEvent.click(downArrows[2]);
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={false}
+                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+                onChange={handleChange}
+                dateTypeMode="input-format"
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          // Open picker
+          fireEvent.click(element);
+
+          // Assert
+          expect(getByTestId("time-picker")).toBeVisible();
+
+          // Click to change the time
+          const upArrows = getAllByText("▲");
+          expect(upArrows?.length).toBe(3);
+
+          const downArrows = getAllByText("▼");
+          expect(downArrows?.length).toBe(3);
+
+          // Increase hours from 12 to 1
+          act(() => {
+            userEvent.click(upArrows[0]);
+          });
+
+          expect(element).toHaveValue("1:00 AM");
+
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith("1:00 AM");
         });
 
-        expect(element).toHaveValue("12:00:00 AM");
+        it("should trigger onChange input string when increasing time by 3 hour increment", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(2);
-        expect(handleChange).toHaveBeenCalledWith("12:00:00 AM");
-      });
+          const handleChange = jest.fn();
 
-      it("should trigger onChange input string when increasing time by 10 milliseconds increment", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={false}
+                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+                onChange={handleChange}
+                dateTypeMode="input-format"
+                timeConstraints={{
+                  hours: {
+                    step: 3
+                  }
+                }}
+              />
+            </>
+          );
 
-        const handleChange = jest.fn();
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
 
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={false}
-              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`}
-              onChange={handleChange}
-              dateTypeMode="input-format"
-              timeConstraints={{
-                milliseconds: {
-                  step: 10
-                }
-              }}
-            />
-          </>
-        );
+          // Act
+          // Open picker
+          fireEvent.click(element);
 
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+          // Assert
+          expect(getByTestId("time-picker")).toBeVisible();
 
-        // Act
-        // Open picker
-        fireEvent.click(element);
+          // Click to change the time
+          const upArrows = getAllByText("▲");
+          expect(upArrows?.length).toBe(3);
 
-        // Assert
-        expect(getByTestId("time-picker")).toBeVisible();
+          const downArrows = getAllByText("▼");
+          expect(downArrows?.length).toBe(3);
 
-        // Click to change the time
-        const upArrows = getAllByText("▲");
-        expect(upArrows?.length).toBe(5);
+          // Increase hours from 12 to 3
+          act(() => {
+            userEvent.click(upArrows[0]);
+          });
 
-        const downArrows = getAllByText("▼");
-        expect(downArrows?.length).toBe(5);
+          expect(element).toHaveValue("3:00 AM");
 
-        // Increase milliseconds from 0 to 10
-        act(() => {
-          userEvent.click(upArrows[3]);
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith("3:00 AM");
+
+          // Decrease hours from 3 to 12
+          act(() => {
+            userEvent.click(downArrows[0]);
+          });
+
+          expect(element).toHaveValue("12:00 AM");
+
+          expect(handleChange).toHaveBeenCalledTimes(2);
+          expect(handleChange).toHaveBeenCalledWith("12:00 AM");
         });
 
-        expect(element).toHaveValue("12:00:00.010 AM");
+        it("should trigger onChange input string when increasing time by 15 min increment", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith("12:00:00.010 AM");
+          const handleChange = jest.fn();
 
-        // Decrease milliseconds from 10 to 0
-        act(() => {
-          userEvent.click(downArrows[3]);
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={false}
+                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+                onChange={handleChange}
+                dateTypeMode="input-format"
+                timeConstraints={{
+                  minutes: {
+                    step: 15
+                  }
+                }}
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          // Open picker
+          fireEvent.click(element);
+
+          // Assert
+          expect(getByTestId("time-picker")).toBeVisible();
+
+          // Click to change the time
+          const upArrows = getAllByText("▲");
+          expect(upArrows?.length).toBe(3);
+
+          const downArrows = getAllByText("▼");
+          expect(downArrows?.length).toBe(3);
+
+          // Increase minutes from 0 to 15
+          act(() => {
+            userEvent.click(upArrows[1]);
+          });
+
+          expect(element).toHaveValue("12:15 AM");
+
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith("12:15 AM");
+
+          // Decrease minutes from 15 to 0
+          act(() => {
+            userEvent.click(downArrows[1]);
+          });
+
+          expect(element).toHaveValue("12:00 AM");
+
+          expect(handleChange).toHaveBeenCalledTimes(2);
+          expect(handleChange).toHaveBeenCalledWith("12:00 AM");
         });
 
-        expect(element).toHaveValue("12:00:00.000 AM");
+        it("should trigger onChange input string when increasing time by 30 second increment", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(2);
-        expect(handleChange).toHaveBeenCalledWith("12:00:00.000 AM");
-      });
+          const handleChange = jest.fn();
 
-      it('should trigger onChange input string once holding down the "up" seconds for a bit of time', () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={false}
+                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND} ${FORMATS.AM_PM}`}
+                onChange={handleChange}
+                dateTypeMode="input-format"
+                timeConstraints={{
+                  seconds: {
+                    step: 30
+                  }
+                }}
+              />
+            </>
+          );
 
-        const handleChange = jest.fn();
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
 
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={false}
-              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND} ${FORMATS.AM_PM}`}
-              onChange={handleChange}
-              dateTypeMode="input-format"
-            />
-          </>
-        );
+          // Act
+          // Open picker
+          fireEvent.click(element);
 
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+          // Assert
+          expect(getByTestId("time-picker")).toBeVisible();
 
-        // Act
-        // Open picker
-        fireEvent.click(element);
+          // Click to change the time
+          const upArrows = getAllByText("▲");
+          expect(upArrows?.length).toBe(4);
 
-        // Assert
-        expect(getByTestId("time-picker")).toBeVisible();
+          const downArrows = getAllByText("▼");
+          expect(downArrows?.length).toBe(4);
 
-        // Click to change the time
-        const upArrows = getAllByText("▲");
-        expect(upArrows?.length).toBe(4);
+          // Increase seconds from 0 to 30
+          act(() => {
+            userEvent.click(upArrows[2]);
+          });
 
-        const downArrows = getAllByText("▼");
-        expect(downArrows?.length).toBe(4);
+          expect(element).toHaveValue("12:00:30 AM");
 
-        // Increase seconds
-        act(() => {
-          jest.useFakeTimers();
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith("12:00:30 AM");
 
-          fireEvent.mouseDown(upArrows[2]);
+          // Decrease seconds from 30 to 0
+          act(() => {
+            userEvent.click(downArrows[2]);
+          });
 
-          // Fast forward and exhaust only currently pending timers
-          // (but not any new timers that get created during that process)
-          jest.runOnlyPendingTimers();
+          expect(element).toHaveValue("12:00:00 AM");
 
-          // Fast forward and exhaust only currently pending timers
-          // (but not any new timers that get created during that process)
-          jest.runOnlyPendingTimers();
-
-          // Fast forward and exhaust only currently pending timers
-          // (but not any new timers that get created during that process)
-          jest.runOnlyPendingTimers();
-
-          // Fast forward and exhaust only currently pending timers
-          // (but not any new timers that get created during that process)
-          jest.runOnlyPendingTimers();
-
-          fireEvent.mouseUp(upArrows[2]);
-
-          jest.useRealTimers();
+          expect(handleChange).toHaveBeenCalledTimes(2);
+          expect(handleChange).toHaveBeenCalledWith("12:00:00 AM");
         });
 
-        expect(element).toHaveValue("12:00:04 AM");
+        it("should trigger onChange input string when increasing time by 10 milliseconds increment", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith("12:00:04 AM");
-      });
+          const handleChange = jest.fn();
 
-      it("should trigger onChange utc-ms-timestamp when picking a date", () => {
-        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={false}
+                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`}
+                onChange={handleChange}
+                dateTypeMode="input-format"
+                timeConstraints={{
+                  milliseconds: {
+                    step: 10
+                  }
+                }}
+              />
+            </>
+          );
 
-        const handleChange = jest.fn();
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
 
-        // Arrange
-        const { getByLabelText } = render(
-          <>
-            <label htmlFor="some-id">Some Field</label>
-            <DateTime
-              id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
-              timeFormat={false}
-              onChange={handleChange}
-              dateTypeMode="utc-ms-timestamp"
-            />
-          </>
-        );
+          // Act
+          // Open picker
+          fireEvent.click(element);
 
-        const element = getByLabelText("Some Field");
-        expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+          // Assert
+          expect(getByTestId("time-picker")).toBeVisible();
 
-        // Act
-        // Open picker
-        fireEvent.click(element);
+          // Click to change the time
+          const upArrows = getAllByText("▲");
+          expect(upArrows?.length).toBe(5);
 
-        // Assert
-        expect(getByTestId("day-picker")).toBeVisible();
+          const downArrows = getAllByText("▼");
+          expect(downArrows?.length).toBe(5);
 
-        const someDay = getByText("16");
-        expect(someDay).toBeVisible();
+          // Increase milliseconds from 0 to 10
+          act(() => {
+            userEvent.click(upArrows[3]);
+          });
 
-        // Pick date
-        fireEvent.click(someDay);
+          expect(element).toHaveValue("12:00:00.010 AM");
 
-        expect(element).toHaveValue("01/16/2019");
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith("12:00:00.010 AM");
 
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange).toHaveBeenCalledWith(
-          new Date(2019, 0, 16, 0, 0, 0, 0).getTime()
-        );
+          // Decrease milliseconds from 10 to 0
+          act(() => {
+            userEvent.click(downArrows[3]);
+          });
+
+          expect(element).toHaveValue("12:00:00.000 AM");
+
+          expect(handleChange).toHaveBeenCalledTimes(2);
+          expect(handleChange).toHaveBeenCalledWith("12:00:00.000 AM");
+        });
+
+        it('should trigger onChange input string once holding down the "up" seconds for a bit of time', () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+          const handleChange = jest.fn();
+
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={false}
+                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND} ${FORMATS.AM_PM}`}
+                onChange={handleChange}
+                dateTypeMode="input-format"
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          // Open picker
+          fireEvent.click(element);
+
+          // Assert
+          expect(getByTestId("time-picker")).toBeVisible();
+
+          // Click to change the time
+          const upArrows = getAllByText("▲");
+          expect(upArrows?.length).toBe(4);
+
+          const downArrows = getAllByText("▼");
+          expect(downArrows?.length).toBe(4);
+
+          // Increase seconds
+          act(() => {
+            jest.useFakeTimers();
+
+            fireEvent.mouseDown(upArrows[2]);
+
+            // Fast forward and exhaust only currently pending timers
+            // (but not any new timers that get created during that process)
+            jest.runOnlyPendingTimers();
+
+            // Fast forward and exhaust only currently pending timers
+            // (but not any new timers that get created during that process)
+            jest.runOnlyPendingTimers();
+
+            // Fast forward and exhaust only currently pending timers
+            // (but not any new timers that get created during that process)
+            jest.runOnlyPendingTimers();
+
+            // Fast forward and exhaust only currently pending timers
+            // (but not any new timers that get created during that process)
+            jest.runOnlyPendingTimers();
+
+            fireEvent.mouseUp(upArrows[2]);
+
+            jest.useRealTimers();
+          });
+
+          expect(element).toHaveValue("12:00:04 AM");
+
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith("12:00:04 AM");
+        });
+
+        it("should trigger onChange utc-ms-timestamp when picking a date", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+          const handleChange = jest.fn();
+
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onChange={handleChange}
+                dateTypeMode="utc-ms-timestamp"
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          // Open picker
+          fireEvent.click(element);
+
+          // Assert
+          expect(getByTestId("day-picker")).toBeVisible();
+
+          const someDay = getByText("16");
+          expect(someDay).toBeVisible();
+
+          // Pick date
+          fireEvent.click(someDay);
+
+          expect(element).toHaveValue("01/16/2019");
+
+          expect(handleChange).toHaveBeenCalledTimes(1);
+          expect(handleChange).toHaveBeenCalledWith(
+            new Date(2019, 0, 16, 0, 0, 0, 0).getTime()
+          );
+        });
       });
     });
 
@@ -2425,7 +2423,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              dateFormat={FULL_DATE_FORMAT}
               timeFormat={false}
             />
           </>
@@ -2574,7 +2572,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              dateFormat={FULL_DATE_FORMAT}
               timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
             />
           </>
@@ -2610,7 +2608,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              dateFormat={FULL_DATE_FORMAT}
               timeFormat={false}
             />
           </>
@@ -2641,7 +2639,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              dateFormat={FULL_DATE_FORMAT}
               timeFormat={false}
             />
           </>
@@ -2678,6 +2676,44 @@ describe("DateTime", () => {
         expect(queryByTestId("day-picker")).toBeNull();
       });
 
+      it("should open when closed and hitting down", () => {
+        mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+        // Arrange
+        const { getByLabelText } = render(
+          <>
+            <label htmlFor="some-id">Some Field</label>
+            <DateTime
+              id="some-id"
+              dateFormat={FULL_DATE_FORMAT}
+              timeFormat={false}
+            />
+          </>
+        );
+
+        const element = getByLabelText("Some Field");
+        expect(element).toHaveValue("");
+        expect(queryByTestId("picker-wrapper")).toBeNull();
+
+        // Hit down arrow
+        fireEvent.keyDown(element, {
+          key: "ArrowDown",
+          code: 40,
+          keyCode: 40,
+          charCode: 40
+        });
+        fireEvent.keyUp(element, {
+          key: "ArrowDown",
+          code: 40,
+          keyCode: 40,
+          charCode: 40
+        });
+
+        // Assert the picker is open
+        expect(getByTestId("picker-wrapper")).toBeVisible();
+        expect(getByTestId("day-picker")).toBeVisible();
+      });
+
       it("should hide when open and hitting escape", () => {
         mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -2687,7 +2723,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              dateFormat={FULL_DATE_FORMAT}
               timeFormat={false}
             />
           </>
@@ -2733,7 +2769,7 @@ describe("DateTime", () => {
             <label htmlFor="some-id">Some Field</label>
             <DateTime
               id="some-id"
-              dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+              dateFormat={FULL_DATE_FORMAT}
               timeFormat={false}
             />
           </>
