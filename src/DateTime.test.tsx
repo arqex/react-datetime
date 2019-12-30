@@ -2475,6 +2475,133 @@ describe("DateTime", () => {
           expect(handleFocus).toHaveBeenCalledTimes(1);
         });
       });
+
+      describe("onBlur", () => {
+        it("should trigger onBlur with no value when tabbed out with no value", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+          const handleBlur = jest.fn();
+
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onBlur={handleBlur}
+              />
+              <label htmlFor="another-id">Another Field</label>
+              <input id="another-id" type="text" />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          expect(document.body).toHaveFocus();
+
+          // Tab in
+          userEvent.tab();
+          expect(element).toHaveFocus();
+
+          // Tab out
+          userEvent.tab();
+          expect(element).not.toHaveFocus();
+
+          // Should have triggered "onBlur"
+          expect(handleBlur).toHaveBeenCalledTimes(1);
+          expect(handleBlur).toHaveBeenCalledWith(undefined);
+        });
+
+        it("should trigger onBlur with value when tabbed out with value", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+          const handleBlur = jest.fn();
+
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                value={new Date(2019, 0, 16, 12, 1, 12, 34)}
+                onBlur={handleBlur}
+              />
+              <label htmlFor="another-id">Another Field</label>
+              <input id="another-id" type="text" />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          expect(document.body).toHaveFocus();
+
+          // Tab in
+          userEvent.tab();
+          expect(element).toHaveFocus();
+
+          // Tab out
+          userEvent.tab();
+          expect(element).not.toHaveFocus();
+
+          // Should have triggered "onBlur"
+          expect(handleBlur).toHaveBeenCalledTimes(1);
+          expect(handleBlur).toHaveBeenCalledWith(
+            new Date(2019, 0, 16, 12, 1, 12, 34)
+          );
+        });
+
+        it("should trigger onBlur when picking a first date", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+          const handleBlur = jest.fn();
+
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onBlur={handleBlur}
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          // Open picker
+          fireEvent.click(element);
+
+          // Assert
+          expect(getByTestId("day-picker")).toBeVisible();
+
+          const someDay = getByText("16");
+          expect(someDay).toBeVisible();
+
+          // Pick date
+          fireEvent.click(someDay);
+
+          expect(element).toHaveValue("01/16/2019");
+
+          expect(handleBlur).toHaveBeenCalledTimes(1);
+          expect(handleBlur).toHaveBeenCalledWith(
+            new Date(2019, 0, 16, 0, 0, 0, 0)
+          );
+        });
+      });
     });
 
     describe("keyboard", () => {

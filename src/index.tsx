@@ -288,11 +288,13 @@ function DateTime(
   }
 
   function closeWith(newValue: undefined | string | Date) {
-    setIsOpen(false);
+    if (isOpen) {
+      setIsOpen(false);
 
-    if (typeof onBlur === "function") {
-      const changedValue = getChangedValue(newValue);
-      onBlur(changedValue);
+      if (typeof onBlur === "function") {
+        const changedValue = getChangedValue(newValue);
+        onBlur(changedValue);
+      }
     }
   }
 
@@ -397,7 +399,12 @@ function DateTime(
     type: "text",
     onClick: open,
     onFocus: open,
-    //onBlur: close,
+    onBlur: () => {
+      if (typeof onBlur === "function") {
+        const changedValue = getChangedValue(valueAsDate);
+        onBlur(changedValue);
+      }
+    },
     onChange: onInputChange,
     onKeyDown: onInputKeyDown,
     value: valueStr
