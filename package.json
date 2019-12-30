@@ -20,6 +20,10 @@
     "scss",
     "dist"
   ],
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
   "bundlesize": [
     {
       "path": "dist/react-datetime.cjs.production.min.js",
@@ -63,7 +67,6 @@
     "lint": "yarn eslint src --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn lint --fix",
     "prettier": "prettier --write {src,scss}/*.{json,js,jsx,ts,tsx,scss} *.{json,js,md,mdx}",
-    "predeploy": "cd example && yarn install && yarn build",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -c .storybook -o .out"
   },
