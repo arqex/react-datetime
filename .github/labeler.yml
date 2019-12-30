@@ -6,3 +6,39 @@ test:
 storybook:
   - .storybook/**/*
   - src/**/*.stories.*
+
+# Add 'docs' label
+docs:
+  - .storybook/**/*
+  - **/*.md
+  - **/*.mdx
+
+# Add 'config' label
+config:
+  - .!(*.md|*.mdx)
+
+# Add 'styles' label
+styles:
+  - **/*.css
+  - **/*.scss
+
+# Add 'daypicker' label
+daypicker:
+  - src/DaysView.tsx
+  
+# Add 'monthpicker' label
+monthpicker:
+  - src/MonthsView.tsx
+  
+# Add 'yearpicker' label
+yearpicker:
+  - src/YearsView.tsx
+  
+# Add 'timepicker' label
+timepicker:
+  - src/TimeView.tsx
+  
+# Add 'core' label
+core:
+  - src/CalendarContainer.tsx
+  - src/index.tsx
