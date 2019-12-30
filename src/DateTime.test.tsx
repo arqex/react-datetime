@@ -93,6 +93,30 @@ describe("DateTime", () => {
     expect(container.firstChild).toHaveValue("06/16/2015 12:00 AM");
   });
 
+  describe("shouldHideInput", () => {
+    it("should not render any input", () => {
+      const { container } = render(<DateTime shouldHideInput />);
+
+      expect(container.querySelector("input")).toBeNull();
+    });
+
+    it("should render a picker with className", () => {
+      const { container } = render(
+        <DateTime className="some-class" shouldHideInput />
+      );
+
+      expect(container.querySelector("input")).toBeNull();
+      expect(container.firstChild).toHaveClass("some-class");
+    });
+
+    it("should render a picker with id", () => {
+      const { container } = render(<DateTime id="some-id" shouldHideInput />);
+
+      expect(container.querySelector("input")).toBeNull();
+      expect(container.firstChild).toHaveAttribute("id", "some-id");
+    });
+  });
+
   describe("invalid pickers", () => {
     it("should not open if there's no date/time formats", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
@@ -119,6 +143,26 @@ describe("DateTime", () => {
   });
 
   describe("day picker", () => {
+    it("should show day picker when shouldHideInput", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={FULL_DATE_FORMAT}
+            shouldHideInput
+          />
+        </>
+      );
+
+      // Assert
+      expect(getByTestId("picker-wrapper")).toBeVisible();
+      expect(getByTestId("day-picker")).toBeVisible();
+    });
+
     it("should open day picker when clicking", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -696,6 +740,26 @@ describe("DateTime", () => {
   });
 
   describe("month picker", () => {
+    it("should show month picker when shouldHideInput", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+            shouldHideInput
+          />
+        </>
+      );
+
+      // Assert
+      expect(getByTestId("picker-wrapper")).toBeVisible();
+      expect(getByTestId("month-picker")).toBeVisible();
+    });
+
     it("should open month picker when clicking", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -956,6 +1020,22 @@ describe("DateTime", () => {
   });
 
   describe("year picker", () => {
+    it("should show year picker when shouldHideInput", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime id="some-id" dateFormat={FORMATS.YEAR} shouldHideInput />
+        </>
+      );
+
+      // Assert
+      expect(getByTestId("picker-wrapper")).toBeVisible();
+      expect(getByTestId("year-picker")).toBeVisible();
+    });
+
     it("should open year picker when clicking", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -1212,6 +1292,27 @@ describe("DateTime", () => {
   });
 
   describe("time picker", () => {
+    it("should show time picker when shouldHideInput", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={false}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            shouldHideInput
+          />
+        </>
+      );
+
+      // Assert
+      expect(getByTestId("picker-wrapper")).toBeVisible();
+      expect(getByTestId("time-picker")).toBeVisible();
+    });
+
     it("should open time picker when clicking", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -1231,14 +1332,9 @@ describe("DateTime", () => {
       const element = getByLabelText("Some Field");
       fireEvent.click(element);
 
-      const picker = getByText(/am/i);
-      expect(picker).toBeVisible();
-
-      const textContent = picker.parentNode?.parentNode?.textContent?.replace(
-        /\W+/g,
-        ""
-      );
-      expect(textContent).toMatch(/1200AM/i);
+      // Assert
+      expect(getByTestId("picker-wrapper")).toBeVisible();
+      expect(getByTestId("time-picker")).toBeVisible();
     });
 
     it("should open time picker on focus", () => {
@@ -1259,6 +1355,10 @@ describe("DateTime", () => {
       // Act
       const element = getByLabelText("Some Field");
       fireEvent.focus(element);
+
+      // Assert
+      expect(getByTestId("picker-wrapper")).toBeVisible();
+      expect(getByTestId("time-picker")).toBeVisible();
 
       const picker = getByText(/am/i);
       expect(picker).toBeVisible();
