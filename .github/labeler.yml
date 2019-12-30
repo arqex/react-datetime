@@ -10,17 +10,17 @@ storybook:
 # Add 'docs' label
 docs:
   - .storybook/**/*
-  - **/*.md
-  - **/*.mdx
+  - ./**/*.md
+  - ./**/*.mdx
 
 # Add 'config' label
 config:
-  - .!(*.md|*.mdx)
+  - ./**/!(*.md|*.mdx)
 
 # Add 'styles' label
 styles:
-  - **/*.css
-  - **/*.scss
+  - ./**/*.css
+  - ./**/*.scss
 
 # Add 'daypicker' label
 daypicker:
