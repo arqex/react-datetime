@@ -2411,6 +2411,70 @@ describe("DateTime", () => {
           );
         });
       });
+
+      describe("onFocus", () => {
+        it("should trigger onFocus when tabbed in", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+          const handleFocus = jest.fn();
+
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onFocus={handleFocus}
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          expect(document.body).toHaveFocus();
+
+          // Open picker
+          userEvent.tab();
+          expect(element).toHaveFocus();
+
+          // Should have triggered "onFocus"
+          expect(handleFocus).toHaveBeenCalledTimes(1);
+        });
+
+        it("should trigger onFocus when clicked in", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+          const handleFocus = jest.fn();
+
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onFocus={handleFocus}
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          userEvent.click(element);
+
+          // Should have triggered "onFocus"
+          expect(handleFocus).toHaveBeenCalledTimes(1);
+        });
+      });
     });
 
     describe("keyboard", () => {
@@ -2676,7 +2740,7 @@ describe("DateTime", () => {
         expect(queryByTestId("day-picker")).toBeNull();
       });
 
-      it("should open when closed and hitting down", () => {
+      it("should open when closed and hitting down arrow", () => {
         mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
         // Arrange
