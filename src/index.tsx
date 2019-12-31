@@ -252,21 +252,19 @@ function DateTime(
       // Suppress change event when the value didn't change!
       //
       if (value && changedValue && isDate(value) && isDate(changedValue)) {
-        const oldValStr =
-          typeof value === "string"
-            ? value
-            : format(value, fullFormat, formatOptions);
-        const newValStr =
-          typeof changedValue === "string"
-            ? changedValue
-            : format(changedValue, fullFormat, formatOptions);
+        const oldValStr = format(
+          value as number | Date,
+          fullFormat,
+          formatOptions
+        );
+        const newValStr = format(
+          changedValue as number | Date,
+          fullFormat,
+          formatOptions
+        );
         if (oldValStr === newValStr) {
           return;
         }
-      }
-
-      if (value === changedValue) {
-        return;
       }
 
       rawOnChange(changedValue);
