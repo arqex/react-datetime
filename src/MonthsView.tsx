@@ -7,7 +7,7 @@ import isSameMonth from "date-fns/isSameMonth";
 import setMonth from "date-fns/setMonth";
 import getDaysInMonth from "date-fns/getDaysInMonth";
 import setDate from "date-fns/setDate";
-import { FormatOptions, ViewMode } from "./index";
+import { FormatOptions, ViewMode, FORMATS } from "./index";
 
 export interface MonthsViewProps {
   viewDate: Date;
@@ -47,7 +47,7 @@ function MonthsView(props: MonthsViewProps) {
               onClick={() => setViewMode("years")}
               colSpan={2}
             >
-              {format(viewDate, "yyyy", formatOptions)}
+              {format(viewDate, FORMATS.YEAR, formatOptions)}
             </th>
             <th
               className="rdtNext"
@@ -99,7 +99,11 @@ function MonthsView(props: MonthsViewProps) {
                         }
                       }}
                     >
-                      {format(monthDate, "LLL", formatOptions)}
+                      {format(
+                        monthDate,
+                        FORMATS.SHORT_MONTH_NAME,
+                        formatOptions
+                      )}
                     </td>
                   );
                 })}

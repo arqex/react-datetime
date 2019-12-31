@@ -8,7 +8,7 @@ import addSeconds from "date-fns/addSeconds";
 import addMilliseconds from "date-fns/addMilliseconds";
 import setHours from "date-fns/setHours";
 
-import { TimeConstraints, FormatOptions, ViewMode } from "./index";
+import { TimeConstraints, FormatOptions, ViewMode, FORMATS } from "./index";
 
 const allCounters: Array<"hours" | "minutes" | "seconds" | "milliseconds"> = [
   "hours",
@@ -103,26 +103,26 @@ function getFormatted(
     return f.indexOf(val) !== -1;
   }
 
-  const hasHours = has(fmt.toLowerCase(), "h");
-  const hasMinutes = has(fmt, "m");
-  const hasSeconds = has(fmt, "s");
-  const hasMilliseconds = has(fmt, "S");
+  const hasHours = has(fmt.toLowerCase(), FORMATS.SHORT_HOUR);
+  const hasMinutes = has(fmt, FORMATS.SHORT_MINUTE);
+  const hasSeconds = has(fmt, FORMATS.SHORT_SECOND);
+  const hasMilliseconds = has(fmt, FORMATS.SHORT_MILLISECOND);
 
-  const hasDayPart = has(fmt, "a");
+  const hasDayPart = has(fmt, FORMATS.AM_PM);
 
   const typeFormat =
     type === "hours" && hasHours
       ? hasDayPart
-        ? "h"
-        : "H"
+        ? FORMATS.HOUR
+        : FORMATS.MILITARY_HOUR
       : type === "minutes" && hasMinutes
-      ? "mm"
+      ? FORMATS.MINUTE
       : type === "seconds" && hasSeconds
-      ? "ss"
+      ? FORMATS.SECOND
       : type === "milliseconds" && hasMilliseconds
-      ? "SSS"
+      ? FORMATS.MILLISECOND
       : type === "daypart" && hasDayPart
-      ? "a"
+      ? FORMATS.AM_PM
       : undefined;
 
   if (typeFormat) {
@@ -132,7 +132,10 @@ function getFormatted(
   return undefined;
 }
 
-function toggleDayPart(timestamp: Date, setSelectedDate) {
+function toggleDayPart(
+  timestamp: Date,
+  setSelectedDate: (newDate: Date, tryClose?: boolean) => void
+) {
   return () => {
     const hours = getHours(timestamp);
     const newHours = hours >= 12 ? hours - 12 : hours + 12;

@@ -1,4 +1,5 @@
 import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+import { FORMATS } from "./.";
 import CalendarContainer from "./CalendarContainer";
 
 import es from "date-fns/locale/es";
@@ -120,35 +121,53 @@ The `selectedDate` is highlighted.
 Format to military time via `timeFormat`.
 
 ```jsx
-<CalendarContainer viewMode="time" timeFormat="HH:mm" />
+<CalendarContainer
+  viewMode="time"
+  timeFormat={`${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}`}
+/>
 ```
 
 <Preview>
   <Story name="Time military time">
-    <CalendarContainer viewMode="time" timeFormat="HH:mm" />
+    <CalendarContainer
+      viewMode="time"
+      timeFormat={`${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}`}
+    />
   </Story>
 </Preview>
 
 Customize time precision via `timeFormat`.
 
 ```jsx
-<CalendarContainer viewMode="time" timeFormat="hh:mm:ss:SSS" />
+<CalendarContainer
+  viewMode="time"
+  timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND}`}
+/>
 ```
 
 <Preview>
   <Story name="Time with precision">
-    <CalendarContainer viewMode="time" timeFormat="hh:mm:ss:SSS" />
+    <CalendarContainer
+      viewMode="time"
+      timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND}`}
+    />
   </Story>
 </Preview>
 
 When dates are supported, show a switcher via `dateFormat`.
 
 ```jsx
-<CalendarContainer viewMode="time" dateFormat="LL/dd/yyyy" />
+<CalendarContainer
+  viewMode="time"
+  dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+/>
 ```
 
 <Preview>
   <Story name="Time dateFormat">
-    <CalendarContainer viewMode="time" dateFormat="LL/dd/yyyy" />
+    <CalendarContainer
+      viewMode="time"
+      dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+    />
   </Story>
 </Preview>

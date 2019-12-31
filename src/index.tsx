@@ -15,18 +15,24 @@ const { useRef, useState, useEffect, useCallback } = React;
 
 export const FORMATS = {
   MONTH: "LL",
+  SHORT_MONTH_NAME: "LLL",
+  FULL_MONTH_NAME: "LLLL",
+  SHORT_DAY: "d",
   DAY: "dd",
+  SHORT_DAY_OF_WEEK: "iiiiii",
   YEAR: "yyyy",
   MILITARY_HOUR: "H",
   HOUR: "h",
+  SHORT_HOUR: "h",
+  SHORT_MINUTE: "m",
   MINUTE: "mm",
+  SHORT_SECOND: "s",
   SECOND: "ss",
+  SHORT_MILLISECOND: "SSS",
   MILLISECOND: "SSS",
-  AM_PM: "a"
+  AM_PM: "a",
+  FULL_TIMESTAMP: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
 };
-
-export const FULL_DATE_FORMAT = `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`;
-export const FULL_TIME_FORMAT = `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`;
 
 function tryGetAsTime(date: any) {
   const asDate = toDate(date);
@@ -186,8 +192,12 @@ function DateTime(
   //
   // Formats
   //
-  const dateFormat = rawDateFormat === true ? "LL/dd/yyyy" : rawDateFormat;
-  const timeFormat = rawTimeFormat === true ? "h:mm a" : rawTimeFormat;
+  const defaultDateFormat = `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`;
+  const dateFormat = rawDateFormat === true ? defaultDateFormat : rawDateFormat;
+
+  const defaultTimeFormat = `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`;
+  const timeFormat = rawTimeFormat === true ? defaultTimeFormat : rawTimeFormat;
+
   const fullFormat =
     dateFormat && timeFormat
       ? `${dateFormat} ${timeFormat}`

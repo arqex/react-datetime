@@ -77,6 +77,14 @@ By default (and with both as `true`), both date and times are options. Set to `f
 <DateTime dateFormat="yyyy-LL" timeFormat={false} />
 ```
 
+You can also import `FORMATS` for formating strings.
+
+```js
+import DateTime, { FORMATS } from "@nateradebaugh/react-datetime";
+
+<DateTime dateFormat={`${FORMATS.YEAR}-${FORMATS.MONTH}`} timeFormat={false} />;
+```
+
 ## Selectable Dates
 
 It is possible to disable dates in the calendar if the user are not allowed to select them, e.g. dates in the past. This is done using the prop `isValidDate`, which admits a function in the form `function(currentDate, selectedDate)` where both arguments are native `Date` objects. The function should return `true` for selectable dates, and `false` for disabled ones.

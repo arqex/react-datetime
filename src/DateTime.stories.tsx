@@ -1,5 +1,5 @@
 import * as React from "react";
-import DateTime from ".";
+import DateTime, { FORMATS } from "./.";
 import "../scss/styles.scss";
 
 import isBefore from "date-fns/isBefore";
@@ -43,15 +43,28 @@ export function SimpleExample() {
 
       <UncontrolledDateTime />
 
-      <UncontrolledDateTime dateFormat="LL/dd/yyyy" />
-      <UncontrolledDateTime dateFormat="LL/dd/yyyy" timeFormat={false} />
+      <UncontrolledDateTime
+        dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+      />
+      <UncontrolledDateTime
+        dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+        timeFormat={false}
+      />
       <UncontrolledDateTime dateFormat={false} />
 
-      <UncontrolledDateTime timeFormat="HH:mm" />
-      <UncontrolledDateTime dateFormat={false} timeFormat="HH:mm" />
+      <UncontrolledDateTime
+        timeFormat={`${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}`}
+      />
+      <UncontrolledDateTime
+        dateFormat={false}
+        timeFormat={`${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}`}
+      />
       <UncontrolledDateTime timeFormat={false} />
 
-      <UncontrolledDateTime dateFormat="LL/dd/yyyy" timeFormat="HH:mm" />
+      <UncontrolledDateTime
+        dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+        timeFormat={`${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}`}
+      />
     </div>
   );
 }
@@ -92,7 +105,7 @@ export function LocalizationExample() {
           setValue(newValue);
         }}
         locale={currentLocale}
-        dateFormat="LL/yyyy"
+        dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
         timeFormat={false}
       />
     </div>
@@ -102,8 +115,8 @@ export function LocalizationExample() {
 export function CustomizableExample() {
   const [state, setState] = useState<any>({
     value: new Date(2019, 7, 2, 11, 25),
-    dateFormat: "LL/dd/yyyy",
-    timeFormat: "hh:mm a",
+    dateFormat: `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
+    timeFormat: `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
     dateTypeMode: undefined
   });
 
@@ -166,23 +179,48 @@ export function CustomizableExample() {
 
       <Select name="dateFormat">
         <option value="">false</option>
-        <option>yyyy-LL-dd</option>
-        <option>LL/dd/yyyy</option>
-        <option>dd.LL.yyyy</option>
-        <option>LL-dd</option>
-        <option>LLLL</option>
-        <option>yyyy/LL</option>
-        <option>yyyy</option>
+        <option>
+          {FORMATS.YEAR}-{FORMATS.MONTH}-{FORMATS.DAY}
+        </option>
+        <option>
+          {FORMATS.MONTH}/{FORMATS.DAY}/{FORMATS.YEAR}
+        </option>
+        <option>
+          {FORMATS.DAY}.{FORMATS.MONTH}.{FORMATS.YEAR}
+        </option>
+        <option>
+          {FORMATS.MONTH}-{FORMATS.DAY}
+        </option>
+        <option>{FORMATS.FULL_MONTH_NAME}</option>
+        <option>
+          {FORMATS.YEAR}/{FORMATS.MONTH}
+        </option>
+        <option>{FORMATS.YEAR}</option>
       </Select>
 
       <Select name="timeFormat">
         <option value="">false</option>
-        <option>hh:mm a</option>
-        <option>HH:mm:ss</option>
-        <option>HH:mm:ss.SSS</option>
-        <option>hh:mm:ss.SSS a</option>
-        <option>hmm</option>
-        <option>HH:mm xxx</option>
+        <option>
+          {FORMATS.HOUR}:{FORMATS.MINUTE} {FORMATS.AM_PM}
+        </option>
+        <option>
+          {FORMATS.MILITARY_HOUR}:{FORMATS.MINUTE}:{FORMATS.SECOND}
+        </option>
+        <option>
+          {FORMATS.MILITARY_HOUR}:{FORMATS.MINUTE}:{FORMATS.SECOND}.
+          {FORMATS.MILLISECOND}
+        </option>
+        <option>
+          {FORMATS.HOUR}:{FORMATS.MINUTE}:{FORMATS.SECOND}.{FORMATS.MILLISECOND}{" "}
+          {FORMATS.AM_PM}
+        </option>
+        <option>
+          {FORMATS.HOUR}
+          {FORMATS.MINUTE}
+        </option>
+        <option>
+          {FORMATS.MILITARY_HOUR}:{FORMATS.MINUTE}xxx
+        </option>
       </Select>
 
       <Select name="dateTypeMode">
@@ -229,10 +267,22 @@ export function ViewModeExample() {
       <p>Try out various formats and see how they affect the component.</p>
       <p>
         {renderButton("Default - undefined", undefined, undefined)}
-        {renderButton("Years - yyyy", "yyyy", undefined)}
-        {renderButton("Months - LL/yyyy", "LL/yyyy", undefined)}
-        {renderButton("Days - LL/dd/yyyy", "LL/dd/yyyy", undefined)}
-        {renderButton("Time - h:mm a", false, "h:mm a")}
+        {renderButton(`Years - ${FORMATS.YEAR}`, `${FORMATS.YEAR}`, undefined)}
+        {renderButton(
+          `Months - ${FORMATS.MONTH}/${FORMATS.YEAR}`,
+          `${FORMATS.MONTH}/${FORMATS.YEAR}`,
+          undefined
+        )}
+        {renderButton(
+          `Days - ${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
+          `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
+          undefined
+        )}
+        {renderButton(
+          `Time - ${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
+          false,
+          `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`
+        )}
       </p>
 
       <DateTime

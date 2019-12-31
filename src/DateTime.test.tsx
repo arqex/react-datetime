@@ -11,11 +11,10 @@ const {
   //queryByText
 } = screen;
 
-import RawDateTime, {
-  FORMATS,
-  FULL_DATE_FORMAT,
-  FULL_TIME_FORMAT
-} from "./index";
+import RawDateTime, { FORMATS } from "./index";
+
+const FULL_DATE_FORMAT = `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`;
+const FULL_TIME_FORMAT = `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`;
 
 function DateTime(props) {
   const [value, setValue] = React.useState(props.value);
