@@ -1,5 +1,5 @@
 import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
-import DateTime from "./.";
+import DateTime, { FORMATS } from "./.";
 
 import es from "date-fns/locale/es";
 
@@ -24,24 +24,24 @@ The `DateTime` component requires `value` and `onChange` props to work properly.
 ## Months
 
 ```jsx
-<DateTime shouldHideInput dateFormat="LL" />
+<DateTime shouldHideInput dateFormat={FORMATS.MONTH} />
 ```
 
 <Preview>
   <Story name="Months shouldHideInput">
-    <DateTime shouldHideInput dateFormat="LL" />
+    <DateTime shouldHideInput dateFormat={FORMATS.MONTH} />
   </Story>
 </Preview>
 
 ## Years
 
 ```jsx
-<DateTime shouldHideInput dateFormat="yyyy" />
+<DateTime shouldHideInput dateFormat={FORMATS.YEAR} />
 ```
 
 <Preview>
   <Story name="Years shouldHideInput">
-    <DateTime shouldHideInput dateFormat="yyyy" />
+    <DateTime shouldHideInput dateFormat={FORMATS.YEAR} />
   </Story>
 </Preview>
 

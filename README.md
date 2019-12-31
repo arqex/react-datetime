@@ -65,7 +65,7 @@ function ExampleWrapper() {
 
 It is possible to customize the way that the input displays using `className`, `styles`, and other properties found on `input` elements.
 
-## Specify Available Units via `dateFormat` and `timeFormat` props
+## Specify available picker modes via `dateFormat` and `timeFormat` props
 
 By default (and with both as `true`), both date and times are options. Set to `false` to disable date or times.
 
@@ -75,6 +75,14 @@ By default (and with both as `true`), both date and times are options. Set to `f
 
 ```js
 <DateTime dateFormat="yyyy-LL" timeFormat={false} />
+```
+
+You can also import `FORMATS` for formating strings.
+
+```js
+import DateTime, { FORMATS } from "@nateradebaugh/react-datetime";
+
+<DateTime dateFormat={`${FORMATS.YEAR}-${FORMATS.MONTH}`} timeFormat={false} />;
 ```
 
 ## Selectable Dates

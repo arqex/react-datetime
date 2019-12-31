@@ -11,7 +11,7 @@ import isSameDay from "date-fns/isSameDay";
 import isBefore from "date-fns/isBefore";
 import addMonths from "date-fns/addMonths";
 import getDate from "date-fns/getDate";
-import { FormatOptions, ViewMode } from "./index";
+import { FormatOptions, ViewMode, FORMATS } from "./index";
 
 export interface DaysViewProps {
   timeFormat: string | false;
@@ -65,7 +65,11 @@ function DaysView(props: DaysViewProps) {
               onClick={() => setViewMode("months")}
               colSpan={5}
             >
-              {format(viewDate, "LLLL yyyy", formatOptions)}
+              {format(
+                viewDate,
+                `${FORMATS.FULL_MONTH_NAME} ${FORMATS.YEAR}`,
+                formatOptions
+              )}
             </th>
             <th
               className="rdtNext"
@@ -77,7 +81,11 @@ function DaysView(props: DaysViewProps) {
           <tr>
             {[0, 1, 2, 3, 4, 5, 6].map(colNum => (
               <th key={colNum} className="dow">
-                {format(addDays(sunday, colNum), "iiiiii", formatOptions)}
+                {format(
+                  addDays(sunday, colNum),
+                  FORMATS.SHORT_DAY_OF_WEEK,
+                  formatOptions
+                )}
               </th>
             ))}
           </tr>
@@ -91,7 +99,7 @@ function DaysView(props: DaysViewProps) {
               <tr
                 key={format(
                   addDays(prevMonthLastWeekStart, rowStartDay),
-                  "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
+                  FORMATS.FULL_TIMESTAMP
                 )}
               >
                 {[0, 1, 2, 3, 4, 5, 6].map(d => {
@@ -123,7 +131,7 @@ function DaysView(props: DaysViewProps) {
                         }
                       }}
                     >
-                      {format(workingDate, "d", formatOptions)}
+                      {format(workingDate, FORMATS.SHORT_DAY, formatOptions)}
                     </td>
                   );
                 })}

@@ -11,21 +11,10 @@ const {
   //queryByText
 } = screen;
 
-import RawDateTime from "./index";
-
-const FORMATS = {
-  MONTH: "LL",
-  DAY: "dd",
-  YEAR: "yyyy",
-  MILITARY_HOUR: "H",
-  HOUR: "h",
-  MINUTE: "mm",
-  SECOND: "ss",
-  MILLISECOND: "SSS",
-  AM_PM: "a"
-};
+import RawDateTime, { FORMATS } from "./index";
 
 const FULL_DATE_FORMAT = `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`;
+const FULL_TIME_FORMAT = `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`;
 
 function DateTime(props) {
   const [value, setValue] = React.useState(props.value);
@@ -717,7 +706,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={FULL_DATE_FORMAT}
-            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            timeFormat={FULL_TIME_FORMAT}
             value="06/16/2015 12:00 AM"
           />
         </>
@@ -999,7 +988,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
-            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            timeFormat={FULL_TIME_FORMAT}
             value="06/2015 12:00 AM"
           />
         </>
@@ -1271,7 +1260,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={FORMATS.YEAR}
-            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            timeFormat={FULL_TIME_FORMAT}
             value="2015 12:00 AM"
           />
         </>
@@ -1302,7 +1291,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={false}
-            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            timeFormat={FULL_TIME_FORMAT}
             shouldHideInput
           />
         </>
@@ -1323,7 +1312,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={false}
-            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            timeFormat={FULL_TIME_FORMAT}
           />
         </>
       );
@@ -1347,7 +1336,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={false}
-            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            timeFormat={FULL_TIME_FORMAT}
           />
         </>
       );
@@ -1403,7 +1392,7 @@ describe("DateTime", () => {
     //   const { getByLabelText } = render(
     //     <>
     //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat={false} timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`} />
+    //       <DateTime id="some-id" dateFormat={false} timeFormat={FULL_TIME_FORMAT} />
     //     </>
     //   );
 
@@ -1430,7 +1419,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={false}
-            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            timeFormat={FULL_TIME_FORMAT}
             value="2:13 PM"
           />
         </>
@@ -1552,7 +1541,7 @@ describe("DateTime", () => {
           <DateTime
             id="some-id"
             dateFormat={FULL_DATE_FORMAT}
-            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            timeFormat={FULL_TIME_FORMAT}
           />
         </>
       );
@@ -2067,7 +2056,7 @@ describe("DateTime", () => {
               <DateTime
                 id="some-id"
                 dateFormat={FULL_DATE_FORMAT}
-                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+                timeFormat={FULL_TIME_FORMAT}
                 onChange={handleChange}
                 dateTypeMode="input-format"
               />
@@ -2109,7 +2098,7 @@ describe("DateTime", () => {
               <DateTime
                 id="some-id"
                 dateFormat={false}
-                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+                timeFormat={FULL_TIME_FORMAT}
                 onChange={handleChange}
                 dateTypeMode="input-format"
               />
@@ -2157,7 +2146,7 @@ describe("DateTime", () => {
               <DateTime
                 id="some-id"
                 dateFormat={false}
-                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+                timeFormat={FULL_TIME_FORMAT}
                 onChange={handleChange}
                 dateTypeMode="input-format"
                 timeConstraints={{
@@ -2220,7 +2209,7 @@ describe("DateTime", () => {
               <DateTime
                 id="some-id"
                 dateFormat={false}
-                timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+                timeFormat={FULL_TIME_FORMAT}
                 onChange={handleChange}
                 dateTypeMode="input-format"
                 timeConstraints={{
@@ -2823,7 +2812,7 @@ describe("DateTime", () => {
             <DateTime
               id="some-id"
               dateFormat={false}
-              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+              timeFormat={FULL_TIME_FORMAT}
             />
           </>
         );
@@ -2864,7 +2853,7 @@ describe("DateTime", () => {
             <DateTime
               id="some-id"
               dateFormat={FULL_DATE_FORMAT}
-              timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+              timeFormat={FULL_TIME_FORMAT}
             />
           </>
         );
