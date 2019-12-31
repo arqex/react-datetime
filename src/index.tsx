@@ -13,6 +13,21 @@ import CalendarContainer from "./CalendarContainer";
 
 const { useRef, useState, useEffect, useCallback } = React;
 
+export const FORMATS = {
+  MONTH: "LL",
+  DAY: "dd",
+  YEAR: "yyyy",
+  MILITARY_HOUR: "H",
+  HOUR: "h",
+  MINUTE: "mm",
+  SECOND: "ss",
+  MILLISECOND: "SSS",
+  AM_PM: "a"
+};
+
+export const FULL_DATE_FORMAT = `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`;
+export const FULL_TIME_FORMAT = `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`;
+
 function tryGetAsTime(date: any) {
   const asDate = toDate(date);
   if (asDate && isDateValid(asDate)) {
