@@ -141,7 +141,6 @@
     "ts-jest": "^24.2.0",
     "ts-loader": "^6.2.1",
     "tsdx": "0.12.1",
-    "tslib": "^1.10.0",
     "typescript": "^3.7.2"
   },
   "dependencies": {
@@ -149,6 +148,7 @@
     "@reach/popover": "^0.7.0",
     "classcat": "^4.0.2",
     "date-fns": "^2.8.1",
+    "tslib": "^1.10.0",
     "use-onclickoutside": "^0.3.1"
   }
 }
