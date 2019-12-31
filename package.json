@@ -20,10 +20,7 @@
     "scss",
     "dist"
   ],
-  "sideEffects": [
-    "**/*.css",
-    "**/*.scss"
-  ],
+  "sideEffects": false,
   "bundlesize": [
     {
       "path": "dist/react-datetime.cjs.production.min.js",
