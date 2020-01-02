@@ -1,4 +1,5 @@
 import * as React from "react";
+import { withKnobs, optionsKnob as options } from "@storybook/addon-knobs";
 import DateTime, { FORMATS } from "./.";
 import "../scss/styles.scss";
 
@@ -12,8 +13,21 @@ import fr from "date-fns/locale/fr";
 const { useState } = React;
 
 export default {
-  title: "DateTime"
+  title: "DateTime",
+  decorators: [withKnobs]
 };
+
+function parseString(value) {
+  if (value === "true") {
+    return true;
+  }
+
+  if (value === "false") {
+    return false;
+  }
+
+  return value;
+}
 
 export function SimpleExample() {
   function UncontrolledDateTime(props) {
@@ -69,33 +83,32 @@ export function SimpleExample() {
   );
 }
 
+const localeOptions = {
+  "EN - undefined": undefined,
+  "NL - nl": nl,
+  "ES - es": es,
+  "FR - fr": fr
+};
+const localeNames = Object.keys(localeOptions).reduce(
+  (prev, curr) => ({ ...prev, [curr]: curr }),
+  {}
+);
+
 export function LocalizationExample() {
   const [value, setValue] = useState<any>(
     new Date(Date.UTC(2000, 0, 15, 2, 2, 2, 2))
   );
-  const [currentLocale, setCurrentLocale] = useState();
-
-  function renderButton(text: string, newLocale: any) {
-    return (
-      <button
-        type="button"
-        onClick={() => setCurrentLocale(newLocale)}
-        disabled={currentLocale === newLocale}
-      >
-        {text}
-      </button>
-    );
-  }
+  const currentLocaleName = options("locale", localeNames, localeNames[0], {
+    display: "inline-radio"
+  });
+  const currentLocale = currentLocaleName && localeOptions[currentLocaleName];
 
   return (
     <div className="form-horizontal">
       <h2>Locale props</h2>
-      <p>Try out various locales and see how they affect the component.</p>
       <p>
-        {renderButton("EN - undefined", undefined)}
-        {renderButton("NL - nl", nl)}
-        {renderButton("ES - es", es)}
-        {renderButton("FR - fr", fr)}
+        Try out various locales (via <strong>knobs</strong>) and see how they
+        affect the component.
       </p>
 
       <DateTime
@@ -112,51 +125,77 @@ export function LocalizationExample() {
   );
 }
 
+const dateFormats = [
+  `false`,
+  `${FORMATS.YEAR}-${FORMATS.MONTH}-${FORMATS.DAY}`,
+  `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
+  `${FORMATS.DAY}.${FORMATS.MONTH}.${FORMATS.YEAR}`,
+  `${FORMATS.MONTH}-${FORMATS.DAY}`,
+  `${FORMATS.FULL_MONTH_NAME}`,
+  `${FORMATS.YEAR}/${FORMATS.MONTH}`,
+  `${FORMATS.YEAR}`
+].reduce((prev, curr) => {
+  return { ...prev, [curr]: curr };
+}, {});
+
+const timeFormats = [
+  `false`,
+  `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
+  `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}`,
+  `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND}`,
+  `${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`,
+  `${FORMATS.HOUR}${FORMATS.MINUTE}`,
+  `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}xxx`
+].reduce((prev, curr) => {
+  return { ...prev, [curr]: curr };
+}, {});
+
+const dateTypeModes = [
+  `default (Date)`,
+  `utc-ms-timestamp`,
+  `input-format`,
+  `Date`
+].reduce((prev, curr) => ({ ...prev, [curr]: curr }), {});
+
 export function CustomizableExample() {
-  const [state, setState] = useState<any>({
-    value: new Date(2019, 7, 2, 11, 25),
-    dateFormat: `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
-    timeFormat: `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
-    dateTypeMode: undefined
+  const [value, setValue] = useState<any>(new Date(2019, 7, 2, 11, 25));
+
+  const dateFormat = parseString(
+    options(
+      "dateFormat",
+      dateFormats,
+      `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
+      {
+        display: "inline-radio"
+      }
+    )
+  );
+
+  const timeFormat = parseString(
+    options(
+      "timeFormat",
+      timeFormats,
+      `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
+      {
+        display: "inline-radio"
+      }
+    )
+  );
+
+  const dateTypeMode = options("dateTypeMode", dateTypeModes, undefined, {
+    display: "inline-radio"
   });
-
-  function Select({ name, children }) {
-    return (
-      <div className="form-group">
-        <label className="control-label col-xs-6">{name}</label>
-
-        <div className="col-xs-6">
-          <select
-            className="form-control"
-            value={state[name]}
-            onChange={e => {
-              let newValue: any = e.target.value;
-              if (newValue === "true") {
-                newValue = true;
-              } else if (newValue === "false") {
-                newValue = false;
-              }
-
-              setState({ ...state, [name]: newValue });
-            }}
-          >
-            {children}
-          </select>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="form-horizontal">
       <h2>Customization props</h2>
       <p>
-        Try out various configuration options and see how they affect the
-        component.
+        Try out various configuration options (via <strong>knobs</strong>) and
+        see how they affect the component.
       </p>
 
       <div>
-        <strong>Value:</strong> {JSON.stringify(state.value)}
+        <strong>Value:</strong> {JSON.stringify(value)}
       </div>
 
       <form
@@ -166,123 +205,68 @@ export function CustomizableExample() {
         }}
       >
         <DateTime
-          value={state.value}
+          value={value}
           onChange={newValue => {
             console.log(newValue);
-            setState({ ...state, value: newValue });
+            setValue(newValue);
           }}
-          {...state}
+          dateFormat={dateFormat}
+          timeFormat={timeFormat}
+          dateTypeMode={dateTypeMode}
         />
       </form>
-
-      <hr />
-
-      <Select name="dateFormat">
-        <option value="">false</option>
-        <option>
-          {FORMATS.YEAR}-{FORMATS.MONTH}-{FORMATS.DAY}
-        </option>
-        <option>
-          {FORMATS.MONTH}/{FORMATS.DAY}/{FORMATS.YEAR}
-        </option>
-        <option>
-          {FORMATS.DAY}.{FORMATS.MONTH}.{FORMATS.YEAR}
-        </option>
-        <option>
-          {FORMATS.MONTH}-{FORMATS.DAY}
-        </option>
-        <option>{FORMATS.FULL_MONTH_NAME}</option>
-        <option>
-          {FORMATS.YEAR}/{FORMATS.MONTH}
-        </option>
-        <option>{FORMATS.YEAR}</option>
-      </Select>
-
-      <Select name="timeFormat">
-        <option value="">false</option>
-        <option>
-          {FORMATS.HOUR}:{FORMATS.MINUTE} {FORMATS.AM_PM}
-        </option>
-        <option>
-          {FORMATS.MILITARY_HOUR}:{FORMATS.MINUTE}:{FORMATS.SECOND}
-        </option>
-        <option>
-          {FORMATS.MILITARY_HOUR}:{FORMATS.MINUTE}:{FORMATS.SECOND}.
-          {FORMATS.MILLISECOND}
-        </option>
-        <option>
-          {FORMATS.HOUR}:{FORMATS.MINUTE}:{FORMATS.SECOND}.{FORMATS.MILLISECOND}{" "}
-          {FORMATS.AM_PM}
-        </option>
-        <option>
-          {FORMATS.HOUR}
-          {FORMATS.MINUTE}
-        </option>
-        <option>
-          {FORMATS.MILITARY_HOUR}:{FORMATS.MINUTE}xxx
-        </option>
-      </Select>
-
-      <Select name="dateTypeMode">
-        <option value="">default (Date)</option>
-        <option>utc-ms-timestamp</option>
-        <option>input-format</option>
-        <option>Date</option>
-      </Select>
     </div>
   );
 }
 
+const viewModeFormats: { [x: string]: any }[] = [
+  ["Default - undefined", undefined, undefined],
+  [`Years - ${FORMATS.YEAR}`, `${FORMATS.YEAR}`, undefined],
+  [
+    `Months - ${FORMATS.MONTH}/${FORMATS.YEAR}`,
+    `${FORMATS.MONTH}/${FORMATS.YEAR}`,
+    undefined
+  ],
+
+  [
+    `Days - ${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
+    `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
+    undefined
+  ],
+
+  [
+    `Time - ${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
+    false,
+    `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`
+  ]
+];
+const viewModeOptions = viewModeFormats.reduce(
+  (prev, curr) => ({ ...prev, [curr[0]]: curr[0] }),
+  {}
+);
+
 export function ViewModeExample() {
   const [value, setValue] = useState(undefined);
-  const [dateFormat, setDateFormat] = useState<string | boolean | undefined>(
-    undefined
+  const viewModeOption = options(
+    "View Mode",
+    viewModeOptions,
+    viewModeFormats[0][0],
+    {
+      display: "inline-radio"
+    }
   );
-  const [timeFormat, setTimeFormat] = useState<string | boolean | undefined>(
-    undefined
+  const viewModeFormat = viewModeFormats.find(
+    viewModeName => viewModeName[0] === viewModeOption
   );
-
-  function renderButton(
-    text: string,
-    newDateFormat: string | boolean | undefined,
-    newTimeFormat: string | boolean | undefined
-  ) {
-    return (
-      <button
-        type="button"
-        onClick={() => {
-          setDateFormat(newDateFormat);
-          setTimeFormat(newTimeFormat);
-        }}
-        disabled={dateFormat === newDateFormat && timeFormat === newTimeFormat}
-      >
-        {text}
-      </button>
-    );
-  }
+  const dateFormat = !viewModeFormat ? undefined : viewModeFormat[1];
+  const timeFormat = !viewModeFormat ? undefined : viewModeFormat[2];
 
   return (
     <div>
       <h2>View Modes</h2>
-      <p>Try out various formats and see how they affect the component.</p>
       <p>
-        {renderButton("Default - undefined", undefined, undefined)}
-        {renderButton(`Years - ${FORMATS.YEAR}`, `${FORMATS.YEAR}`, undefined)}
-        {renderButton(
-          `Months - ${FORMATS.MONTH}/${FORMATS.YEAR}`,
-          `${FORMATS.MONTH}/${FORMATS.YEAR}`,
-          undefined
-        )}
-        {renderButton(
-          `Days - ${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
-          `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
-          undefined
-        )}
-        {renderButton(
-          `Time - ${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
-          false,
-          `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`
-        )}
+        Try out various formats (via <strong>knobs</strong>) and see how they
+        affect the component.
       </p>
 
       <DateTime
