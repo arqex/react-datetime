@@ -34,24 +34,24 @@ export const FORMATS = {
   FULL_TIMESTAMP: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
 };
 
-function tryGetAsTime(date: any) {
-  const asDate = toDate(date);
-  if (asDate && isDateValid(asDate)) {
-    return asDate.getTime();
-  }
-
-  return date;
-}
-
-function useDefaultStateWithOverride<Type>(
-  defaultValue: Type,
-  maybeDate = true
-) {
+function useDefaultStateWithOverride<Type>(defaultValue: Type) {
   const [override, setOverride] = useState<Type | undefined>(undefined);
   const value = override || defaultValue;
 
   // Clear the override if the default changes
-  const changeVal = maybeDate ? tryGetAsTime(defaultValue) : defaultValue;
+  useEffect(() => {
+    setOverride(undefined);
+  }, [defaultValue]);
+
+  return [value, setOverride] as const;
+}
+
+function useDefaultDateWithOverride(defaultValue: Date) {
+  const [override, setOverride] = useState<Date | undefined>(undefined);
+  const value = override || defaultValue;
+
+  // Clear the override if the default changes
+  const changeVal = defaultValue.getTime();
   useEffect(() => {
     setOverride(undefined);
   }, [changeVal]);
@@ -275,7 +275,7 @@ function DateTime(
   //
   // ViewDate
   //
-  const [viewDate, setViewDate] = useDefaultStateWithOverride(
+  const [viewDate, setViewDate] = useDefaultDateWithOverride(
     valueAsDate || startOfDay(new Date())
   );
 
@@ -283,15 +283,12 @@ function DateTime(
   // ViewMode
   //
   const defaultViewMode = getDefaultViewMode(dateFormat, timeFormat);
-  const [viewMode, setViewMode] = useDefaultStateWithOverride(
-    defaultViewMode,
-    false
-  );
+  const [viewMode, setViewMode] = useDefaultStateWithOverride(defaultViewMode);
 
   //
   // ViewTimestamp
   //
-  const [viewTimestamp, setViewTimestamp] = useDefaultStateWithOverride(
+  const [viewTimestamp, setViewTimestamp] = useDefaultDateWithOverride(
     valueAsDate || viewDate
   );
 
