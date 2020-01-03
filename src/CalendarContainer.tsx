@@ -40,9 +40,11 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
       break;
 
     case "days":
-    default:
       el = <DaysView {...rest} />;
       break;
+
+    default:
+      return null;
   }
 
   return (
