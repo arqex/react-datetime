@@ -39,7 +39,7 @@ function parseString(value) {
   return value;
 }
 
-export function SimpleExample() {
+export function SimpleExamples() {
   function UncontrolledDateTime(props) {
     const [value, setValue] = useState<any>("");
 
@@ -89,6 +89,80 @@ export function SimpleExample() {
         dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
         timeFormat={`${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}`}
       />
+    </div>
+  );
+}
+
+export function InlineExamples() {
+  function UncontrolledDateTime({ label, ...props }) {
+    const [value, setValue] = useState<any>("");
+
+    return (
+      <div className="col-sm-auto mb-3">
+        <div>
+          <strong>{label}</strong> - {props.dateFormat} {props.timeFormat}
+        </div>
+        <DateTime
+          value={value}
+          onChange={newVal => {
+            console.log({ newVal });
+            setValue(newVal);
+          }}
+          {...props}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        crossOrigin="anonymous"
+      />
+
+      <div className="container-fluid">
+        <h2>Inline Examples</h2>
+
+        <div className="row">
+          <UncontrolledDateTime
+            label="Date/Time"
+            shouldHideInput
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+          />
+
+          <UncontrolledDateTime
+            label="Date"
+            shouldHideInput
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
+
+          <UncontrolledDateTime
+            label="Month"
+            shouldHideInput
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
+
+          <UncontrolledDateTime
+            label="Year"
+            shouldHideInput
+            dateFormat={`${FORMATS.YEAR}`}
+            timeFormat={false}
+          />
+
+          <UncontrolledDateTime
+            label="Time"
+            shouldHideInput
+            dateFormat={false}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+          />
+        </div>
+      </div>
     </div>
   );
 }
