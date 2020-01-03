@@ -10,6 +10,7 @@
   background: $dropdown-bg;
   border: $dropdown-border-width solid $dropdown-border-color;
   border-radius: $dropdown-border-radius;
+  color: $dropdown-color;
   font-size: $dropdown-font-size;
 
   &:not(.rdtStatic) {
@@ -38,6 +39,9 @@
     cursor: pointer;
   }
 
+  .rdtCounter .rdtBtn,
+  .rdtYear,
+  .rdtMonth,
   .rdtDay,
   .rdtHour,
   .rdtMinute,
@@ -54,7 +58,7 @@
 
   .rdtOld,
   .rdtNew {
-    color: $gray-500;
+    color: rgba($dropdown-link-color, 0.3);
   }
 
   .rdtToday {
@@ -91,7 +95,6 @@
   .rdtNext,
   .rdtPrev {
     width: 36px;
-    font-size: $font-size-lg;
     vertical-align: top;
   }
 
@@ -183,11 +186,9 @@
   }
 
   .rdtCounter {
-    height: 100px;
     width: 40px;
 
     .rdtBtn {
-      height: 40%;
       line-height: 40px;
       cursor: pointer;
 
@@ -197,7 +198,7 @@
     }
 
     .rdtCount {
-      height: 20%;
+      line-height: 20px;
       font-size: $font-size-lg;
     }
   }
