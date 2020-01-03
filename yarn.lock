@@ -2014,9 +2014,9 @@
     "@types/testing-library__react" "^9.1.2"
 
 "@testing-library/user-event@^8.0.0":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-8.0.2.tgz#d68096d531594a66ecbf0b56993253fcc032064b"
-  integrity sha512-BjAO+JpR7ay9CARUm6UqeCOPJjNYeupM7VyWeVzLZqBmu5qMSs/jCvFoFJarxdX9zhSwygkTjZWGRtEqmjUGPA==
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-8.0.3.tgz#c3e304d2692b797ff0e3ced53c0597d341bb868b"
+  integrity sha512-ALoIj6GzxN0UzFiudSwENy2yTD1xHDW+KtuOch5xuqRgQr0AxGB8z+EQBxT6zlWgAoLGN8hmYxTTGRoQSOZtlg==
 
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   version "7.0.7"
