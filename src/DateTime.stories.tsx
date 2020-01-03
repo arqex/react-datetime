@@ -1,10 +1,16 @@
 import * as React from "react";
-import { withKnobs, optionsKnob as options } from "@storybook/addon-knobs";
+import {
+  withKnobs,
+  optionsKnob as options,
+  boolean
+} from "@storybook/addon-knobs";
 import DateTime, { FORMATS } from "./.";
 import "../scss/styles.scss";
 
 import isBefore from "date-fns/isBefore";
 import startOfDay from "date-fns/startOfDay";
+import isMonday from "date-fns/isMonday";
+import isWeekend from "date-fns/isWeekend";
 
 import nl from "date-fns/locale/nl";
 import es from "date-fns/locale/es";
@@ -18,6 +24,10 @@ export default {
 };
 
 function parseString(value) {
+  if (value === "undefined") {
+    return undefined;
+  }
+
   if (value === "true") {
     return true;
   }
@@ -83,87 +93,56 @@ export function SimpleExample() {
   );
 }
 
-const localeOptions = {
-  "EN - undefined": undefined,
-  "NL - nl": nl,
-  "ES - es": es,
-  "FR - fr": fr
-};
-const localeNames = Object.keys(localeOptions).reduce(
-  (prev, curr) => ({ ...prev, [curr]: curr }),
-  {}
-);
-
-export function LocalizationExample() {
-  const [value, setValue] = useState<any>(
-    new Date(Date.UTC(2000, 0, 15, 2, 2, 2, 2))
-  );
-  const currentLocaleName = options("locale", localeNames, localeNames[0], {
-    display: "inline-radio"
-  });
-  const currentLocale = currentLocaleName && localeOptions[currentLocaleName];
-
-  return (
-    <div className="form-horizontal">
-      <h2>Locale props</h2>
-      <p>
-        Try out various locales (via <strong>knobs</strong>) and see how they
-        affect the component.
-      </p>
-
-      <DateTime
-        value={value}
-        onChange={newValue => {
-          console.log(newValue);
-          setValue(newValue);
-        }}
-        locale={currentLocale}
-        dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
-        timeFormat={false}
-      />
-    </div>
-  );
-}
-
-const dateFormats = [
-  `false`,
-  `${FORMATS.YEAR}-${FORMATS.MONTH}-${FORMATS.DAY}`,
-  `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
-  `${FORMATS.DAY}.${FORMATS.MONTH}.${FORMATS.YEAR}`,
-  `${FORMATS.MONTH}-${FORMATS.DAY}`,
-  `${FORMATS.FULL_MONTH_NAME}`,
-  `${FORMATS.YEAR}/${FORMATS.MONTH}`,
-  `${FORMATS.YEAR}`
-].reduce((prev, curr) => {
-  return { ...prev, [curr]: curr };
-}, {});
-
-const timeFormats = [
-  `false`,
-  `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
-  `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}`,
-  `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND}`,
-  `${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`,
-  `${FORMATS.HOUR}${FORMATS.MINUTE}`,
-  `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}xxx`
-].reduce((prev, curr) => {
-  return { ...prev, [curr]: curr };
-}, {});
-
-const dateTypeModes = [
-  `default (Date)`,
-  `utc-ms-timestamp`,
-  `input-format`,
-  `Date`
-].reduce((prev, curr) => ({ ...prev, [curr]: curr }), {});
-
 export function CustomizableExample() {
   const [value, setValue] = useState<any>(new Date(2019, 7, 2, 11, 25));
 
+  //
+  // shouldHideInput
+  //
+  const shouldHideInput = boolean("shouldHideInput", true);
+
+  //
+  // locale
+  //
+  const localeOptions = {
+    "EN - undefined": undefined,
+    "NL - nl": nl,
+    "ES - es": es,
+    "FR - fr": fr
+  };
+
+  const currentLocaleName = options(
+    "locale",
+    Object.keys(localeOptions).reduce(
+      (prev, curr) => ({ ...prev, [curr]: curr }),
+      {}
+    ),
+    "EN - undefined",
+    {
+      display: "inline-radio"
+    }
+  );
+  const currentLocale = currentLocaleName && localeOptions[currentLocaleName];
+
+  //
+  // dateFormat
+  //
   const dateFormat = parseString(
     options(
       "dateFormat",
-      dateFormats,
+      [
+        `undefined`,
+        `false`,
+        `${FORMATS.YEAR}-${FORMATS.MONTH}-${FORMATS.DAY}`,
+        `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
+        `${FORMATS.DAY}.${FORMATS.MONTH}.${FORMATS.YEAR}`,
+        `${FORMATS.MONTH}-${FORMATS.DAY}`,
+        `${FORMATS.FULL_MONTH_NAME}`,
+        `${FORMATS.YEAR}/${FORMATS.MONTH}`,
+        `${FORMATS.YEAR}`
+      ].reduce((prev, curr) => {
+        return { ...prev, [curr]: curr };
+      }, {}),
       `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
       {
         display: "inline-radio"
@@ -171,10 +150,24 @@ export function CustomizableExample() {
     )
   );
 
+  //
+  // timeFormat
+  //
   const timeFormat = parseString(
     options(
       "timeFormat",
-      timeFormats,
+      [
+        `undefined`,
+        `false`,
+        `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
+        `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}`,
+        `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND}`,
+        `${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`,
+        `${FORMATS.HOUR}${FORMATS.MINUTE}`,
+        `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}xxx`
+      ].reduce((prev, curr) => {
+        return { ...prev, [curr]: curr };
+      }, {}),
       `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
       {
         display: "inline-radio"
@@ -182,9 +175,49 @@ export function CustomizableExample() {
     )
   );
 
-  const dateTypeMode = options("dateTypeMode", dateTypeModes, undefined, {
-    display: "inline-radio"
-  });
+  //
+  // dateTypeMode
+  //
+  const dateTypeMode = parseString(
+    options(
+      "dateTypeMode",
+      [`undefined`, `utc-ms-timestamp`, `input-format`, `Date`].reduce(
+        (prev, curr) => ({ ...prev, [curr]: curr }),
+        {}
+      ),
+      "undefined",
+      {
+        display: "inline-radio"
+      }
+    )
+  );
+
+  //
+  // isValidDate
+  //
+  const isValidDateOptions = {
+    "default - undefined": undefined,
+    "All Valid": () => true,
+    "All Invalid": () => false,
+    "Only Mondays": (date: Date) => isMonday(date),
+    "Only Weekdays": (date: Date) => !isWeekend(date),
+    "Only Weekends": (date: Date) => isWeekend(date),
+    "Days Before The 18th": (date: Date) =>
+      isBefore(date, startOfDay(new Date(2019, 7, 18, 11, 25)))
+  };
+
+  const isValidDateName = options(
+    "isValidDate",
+    Object.keys(isValidDateOptions).reduce(
+      (prev, curr) => ({ ...prev, [curr]: curr }),
+      {}
+    ),
+    "default - undefined",
+    {
+      display: "inline-radio"
+    }
+  );
+  const isValidDate = isValidDateName && isValidDateOptions[isValidDateName];
 
   return (
     <div className="form-horizontal">
@@ -205,6 +238,7 @@ export function CustomizableExample() {
         }}
       >
         <DateTime
+          shouldHideInput={shouldHideInput}
           value={value}
           onChange={newValue => {
             console.log(newValue);
@@ -213,92 +247,10 @@ export function CustomizableExample() {
           dateFormat={dateFormat}
           timeFormat={timeFormat}
           dateTypeMode={dateTypeMode}
+          locale={currentLocale}
+          isValidDate={isValidDate}
         />
       </form>
-    </div>
-  );
-}
-
-const viewModeFormats: { [x: string]: any }[] = [
-  ["Default - undefined", undefined, undefined],
-  [`Years - ${FORMATS.YEAR}`, `${FORMATS.YEAR}`, undefined],
-  [
-    `Months - ${FORMATS.MONTH}/${FORMATS.YEAR}`,
-    `${FORMATS.MONTH}/${FORMATS.YEAR}`,
-    undefined
-  ],
-
-  [
-    `Days - ${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
-    `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
-    undefined
-  ],
-
-  [
-    `Time - ${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
-    false,
-    `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`
-  ]
-];
-const viewModeOptions = viewModeFormats.reduce(
-  (prev, curr) => ({ ...prev, [curr[0]]: curr[0] }),
-  {}
-);
-
-export function ViewModeExample() {
-  const [value, setValue] = useState(undefined);
-  const viewModeOption = options(
-    "View Mode",
-    viewModeOptions,
-    viewModeFormats[0][0],
-    {
-      display: "inline-radio"
-    }
-  );
-  const viewModeFormat = viewModeFormats.find(
-    viewModeName => viewModeName[0] === viewModeOption
-  );
-  const dateFormat = !viewModeFormat ? undefined : viewModeFormat[1];
-  const timeFormat = !viewModeFormat ? undefined : viewModeFormat[2];
-
-  return (
-    <div>
-      <h2>View Modes</h2>
-      <p>
-        Try out various formats (via <strong>knobs</strong>) and see how they
-        affect the component.
-      </p>
-
-      <DateTime
-        value={value}
-        onChange={newValue => {
-          console.log(newValue);
-          setValue(newValue);
-        }}
-        dateFormat={dateFormat}
-        timeFormat={timeFormat}
-      />
-    </div>
-  );
-}
-
-export function ValidatedExample() {
-  const [value, setValue] = useState(undefined);
-
-  return (
-    <div>
-      <h2>isValidDate</h2>
-      <p>You can use "isValidDate" to enable all dates before now.</p>
-
-      <DateTime
-        value={value}
-        onChange={newValue => {
-          console.log(newValue);
-          setValue(newValue);
-        }}
-        timeFormat={false}
-        isValidDate={current => isBefore(current, startOfDay(new Date()))}
-      />
     </div>
   );
 }
