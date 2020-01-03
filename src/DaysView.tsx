@@ -14,7 +14,7 @@ import getDate from "date-fns/getDate";
 import { FormatOptions, ViewMode, FORMATS } from "./index";
 
 export interface DaysViewProps {
-  timeFormat: string | false;
+  timeFormat: string;
   viewDate: Date;
   setViewDate: (newViewDate: Date | undefined) => void;
   selectedDate: Date | undefined;
@@ -26,8 +26,8 @@ export interface DaysViewProps {
 
 function DaysView(props: DaysViewProps) {
   const {
-    timeFormat = false,
-    viewDate = new Date(),
+    timeFormat,
+    viewDate,
     setViewDate,
     selectedDate,
     setSelectedDate,
@@ -139,7 +139,7 @@ function DaysView(props: DaysViewProps) {
             );
           })}
         </tbody>
-        {typeof timeFormat === "string" && timeFormat.trim() && (
+        {timeFormat ? (
           <tfoot>
             <tr>
               <td
@@ -152,7 +152,7 @@ function DaysView(props: DaysViewProps) {
               </td>
             </tr>
           </tfoot>
-        )}
+        ) : null}
       </table>
     </div>
   );

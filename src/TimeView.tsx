@@ -94,10 +94,10 @@ function change(
 function getFormatted(
   type: "hours" | "minutes" | "seconds" | "milliseconds" | "daypart",
   timestamp: Date,
-  timeFormat?: string | false,
+  timeFormat: string,
   formatOptions?: any
 ) {
-  const fmt = typeof timeFormat === "string" ? timeFormat : "";
+  const fmt = timeFormat;
 
   function has(f: string, val: string) {
     return f.indexOf(val) !== -1;
@@ -188,9 +188,9 @@ function onStartClicking(
 
 export interface TimeViewProps {
   viewTimestamp: Date;
-  dateFormat: string | false;
+  dateFormat: string;
   setViewMode: (newViewMode: ViewMode) => void;
-  timeFormat: string | false;
+  timeFormat: string;
   formatOptions: FormatOptions;
   setSelectedDate: (newDate: Date, tryClose?: boolean) => void;
   setViewTimestamp: (newViewTimestamp: Date | undefined) => void;
@@ -200,10 +200,10 @@ export interface TimeViewProps {
 
 function TimeView(props: TimeViewProps) {
   const {
-    viewTimestamp = new Date(),
-    dateFormat = false,
+    viewTimestamp,
+    dateFormat,
     setViewMode,
-    timeFormat = "h:mm a",
+    timeFormat,
     formatOptions,
     setSelectedDate
   } = props;

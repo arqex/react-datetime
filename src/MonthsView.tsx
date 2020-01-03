@@ -21,7 +21,7 @@ export interface MonthsViewProps {
 
 function MonthsView(props: MonthsViewProps) {
   const {
-    viewDate = new Date(),
+    viewDate,
     setViewDate,
     selectedDate,
     setSelectedDate,

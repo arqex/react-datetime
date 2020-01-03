@@ -112,10 +112,10 @@ const nextViewModes: NextViewModes = {
 };
 
 function getDefaultViewMode(
-  dateFormat: string | false,
-  timeFormat: string | false
+  dateFormat: string,
+  timeFormat: string
 ): ViewMode | undefined {
-  if (typeof dateFormat === "string" && dateFormat) {
+  if (dateFormat) {
     if (dateFormat.match(/[d]/)) {
       return "days";
     } else if (dateFormat.indexOf("L") !== -1) {
@@ -125,7 +125,7 @@ function getDefaultViewMode(
     }
   }
 
-  if (typeof timeFormat === "string" && timeFormat) {
+  if (timeFormat) {
     return "time";
   }
 
@@ -193,10 +193,20 @@ function DateTime(
   // Formats
   //
   const defaultDateFormat = `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`;
-  const dateFormat = rawDateFormat === true ? defaultDateFormat : rawDateFormat;
+  const dateFormat =
+    rawDateFormat === true
+      ? defaultDateFormat
+      : rawDateFormat === false
+      ? ""
+      : rawDateFormat;
 
   const defaultTimeFormat = `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`;
-  const timeFormat = rawTimeFormat === true ? defaultTimeFormat : rawTimeFormat;
+  const timeFormat =
+    rawTimeFormat === true
+      ? defaultTimeFormat
+      : rawTimeFormat === false
+      ? ""
+      : rawTimeFormat;
 
   const fullFormat =
     dateFormat && timeFormat

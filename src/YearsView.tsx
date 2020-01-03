@@ -22,7 +22,7 @@ export interface YearsViewProps {
 
 function YearsView(props: YearsViewProps) {
   const {
-    viewDate = new Date(),
+    viewDate,
     setViewDate,
     selectedDate,
     setSelectedDate,
