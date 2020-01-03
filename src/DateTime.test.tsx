@@ -124,6 +124,30 @@ describe("DateTime", () => {
       expect(queryByTestId("year-picker")).toBeNull();
       expect(queryByTestId("time-picker")).toBeNull();
     });
+
+    it("should show nothing with shouldHideInput if there's no date/time formats", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            shouldHideInput
+            dateFormat={false}
+            timeFormat={false}
+          />
+        </>
+      );
+
+      // Assert
+      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(queryByTestId("day-picker")).toBeNull();
+      expect(queryByTestId("month-picker")).toBeNull();
+      expect(queryByTestId("year-picker")).toBeNull();
+      expect(queryByTestId("time-picker")).toBeNull();
+    });
   });
 
   describe("day picker", () => {
