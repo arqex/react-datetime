@@ -2,14 +2,9 @@ import * as React from "react";
 import { render, act, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
+import isSameDay from "date-fns/isSameDay";
 
-const {
-  getByText,
-  getByTestId,
-  queryByTestId,
-  getAllByText
-  //queryByText
-} = screen;
+const { getByText, getByTestId, queryByTestId, getAllByText } = screen;
 
 import RawDateTime, { FORMATS } from "./index";
 
@@ -70,13 +65,13 @@ describe("DateTime", () => {
     expect(container.firstChild).toHaveAttribute("id", "some-id");
   });
 
-  it("should render an with a invalid string value", () => {
+  it("should render with a invalid string value", () => {
     const { container } = render(<DateTime value="test" />);
 
     expect(container.firstChild).toHaveValue("test");
   });
 
-  it("should render an with a date string value", () => {
+  it("should render with a date string value", () => {
     const { container } = render(<DateTime value="06/16/2015 12:00 AM" />);
 
     expect(container.firstChild).toHaveValue("06/16/2015 12:00 AM");
@@ -191,31 +186,6 @@ describe("DateTime", () => {
       const picker = getByTestId("day-picker");
       expect(picker).toBeVisible();
     });
-
-    // it("should close day picker on blur", () => {
-    //   mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-    //   // Arrange
-    //   const { getByLabelText } = render(
-    //     <>
-    //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat={FULL_DATE_FORMAT} />
-    //     </>
-    //   );
-
-    //   const element = getByLabelText("Some Field");
-
-    //   // Act
-    //   fireEvent.focus(element);
-
-    //   // Assert
-    //   const monthName = getByText(/january/i);
-    //   expect(monthName).toBeVisible();
-
-    //   fireEvent.blur(element);
-
-    //   expect(queryByText(/january/i)).toBeNull();
-    // });
 
     describe("should open various months based on current date", () => {
       it("should open january day picker when clicking", () => {
@@ -665,7 +635,7 @@ describe("DateTime", () => {
       expect(element).toHaveValue("03/16/2019");
     });
 
-    it("should mark date value as active with just date", () => {
+    it("should mark date value as active with date string", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
@@ -696,7 +666,7 @@ describe("DateTime", () => {
       expect(someDay).toHaveClass("rdtActive");
     });
 
-    it("should mark date value as active with date and time", () => {
+    it("should mark date value as active with date and time string", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
       // Arrange
@@ -707,13 +677,109 @@ describe("DateTime", () => {
             id="some-id"
             dateFormat={FULL_DATE_FORMAT}
             timeFormat={FULL_TIME_FORMAT}
-            value="06/16/2015 12:00 AM"
+            value="06/16/2015 11:13 PM"
           />
         </>
       );
 
       const element = getByLabelText("Some Field");
-      expect(element).toHaveValue("06/16/2015 12:00 AM");
+      expect(element).toHaveValue("06/16/2015 11:13 PM");
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId("day-picker")).toBeVisible();
+
+      const someDay = getByText("16");
+      expect(someDay).toBeVisible();
+      expect(someDay).toHaveClass("rdtActive");
+    });
+
+    it("should mark date value as active with Date dateTypeMode", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={FULL_DATE_FORMAT}
+            timeFormat={FULL_TIME_FORMAT}
+            dateTypeMode="Date"
+            value={new Date(2015, 5, 16, 23, 13)}
+          />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("06/16/2015 11:13 PM");
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId("day-picker")).toBeVisible();
+
+      const someDay = getByText("16");
+      expect(someDay).toBeVisible();
+      expect(someDay).toHaveClass("rdtActive");
+    });
+
+    it("should mark date value as active with input-format dateTypeMode", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={FULL_DATE_FORMAT}
+            timeFormat={FULL_TIME_FORMAT}
+            dateTypeMode="input-format"
+            value="06/16/2015 11:13 PM"
+          />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("06/16/2015 11:13 PM");
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId("day-picker")).toBeVisible();
+
+      const someDay = getByText("16");
+      expect(someDay).toBeVisible();
+      expect(someDay).toHaveClass("rdtActive");
+    });
+
+    it("should mark date value as active with utc-ms-timestamp dateTypeMode", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={FULL_DATE_FORMAT}
+            timeFormat={FULL_TIME_FORMAT}
+            dateTypeMode="utc-ms-timestamp"
+            value={new Date(2015, 5, 16, 23, 13).getTime()}
+          />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("06/16/2015 11:13 PM");
 
       // Act
       // Open picker
@@ -824,31 +890,6 @@ describe("DateTime", () => {
         expect(row.parentNode).toHaveTextContent("SepOctNovDec");
       }
     });
-
-    // it("should close month picker on blur", () => {
-    //   mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-    //   // Arrange
-    //   const { getByLabelText } = render(
-    //     <>
-    //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`} />
-    //     </>
-    //   );
-
-    //   const element = getByLabelText("Some Field");
-
-    //   // Act
-    //   fireEvent.focus(element);
-
-    //   // Assert
-    //   const picker = getByTestId("month-picker");
-    //   expect(picker).toBeVisible();
-
-    //   fireEvent.blur(element);
-
-    //   expect(queryByText(/jan/i)).toBeNull();
-    // });
 
     it("should choose month from picker", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
@@ -1100,33 +1141,6 @@ describe("DateTime", () => {
         expect(row.parentNode).toHaveTextContent("2017201820192020");
       }
     });
-
-    // it("should close year picker on blur", () => {
-    //   mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-    //   // Arrange
-    //   const { getByLabelText } = render(
-    //     <>
-    //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat={FORMATS.YEAR} />
-    //     </>
-    //   );
-
-    //   const element = getByLabelText("Some Field");
-    //   expect(element).toHaveValue("");
-    expect(queryByTestId("picker-wrapper")).toBeNull();
-
-    //   // Act
-    //   fireEvent.focus(element);
-
-    //   // Assert
-    //   const picker = getByText(/2010-2019/i);
-    //   expect(picker).toBeVisible();
-
-    //   fireEvent.blur(element);
-
-    //   expect(queryByText(/2010-2019/i)).toBeNull();
-    // });
 
     it("should choose year from picker", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
@@ -1384,30 +1398,6 @@ describe("DateTime", () => {
       const textContent = picker.textContent?.replace(/\W+/g, "");
       expect(textContent).toMatch(/000/i);
     });
-
-    // it("should close time picker on blur", () => {
-    //   mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-    //   // Arrange
-    //   const { getByLabelText } = render(
-    //     <>
-    //       <label htmlFor="some-id">Some Field</label>
-    //       <DateTime id="some-id" dateFormat={false} timeFormat={FULL_TIME_FORMAT} />
-    //     </>
-    //   );
-
-    //   const element = getByLabelText("Some Field");
-
-    //   // Act
-    //   fireEvent.focus(element);
-
-    //   const picker = getByText(/am/i);
-    //   expect(picker).toBeVisible();
-
-    //   fireEvent.blur(element);
-
-    //   expect(queryByText(/am/i)).toBeNull();
-    // });
 
     it("should use value when opening", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
@@ -1914,6 +1904,56 @@ describe("DateTime", () => {
           expect(element).toHaveValue("01/16/2019");
 
           expect(handleChange).toHaveBeenCalledTimes(0);
+        });
+
+        it("should block/unblock click based on isValidDate", () => {
+          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+          const handleChange = jest.fn();
+          function isValidDate(date: Date) {
+            if (isSameDay(date, new Date(2019, 0, 16))) {
+              return false;
+            }
+
+            return true;
+          }
+
+          // Arrange
+          const { getByLabelText } = render(
+            <>
+              <label htmlFor="some-id">Some Field</label>
+              <DateTime
+                id="some-id"
+                dateFormat={FULL_DATE_FORMAT}
+                timeFormat={false}
+                onChange={handleChange}
+                isValidDate={isValidDate}
+              />
+            </>
+          );
+
+          const element = getByLabelText("Some Field");
+          expect(element).toHaveValue("");
+          expect(queryByTestId("picker-wrapper")).toBeNull();
+
+          // Act
+          // Open picker
+          fireEvent.click(element);
+
+          // Assert
+          expect(getByTestId("day-picker")).toBeVisible();
+
+          // Click a date (disabled)
+          fireEvent.click(getByText("16"));
+
+          expect(element).toHaveValue("");
+          expect(handleChange).toHaveBeenCalledTimes(0);
+
+          // Click another date (not disabled)
+          fireEvent.click(getByText("17"));
+
+          expect(element).toHaveValue("01/17/2019");
+          expect(handleChange).toHaveBeenCalledTimes(1);
         });
 
         it("should trigger onChange Date when picking a first date", () => {
