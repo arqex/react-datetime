@@ -41,19 +41,19 @@ function parseString(value) {
 
 export function SimpleExamples() {
   function UncontrolledDateTime(props) {
-    const [value, setValue] = useState<any>("");
+    const [value, setValue] = useState<any>(props.value);
 
     return (
       <div>
         <strong>Props:</strong> {JSON.stringify(props)}
         <div>
           <DateTime
+            {...props}
             value={value}
             onChange={newVal => {
               console.log({ newVal });
               setValue(newVal);
             }}
-            {...props}
           />
         </div>
         <br />
@@ -95,7 +95,7 @@ export function SimpleExamples() {
 
 export function InlineExamples() {
   function UncontrolledDateTime({ label, ...props }) {
-    const [value, setValue] = useState<any>("");
+    const [value, setValue] = useState<any>(props.value);
 
     return (
       <div className="col-sm-auto mb-3">
@@ -103,12 +103,12 @@ export function InlineExamples() {
           <strong>{label}</strong> - {props.dateFormat} {props.timeFormat}
         </div>
         <DateTime
+          {...props}
           value={value}
           onChange={newVal => {
             console.log({ newVal });
             setValue(newVal);
           }}
-          {...props}
         />
       </div>
     );
@@ -132,6 +132,7 @@ export function InlineExamples() {
             shouldHideInput
             dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
             timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            value={new Date(2019, 7, 2, 11, 25, 24, 123)}
           />
 
           <UncontrolledDateTime
@@ -139,6 +140,7 @@ export function InlineExamples() {
             shouldHideInput
             dateFormat={`${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`}
             timeFormat={false}
+            value={new Date(2019, 7, 2, 11, 25, 24, 123)}
           />
 
           <UncontrolledDateTime
@@ -146,6 +148,7 @@ export function InlineExamples() {
             shouldHideInput
             dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
             timeFormat={false}
+            value={new Date(2019, 7, 2, 11, 25, 24, 123)}
           />
 
           <UncontrolledDateTime
@@ -153,13 +156,15 @@ export function InlineExamples() {
             shouldHideInput
             dateFormat={`${FORMATS.YEAR}`}
             timeFormat={false}
+            value={new Date(2019, 7, 2, 11, 25, 24, 123)}
           />
 
           <UncontrolledDateTime
             label="Time"
             shouldHideInput
             dateFormat={false}
-            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`}
+            timeFormat={`${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`}
+            value={new Date(2019, 7, 2, 11, 25, 24, 123)}
           />
         </div>
       </div>
