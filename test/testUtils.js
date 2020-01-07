@@ -40,7 +40,7 @@ module.exports = {
 	},
 
 	clickNthYear: (datetime, n) => {
-    return _simulateClickOnElement(datetime.find('.rdtYear').at(n));
+		return _simulateClickOnElement(datetime.find('.rdtYear').at(n));
 	},
 
 	clickClassItem: (datetime, cn, n) => {

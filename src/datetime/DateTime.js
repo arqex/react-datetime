@@ -1,5 +1,3 @@
-'use strict';
-
 var PropTypes = require('prop-types'),
 	createClass = require('create-react-class'),
 	moment = require('moment'),
@@ -97,11 +95,7 @@ var Datetime = createClass({
 			currentView: props.initialViewMode || this.getInitialView( this.getFormat('date') ),
 			viewDate: this.getInitialViewDate( props.initialViewDate, selectedDate, inputFormat ),
 			selectedDate: selectedDate && selectedDate.isValid() ? selectedDate : undefined,
-			inputValue: props.inputProps.value || 
-				selectedDate && selectedDate.isValid() && selectedDate.format( inputFormat ) ||
-				props.value && typeof props.value === 'string' && props.value ||
-				props.initialValue && typeof props.initialValue === 'string' && props.initialValue ||
-				''
+			inputValue: this.getInitialInputValue( props, selectedDate, inputFormat )
 		};
 	},
 	
@@ -470,6 +464,22 @@ var Datetime = createClass({
 		if ( this.props.value === undefined ) return this.state.selectedDate;
 		var selectedDate = this.parseDate( this.props.value, this.getFormat('datetime') );
 		return selectedDate && selectedDate.isValid() ? selectedDate : false;
+	},
+
+	getInitialInputValue: function( props, selectedDate, inputFormat ) {
+		if ( props.inputProps.value )
+			return props.inputProps.value;
+		
+		if ( selectedDate && selectedDate.isValid() )
+			return selectedDate.format( inputFormat );
+		
+		if ( props.value && typeof props.value === 'string' )
+			return props.value;
+		
+		if ( props.initialValue && typeof props.initialValue === 'string' )
+			return props.initialValue;
+		
+		return '';
 	},
 
 	getInputValue: function() {

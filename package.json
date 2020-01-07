@@ -8,10 +8,9 @@
     "url": "https://github.com/YouCanBookMe/react-datetime"
   },
   "main": "./dist/react-datetime.cjs.js",
-  "typings": "./DateTime.d.ts",
+  "typings": "./src/datetime/DateTime.d.ts",
   "files": [
     "DateTime.js",
-    "DateTime.d.ts",
     "src",
     "css",
     "dist"
@@ -172,6 +171,18 @@
     "watchPlugins": [
       "jest-watch-typeahead/filename",
       "jest-watch-typeahead/testname"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ]
   }
 }

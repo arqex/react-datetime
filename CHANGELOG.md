@@ -14,6 +14,8 @@ Changelog
 * Fixes error clicking on days from the previous or next month in the days view
 * Fixes month, year and time views for locales that doesn't use gregorian numbers
 * Adds a playground to make simpler to try out the library by `npm run playground`
+* Not depending on gulp to create the build anymore
+* Updated most of the dependencies
 
 ## 2.16.2
 * Turns moment timezone peer dependency in a runtime error when missing using `displayTimezone`.

@@ -1,11 +1,15 @@
-/* global it, xit, describe, expect, jasmine, done, jest */
+/* global it, xit, describe, expect, done, jest */
 
 import React from 'react'; 
 import moment from 'moment';
+import 'moment/locale/nl';
+import 'moment/locale/sv';
 import _momentTimezone from 'moment-timezone'; // eslint-disable-line
 import utils from './testUtils';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+
+moment.locale('en');
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -402,7 +406,7 @@ describe('Datetime', () => {
 			const component = utils.createDatetime({ renderInput });
 
 			expect(component.find('button.custom-open').length).toEqual(1);
-            expect(utils.isOpen(component)).toBeFalsy();
+			expect(utils.isOpen(component)).toBeFalsy();
 			utils.clickOnElement(component.find('button.custom-open'));
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
@@ -548,7 +552,7 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
-    it('closeOnClickOutside=false', () => {
+		it('closeOnClickOutside=false', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ value: date, closeOnClickOutside: true });
 
@@ -737,7 +741,7 @@ describe('Datetime', () => {
 
 		it('isValidDate -> disable years', () => {
 			const component = utils.createDatetime({ initialViewMode: 'years', isValidDate: (current) =>
-				current.isBefore(moment('2016-01-01', 'YYYY-MM-DD'))
+				current.isBefore(moment('2026-01-01', 'YYYY-MM-DD'))
 			});
 
 			expect(utils.getNthYear(component, 0).hasClass('rdtDisabled')).toEqual(false);
@@ -922,13 +926,17 @@ describe('Datetime', () => {
 			});
 
 			it('locale -> picker should change language (initialViewMode=days)', () => {
-				const component = utils.createDatetime({ initialViewMode: 'days', locale: 'nl' });
+				const component = utils.createDatetime({ initialViewMode: 'days', locale: 'en' });
 				const	weekdaysBefore = component.find('.rdtDays .dow').map( element =>
 					element.text()
 				);
 
-				component.setProps({ locale: 'sv' });
+				component.setProps({ locale: 'nl' });
 				
+				// I don't know why the component doesn't get updated automatically in this case
+				// In the next test case it's working ok without using update()
+				component.update();
+
 				const weekdaysAfter = component.find('.rdtDays .dow').map((element) =>
 					element.text()
 				);
@@ -1313,7 +1321,7 @@ describe('Datetime', () => {
 
 		it('TZ value from local moment', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        displayTimeZone = 'America/New_York',
+				displayTimeZone = 'America/New_York',
 				momentDate = moment(date),
 				momentDateTZ = moment.tz(date, displayTimeZone),
 				strDateTZ = momentDateTZ.format('L') + ' ' + momentDateTZ.format('LT'),

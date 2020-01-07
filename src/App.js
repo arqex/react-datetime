@@ -1,6 +1,8 @@
 // This file is the playground used for development purposes (npm run playground)
 import React from 'react';
 import moment from 'moment';
+import 'moment/locale/nl';
+import 'moment/locale/sv';
 import DateTime from './datetime/DateTime';
 
 class App extends React.Component {
@@ -8,14 +10,17 @@ class App extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			locale: 'en'
+			locale: 'nl'
 		};
 	}
 	
 	render() {
 		return (
 			<div className="App">
-				<DateTime initialValue={moment('2015-04-19')} locale={ this.state.locale } />
+				<DateTime
+					initialViewMode="days"
+					locale={ this.state.locale }
+					isValidDate={ current => current.isBefore( moment('2026-01-01', 'YYYY-MM-DD') ) } />
 			</div>
 		);
 	}
@@ -26,8 +31,8 @@ class App extends React.Component {
 
 	changeLocale() {
 		setTimeout(() => {
-			this.setState({ locale: 'nl' });
-		}, 1000);
+			this.setState({ locale: 'sv' });
+		}, 5000);
 	}
 }
 
