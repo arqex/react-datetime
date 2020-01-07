@@ -1,5 +1,3 @@
-'use strict';
-
 var React = require('react'),
 	createClass = require('create-react-class')
 ;
@@ -28,7 +26,7 @@ var DateTimePickerMonths = createClass({
 			classes, props, currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
 			// Date is irrelevant because we're only interested in month
 			irrelevantDate = 1
-			;
+		;
 
 		while (i < 12) {
 			classes = 'rdtMonth';

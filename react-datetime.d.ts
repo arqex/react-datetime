@@ -188,7 +188,7 @@ declare module ReactDatetime {
   }
 }
 
-declare module "react-datetime" {
-  var ReactDatetime: ReactDatetime.DatetimeComponent;
-  export = ReactDatetime;
+declare module 'react-datetime' {
+  var DateTime: ReactDatetime.DatetimeComponent;
+  export = DateTime;
 }

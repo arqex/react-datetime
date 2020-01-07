@@ -4,6 +4,34 @@ var React = require('react'),
 
 var DateTimePickerTime = createClass({
 	getInitialState: function() {
+		this.timeConstraints = {
+			hours: {
+				min: 0,
+				max: 23,
+				step: 1
+			},
+			minutes: {
+				min: 0,
+				max: 59,
+				step: 1
+			},
+			seconds: {
+				min: 0,
+				max: 59,
+				step: 1
+			},
+			milliseconds: {
+				min: 0,
+				max: 999,
+				step: 1
+			}
+		};
+
+		let me = this;
+		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
+			Object.assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
+		});
+
 		return this.calculateState( this.props );
 	},
 
@@ -105,38 +133,8 @@ var DateTimePickerTime = createClass({
 		);
 	},
 
-	componentWillMount: function() {
-		var me = this;
-		me.timeConstraints = {
-			hours: {
-				min: 0,
-				max: 23,
-				step: 1
-			},
-			minutes: {
-				min: 0,
-				max: 59,
-				step: 1
-			},
-			seconds: {
-				min: 0,
-				max: 59,
-				step: 1
-			},
-			milliseconds: {
-				min: 0,
-				max: 999,
-				step: 1
-			}
-		};
-		['hours', 'minutes', 'seconds', 'milliseconds'].forEach( function( type ) {
-			Object.assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
-		});
+	componentDidMount: function() {
 		this.setState( this.calculateState( this.props ) );
-	},
-
-	componentWillReceiveProps: function( nextProps ) {
-		this.setState( this.calculateState( nextProps ) );
 	},
 
 	updateMilli: function( e ) {
