@@ -1,6 +1,154 @@
-var React = require('react'),
-	createClass = require('create-react-class')
-;
+import React from 'react';
+import createClass from 'create-react-class';
+
+const timeConstraints = {
+	hours: {
+		min: 0,
+		max: 23,
+		step: 1
+	},
+	minutes: {
+		min: 0,
+		max: 59,
+		step: 1
+	},
+	seconds: {
+		min: 0,
+		max: 59,
+		step: 1
+	},
+	milliseconds: {
+		min: 0,
+		max: 999,
+		step: 1
+	}
+};
+
+export default class TimeView extends React.Component {
+	constructor( props ) {
+		super( props );
+
+		this.constraints = this.createConstraints(props);
+	}
+
+	createConstraints( props ) {
+		let constraints = {};
+
+		Object.keys( timeConstraints ).forEach( type => {
+			constraints[ type ] = { ...timeConstraints[type], ...(props.timeConstraints[type] || {}) };
+		});
+
+		return constraints;
+	}
+
+	render() {
+		let items = [];
+
+		const timeParts = this.getTimeParts( this.props.selectedDate || this.props.viewDate );
+		
+		this.getCounters().forEach( (c, i) => {
+			if ( i ) {
+				items.push(
+					<div key={ `sep${i}` } className="rdtCounterSeparator">:</div>
+				);
+			}
+
+			items.push( this.renderCounter(c, timeParts[c]) );
+		});
+
+		items.push( this.renderDayPart() );
+
+		return (
+			<div className="rdtTime">
+				<table>
+					{ this.renderHeader() }
+					<tbody>
+						<div className="rdtCounters">
+							{ items }
+						</div>
+					</tbody>
+				</table>
+			</div>
+		);
+	}
+
+	renderCounter( type, value ) {
+		if ( type === 'hours' && this.isAMPM() ) {
+			value = ( value - 1 ) % 12 + 1;
+
+			if ( value === 0 ) {
+				value = 12;
+			}
+		}
+		return (
+			<div key={ type } classNAme="rdtCounter">
+				<span className="rdt" onMouseDown={ () => this.onStartClicking('increase', type)}>▲</span>
+				<div className="rdtCount">{ value }</div>
+				<span className="rdt" onMouseDown={ () => this.onStartClicking('decrease', type)}>▼</span>
+			</div>
+		);
+	}
+
+	renderDayPart() {
+		return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
+			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▲' ),
+			React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
+			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours') }, '▼' )
+		]);
+	}
+
+	getCounters() {
+		let counters = [];
+		let format = this.props.format;
+		
+		if ( format.toLowerCase().indexOf('h') !== -1 ) {
+			counters.push('hours');
+			if ( format.indexOf('m') !== -1 ) {
+				counters.push('minutes');
+				if ( format.indexOf('s') !== -1 ) {
+					counters.push('seconds');
+					if ( format.indexOf('S') !== -1 ) {
+						counters.push('milliseconds');
+					}
+				}
+			}
+		}
+
+		if ( this.isAMPM() ) {
+			counters.push('ampm');
+		}
+
+		return counters;
+	}
+
+	isAMPM() {
+		return this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1;
+	}
+
+	getTimeParts( date ) {
+		let ampm = false;
+		var hours = date.hours();
+		let timeFormat = this.props.timeFormat;
+
+		if ( this.isAMPM() ) {
+			let isCaps = timeFormat.indexOf(' A') !== -1;
+			if ( hours < 12 ) {
+				ampm = isCaps ? 'AM' : 'am';
+			}
+			else {
+				ampm = isCaps ? 'PM': 'pm';
+			}
+		}
+
+		return {
+			hours: this.pad( 'hours', hours ),
+			minutes: this.pad( 'minutes', date.minutes() ),
+			seconds: this.pad( 'seconds', date.seconds() ),
+			milliseconds: this.pad('milliseconds', date.milliseconds() ),
+			ampm
+		};
+	}
+}
 
 var DateTimePickerTime = createClass({
 	getInitialState: function() {
