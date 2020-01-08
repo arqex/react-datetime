@@ -1,13 +1,11 @@
-var PropTypes = require('prop-types'),
-	createClass = require('create-react-class'),
-	moment = require('moment'),
-	React = require('react'),
-	DaysView = require('./DaysView'),
-	MonthsView = require('./MonthsView'),
-	YearsView = require('./YearsView'),
-	TimeView = require('./TimeView'),
-	onClickOutside = require('react-onclickoutside').default
-;
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import React from 'react';
+import DaysView from './DaysView';
+import MonthsView from './MonthsView';
+import YearsView from './YearsView';
+import TimeView from './TimeView';
+import onClickOutside from 'react-onclickoutside';
 
 var viewModes = {
 	YEARS: 'years',
@@ -19,9 +17,9 @@ var viewModes = {
 var TYPES = PropTypes;
 var nofn = function () {};
 var datetype = TYPES.oneOfType([ TYPES.instanceOf(moment), TYPES.instanceOf(Date), TYPES.string ]);
-var Datetime = createClass({
-	displayName: 'DateTime',
-	propTypes: {
+
+export default class Datetime extends React.Component {
+	static propTypes = {
 		value: datetype,
 		initialValue: datetype,
 		initialViewDate: datetype,
@@ -52,39 +50,131 @@ var Datetime = createClass({
 		renderDay: TYPES.func,
 		renderMonth: TYPES.func,
 		renderYear: TYPES.func,
-	},
+	}
 
-	getDefaultProps: function () {
-		return {
-			onOpen: nofn,
-			onClose: nofn,
-			onCalendarOpen: nofn,
-			onCalendarClose: nofn,
-			onChange: nofn,
-			onNavigate: nofn,
-			onBeforeNavigate: function(next) { return next; }, 
-			onNavigateBack: nofn,
-			onNavigateForward: nofn,
-			dateFormat: true,
-			timeFormat: true,
-			utc: false,
-			className: '',
-			input: true,
-			inputProps: {},
-			timeConstraints: {},
-			isValidDate: function() { return true; },
-			strictParsing: true,
-			closeOnSelect: false,
-			closeOnTab: true,
-			closeOnClickOutside: true,
-			renderView: function( viewType, renderCalendar ) {
-				return renderCalendar();
-			}
+	static defaultProps = {
+		onOpen: nofn,
+		onClose: nofn,
+		onCalendarOpen: nofn,
+		onCalendarClose: nofn,
+		onChange: nofn,
+		onNavigate: nofn,
+		onBeforeNavigate: function(next) { return next; }, 
+		onNavigateBack: nofn,
+		onNavigateForward: nofn,
+		dateFormat: true,
+		timeFormat: true,
+		utc: false,
+		className: '',
+		input: true,
+		inputProps: {},
+		timeConstraints: {},
+		isValidDate: function() { return true; },
+		strictParsing: true,
+		closeOnSelect: false,
+		closeOnTab: true,
+		closeOnClickOutside: true
+	}
+
+	// Make moment accessible through the Datetime class
+	static moment = moment;
+
+	constructor( props ) {
+		super( props );
+		this.state = this.getInitialState( props );
+	}
+
+	render() {
+		var cn = this.getClassName();
+
+		return (
+			<ClickableWrapper className={ cn } onClickOut={ this._handleClickOutside }>
+				{ this.renderInput() }
+				<div className="rdtPicker">
+					{ this.renderView( this.state.currentView, this._renderCalendar ) }
+				</div>
+			</ClickableWrapper>
+		);
+	}
+
+	renderInput() {
+		if ( !this.props.input ) return;
+
+		const finalInputProps = {
+			type: 'text',
+			className: 'form-control',
+			value: this.getInputValue(),
+			...this.props.inputProps,
+			onFocus: this._onInputFocus,
+			onChange: this._onInputChange,
+			onKeyDown: this._onInputKeyDown
 		};
-	},
 
-	getInitialState: function() {
-		var props = this.props;
+		if ( this.props.renderInput ) {   
+			return (
+				<div>
+					{ this.props.renderInput( finalInputProps, this._openCalendar, this._closeCalendar ) }
+				</div>
+			);
+		}
+
+		return (
+			<input { ...finalInputProps } />
+		);
+	}
+
+	renderView( currentView, renderer ) {
+		if ( this.props.renderView ) {
+			return this.props.renderView( currentView, () => renderer(currentView) );
+		}
+		return renderer( this.state.currentView );
+	}
+
+	_renderCalendar = currentView => {
+		const props = this.props;
+		const state = this.state;
+
+		let viewProps = {
+			viewDate: state.viewDate.clone(),
+			selectedDate: this.getSelectedDate(),
+			isValidDate: props.isValidDate,
+			updateDate: this._updateDate,
+			navigate: this._navigate,
+			showView: this._showView
+		};
+
+		// Probably updateOn, updateSelectedDate and setDate can be merged in the same method
+		// that would update viewDate or selectedDate depending on the view and the dateFormat
+		switch ( currentView ) {
+			case viewModes.YEARS:
+				// Used viewProps
+				// { viewDate, selectedDate, renderYear, isValidDate, navigate, showView, updateDate }
+				viewProps.renderYear = props.renderYear;
+				return <YearsView {...viewProps } />;
+			
+			case viewModes.MONTHS:
+				// { viewDate, selectedDate, renderMonth, isValidDate, navigate, showView, updateDate }
+				viewProps.renderMonth = props.renderMonth;
+				return <MonthsView {...viewProps} />;
+			
+			case viewModes.DAYS:
+				// { viewDate, selectedDate, renderDay, isValidDate, navigate, showView, updateDate, timeFormat 
+				viewProps.renderDay = props.renderDay;
+				viewProps.timeFormat = this.getFormat('time');
+				return <DaysView {...viewProps} />;
+			
+			default:
+				// { viewDate, selectedDate, timeFormat, dateFormat, timeConstraints, setTime, showView }
+				viewProps.dateFormat = this.getFormat('date');
+				viewProps.timeFormat = this.getFormat('time');
+				viewProps.timeConstraints = props.timeConstraints;
+				viewProps.setTime = this._setTime;
+				return <TimeView {...viewProps} />;
+		}
+	}
+
+	getInitialState( p ) {
+		var props = p || this.props;
 		var inputFormat = this.getFormat('datetime');
 		var selectedDate = this.parseDate( props.value || props.initialValue, inputFormat );
 
@@ -97,9 +187,9 @@ var Datetime = createClass({
 			selectedDate: selectedDate && selectedDate.isValid() ? selectedDate : undefined,
 			inputValue: this.getInitialInputValue( props, selectedDate, inputFormat )
 		};
-	},
+	}
 	
-	getInitialViewDate: function( propDate, selectedDate, format ) {
+	getInitialViewDate( propDate, selectedDate, format ) {
 		var viewDate;
 		if ( propDate ) {
 			viewDate = this.parseDate( propDate, format );
@@ -114,20 +204,20 @@ var Datetime = createClass({
 			return selectedDate.clone();
 		}
 		return this.getInitialDate();
-	},
+	}
 
-	getInitialDate: function() {
+	getInitialDate() {
 		var m = this.localMoment();
 		m.hour(0).minute(0).second(0).millisecond(0);
 		return m;
-	},
+	}
 
-	getInitialView: function( dateFormat ) {
+	getInitialView( dateFormat ) {
 		if ( !dateFormat ) return viewModes.TIME;
 		return this.getUpdateOn( dateFormat );
-	},
+	}
 
-	parseDate: function (date, dateFormat) {
+	parseDate(date, dateFormat) {
 		var parsedDate;
 
 		if (date && typeof date === 'string')
@@ -139,261 +229,9 @@ var Datetime = createClass({
 			parsedDate = null;
 
 		return parsedDate;
-	},
+	}
 
-	isOpen: function() {
-		var open = !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
-		return open;
-		// return !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
-	},
-
-	getUpdateOn: function( dateFormat ) {
-		if ( this.props.updateOnView ) {
-			return this.props.updateOnView;
-		}
-
-		if ( dateFormat.match(/[lLD]/) ) {
-			return viewModes.DAYS;
-		}
-
-		if ( dateFormat.indexOf('M') !== -1 ) {
-			return viewModes.MONTHS;
-		}
-
-		if ( dateFormat.indexOf('Y') !== -1 ) {
-			return viewModes.YEARS;
-		}
-
-		return viewModes.DAYS;
-	},
-
-	getLocaleData: function( props ) {
-		var p = props || this.props;
-		return this.localMoment( p.value || p.defaultValue || new Date() ).localeData();
-	},
-
-	getDateFormat: function( locale ) {
-		var format = this.props.dateFormat;
-		if ( format === true ) return locale.longDateFormat('L');
-		if ( format ) return format;
-		return '';
-	},
-
-	getTimeFormat: function( locale ) {
-		var format = this.props.timeFormat;
-		if ( format === true ) return locale.longDateFormat('LT');
-		if ( format ) return format;
-		return '';
-	},
-
-	getFormat: function( type ) {
-		if ( type === 'date' ) {
-			return this.getDateFormat( this.getLocaleData() );
-		}
-		else if ( type === 'time' ) {
-			return this.getTimeFormat( this.getLocaleData() );
-		}
-		else if ( type === 'datetime' ) {
-			var locale = this.getLocaleData();
-			var dateFormat = this.getDateFormat( locale );
-			var timeFormat = this.getTimeFormat( locale );
-			return dateFormat && timeFormat ? dateFormat + ' ' + timeFormat : (dateFormat || timeFormat );
-		}
-	},
-
-	onInputChange: function( e ) {
-		var value = e.target === null ? e : e.target.value,
-			localMoment = this.localMoment( value, this.getFormat('datetime') ),
-			update = { inputValue: value }
-			;
-
-		if ( localMoment.isValid() ) {
-			update.selectedDate = localMoment;
-			update.viewDate = localMoment.clone().startOf('month');
-		} else {
-			update.selectedDate = null;
-		}
-
-		return this.setState( update, function() {
-			return this.props.onChange( localMoment.isValid() ? localMoment : this.state.inputValue );
-		});
-	},
-
-	onInputKey: function( e ) {
-		if ( e.which === 9 && this.props.closeOnTab ) {
-			this.closeCalendar();
-		}
-	},
-
-	showView: function( view, date ) {
-		var me = this;
-		
-		// this is a function bound to a click so we need a closure
-		return function() {
-			var nextView = me.props.onBeforeNavigate( view, me.state.currentView, (date || me.state.viewDate).clone() );
-
-			if ( nextView && me.state.currentView !== nextView ) {
-				me.props.onNavigate( nextView );
-				me.setState({ currentView: nextView });
-			}
-		};
-	},
-
-	updateTime: function( op, amount, type, toSelected ) {
-		var update = {},
-			date = toSelected ? 'selectedDate' : 'viewDate';
-
-		update[ date ] = this.state[ date ].clone()[ op ]( amount, type );
-
-		this.setState( update );
-	},
-
-	viewToMethod: {days: 'date', months: 'month', years: 'year'},
-	nextView: { days: 'time', months: 'days', years: 'months'},
-	updateDate: function( e ) {
-		var state = this.state;
-		var currentView = state.currentView;
-		var updateOnView = this.getUpdateOn( this.getFormat('date') );
-		var viewDate = this.state.viewDate.clone();
-
-		// Set the value into day/month/year
-		viewDate[ this.viewToMethod[currentView] ](
-			parseInt( e.target.getAttribute('data-value'), 10 )
-		);
-
-		// Need to set month and year will for days view (prev/next month)
-		if ( currentView === 'days' ) {
-			viewDate.month( parseInt( e.target.getAttribute('data-month'), 10 ) );
-			viewDate.year( parseInt( e.target.getAttribute('data-year'), 10 ) );
-		}
-
-		var update = {viewDate: viewDate};
-		if ( currentView === updateOnView ) {
-			update.selectedDate = viewDate.clone();
-			update.inputValue = viewDate.format( this.getFormat('datetime') );
-
-			if ( this.props.open === undefined && this.props.input && this.props.closeOnSelect ) {
-				this.closeCalendar();
-			}
-
-			this.props.onChange( viewDate.clone() );
-		}
-		else {
-			this.showView( this.nextView[ currentView ], viewDate )();
-		}
-
-		this.setState( update );
-	},
-
-	navigate: function( modifier, unit ) {
-		var me  = this;
-
-		// this is a function bound to a click so we need a closure
-		return function() {
-			var viewDate = me.state.viewDate.clone();
-			var update = {
-				viewDate: viewDate
-			};
-	
-			// Subtracting is just adding negative time
-			viewDate.add( modifier, unit );
-			if ( modifier > 0 ) {
-				me.props.onNavigateForward( modifier, unit );
-			}
-			else {
-				me.props.onNavigateBack( -(modifier), unit );
-			}
-	
-			me.setState( update );
-		};
-	},
-
-	allowedSetTime: ['hours', 'minutes', 'seconds', 'milliseconds'],
-	setTime: function( type, value ) {
-		var state = this.state,
-			date = (state.selectedDate || state.viewDate).clone()
-		;
-		
-		date[ type ]( value );
-
-		if ( !this.props.value ) {
-			this.setState({
-				selectedDate: date,
-				viewDate: date.clone(),
-				inputValue: date.format( this.getFormat('datetime') )
-			});
-		}
-		this.props.onChange( date.clone() );
-	},
-
-	openCalendar: function( e ) {
-		if ( !this.isOpen() ) {
-			this.setState({ open: true }, function() {
-				this.props.onOpen( e );
-			});
-		}
-	},
-
-	closeCalendar: function() {
-		this.setState({ open: false }, function () {
-			this.props.onClose( this.state.selectedDate || this.state.inputValue );
-		});
-	},
-
-	handleClickOutside: function() {
-		var props = this.props;
-
-		if ( props.input && this.state.open && props.open === undefined && props.closeOnClickOutside ) {
-			this.closeCalendar();
-		}
-	},
-
-	localMoment: function( date, format, props ) {
-		props = props || this.props;
-		var m = null;
-
-		if (props.utc) {
-			m = moment.utc(date, format, props.strictParsing);
-		} else if (props.displayTimeZone) {
-			m = moment.tz(date, format, props.displayTimeZone);
-		} else {
-			m = moment(date, format, props.strictParsing);
-		}
-
-		if ( props.locale )
-			m.locale( props.locale );
-		return m;
-	},
-
-	checkTZ: function( props ) {
-		if ( props.displayTimeZone && !this.tzWarning && !moment.tz ) {
-			this.tzWarning = true;
-			this.log('displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.', 'error');
-		}
-	},
-
-	overrideEvent: function( handler, action ) {
-		if ( !this.overridenEvents ) {
-			this.overridenEvents = {};
-		}
-
-		if ( !this.overridenEvents[handler] ) {
-			var me = this;
-			this.overridenEvents[handler] = function( e ) {
-				var result;
-				if ( me.props.inputProps && me.props.inputProps[handler] ) {
-					result = me.props.inputProps[handler]( e );
-				}
-				if ( result !== false ) {
-					action( e );
-				}
-			};
-		}
-
-		return this.overridenEvents[handler];
-	},
-
-	getClassName: function() {
+	getClassName() {
 		var cn = 'rdt';
 		var props = this.props;
 		var propCn = props.className;
@@ -413,9 +251,200 @@ var Datetime = createClass({
 		}
 
 		return cn;
-	},
+	}
+	
+	isOpen() {
+		return !this.props.input || (this.props.open === undefined ? this.state.open : this.props.open);
+	}
 
-	componentDidUpdate: function( prevProps ) {
+	getUpdateOn( dateFormat ) {
+		if ( this.props.updateOnView ) {
+			return this.props.updateOnView;
+		}
+
+		if ( dateFormat.match(/[lLD]/) ) {
+			return viewModes.DAYS;
+		}
+
+		if ( dateFormat.indexOf('M') !== -1 ) {
+			return viewModes.MONTHS;
+		}
+
+		if ( dateFormat.indexOf('Y') !== -1 ) {
+			return viewModes.YEARS;
+		}
+
+		return viewModes.DAYS;
+	}
+
+	getLocaleData( props ) {
+		var p = props || this.props;
+		return this.localMoment( p.value || p.defaultValue || new Date() ).localeData();
+	}
+
+	getDateFormat( locale ) {
+		var format = this.props.dateFormat;
+		if ( format === true ) return locale.longDateFormat('L');
+		if ( format ) return format;
+		return '';
+	}
+
+	getTimeFormat( locale ) {
+		var format = this.props.timeFormat;
+		if ( format === true ) {
+			return locale.longDateFormat('LT');
+		}
+		return format || '';
+	}
+
+	getFormat( type ) {
+		if ( type === 'date' ) {
+			return this.getDateFormat( this.getLocaleData() );
+		}
+		else if ( type === 'time' ) {
+			return this.getTimeFormat( this.getLocaleData() );
+		}
+		
+		var locale = this.getLocaleData();
+		var dateFormat = this.getDateFormat( locale );
+		var timeFormat = this.getTimeFormat( locale );
+		return dateFormat && timeFormat ? dateFormat + ' ' + timeFormat : (dateFormat || timeFormat );
+	}
+
+	_showView = ( view, date ) => {
+		const d = ( date || this.state.viewDate ).clone();
+		const nextView = this.props.onBeforeNavigate( view, this.state.currentView, d );
+
+		if ( nextView && this.state.currentView !== nextView ) {
+			this.props.onNavigate( nextView );
+			this.setState({ currentView: nextView });
+		}
+	}
+
+	updateTime( op, amount, type, toSelected ) {
+		let update = {};
+		const date = toSelected ? 'selectedDate' : 'viewDate';
+
+		update[ date ] = this.state[ date ].clone()[ op ]( amount, type );
+
+		this.setState( update );
+	}
+
+	viewToMethod = {days: 'date', months: 'month', years: 'year'};
+	nextView = { days: 'time', months: 'days', years: 'months'};
+	_updateDate = e => {
+		let state = this.state;
+		let currentView = state.currentView;
+		let updateOnView = this.getUpdateOn( this.getFormat('date') );
+		let viewDate = this.state.viewDate.clone();
+
+		// Set the value into day/month/year
+		viewDate[ this.viewToMethod[currentView] ](
+			parseInt( e.target.getAttribute('data-value'), 10 )
+		);
+
+		// Need to set month and year will for days view (prev/next month)
+		if ( currentView === 'days' ) {
+			viewDate.month( parseInt( e.target.getAttribute('data-month'), 10 ) );
+			viewDate.year( parseInt( e.target.getAttribute('data-year'), 10 ) );
+		}
+
+		let update = {viewDate: viewDate};
+		if ( currentView === updateOnView ) {
+			update.selectedDate = viewDate.clone();
+			update.inputValue = viewDate.format( this.getFormat('datetime') );
+
+			if ( this.props.open === undefined && this.props.input && this.props.closeOnSelect ) {
+				this._closeCalendar();
+			}
+
+			this.props.onChange( viewDate.clone() );
+		}
+		else {
+			this._showView( this.nextView[ currentView ], viewDate );
+		}
+
+		this.setState( update );
+	}
+
+	_navigate = ( modifier, unit ) => {
+		let viewDate = this.state.viewDate.clone();
+		
+		// Subtracting is just adding negative time
+		viewDate.add( modifier, unit );
+
+		if ( modifier > 0 ) {
+			this.props.onNavigateForward( modifier, unit );
+		}
+		else {
+			this.props.onNavigateBack( -(modifier), unit );
+		}
+
+		this.setState({viewDate});
+	}
+	
+	_setTime = ( type, value ) => {
+		const state = this.state;
+		let date = (state.selectedDate || state.viewDate).clone();
+		
+		date[ type ]( value );
+
+		if ( !this.props.value ) {
+			this.setState({
+				selectedDate: date,
+				viewDate: date.clone(),
+				inputValue: date.format( this.getFormat('datetime') )
+			});
+		}
+
+		this.props.onChange( date.clone() );
+	}
+
+	_openCalendar = () => {
+		if ( this.isOpen() ) return;
+		this.setState({open: true}, this.props.onOpen );
+	}
+
+	_closeCalendar = () => {
+		if ( !this.isOpen() ) return;
+		this.setState({open: false}, () => {
+			 this.props.onClose( this.state.selectedDate || this.state.inputValue );
+		});
+	}
+
+	_handleClickOutside = () => {
+		var props = this.props;
+
+		if ( props.input && this.state.open && props.open === undefined && props.closeOnClickOutside ) {
+			this._closeCalendar();
+		}
+	}
+
+	localMoment( date, format, props ) {
+		props = props || this.props;
+		var m = null;
+
+		if (props.utc) {
+			m = moment.utc(date, format, props.strictParsing);
+		} else if (props.displayTimeZone) {
+			m = moment.tz(date, format, props.displayTimeZone);
+		} else {
+			m = moment(date, format, props.strictParsing);
+		}
+
+		if ( props.locale )
+			m.locale( props.locale );
+		return m;
+	}
+
+	checkTZ( props ) {
+		if ( props.displayTimeZone && !this.tzWarning && !moment.tz ) {
+			this.tzWarning = true;
+			this.log('displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.', 'error');
+		}
+	}
+
+	componentDidUpdate( prevProps ) {
 		if ( prevProps === this.props ) return;
 
 		var needsUpdate = false;
@@ -429,9 +458,9 @@ var Datetime = createClass({
 		}
 
 		this.checkTZ( this.props );
-	},
+	}
 
-	regenerateDates: function(props) {
+	regenerateDates(props) {
 		var viewDate = this.state.viewDate.clone();
 		var selectedDate = this.state.selectedDate && this.state.selectedDate.clone();
 
@@ -458,15 +487,15 @@ var Datetime = createClass({
 		}
 		
 		this.setState( update );
-	},
+	}
 
-	getSelectedDate: function() {
+	getSelectedDate() {
 		if ( this.props.value === undefined ) return this.state.selectedDate;
 		var selectedDate = this.parseDate( this.props.value, this.getFormat('datetime') );
 		return selectedDate && selectedDate.isValid() ? selectedDate : false;
-	},
+	}
 
-	getInitialInputValue: function( props, selectedDate, inputFormat ) {
+	getInitialInputValue( props, selectedDate, inputFormat ) {
 		if ( props.inputProps.value )
 			return props.inputProps.value;
 		
@@ -480,19 +509,20 @@ var Datetime = createClass({
 			return props.initialValue;
 		
 		return '';
-	},
+	}
 
-	getInputValue: function() {
+	getInputValue() {
 		var selectedDate = this.getSelectedDate();
 		return selectedDate ? selectedDate.format( this.getFormat('datetime') ) : this.state.inputValue;
-	},
+	}
 
 	/**
-	 * Set the date that is currently shown in the calendar. This is independent from the selected date and it's the one used to navigate through months or days in the calendar.
+	 * Set the date that is currently shown in the calendar.
+	 * This is independent from the selected date and it's the one used to navigate through months or days in the calendar.
 	 * @param dateType date
 	 * @public
 	 */
-	setViewDate: function( date ) {
+	setViewDate( date ) {
 		var me = this;
 		var logError = function() {
 			return me.log( 'Invalid date passed to the `setViewDate` method: ' + date );
@@ -510,17 +540,17 @@ var Datetime = createClass({
 
 		if ( !viewDate || !viewDate.isValid() ) return logError();
 		this.setState({ viewDate: viewDate });
-	},
+	}
 
 	/**
 	 * Set the view currently shown by the calendar. View modes shipped with react-datetime are 'years', 'months', 'days' and 'time'.
 	 * @param TYPES.string mode 
 	 */
-	setViewMode: function( mode ) {
+	setViewMode( mode ) {
 		this.showView( mode )();
-	},
+	}
 
-	log: function( message, method ) {
+	log( message, method ) {
 		var con = typeof window !== 'undefined' && window.console;
 		if ( !con ) return;
 
@@ -528,91 +558,58 @@ var Datetime = createClass({
 			method = 'warn';
 		}
 		con[ method ]( '***react-datetime:' + message );
-	},
+	}
 
-	render: function() {
-		var cn = this.getClassName();
-		var children = [];
+	_onInputFocus = e => {
+		if ( !this.callHandler( this.props.inputProps.onFocus, e ) ) return;
+		this._openCalendar();
+	}
 
-		if ( this.props.input ) {
-			var finalInputProps = Object.assign(
-				{ type: 'text', className: 'form-control', value: this.getInputValue() },
-				this.props.inputProps,
-				{
-					onFocus: this.overrideEvent( 'onOpen', this.openCalendar ),
-					onChange: this.overrideEvent( 'onChange', this.onInputChange ),
-					onKeyDown: this.overrideEvent( 'onKeyDown', this.onInputKey ),
-				}
-			);
+	_onInputChange = e => {
+		if ( !this.callHandler( this.props.inputProps.onChange, e ) ) return;
 
-			if ( this.props.renderInput ) {
-				children = [ React.createElement('div', { key: 'i' }, this.props.renderInput( finalInputProps, this.openCalendar, this.closeCalendar )) ];
-			} else {
-				children = [ React.createElement('input', Object.assign({ key: 'i' }, finalInputProps ))];
-			}
+		const value = e.target ? e.target.value : e;
+		const localMoment = this.localMoment( value, this.getFormat('datetime') );
+		let update = { inputValue: value };
+
+		if ( localMoment.isValid() ) {
+			update.selectedDate = localMoment;
+			update.viewDate = localMoment.clone().startOf('month');
+		}
+		else {
+			update.selectedDate = null;
 		}
 
-		return React.createElement( ClickableWrapper, {className: cn, onClickOut: this.handleClickOutside}, children.concat(
-			React.createElement( 'div',
-				{ key: 'dt', className: 'rdtPicker' },
-				this.props.renderView(  this.state.currentView, this.renderCalendar.bind( this, this.state.currentView ) )
-			)
-		));
-	},
+		this.setState( update, () => {
+			this.props.onChange( localMoment.isValid() ? localMoment : this.state.inputValue );
+		});
+	}
 
-	renderCalendar: function( currentView ) {
-		var p = this.props;
-		var state = this.state;
+	_onInputKeyDown = e => {
+		if ( !this.callHandler( this.props.inputProps.onKeyDown, e ) ) return;
 
-		var props = {
-			viewDate: state.viewDate.clone(),
-			selectedDate: this.getSelectedDate(),
-			isValidDate: p.isValidDate,
-			updateDate: this.updateDate,
-			navigate: this.navigate,
-			showView: this.showView
-		};
-
-		// I think updateOn, updateSelectedDate and setDate can be merged in the same method
-		// that would update viewDate or selectedDate depending on the view and the dateFormat
-		if ( currentView === viewModes.YEARS ) {
-			// Used props
-			// { viewDate, selectedDate, renderYear, isValidDate, navigate, showView, updateDate }
-			props.renderYear = p.renderYear;
-			return React.createElement( YearsView, props );
-		}
-		else if ( currentView === viewModes.MONTHS ) {
-			// { viewDate, selectedDate, renderMonth, isValidDate, navigate, showView, updateDate }
-			props.renderMonth = p.renderMonth;
-			return React.createElement( MonthsView, props );
-		}
-		else if ( currentView === viewModes.DAYS ) {
-			// { viewDate, selectedDate, renderDay, isValidDate, navigate, showView, updateDate, timeFormat }
-			props.renderDay = p.renderDay;
-			props.timeFormat = this.getFormat('time');
-			return React.createElement( DaysView, props );
-		}
-		else if ( currentView === viewModes.TIME ) {
-			// { viewDate, selectedDate, timeFormat, dateFormat, timeConstraints, setTime, showView }
-			props.dateFormat = this.getFormat('date');
-			props.timeFormat = this.getFormat('time');
-			props.timeConstraints = p.timeConstraints;
-			props.setTime = this.setTime;
-			return React.createElement( TimeView, props );
+		if ( e.which === 9 && this.props.closeOnTab ) {
+			this._closeCalendar();
 		}
 	}
-});
 
-var ClickableWrapper = onClickOutside( createClass({
-	render: function() {
-		return React.createElement( 'div', { className: this.props.className }, this.props.children );
-	},
-	handleClickOutside: function( e ) {
+	callHandler( method, e ) {
+		if ( !method ) return true;
+		return method(e) !== false;
+	}
+}
+
+class ClickOutBase extends React.Component {
+	render() {
+		return (
+			<div className={ this.props.className }>
+				{ this.props.children }
+			</div>
+		);
+	}
+	handleClickOutside(e) {
 		this.props.onClickOut( e );
 	}
-}));
+}
 
-// Make moment accessible through the Datetime class
-Datetime.moment = moment;
-
-module.exports = Datetime;
+const ClickableWrapper = onClickOutside( ClickOutBase );

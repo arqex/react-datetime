@@ -1,9 +1,15 @@
 // This file is the playground used for development purposes (npm run playground)
 import React from 'react';
-import moment from 'moment';
-import 'moment/locale/nl';
-import 'moment/locale/sv';
 import DateTime from './datetime/DateTime';
+
+function renderView( viewType, renderDefault ) {
+	return (
+		<div className="customView">
+			<span className="viewType">{ viewType }</span>
+			{ renderDefault() }
+		</div>
+	);
+}
 
 class App extends React.Component {
 
@@ -17,10 +23,8 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
-				<DateTime
-					initialViewMode="days"
-					locale={ this.state.locale }
-					isValidDate={ current => current.isBefore( moment('2026-01-01', 'YYYY-MM-DD') ) } />
+				<DateTime renderView={ renderView }
+					initialViewMode="years" />
 			</div>
 		);
 	}
