@@ -3,6 +3,64 @@ var React = require('react'),
 	moment = require('moment')
 	;
 
+class DaysView extends React.Component {
+	render() {
+		const date = this.props.viewDate;
+		const locale = date.localeData();
+
+		return (
+			<div className="rdtDays">
+				<table>
+					<thead>
+						{ this.renderNavigation( date, locale ) }
+						{ this.renderDayHeaders( locale ) }
+					</thead>
+					<tbody>
+						{ this.renderDays( date ) }
+					</tbody>
+					{ this.renderFooter() }
+				</table>
+			</div>
+		);
+	}
+
+	renderNavigation( date, locale ) {
+		return (
+			<tr>
+				<th className="rdtPrev" onClick={ () => this.props.navigate( -1, 'months' ) }>
+					<span>‹</span>
+				</th>
+				<th className="rdtSwitch" onClick={ () => this.props.showView( 'months' ) } colSpan="5" data-value={ this.props.viewDate.month() }>
+					{ locale.months( date ) + ' ' + date.year() }
+				</th>
+				<th className="rdtNext" onClick={ () => this.props.navigate( 1, 'months' ) }>
+					<span>›</span>
+				</th>
+			</tr>
+		);
+	}
+
+	renderDayHeaders( locale ) {
+		let dayItems = this.getDaysOfWeek( locale ).map( (day, index) => (
+			<th key={ day + index } className="dow">{ day }</th>
+		));
+
+		return (
+			<tr>
+				{ dayItems }
+			</tr>
+		);
+	}
+
+	renderDays( date ) {
+
+	}
+
+	renderFooter( date ) {
+
+	}
+}
+
 var DateTimePickerDays = createClass({
 	render: function() {
 		var footer = this.renderFooter(),
