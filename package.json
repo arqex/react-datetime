@@ -101,10 +101,10 @@
   "devDependencies": {
     "@babel/preset-env": "^7.7.5",
     "@storybook/addon-actions": "5.3.0-rc.12",
-    "@storybook/addon-docs": "5.3.0-rc.10",
+    "@storybook/addon-docs": "5.3.0-rc.12",
     "@storybook/addon-info": "5.3.0-rc.12",
-    "@storybook/addon-knobs": "5.3.0-rc.10",
-    "@storybook/addon-links": "5.3.0-rc.10",
+    "@storybook/addon-knobs": "5.3.0-rc.12",
+    "@storybook/addon-links": "5.3.0-rc.12",
     "@storybook/addons": "5.3.0-rc.12",
     "@storybook/preset-typescript": "^1.1.0",
     "@storybook/react": "5.3.0-rc.12",
