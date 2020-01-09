@@ -23,8 +23,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
-				<DateTime renderView={ renderView }
-					initialViewMode="years" />
+				<DateTime />
 			</div>
 		);
 	}
