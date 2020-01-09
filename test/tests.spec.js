@@ -740,8 +740,10 @@ describe('Datetime', () => {
 		});
 
 		it('isValidDate -> disable years', () => {
-			const component = utils.createDatetime({ initialViewMode: 'years', isValidDate: (current) =>
-				current.isBefore(moment('2026-01-01', 'YYYY-MM-DD'))
+			const component = utils.createDatetime({
+				initialViewMode: 'years',
+				value: moment('2025-01-01', 'YYYY-MM-DD'),
+				isValidDate: current =>	current.isBefore(moment('2026-01-01', 'YYYY-MM-DD'))
 			});
 
 			expect(utils.getNthYear(component, 0).hasClass('rdtDisabled')).toEqual(false);

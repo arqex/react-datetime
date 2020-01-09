@@ -1,97 +1,132 @@
-var React = require('react'),
-	createClass = require('create-react-class')
-;
+import React from 'react';
 
-var DateTimePickerYears = createClass({
-	render: function() {
-		var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
+export default class YearsView extends React.Component {
+	render() {
+		const viewYear = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
 
-		return React.createElement('div', { className: 'rdtYears' }, [
-			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: () => this.props.navigate( -10, 'years' )}, React.createElement('span', {}, '‹' )),
-				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: () => this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
-				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: () => this.props.navigate( 10, 'years' )}, React.createElement('span', {}, '›' ))
-			]))),
-			React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
-		]);
-	},
+		return (
+			<div className="rdtYears">
+				<table>
+					<thead>
+						{ this.renderHeader( viewYear ) }
+					</thead>
+				</table>
+				<table>
+					<tbody>
+						{ this.renderYears( viewYear ) }
+					</tbody>
+				</table>
+			</div>
+		);
+	}
 
-	renderYears: function( year ) {
-		var years = [],
-			i = -1,
-			rows = [],
-			renderer = this.props.renderYear || this.renderYear,
-			selectedDate = this.props.selectedDate,
-			isValid = this.props.isValidDate || this.alwaysValidDate,
-			classes, props, currentYear, isDisabled, noOfDaysInYear, daysInYear, validDay,
-			// Month and date are irrelevant here because
-			// we're only interested in the year
-			irrelevantMonth = 0,
-			irrelevantDate = 1
-			;
+	renderHeader( viewYear ) {
+		return (
+			<tr>
+				<th className="rdtPrev" onClick={ () => this.props.navigate( -10, 'years' ) }>
+					<span>‹</span>
+				</th>
+				<th className="rdtSwitch" onClick={ () => this.props.showView( 'years' ) }>
+					{ `${viewYear}-${viewYear + 9}` }
+				</th>
+				<th className="rdtNext" onClick={ () => this.props.navigate( 10, 'years' ) }>
+					<span>›</span>
+				</th>
+			</tr>
+		);
+	}
 
-		year--;
-		while (i < 11) {
-			classes = 'rdtYear';
-			currentYear = this.props.viewDate.clone().set(
-				{ year: year, month: irrelevantMonth, date: irrelevantDate } );
+	renderYears( viewYear ) {
+		// 12 years in 3 rows for every view
+		let rows = [ [], [], [] ];
+		let selectedYear = this.props.selectedDate && this.props.selectedDate.year();
 
-			// Not sure what 'rdtOld' is for, commenting out for now as it's not working properly
-			// if ( i === -1 | i === 10 )
-			// classes += ' rdtOld';
+		for ( let year = viewYear - 1; year < viewYear + 11; year++ ) {
+			let row = this.getRow( rows, year - viewYear );
 
-			noOfDaysInYear = currentYear.endOf( 'year' ).dayOfYear();
-			daysInYear = Array.from({ length: noOfDaysInYear }, function( e, i ) {
-				return i + 1;
-			});
-
-			validDay = daysInYear.find(function( d ) {
-				var day = currentYear.clone().dayOfYear( d );
-				return isValid( day );
-			});
-
-			isDisabled = ( validDay === undefined );
-
-			if ( isDisabled )
-				classes += ' rdtDisabled';
-
-			if ( selectedDate && selectedDate.year() === year )
-				classes += ' rdtActive';
-
-			props = {
-				key: year,
-				'data-value': year,
-				className: classes
-			};
-
-			if ( !isDisabled )
-				props.onClick = this.updateSelectedYear;
-
-			years.push( renderer( props, year, selectedDate && selectedDate.clone() ));
-
-			if ( years.length === 4 ) {
-				rows.push( React.createElement('tr', { key: i }, years ) );
-				years = [];
-			}
-
-			year++;
-			i++;
+			row.push(
+				this.renderYear( year, selectedYear )
+			);
 		}
 
-		return rows;
-	},
+		return rows.map( (years, i) => (
+			<tr key={i}>{ years }</tr>
+		));
+	}
 
-	updateSelectedYear: function( event ) {
+	renderYear( year, selectedYear ) {
+		let className = 'rdtYear';
+		let onClick;
+
+		if ( this.isDisabledYear( year ) ) {
+			className += ' rdtDisabled';
+		}
+		else {
+			onClick = this._updateSelectedYear;
+		}
+
+		if ( selectedYear === year ) {
+			className += ' rdtActive';
+		}
+
+		let props = {key: year, className, 'data-value': year, onClick };
+
+		if ( this.props.renderYear ) {
+			return this.props.renderYear(
+				props,
+				year,
+				this.props.selectedDate && this.props.selectedDate.clone()
+			);
+		}
+
+		return (
+			<td { ...props }>
+				{ year }
+			</td>
+		);
+	}
+
+	getRow( rows, year ) {
+		if ( year < 3 ) {
+			return rows[0];
+		}
+		if ( year < 7 ) {
+			return rows[1];
+		}
+
+		return rows[2];
+	}
+
+	disabledYearsCache = {};
+	isDisabledYear( year ) {
+		let cache = this.disabledYearsCache;
+		if ( cache[year] !== undefined ) {
+			return cache[year];
+		}
+
+		let isValidDate = this.props.isValidDate;
+
+		if ( !isValidDate ) {
+			// If no validator is set, all days are valid
+			return false;
+		}
+
+		// If one day in the year is valid, the year should be clickable
+		let date = this.props.viewDate.clone().set({year});
+		let day = date.endOf( 'year' ).dayOfYear() + 1;
+
+		while ( day-- > 1 ) {
+			if ( isValidDate( date.dayOfYear(day) ) ) {
+				cache[year] = false;
+				return false;
+			}
+		}
+
+		cache[year] = true;
+		return true;
+	}
+
+	_updateSelectedYear = event => {
 		this.props.updateDate( event );
-	},
-
-	renderYear: function( props, year ) {
-		return React.createElement('td',  props, year );
-	},
-
-	alwaysValidDate: function() {
-		return 1;
-	},
-});
-
-module.exports = DateTimePickerYears;
+	}
+}
