@@ -1,99 +1,136 @@
-var React = require('react'),
-	createClass = require('create-react-class')
-;
+import React from 'react';
 
-var DateTimePickerMonths = createClass({
-	render: function() {
-		return React.createElement('div', { className: 'rdtMonths' }, [
-			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
-				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: () => this.props.navigate( -1, 'years' )}, React.createElement('span', {}, '‹' )),
-				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: () => this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
-				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: () => this.props.navigate( 1, 'years' )}, React.createElement('span', {}, '›' ))
-			]))),
-			React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
-		]);
-	},
+export default class MonthsView extends React.Component {
+	render() {
+		return (
+			<div className="rdtMonths">
+				<table>
+					<thead>
+						{ this.renderHeader() }
+					</thead>
+				</table>
+				<table>
+					<tbody>
+						{ this.renderMonths() }
+					</tbody>
+				</table>
+			</div>
+		);
+	}
 
-	renderMonths: function() {
-		var date = this.props.selectedDate,
-			month = this.props.viewDate.month(),
-			year = this.props.viewDate.year(),
-			rows = [],
-			i = 0,
-			months = [],
-			renderer = this.props.renderMonth || this.renderMonth,
-			isValid = this.props.isValidDate || this.alwaysValidDate,
-			classes, props, currentMonth, isDisabled, noOfDaysInMonth, daysInMonth, validDay,
-			// Date is irrelevant because we're only interested in month
-			irrelevantDate = 1
-		;
+	renderHeader() {
+		let year = this.props.viewDate.year();
 
-		while (i < 12) {
-			classes = 'rdtMonth';
-			currentMonth =
-				this.props.viewDate.clone().set({ year: year, month: i, date: irrelevantDate });
+		return (
+			<tr>
+				<th className="rdtPrev" onClick={ () => this.props.navigate( -1, 'years' ) }>
+					<span>‹</span>
+				</th>
+				<th className="rdtSwitch" onClick={ () => this.props.showView( 'years' ) } colSpan="2" data-value={ year } >
+					{ year }
+				</th>
+				<th className="rdtNext" onClick={ () => this.props.navigate( 1, 'years' ) }>
+					<span>›</span>
+				</th>
+			</tr>
+		);
+	}
 
-			noOfDaysInMonth = currentMonth.endOf( 'month' ).date();
-			daysInMonth = Array.from({ length: noOfDaysInMonth }, function( e, i ) {
-				return i + 1;
-			});
+	renderMonths( viewYear ) {
+		// 12 months in 3 rows for every view
+		let rows = [ [], [], [] ];
 
-			validDay = daysInMonth.find(function( d ) {
-				var day = currentMonth.clone().set( 'date', d );
-				return isValid( day );
-			});
+		for ( let month = 0; month < 12; month++ ) {
+			let row = this.getRow( rows, month );
 
-			isDisabled = ( validDay === undefined );
-
-			if ( isDisabled )
-				classes += ' rdtDisabled';
-
-			if ( date && i === date.month() && year === date.year() )
-				classes += ' rdtActive';
-
-			props = {
-				key: i,
-				'data-value': i,
-				className: classes
-			};
-
-			if ( !isDisabled )
-				props.onClick = this.updateSelectedMonth;
-
-			months.push( renderer( props, i, year, date && date.clone() ) );
-
-			if ( months.length === 4 ) {
-				rows.push( React.createElement('tr', { key: month + '_' + rows.length }, months ) );
-				months = [];
-			}
-
-			i++;
+			row.push(
+				this.renderMonth( month, this.props.selectedDate )
+			);
 		}
 
-		return rows;
-	},
+		return rows.map( (months, i) => (
+			<tr key={i}>{ months }</tr>
+		));
+	}
 
-	updateSelectedMonth: function( event ) {
-		this.props.updateDate( event );
-	},
+	renderMonth( month, selectedDate ) {
+		let className = 'rdtMonth';
+		let onClick;
 
-	renderMonth: function( props, month ) {
+		if ( this.isDisabledMonth( month ) ) {
+			className += ' rdtDisabled';
+		}
+		else {
+			onClick = this._updateSelectedMonth;
+		}
+
+		if ( selectedDate && selectedDate.year() === this.props.viewDate.year() && selectedDate.month() === month ) {
+			className += ' rdtActive';
+		}
+
+		let props = {key: month, className, 'data-value': month, onClick };
+
+		if ( this.props.renderMonth ) {
+			return this.props.renderMonth(
+				props,
+				month,
+				this.props.viewDate.year(),
+				this.props.selectedDate && this.props.selectedDate.clone()
+			);
+		}
+
+		return (
+			<td { ...props }>
+				{ this.getMonthText( month ) }
+			</td>
+		);
+	}
+
+	getRow( rows, year ) {
+		if ( year < 4 ) {
+			return rows[0];
+		}
+		if ( year < 8 ) {
+			return rows[1];
+		}
+
+		return rows[2];
+	}
+
+	capitalize( str ) {
+		return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
+	}
+
+	isDisabledMonth( month ) {
+		let isValidDate = this.props.isValidDate;
+
+		if ( !isValidDate ) {
+			// If no validator is set, all days are valid
+			return false;
+		}
+
+		// If one day in the month is valid, the year should be clickable
+		let date = this.props.viewDate.clone().set({month});
+		let day = date.endOf( 'month' ).date() + 1;
+
+		while ( day-- > 1 ) {
+			if ( isValidDate( date.date(day) ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	getMonthText( month ) {
 		var localMoment = this.props.viewDate;
 		var monthStr = localMoment.localeData().monthsShort( localMoment.month( month ) );
 		var strLength = 3;
 		// Because some months are up to 5 characters long, we want to
 		// use a fixed string length for consistency
-		var monthStrFixedLength = monthStr.substring( 0, strLength );
-		return React.createElement('td', props, capitalize( monthStrFixedLength ) );
-	},
+		return this.capitalize( monthStr.substring( 0, strLength ) );
+	}
 
-	alwaysValidDate: function() {
-		return 1;
-	},
-});
-
-function capitalize( str ) {
-	return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
+	_updateSelectedMonth = event => {
+		this.props.updateDate( event );
+	}
 }
-
-module.exports = DateTimePickerMonths;

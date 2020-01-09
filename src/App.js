@@ -25,7 +25,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
-				<DateTime value={ this.state.value } initialViewMode="years" isValidDate={ this.isValidDate } />
+				<DateTime initialViewMode="years" isValidDate={ this.isValidDate } />
 			</div>
 		);
 	}
