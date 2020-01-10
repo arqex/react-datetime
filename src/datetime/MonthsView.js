@@ -122,12 +122,12 @@ export default class MonthsView extends React.Component {
 	}
 
 	getMonthText( month ) {
-		var localMoment = this.props.viewDate;
-		var monthStr = localMoment.localeData().monthsShort( localMoment.month( month ) );
-		var strLength = 3;
+		const localMoment = this.props.viewDate;
+		const monthStr = localMoment.localeData().monthsShort( localMoment.month( month ) );
+
 		// Because some months are up to 5 characters long, we want to
 		// use a fixed string length for consistency
-		return this.capitalize( monthStr.substring( 0, strLength ) );
+		return this.capitalize( monthStr.substring( 0, 3 ) );
 	}
 
 	_updateSelectedMonth = event => {

@@ -83,7 +83,6 @@
     "jest-watch-typeahead": "0.4.2",
     "jsdom": "^7.0.2",
     "mini-css-extract-plugin": "0.8.0",
-    "mocha": "^5.2.0",
     "moment": "^2.16.0",
     "moment-timezone": "^0.5.13",
     "optimize-css-assets-webpack-plugin": "5.0.3",
@@ -118,7 +117,6 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "dependencies": {
-    "create-react-class": "^15.6.3",
     "prop-types": "^15.5.7"
   },
   "pre-commit": [

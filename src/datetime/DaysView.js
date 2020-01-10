@@ -1,12 +1,16 @@
-var React = require('react'),
-	createClass = require('create-react-class'),
-	moment = require('moment')
-	;
+import React from 'react';
 
-class DaysView extends React.Component {
+export default class DaysView extends React.Component {
+	static defaultProps = {
+		isValidDate: () => true
+	}
+
 	render() {
 		const date = this.props.viewDate;
 		const locale = date.localeData();
+
+		let startOfMonth = date.clone().startOf('month');
+		let endOfMonth = date.clone().endOf('month');
 
 		return (
 			<div className="rdtDays">
@@ -16,9 +20,9 @@ class DaysView extends React.Component {
 						{ this.renderDayHeaders( locale ) }
 					</thead>
 					<tbody>
-						{ this.renderDays( date ) }
+						{ this.renderDays( date, startOfMonth, endOfMonth ) }
 					</tbody>
-					{ this.renderFooter() }
+					{ this.renderFooter( date ) }
 				</table>
 			</div>
 		);
@@ -30,7 +34,7 @@ class DaysView extends React.Component {
 				<th className="rdtPrev" onClick={ () => this.props.navigate( -1, 'months' ) }>
 					<span>‹</span>
 				</th>
-				<th className="rdtSwitch" onClick={ () => this.props.showView( 'months' ) } colSpan="5" data-value={ this.props.viewDate.month() }>
+				<th className="rdtSwitch" onClick={ () => this.props.showView( 'months' ) } colSpan={5} data-value={ this.props.viewDate.month() }>
 					{ locale.months( date ) + ' ' + date.year() }
 				</th>
 				<th className="rdtNext" onClick={ () => this.props.navigate( 1, 'months' ) }>
@@ -52,154 +56,110 @@ class DaysView extends React.Component {
 		);
 	}
 
-	renderDays( date ) {
+	renderDays( date, startOfMonth, endOfMonth ) {
+		// We need 42 days in 6 rows
+		// starting in the last week of the previous month
+		let rows = [[], [], [], [], [], []];
 
+		let startDate = date.clone().subtract( 1, 'months');
+		startDate.date( startDate.daysInMonth() ).startOf('week');
+
+		let endDate = startDate.clone().add( 42, 'd' );
+		let i = 0;
+
+		while ( startDate.isBefore( endDate ) ) {
+			let row = this.getRow( rows, i++ );
+			row.push( this.renderDay( startDate, startOfMonth, endOfMonth ) );
+			startDate.add( 1, 'd' );
+		}
+
+		return rows.map( (r, i) => (
+			<tr key={ `${endDate.month()}_${i}` }>{ r }</tr>
+		));
+	}
+
+	renderDay( date, startOfMonth, endOfMonth ) {
+		let selectedDate = this.props.selectedDate;
+
+		let dayProps = {
+			key: date.format('M_D'),
+			'data-value': date.date(),
+			'data-month': date.month(),
+			'data-year': date.year()
+		};
+
+		let className = 'rdtDay';
+		if ( date.isBefore( startOfMonth ) ) {
+			className += ' rdtOld';
+		}
+		else if ( date.isAfter( endOfMonth ) ) {
+			className += ' rdtNew';
+		}
+		if ( selectedDate && date.isSame( selectedDate, 'day' ) ) {
+			className += ' rdtActive';
+		}
+		if ( date.isSame( this.props.moment(), 'day' ) ) {
+			className += ' rdtToday';
+		}
+
+		if ( this.props.isValidDate(date) ) {
+			dayProps.onClick = this._setDate;
+		}
+		else {
+			className += ' rdtDisabled';
+		}
+
+		dayProps.className = className;
+
+		if ( this.props.renderDay ) {
+			return this.props.renderDay(
+				dayProps, date.clone(), selectedDate && selectedDate.clone()
+			);
+		}
+
+		return (
+			<td { ...dayProps }>{ date.date() }</td>
+		);
 	}
 
 	renderFooter( date ) {
+		if ( !this.props.timeFormat ) return;
 
-	}
-}
-
-var DateTimePickerDays = createClass({
-	render: function() {
-		var footer = this.renderFooter(),
-			date = this.props.viewDate,
-			locale = date.localeData(),
-			tableChildren
-			;
-
-		tableChildren = [
-			React.createElement('thead', { key: 'th' }, [
-				React.createElement('tr', { key: 'h' }, [
-					React.createElement('th', { key: 'p', className: 'rdtPrev', onClick: () => this.props.navigate( -1, 'months' )}, React.createElement('span', {}, '‹' )),
-					React.createElement('th', { key: 's', className: 'rdtSwitch', onClick: () => this.props.showView( 'months' ), colSpan: 5, 'data-value': this.props.viewDate.month() }, locale.months( date ) + ' ' + date.year() ),
-					React.createElement('th', { key: 'n', className: 'rdtNext', onClick: () => this.props.navigate( 1, 'months' )}, React.createElement('span', {}, '›' ))
-				]),
-				React.createElement('tr', { key: 'd'}, this.getDaysOfWeek( locale ).map( function( day, index ) { return React.createElement('th', { key: day + index, className: 'dow'}, day ); }) )
-			]),
-			React.createElement('tbody', { key: 'tb' }, this.renderDays())
-		];
-
-		if ( footer )
-			tableChildren.push( footer );
-
-		return React.createElement('div', { className: 'rdtDays' },
-			React.createElement('table', {}, tableChildren )
+		return (
+			<tfoot>
+				<tr>
+					<td onClick={ () => this.props.showView('time') }
+						colSpan={7}
+						className="rdtTimeToggle">
+						{ date.format( this.props.timeFormat ) }
+					</td>
+				</tr>
+			</tfoot>
 		);
-	},
+	}
+
+	_setDate = e => {
+		this.props.updateDate( e );
+	}
 
 	/**
 	 * Get a list of the days of the week
 	 * depending on the current locale
 	 * @return {array} A list with the shortname of the days
 	 */
-	getDaysOfWeek: function( locale ) {
-		var days = locale._weekdaysMin,
-			first = locale.firstDayOfWeek(),
-			dow = [],
-			i = 0
-			;
+	getDaysOfWeek(locale) {
+		const first = locale.firstDayOfWeek();
+		let dow = [];
+		let i = 0;
 
-		days.forEach( function( day ) {
-			dow[ (7 + ( i++ ) - first) % 7 ] = day;
+		locale._weekdaysMin.forEach(function (day) {
+			dow[(7 + (i++) - first) % 7] = day;
 		});
 
 		return dow;
-	},
-
-	renderDays: function() {
-		var date = this.props.viewDate,
-			selected = this.props.selectedDate && this.props.selectedDate.clone(),
-			prevMonth = date.clone().subtract( 1, 'months' ),
-			currentYear = date.year(),
-			currentMonth = date.month(),
-			weeks = [],
-			days = [],
-			renderer = this.props.renderDay || this.renderDay,
-			isValid = this.props.isValidDate || this.alwaysValidDate,
-			classes, isDisabled, dayProps, currentDate
-			;
-
-		// Go to the last week of the previous month
-		prevMonth.date( prevMonth.daysInMonth() ).startOf( 'week' );
-		var lastDay = prevMonth.clone().add( 42, 'd' );
-
-		while ( prevMonth.isBefore( lastDay ) ) {
-			classes = 'rdtDay';
-			currentDate = prevMonth.clone();
-			
-			dayProps = {
-				key: prevMonth.format( 'M_D' ),
-				'data-value': prevMonth.date(),
-				'data-month': currentMonth,
-				'data-year': currentYear
-			};
-
-			if ( ( prevMonth.year() === currentYear && prevMonth.month() < currentMonth ) || ( prevMonth.year() < currentYear ) ) {
-				classes += ' rdtOld';
-				dayProps['data-month'] = prevMonth.month();
-				dayProps['data-year'] = prevMonth.year();
-			}
-			else if ( ( prevMonth.year() === currentYear && prevMonth.month() > currentMonth ) || ( prevMonth.year() > currentYear ) ) {
-				classes += ' rdtNew';
-				dayProps['data-month'] = prevMonth.month();
-				dayProps['data-year'] = prevMonth.year();
-			}
-
-			if ( selected && prevMonth.isSame( selected, 'day' ) )
-				classes += ' rdtActive';
-
-			if (prevMonth.isSame(moment(), 'day')) {
-				classes += ' rdtToday';
-			}
-
-			isDisabled = !isValid( currentDate, selected );
-			if ( isDisabled )
-				classes += ' rdtDisabled';
-
-			dayProps.className = classes;
-
-			if ( !isDisabled )
-				dayProps.onClick = this.updateSelectedDate;
-
-			days.push( renderer( dayProps, currentDate, selected ) );
-
-			if ( days.length === 7 ) {
-				weeks.push( React.createElement('tr', { key: prevMonth.format( 'M_D' )}, days ) );
-				days = [];
-			}
-
-			prevMonth.add( 1, 'd' );
-		}
-
-		return weeks;
-	},
-
-	updateSelectedDate: function( event ) {
-		this.props.updateDate( event );
-	},
-
-	renderDay: function( props, currentDate ) {
-		return React.createElement('td',  props, currentDate.date() );
-	},
-
-	renderFooter: function() {
-		if ( !this.props.timeFormat )
-			return '';
-
-		var date = this.props.selectedDate || this.props.viewDate;
-
-		return React.createElement('tfoot', { key: 'tf'},
-			React.createElement('tr', {},
-				React.createElement('td', { onClick: () => this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
-			)
-		);
-	},
-
-	alwaysValidDate: function() {
-		return 1;
 	}
-});
 
-module.exports = DateTimePickerDays;
+	getRow( rows, day ) {
+		return rows[ Math.floor( day / 7 ) ];
+	}
+}

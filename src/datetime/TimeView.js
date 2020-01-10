@@ -102,7 +102,7 @@ export default class TimeView extends React.Component {
 	renderHeader() {
 		if ( !this.props.dateFormat ) return;
 
-		var date = this.props.selectedDate || this.props.viewDate;
+		const date = this.props.selectedDate || this.props.viewDate;
 
 		return (
 			<thead>
@@ -168,23 +168,23 @@ export default class TimeView extends React.Component {
 	}
 
 	increase( type ) {
-		var tc = this.constraints[ type ];
-		var value = parseInt( this.state[ type ], 10) + tc.step;
+		const tc = this.constraints[ type ];
+		let value = parseInt( this.state[ type ], 10) + tc.step;
 		if ( value > tc.max )
 			value = tc.min + ( value - ( tc.max + 1 ) );
 		return this.pad( type, value );
 	}
 
 	decrease( type ) {
-		var tc = this.constraints[ type ];
-		var value = parseInt( this.state[ type ], 10) - tc.step;
+		const tc = this.constraints[ type ];
+		let value = parseInt( this.state[ type ], 10) - tc.step;
 		if ( value < tc.min )
 			value = tc.max + 1 - ( tc.min - value );
 		return this.pad( type, value );
 	}
 
 	pad( type, value ) {
-		var str = value + '';
+		let str = value + '';
 		while ( str.length < this.padValues[ type ] )
 			str = '0' + str;
 		return str;
@@ -219,7 +219,7 @@ export default class TimeView extends React.Component {
 	}
 
 	getTimeParts( date ) {
-		var hours = date.hours();
+		const hours = date.hours();
 
 		return {
 			hours: this.pad( 'hours', hours ),
