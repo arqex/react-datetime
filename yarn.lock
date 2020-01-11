@@ -1493,17 +1493,17 @@
     react-lifecycles-compat "^3.0.4"
     util-deprecate "^1.0.2"
 
-"@storybook/addon-knobs@5.3.0-rc.12":
-  version "5.3.0-rc.12"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-5.3.0-rc.12.tgz#74be99e09608e5507acf429226102ce6897dd515"
-  integrity sha512-fSvfYzHHZn5Ur8QBwK6tFc8WlQUCZvg2HP4VewesmzdcRK2/Q9nlb7XCZqPGHaRo76RhuoopCRMcFr3xnFZJwQ==
+"@storybook/addon-knobs@5.3.0-rc.13":
+  version "5.3.0-rc.13"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-5.3.0-rc.13.tgz#a428f77ac139a463a65fc0f28a23c4f1d6c0812a"
+  integrity sha512-Uk2Xp5cXzpAtramrKKgIsXf+F8ARG5gbwogPOfmy2ft0D22WXaDbBCxKcqPwc4ONBrgbv9TyQYpf3bKAl62K6w==
   dependencies:
-    "@storybook/addons" "5.3.0-rc.12"
-    "@storybook/api" "5.3.0-rc.12"
-    "@storybook/client-api" "5.3.0-rc.12"
-    "@storybook/components" "5.3.0-rc.12"
-    "@storybook/core-events" "5.3.0-rc.12"
-    "@storybook/theming" "5.3.0-rc.12"
+    "@storybook/addons" "5.3.0-rc.13"
+    "@storybook/api" "5.3.0-rc.13"
+    "@storybook/client-api" "5.3.0-rc.13"
+    "@storybook/components" "5.3.0-rc.13"
+    "@storybook/core-events" "5.3.0-rc.13"
+    "@storybook/theming" "5.3.0-rc.13"
     "@types/react-color" "^3.0.1"
     copy-to-clipboard "^3.0.8"
     core-js "^3.0.1"
