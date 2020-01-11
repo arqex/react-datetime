@@ -1472,15 +1472,15 @@
     vue-docgen-api "^4.1.0"
     vue-docgen-loader "^1.3.0-beta.0"
 
-"@storybook/addon-info@5.3.0-rc.13":
-  version "5.3.0-rc.13"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-5.3.0-rc.13.tgz#189c1691071f66e91199c3ea104cffb85fd1af8d"
-  integrity sha512-bWXYmapXRa7s3h9hEeAf8AnHHRH7imkWhoRAsvIdkUUkiyR/wlaWpFz+yeK+gmknUVzY8m7yBcpBOLq+E8DrXA==
+"@storybook/addon-info@5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-5.3.0.tgz#ab4070718ff745ec5ff790ca86b048d3c750a948"
+  integrity sha512-hv6oxsmf8upGj17zrlM8YzrxC0LvADV+F1O2/y2ys5/DIj+jO78VLtQNK0KgNzVzHOOJh9R1pa+oL5YClqacfQ==
   dependencies:
-    "@storybook/addons" "5.3.0-rc.13"
-    "@storybook/client-logger" "5.3.0-rc.13"
-    "@storybook/components" "5.3.0-rc.13"
-    "@storybook/theming" "5.3.0-rc.13"
+    "@storybook/addons" "5.3.0"
+    "@storybook/client-logger" "5.3.0"
+    "@storybook/components" "5.3.0"
+    "@storybook/theming" "5.3.0"
     core-js "^3.0.1"
     global "^4.3.2"
     marksy "^8.0.0"
@@ -1808,6 +1808,33 @@
   integrity sha512-/N51C8aCGLPIpRTIspp5hE7XP7yyy7Zd0U1tBHOC1jA2MNMMWVhcenO2Np+cTB7kPTZ31Qy2YopanrmygeIqpg==
   dependencies:
     core-js "^3.0.1"
+
+"@storybook/components@5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-5.3.0.tgz#0746a3dfe45b56b661fed6230b655d0d47dc6233"
+  integrity sha512-i7EAYd5okZ3d43+mP6SdgWR0a888eRIzbA8/uFXU4ay4eFbS9caribciRFkvcsX6QNVzcclUEXX9AxsDxw6SGg==
+  dependencies:
+    "@storybook/client-logger" "5.3.0"
+    "@storybook/theming" "5.3.0"
+    "@types/react-syntax-highlighter" "11.0.2"
+    "@types/react-textarea-autosize" "^4.3.3"
+    core-js "^3.0.1"
+    global "^4.3.2"
+    lodash "^4.17.15"
+    markdown-to-jsx "^6.9.1"
+    memoizerific "^1.11.3"
+    polished "^3.3.1"
+    popper.js "^1.14.7"
+    prop-types "^15.7.2"
+    react "^16.8.3"
+    react-dom "^16.8.3"
+    react-focus-lock "^2.1.0"
+    react-helmet-async "^1.0.2"
+    react-popper-tooltip "^2.8.3"
+    react-syntax-highlighter "^11.0.2"
+    react-textarea-autosize "^7.1.0"
+    simplebar-react "^1.0.0-alpha.6"
+    ts-dedent "^1.1.0"
 
 "@storybook/components@5.3.0-rc.13":
   version "5.3.0-rc.13"
