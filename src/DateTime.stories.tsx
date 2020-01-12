@@ -11,6 +11,8 @@ import isBefore from "date-fns/isBefore";
 import startOfDay from "date-fns/startOfDay";
 import isMonday from "date-fns/isMonday";
 import isWeekend from "date-fns/isWeekend";
+import isSameMonth from "date-fns/isSameMonth";
+import isSameYear from "date-fns/isSameYear";
 
 import nl from "date-fns/locale/nl";
 import es from "date-fns/locale/es";
@@ -282,7 +284,9 @@ export function CustomizableExample() {
     "Only Weekdays": (date: Date) => !isWeekend(date),
     "Only Weekends": (date: Date) => isWeekend(date),
     "Days Before The 18th": (date: Date) =>
-      isBefore(date, startOfDay(new Date(2019, 7, 18, 11, 25)))
+      isBefore(date, startOfDay(new Date(2019, 7, 18, 11, 25))),
+    "Just March": (date: Date) => isSameMonth(date, new Date(2019, 2, 16)),
+    "Just 2012": (date: Date) => isSameYear(date, new Date(2012, 2, 16))
   };
 
   const isValidDateName = options(
