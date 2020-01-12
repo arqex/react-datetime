@@ -1582,15 +1582,15 @@
     vue-docgen-api "^4.1.0"
     vue-docgen-loader "^1.3.0-beta.0"
 
-"@storybook/addon-info@5.3.0":
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-5.3.0.tgz#ab4070718ff745ec5ff790ca86b048d3c750a948"
-  integrity sha512-hv6oxsmf8upGj17zrlM8YzrxC0LvADV+F1O2/y2ys5/DIj+jO78VLtQNK0KgNzVzHOOJh9R1pa+oL5YClqacfQ==
+"@storybook/addon-info@5.3.1":
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-5.3.1.tgz#bbeebab7fde9727cf2b0af24b02249a4fd5c052a"
+  integrity sha512-wUbuc8Uv03V211+2nQnYUpAD4mQAjGT86nffmkyZwAS9P/PQb6Rj4A4xmzhNd5IQ3d2VvPD/rznNAerB3+sLWw==
   dependencies:
-    "@storybook/addons" "5.3.0"
-    "@storybook/client-logger" "5.3.0"
-    "@storybook/components" "5.3.0"
-    "@storybook/theming" "5.3.0"
+    "@storybook/addons" "5.3.1"
+    "@storybook/client-logger" "5.3.1"
+    "@storybook/components" "5.3.1"
+    "@storybook/theming" "5.3.1"
     core-js "^3.0.1"
     global "^4.3.2"
     marksy "^8.0.0"
