@@ -156,7 +156,7 @@ function onStartClicking(
   return () => {
     const {
       readonly,
-      viewTimestamp: origViewTimestamp = new Date(),
+      viewTimestamp: origViewTimestamp,
       timeConstraints,
       setViewTimestamp,
       setSelectedDate
