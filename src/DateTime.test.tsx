@@ -3,6 +3,8 @@ import { render, act, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import isSameDay from "date-fns/isSameDay";
+import isSameMonth from "date-fns/isSameMonth";
+import isSameYear from "date-fns/isSameYear";
 
 const { getByText, getByTestId, queryByTestId, getAllByText } = screen;
 
@@ -583,6 +585,56 @@ describe("DateTime", () => {
       expect(element).toHaveValue("");
     });
 
+    it("should block/unblock day picking based on isValidDate", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      const handleChange = jest.fn();
+      function isValidDate(date: Date) {
+        if (isSameDay(date, new Date(2019, 0, 16))) {
+          return false;
+        }
+
+        return true;
+      }
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={FULL_DATE_FORMAT}
+            timeFormat={false}
+            onChange={handleChange}
+            isValidDate={isValidDate}
+          />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId("day-picker")).toBeVisible();
+
+      // Click a date (disabled)
+      fireEvent.click(getByText("16"));
+
+      expect(element).toHaveValue("");
+      expect(handleChange).toHaveBeenCalledTimes(0);
+
+      // Click another date (not disabled)
+      fireEvent.click(getByText("17"));
+
+      expect(element).toHaveValue("01/17/2019");
+      expect(handleChange).toHaveBeenCalledTimes(1);
+    });
+
     it("should navigate to previous months from picker", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -944,6 +996,65 @@ describe("DateTime", () => {
       expect(element).toHaveValue("06/2019");
     });
 
+    it("should block/unblock month picking based on isValidDate", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      const handleChange = jest.fn();
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.MONTH}/${FORMATS.YEAR}`}
+            timeFormat={false}
+            onChange={handleChange}
+            isValidDate={(date: Date) =>
+              isSameMonth(date, new Date(2019, 2, 16))
+            }
+          />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId("month-picker")).toBeVisible();
+
+      // Click a month (disabled)
+      fireEvent.click(getByText(/jan/i));
+      expect(element).toHaveValue("");
+      expect(handleChange).toHaveBeenCalledTimes(0);
+
+      // Click a month (disabled)
+      fireEvent.click(getByText(/feb/i));
+      expect(element).toHaveValue("");
+      expect(handleChange).toHaveBeenCalledTimes(0);
+
+      // Click a month (disabled)
+      fireEvent.click(getByText(/nov/i));
+      expect(element).toHaveValue("");
+      expect(handleChange).toHaveBeenCalledTimes(0);
+
+      // Click a month (disabled)
+      fireEvent.click(getByText(/feb/i));
+      expect(element).toHaveValue("");
+      expect(handleChange).toHaveBeenCalledTimes(0);
+
+      // Click another date (not disabled)
+      fireEvent.click(getByText(/mar/i));
+
+      expect(element).toHaveValue("03/2019");
+      expect(handleChange).toHaveBeenCalledTimes(1);
+    });
+
     it("should navigate to previous year's months from picker", () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
@@ -1193,6 +1304,60 @@ describe("DateTime", () => {
 
       // Assert
       expect(element).toHaveValue("2015");
+    });
+
+    it("should block/unblock year picking based on isValidDate", () => {
+      mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
+      const handleChange = jest.fn();
+
+      // Arrange
+      const { getByLabelText } = render(
+        <>
+          <label htmlFor="some-id">Some Field</label>
+          <DateTime
+            id="some-id"
+            dateFormat={`${FORMATS.YEAR}`}
+            timeFormat={false}
+            onChange={handleChange}
+            isValidDate={(date: Date) =>
+              isSameYear(date, new Date(2019, 2, 16))
+            }
+          />
+        </>
+      );
+
+      const element = getByLabelText("Some Field");
+      expect(element).toHaveValue("");
+      expect(queryByTestId("picker-wrapper")).toBeNull();
+
+      // Act
+      // Open picker
+      fireEvent.click(element);
+
+      // Assert
+      expect(getByTestId("year-picker")).toBeVisible();
+
+      // Click a month (disabled)
+      fireEvent.click(getByText("2010"));
+      expect(element).toHaveValue("");
+      expect(handleChange).toHaveBeenCalledTimes(0);
+
+      // Click a month (disabled)
+      fireEvent.click(getByText("2011"));
+      expect(element).toHaveValue("");
+      expect(handleChange).toHaveBeenCalledTimes(0);
+
+      // Click a month (disabled)
+      fireEvent.click(getByText("2014"));
+      expect(element).toHaveValue("");
+      expect(handleChange).toHaveBeenCalledTimes(0);
+
+      // Click another date (not disabled)
+      fireEvent.click(getByText("2019"));
+
+      expect(element).toHaveValue("2019");
+      expect(handleChange).toHaveBeenCalledTimes(1);
     });
 
     it("should navigate to previous decades from picker", () => {
@@ -1928,56 +2093,6 @@ describe("DateTime", () => {
           expect(element).toHaveValue("01/16/2019");
 
           expect(handleChange).toHaveBeenCalledTimes(0);
-        });
-
-        it("should block/unblock click based on isValidDate", () => {
-          mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
-
-          const handleChange = jest.fn();
-          function isValidDate(date: Date) {
-            if (isSameDay(date, new Date(2019, 0, 16))) {
-              return false;
-            }
-
-            return true;
-          }
-
-          // Arrange
-          const { getByLabelText } = render(
-            <>
-              <label htmlFor="some-id">Some Field</label>
-              <DateTime
-                id="some-id"
-                dateFormat={FULL_DATE_FORMAT}
-                timeFormat={false}
-                onChange={handleChange}
-                isValidDate={isValidDate}
-              />
-            </>
-          );
-
-          const element = getByLabelText("Some Field");
-          expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
-
-          // Act
-          // Open picker
-          fireEvent.click(element);
-
-          // Assert
-          expect(getByTestId("day-picker")).toBeVisible();
-
-          // Click a date (disabled)
-          fireEvent.click(getByText("16"));
-
-          expect(element).toHaveValue("");
-          expect(handleChange).toHaveBeenCalledTimes(0);
-
-          // Click another date (not disabled)
-          fireEvent.click(getByText("17"));
-
-          expect(element).toHaveValue("01/17/2019");
-          expect(handleChange).toHaveBeenCalledTimes(1);
         });
 
         it("should trigger onChange Date when picking a first date", () => {
