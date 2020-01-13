@@ -141,7 +141,7 @@
     "style-loader": "^1.1.2",
     "ts-jest": "^24.2.0",
     "ts-loader": "^6.2.1",
-    "tsdx": "0.12.1",
+    "tsdx": "0.12.3",
     "typescript": "^3.7.2"
   },
   "dependencies": {
