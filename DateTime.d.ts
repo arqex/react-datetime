@@ -159,8 +159,7 @@ declare namespace ReactDatetimeClass {
          */
         closeOnSelect?: boolean;
         /*
-        /*
-        When true and the input is focused, pressing the tab key will close the datepicker.
+         When true and the input is focused, pressing the tab key will close the datepicker.
          */
         closeOnTab?: boolean;
         /*
