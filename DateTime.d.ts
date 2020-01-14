@@ -159,6 +159,11 @@ declare namespace ReactDatetimeClass {
          */
         closeOnSelect?: boolean;
         /*
+        /*
+        When true and the input is focused, pressing the tab key will close the datepicker.
+         */
+        closeOnTab?: boolean;
+        /*
          Allow to add some constraints to the time selector. It accepts an object with the format
          {hours:{ min: 9, max: 15, step:2}} so the hours can't be lower than 9 or higher than 15, and
          it will change adding or subtracting 2 hours everytime the buttons are clicked. The constraints
