@@ -94,6 +94,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mattdell",
+      "name": "Matt Dell",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2536442?v=4",
+      "profile": "https://github.com/mattdell",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
