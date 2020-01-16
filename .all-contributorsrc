@@ -58,6 +58,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "joshcarr",
+      "name": "Josh Carr",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/86731?v=4",
+      "profile": "http://www.joshcarr.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
