@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "NateRadebaugh",
+      "name": "Nate Radebaugh",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/130445?v=4",
+      "profile": "http://naterad.com",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "react-datetime",
+  "projectOwner": "NateRadebaugh",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
