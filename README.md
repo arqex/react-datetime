@@ -1,6 +1,6 @@
 # react-datetime
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![CircleCI](https://circleci.com/gh/NateRadebaugh/react-datetime.svg?style=svg)](https://circleci.com/gh/NateRadebaugh/react-datetime)
@@ -152,6 +152,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://arqex.com"><img src="https://avatars2.githubusercontent.com/u/6509397?v=4" width="100px;" alt=""/><br /><sub><b>Javier Marquez</b></sub></a><br /><a href="https://github.com/NateRadebaugh/react-datetime/commits?author=arqex" title="Code">💻</a></td>
     <td align="center"><a href="http://loic.xxx"><img src="https://avatars0.githubusercontent.com/u/1869?v=4" width="100px;" alt=""/><br /><sub><b>Loïc CHOLLIER</b></sub></a><br /><a href="https://github.com/NateRadebaugh/react-datetime/commits?author=chollier" title="Code">💻</a></td>
     <td align="center"><a href="http://www.lorisguignard.com"><img src="https://avatars0.githubusercontent.com/u/8362?v=4" width="100px;" alt=""/><br /><sub><b>Loris Guignard</b></sub></a><br /><a href="https://github.com/NateRadebaugh/react-datetime/commits?author=loris" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/layneanderson"><img src="https://avatars3.githubusercontent.com/u/21086971?v=4" width="100px;" alt=""/><br /><sub><b>Layne Anderson</b></sub></a><br /><a href="https://github.com/NateRadebaugh/react-datetime/commits?author=layneanderson" title="Code">💻</a></td>
   </tr>
 </table>
 
