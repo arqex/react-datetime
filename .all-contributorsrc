@@ -13,6 +13,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "simeg",
+      "name": "Simon Egersand",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/8566054?v=4",
+      "profile": "https://github.com/simeg",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
