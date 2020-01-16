@@ -67,6 +67,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "andjosh",
+      "name": "Josh",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2358584?v=4",
+      "profile": "https://www.andjosh.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
