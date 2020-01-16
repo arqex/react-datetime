@@ -76,6 +76,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "wadahiro",
+      "name": "Hiroyuki Wada",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/28739?v=4",
+      "profile": "https://twitter.com/wadahiro",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
