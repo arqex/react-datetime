@@ -103,6 +103,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "kemcake",
+      "name": "Rémi Santos",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/4311124?v=4",
+      "profile": "http://kemcake.github.io",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
