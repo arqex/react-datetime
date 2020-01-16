@@ -22,6 +22,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "arqex",
+      "name": "Javier Marquez",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/6509397?v=4",
+      "profile": "http://arqex.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
