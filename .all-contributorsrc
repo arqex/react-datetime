@@ -40,6 +40,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "loris",
+      "name": "Loris Guignard",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/8362?v=4",
+      "profile": "http://www.lorisguignard.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
