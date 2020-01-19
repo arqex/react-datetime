@@ -1473,7 +1473,7 @@ describe('Imperative methods', function() {
 
 	// This test is just not working, but it's using the setView method internally,
 	// That is well tested by other specs in this file
-	xit('Calling setViewMode should navigate to the given mode', function( done ) {
+	xit('Calling navigate should update to the given view', function( done ) {
 		const initialDate = new Date(2000, 6, 15, 2, 2, 2, 2);
 		const component = utils.createDatetime(
 			{ initialViewMode: 'months', initialViewDate: initialDate }
@@ -1481,18 +1481,18 @@ describe('Imperative methods', function() {
 		
 		expect( utils.isMonthView( component ) ).toBeTruthy();
 		
-		component.instance().setViewMode( 'days' );
+		component.instance().navigate( 'days' );
 
 		// Sync fix
 		setTimeout( () => {
 			expect( utils.isDayView( component ) ).toBeTruthy();
-			component.instance().setViewMode( 'time' );
+			component.instance().navigate( 'time' );
 			expect( utils.isTimeView( component ) ).toBeTruthy();
 			
-			component.instance().setViewMode( 'years' );
+			component.instance().navigate( 'years' );
 			expect( utils.isYearView( component ) ).toBeTruthy();
 			
-			component.instance().setViewMode( 'months' );
+			component.instance().navigate( 'months' );
 			expect( utils.isMonthView( component ) ).toBeTruthy();
 
 			// The date should stay unmodified

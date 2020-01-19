@@ -137,7 +137,7 @@ export default class Datetime extends React.Component {
 			selectedDate: this.getSelectedDate(),
 			isValidDate: props.isValidDate,
 			updateDate: this._updateDate,
-			navigate: this._navigate,
+			navigate: this._viewNavigate,
 			moment: moment,
 			showView: this._showView
 		};
@@ -366,7 +366,7 @@ export default class Datetime extends React.Component {
 		this.setState( update );
 	}
 
-	_navigate = ( modifier, unit ) => {
+	_viewNavigate = ( modifier, unit ) => {
 		let viewDate = this.state.viewDate.clone();
 		
 		// Subtracting is just adding negative time
@@ -545,7 +545,7 @@ export default class Datetime extends React.Component {
 	 * Set the view currently shown by the calendar. View modes shipped with react-datetime are 'years', 'months', 'days' and 'time'.
 	 * @param TYPES.string mode 
 	 */
-	setViewMode( mode ) {
+	navigate( mode ) {
 		this.showView( mode )();
 	}
 

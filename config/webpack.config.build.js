@@ -26,7 +26,8 @@ const baseConfig = {
 				loader: require.resolve('babel-loader')
 			}
 		]
-	}
+	},
+	devtool: 'source-map'
 };
 
 const umdConfig = {

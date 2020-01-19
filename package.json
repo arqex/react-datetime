@@ -10,8 +10,6 @@
   "main": "./dist/react-datetime.cjs.js",
   "typings": "./src/datetime/DateTime.d.ts",
   "files": [
-    "DateTime.js",
-    "src",
     "css",
     "dist"
   ],
