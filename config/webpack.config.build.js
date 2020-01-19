@@ -1,6 +1,11 @@
+const paths = require('./paths');
+const path = require('path');
+
+const outputPath = path.join(__dirname, '../dist/');
+
 const baseConfig = {
 	entry: ['./src/datetime/DateTime.js'],
-	mode: 'development',
+	mode: 'production',
 
 	resolve: {
 		extensions: ['.js']
@@ -8,16 +13,26 @@ const baseConfig = {
 
 	externals: {
 		'react': 'React',
-		'react-dom': 'ReactDOM',
+		'react-dom': 'react-dom',
 		'moment': 'moment',
 		'moment-timezone': 'moment-timezone'
+	},
+
+	module: {
+		rules: [
+			{
+				test: /\.(js|mjs|jsx|ts|tsx)$/,
+				include: paths.appSrc,
+				loader: require.resolve('babel-loader')
+			}
+		]
 	}
 };
 
 const umdConfig = {
 	...baseConfig,
 	output: {
-		path: __dirname + '/dist/',
+		path: outputPath,
 		library: 'Datetime',
 		libraryTarget: 'umd',
 		filename: 'react-datetime.umd.js',
@@ -28,7 +43,7 @@ const umdConfig = {
 const cjsConfig = {
 	...baseConfig,
 	output: {
-		path: __dirname + '/dist/',
+		path: outputPath,
 		library: 'Datetime',
 		libraryTarget: 'commonjs2',
 		filename: 'react-datetime.cjs.js',

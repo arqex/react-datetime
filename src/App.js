@@ -3,15 +3,6 @@ import React from 'react';
 import moment from 'moment';
 import DateTime from './datetime/DateTime';
 
-function renderView( viewType, renderDefault ) {
-	return (
-		<div className="customView">
-			<span className="viewType">{ viewType }</span>
-			{ renderDefault() }
-		</div>
-	);
-}
-
 class App extends React.Component {
 
 	constructor() {
