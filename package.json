@@ -104,7 +104,7 @@
     "@storybook/addon-docs": "5.3.6",
     "@storybook/addon-info": "5.3.7",
     "@storybook/addon-knobs": "5.3.7",
-    "@storybook/addon-links": "5.3.6",
+    "@storybook/addon-links": "5.3.7",
     "@storybook/addons": "5.3.7",
     "@storybook/preset-typescript": "^1.1.0",
     "@storybook/react": "5.3.6",
