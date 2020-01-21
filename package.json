@@ -100,7 +100,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.7.5",
-    "@storybook/addon-actions": "5.3.6",
+    "@storybook/addon-actions": "5.3.7",
     "@storybook/addon-docs": "5.3.7",
     "@storybook/addon-info": "5.3.7",
     "@storybook/addon-knobs": "5.3.7",
