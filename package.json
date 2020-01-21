@@ -102,7 +102,7 @@
     "@babel/preset-env": "^7.7.5",
     "@storybook/addon-actions": "5.3.7",
     "@storybook/addon-docs": "5.3.7",
-    "@storybook/addon-info": "5.3.7",
+    "@storybook/addon-info": "5.3.8",
     "@storybook/addon-knobs": "5.3.7",
     "@storybook/addon-links": "5.3.8",
     "@storybook/addons": "5.3.8",
