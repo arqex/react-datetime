@@ -37,7 +37,8 @@ const umdConfig = {
 		library: 'Datetime',
 		libraryTarget: 'umd',
 		filename: 'react-datetime.umd.js',
-		auxiliaryComment: 'React datetime'
+		auxiliaryComment: 'React datetime',
+		libraryExport: 'default'
 	}
 };
 
