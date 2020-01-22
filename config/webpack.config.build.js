@@ -12,7 +12,7 @@ const baseConfig = {
 	},
 
 	externals: {
-		'react': 'React',
+		'react': 'react',
 		'react-dom': 'react-dom',
 		'moment': 'moment',
 		'moment-timezone': 'moment-timezone'
