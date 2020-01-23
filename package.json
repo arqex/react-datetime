@@ -73,12 +73,10 @@
   "lint-staged": {
     "{src}/**/*.{js,jsx,ts,tsx}": [
       "prettier --write",
-      "eslint src --ext .js,.ts,.jsx,.tsx --fix",
-      "git add"
+      "eslint src --ext .js,.ts,.jsx,.tsx --fix"
     ],
     "{src}/**/*.{json,css,scss}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "{src}/**/*": [
       "bundlesize"
