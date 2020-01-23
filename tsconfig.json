@@ -8,18 +8,8 @@
     "lib": ["dom", "esnext"],
     "importHelpers": true,
     "rootDir": "./",
-    "strict": true,
-    "alwaysStrict": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
     "sourceMap": true,
     "declaration": true,
-    "noUnusedParameters": false,
     "baseUrl": "./",
     "paths": {
       "*": ["src/*", "node_modules/*"]
