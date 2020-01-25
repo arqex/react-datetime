@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, act, fireEvent, screen } from "@testing-library/react";
+import { render, act, fireEvent, screen, wait } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import isSameDay from "date-fns/isSameDay";
@@ -50,8 +50,9 @@ function mockDate(isoDate: Date) {
   };
 }
 
-afterEach(() => {
+afterEach(async () => {
   global.Date = RealDate;
+  await wait();
 });
 
 describe("DateTime", () => {
