@@ -3,8 +3,8 @@ sudo: false
 os:
   - linux
 node_js:
-  - "8"
   - "10"
+  - "12"
   - stable
 script:
   - yarn lint
