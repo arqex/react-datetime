@@ -117,7 +117,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
     "bundlesize": "^0.18.0",
-    "cross-env": "^6.0.3",
+    "cross-env": "^7.0.0",
     "css-loader": "^3.2.0",
     "cssnano": "^4.1.10",
     "eslint": "^6.5.1",
