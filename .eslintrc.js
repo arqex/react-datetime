@@ -10,7 +10,8 @@ module.exports = {
     "plugin:react/recommended",
     "prettier",
     "prettier/react",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
+    "plugin:testing-library/react"
   ],
   plugins: ["@typescript-eslint", "react", "react-hooks", "prettier"],
   parserOptions: {
