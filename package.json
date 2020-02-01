@@ -90,7 +90,10 @@
   "jest": {
     "coveragePathIgnorePatterns": [
       ".stories.tsx"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    }
   },
   "peerDependencies": {
     "react": ">=16.8",
@@ -127,6 +130,7 @@
     "eslint-plugin-react-hooks": "^2.3.0",
     "eslint-plugin-testing-library": "^2.0.0",
     "husky": "^4.2.1",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
     "jest-junit": "^10.0.0",
     "lint-staged": "^10.0.2",
