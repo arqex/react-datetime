@@ -5814,9 +5814,9 @@ eslint-plugin-react@^7.14.3, eslint-plugin-react@^7.16.0:
     resolve "^1.14.2"
 
 eslint-plugin-testing-library@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-testing-library/-/eslint-plugin-testing-library-2.0.0.tgz#9fe047da67df3dc51c952ef4f120df83ab65702b"
-  integrity sha512-HyHpQjcAu7xDUs7yvEw2IXyAzaN+J3bVfFWuABlOlY/KQWGVqdLU+5vkX+i3leexMa7lzNOYOTcHpzlloLvFZA==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-testing-library/-/eslint-plugin-testing-library-2.1.0.tgz#22ccf764b94abd7614d5942e19ad99da6755f0ca"
+  integrity sha512-N5dpudj9SaFlbfgizFzlQ05XWK4TxYezsT8wxjkbH/abUqMGfz8RPaoSNPgfPg0rsPElgXKhacqsOYNyfoxdQQ==
 
 eslint-scope@^4.0.3:
   version "4.0.3"
