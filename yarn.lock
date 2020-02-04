@@ -1637,15 +1637,15 @@
     vue-docgen-api "^4.1.0"
     vue-docgen-loader "^1.3.0-beta.0"
 
-"@storybook/addon-info@5.3.10":
-  version "5.3.10"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-5.3.10.tgz#1aa34882223641f73da921561a3a7434cc9b4e93"
-  integrity sha512-QvVP+4ZCNcf512VSzNOMs06nz1lB6b3j3GV8c+gYj6Q3A5wSi6XRvZbMdfdhGqCEzgoj2G2B/xVnubr3AyC43g==
+"@storybook/addon-info@5.3.11":
+  version "5.3.11"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-5.3.11.tgz#a7256f2c9f1f8fffc7f86744a1496162d6b0211f"
+  integrity sha512-efXsXqT8C/Crswpx0Zk85grCY2ypesRw+xnoT/NJQ+rZGQaQ2eSE+R7kJkj+I3q4TBiCJ96GwGKjo7UTes+IiQ==
   dependencies:
-    "@storybook/addons" "5.3.10"
-    "@storybook/client-logger" "5.3.10"
-    "@storybook/components" "5.3.10"
-    "@storybook/theming" "5.3.10"
+    "@storybook/addons" "5.3.11"
+    "@storybook/client-logger" "5.3.11"
+    "@storybook/components" "5.3.11"
+    "@storybook/theming" "5.3.11"
     core-js "^3.0.1"
     global "^4.3.2"
     marksy "^8.0.0"
@@ -1682,16 +1682,16 @@
     react-lifecycles-compat "^3.0.4"
     react-select "^3.0.8"
 
-"@storybook/addon-links@5.3.10":
-  version "5.3.10"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-5.3.10.tgz#1b0e4904524264d8c514dec54860b9a31c7600a8"
-  integrity sha512-YnYQVPZysC7+/Jirr1cSZT3+EEDWS34bb5gAUrCqdEe4Uw8m7HP5lTg1mhm+bBcA0hTy/hLLGXYa1SIzyXTyrQ==
+"@storybook/addon-links@5.3.11":
+  version "5.3.11"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-5.3.11.tgz#3fee5e4eac845f889dfb9b3a38382c1c38209ada"
+  integrity sha512-BCNUZo0paZnknNDqBISPAjfjSrzOi5tdMtiCDIJ6tYcWeKdfNpcAOFCp5SCVVmCCDAUqtocmTaabh0SDTlmRmg==
   dependencies:
-    "@storybook/addons" "5.3.10"
-    "@storybook/client-logger" "5.3.10"
-    "@storybook/core-events" "5.3.10"
+    "@storybook/addons" "5.3.11"
+    "@storybook/client-logger" "5.3.11"
+    "@storybook/core-events" "5.3.11"
     "@storybook/csf" "0.0.1"
-    "@storybook/router" "5.3.10"
+    "@storybook/router" "5.3.11"
     core-js "^3.0.1"
     global "^4.3.2"
     prop-types "^15.7.2"
@@ -1845,6 +1845,33 @@
   dependencies:
     "@storybook/client-logger" "5.3.10"
     "@storybook/theming" "5.3.10"
+    "@types/react-syntax-highlighter" "11.0.2"
+    "@types/react-textarea-autosize" "^4.3.3"
+    core-js "^3.0.1"
+    global "^4.3.2"
+    lodash "^4.17.15"
+    markdown-to-jsx "^6.9.1"
+    memoizerific "^1.11.3"
+    polished "^3.3.1"
+    popper.js "^1.14.7"
+    prop-types "^15.7.2"
+    react "^16.8.3"
+    react-dom "^16.8.3"
+    react-focus-lock "^2.1.0"
+    react-helmet-async "^1.0.2"
+    react-popper-tooltip "^2.8.3"
+    react-syntax-highlighter "^11.0.2"
+    react-textarea-autosize "^7.1.0"
+    simplebar-react "^1.0.0-alpha.6"
+    ts-dedent "^1.1.0"
+
+"@storybook/components@5.3.11":
+  version "5.3.11"
+  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-5.3.11.tgz#86c33f965bb83cdd1186255eb90a3b85feb34c6b"
+  integrity sha512-GgmeITo887JgpuF7zsFO2j1GEC6/Co/1ZD0UiWON3oRtMLthNRmkOCq4oOnKKrwAkDL9sCvT9XGaHu+rKEK0TA==
+  dependencies:
+    "@storybook/client-logger" "5.3.11"
+    "@storybook/theming" "5.3.11"
     "@types/react-syntax-highlighter" "11.0.2"
     "@types/react-textarea-autosize" "^4.3.3"
     core-js "^3.0.1"
