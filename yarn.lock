@@ -5903,9 +5903,9 @@ eslint-plugin-react@^7.14.3, eslint-plugin-react@^7.16.0:
     string.prototype.matchall "^4.0.2"
 
 eslint-plugin-testing-library@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-testing-library/-/eslint-plugin-testing-library-2.2.0.tgz#68cd94aba67d17299d4d026f441e968b0ee9c63b"
-  integrity sha512-3edjjvs02O6veuh0JlOVrmnuER1YPO2lWlbSxLVGgoWp6pO3dI2gcVJKjAvYI3gpj927vlcgmmZQOU5NHCWEUg==
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-testing-library/-/eslint-plugin-testing-library-2.2.1.tgz#039430be04297d410582b327dd825c858e28f11f"
+  integrity sha512-nszqk6TN4cmfCfAspoJpPVzuCAteZ4e9sRTGCsnQNhTjfeLeWa/NOYPV798X1aKof1CTyf3ZC+M176r26DQWhw==
 
 eslint-scope@^4.0.3:
   version "4.0.3"
