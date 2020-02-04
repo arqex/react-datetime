@@ -108,7 +108,7 @@
     "@storybook/addon-links": "5.3.11",
     "@storybook/addons": "5.3.12",
     "@storybook/preset-typescript": "^1.1.0",
-    "@storybook/react": "5.3.11",
+    "@storybook/react": "5.3.12",
     "@testing-library/jest-dom": "^5.0.2",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^8.0.4",
