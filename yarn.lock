@@ -2603,15 +2603,6 @@
     regexpp "^3.0.0"
     tsutils "^3.17.1"
 
-"@typescript-eslint/experimental-utils@2.19.1":
-  version "2.19.1"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.19.1.tgz#170d356d9d5240467c93e35351b07d09f19e8be2"
-  integrity sha512-w0BCh/5WIsMqr2YZ7dOlu76dErgSKkh6wa0zJC1s8HzOYQEjdMFMlvoC6IKpeeLSWvPDg1VIBSgiV/aEh6uIoQ==
-  dependencies:
-    "@types/json-schema" "^7.0.3"
-    "@typescript-eslint/typescript-estree" "2.19.1"
-    eslint-scope "^5.0.0"
-
 "@typescript-eslint/experimental-utils@2.19.2":
   version "2.19.2"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.19.2.tgz#4611d44cf0f0cb460c26aa7676fc0a787281e233"
@@ -2630,19 +2621,6 @@
     "@typescript-eslint/experimental-utils" "2.19.2"
     "@typescript-eslint/typescript-estree" "2.19.2"
     eslint-visitor-keys "^1.1.0"
-
-"@typescript-eslint/typescript-estree@2.19.1":
-  version "2.19.1"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-2.19.1.tgz#bb6d501174756df17856e5434dfd342845e84fbe"
-  integrity sha512-rMCadf2iUJiw/J06U+JvdruaC+/rzxBamFlxfLCiuwJHy6aKw3gj4si89kxxY7DneVqmy4DZNDZvEV4SE2t7Lw==
-  dependencies:
-    debug "^4.1.1"
-    eslint-visitor-keys "^1.1.0"
-    glob "^7.1.6"
-    is-glob "^4.0.1"
-    lodash "^4.17.15"
-    semver "^6.3.0"
-    tsutils "^3.17.1"
 
 "@typescript-eslint/typescript-estree@2.19.2":
   version "2.19.2"
@@ -5959,9 +5937,9 @@ eslint-plugin-react@^7.14.3, eslint-plugin-react@^7.16.0:
     string.prototype.matchall "^4.0.2"
 
 eslint-plugin-testing-library@^2.0.0:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-testing-library/-/eslint-plugin-testing-library-2.2.2.tgz#78559d551510263416c4e77696143a38e2d44bef"
-  integrity sha512-bgA/gU1C/7ZwD2+NCcCOe8fdH+araHvzYfgOdvBf7jifWMNd4Twn6IXdP26ad/6+y0QnZzit6pCphNUWGDwpsQ==
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-testing-library/-/eslint-plugin-testing-library-2.2.3.tgz#de42d0c07e10578a2edb880c973758e948e7b47d"
+  integrity sha512-pqMTWjBxYv+TnuU3ZzbdUJ0s5p5jSInlk6ly+YnTBNCDy2aLYpnNqeEinYzj1nH8Cthij62ajqzgODg6J25QNA==
 
 eslint-scope@^4.0.3:
   version "4.0.3"
