@@ -45,7 +45,7 @@
     "react-dom": ">=0.13"
   },
   "devDependencies": {
-    "@types/react": ">=15",
+    "@types/react": "15",
     "babel-core": "^6.22.1",
     "babel-jest": "^18.0.0",
     "babel-loader": "^6.2.1",
@@ -74,7 +74,7 @@
     "react-dom": "^15.5.0",
     "react-test-renderer": "^15.5.0",
     "through2": "^2.0.3",
-    "typescript": "^2.0.10",
+    "typescript": "^2.9.2",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^1.7.0",
     "webpack-stream": "^3.2.0"
