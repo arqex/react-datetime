@@ -65,11 +65,14 @@ describe('Datetime', () => {
 	});
 
 	it('persistent valid months going monthView->yearView->monthView', () => {
+		const oldNow = Date.now;
+		Date.now = () => new Date('2018-06-01T00:00:00').getTime();
+		
 		const dateBefore = '2018-06-01';
 		const component = utils.createDatetime({ viewMode: 'months', isValidDate: (current) =>
 				current.isBefore(moment(dateBefore, 'YYYY-MM-DD'))
 			});
-
+		
 		expect(utils.isMonthView(component)).toBeTruthy();
 		expect(utils.getNthMonth(component, 4).hasClass('rdtDisabled')).toEqual(false);
 		expect(utils.getNthMonth(component, 5).hasClass('rdtDisabled')).toEqual(true);
@@ -84,6 +87,8 @@ describe('Datetime', () => {
 		utils.clickNthYear(component, 9);
 		expect(utils.getNthMonth(component, 4).hasClass('rdtDisabled')).toEqual(false);
 		expect(utils.getNthMonth(component, 5).hasClass('rdtDisabled')).toEqual(true);
+
+		Date.now = oldNow;
 	});
 
 	it('step through views', () => {
@@ -1062,7 +1067,7 @@ describe('Datetime', () => {
 			});
 
 			it('when selecting month', () => {
-				const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2),
+				const date = _momentTimezone.tz('2000-03-15T02:02:02.002Z', 'UTC'),
 					onChangeFn = jest.fn(),
 					component = utils.createDatetime({ defaultValue: date, dateFormat: 'YYYY-MM', onChange: onChangeFn });
 
