@@ -1475,14 +1475,14 @@
   resolved "https://registry.yarnpkg.com/@reach/observe-rect/-/observe-rect-1.0.5.tgz#28bf3c5c35da7fef72cd124af4ac32308d0c3f15"
   integrity sha512-EQLHhquzwAh2TFtMJU0PXJRmhpOrAhzApgoI4Lwn72J7ygrMk3Ys3a3i8KDnV0TetbwAxn4XSHi4pE8sPWUYLg==
 
-"@reach/popover@0.8.2":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@reach/popover/-/popover-0.8.2.tgz#29ccf40da971d9ad2850d568dcdba24e5f94f9a9"
-  integrity sha512-0zH1Pz7tMfEh3vpouQCwhwioA46cZ/NmD9tnI2MugwppcraLzCqHbKrtI4r4B+geJcjbLeJPMDrjqxYyO6GXJA==
+"@reach/popover@0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@reach/popover/-/popover-0.8.3.tgz#7ca7251feae53ec1d59e84eae23756983f1928e1"
+  integrity sha512-JZgxHMMDuJVXi9CtpQgbRH4HBczd/a3I4+v10Dx0D3ejBojRRUfOZu3XEL8Fg7osnAb26/bw2tZSFE/X5FwaSQ==
   dependencies:
     "@reach/portal" "^0.8.2"
     "@reach/rect" "^0.8.2"
-    "@reach/utils" "^0.8.2"
+    "@reach/utils" "^0.8.3"
     tabbable "^4.0.0"
     tslib "^1.10.0"
 
@@ -1513,10 +1513,10 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
-"@reach/utils@^0.8.2":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.8.2.tgz#0adb27de5038a9c9d1c302aee7ae7de4260a36b8"
-  integrity sha512-JrQC5nTr0pS0FR9qLKinBViRhQ75hdjr+rLROfqtT8QljnalvlmN6hkibap5YJRe4cOQtpjUplioCErQ4zBxJw==
+"@reach/utils@^0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.8.3.tgz#42ad74e0ce8df36818e3afd971ccf019f7065d36"
+  integrity sha512-ri2BNRvQbb27OWyLqpHkMi+pVz4MXZYPhEYc9M0AWHeVyjRjscIV7YlQ4AuqEczHaW/Y1QqDLWd0zJKVtK8b2w==
   dependencies:
     tslib "^1.10.0"
     warning "^4.0.3"
