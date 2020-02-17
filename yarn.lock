@@ -1604,10 +1604,10 @@
     react-inspector "^4.0.0"
     uuid "^3.3.2"
 
-"@storybook/addon-docs@5.3.11":
-  version "5.3.11"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-docs/-/addon-docs-5.3.11.tgz#79faba91193d6b8947452aa703436730b266ed98"
-  integrity sha512-0Bgj4KgrsuULcXrY6rg85/J2FS3FWaDlDUx8/mE8R4IEi40oCAISreKRTFRbu7j0YqI1VJ6U5RSUqIZ8EIUJ9w==
+"@storybook/addon-docs@5.3.13":
+  version "5.3.13"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-docs/-/addon-docs-5.3.13.tgz#6d54d5b074d0678822a80b592e99aea62a58b59f"
+  integrity sha512-M4U+DqvP8XTQvymrmMQdBwxrJQ2jVthPLbeWTwz09Jsz+YIcY+Itkpv3jxDlRTkq3Qe+Dr6FfZnGW9jz8D6d2Q==
   dependencies:
     "@babel/generator" "^7.4.0"
     "@babel/parser" "^7.4.2"
@@ -1617,14 +1617,14 @@
     "@mdx-js/loader" "^1.5.1"
     "@mdx-js/mdx" "^1.5.1"
     "@mdx-js/react" "^1.5.1"
-    "@storybook/addons" "5.3.11"
-    "@storybook/api" "5.3.11"
-    "@storybook/components" "5.3.11"
-    "@storybook/core-events" "5.3.11"
+    "@storybook/addons" "5.3.13"
+    "@storybook/api" "5.3.13"
+    "@storybook/components" "5.3.13"
+    "@storybook/core-events" "5.3.13"
     "@storybook/csf" "0.0.1"
-    "@storybook/postinstall" "5.3.11"
-    "@storybook/source-loader" "5.3.11"
-    "@storybook/theming" "5.3.11"
+    "@storybook/postinstall" "5.3.13"
+    "@storybook/source-loader" "5.3.13"
+    "@storybook/theming" "5.3.13"
     acorn "^7.1.0"
     acorn-jsx "^5.1.0"
     acorn-walk "^7.0.0"
@@ -1932,33 +1932,6 @@
   dependencies:
     core-js "^3.0.1"
 
-"@storybook/components@5.3.11":
-  version "5.3.11"
-  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-5.3.11.tgz#86c33f965bb83cdd1186255eb90a3b85feb34c6b"
-  integrity sha512-GgmeITo887JgpuF7zsFO2j1GEC6/Co/1ZD0UiWON3oRtMLthNRmkOCq4oOnKKrwAkDL9sCvT9XGaHu+rKEK0TA==
-  dependencies:
-    "@storybook/client-logger" "5.3.11"
-    "@storybook/theming" "5.3.11"
-    "@types/react-syntax-highlighter" "11.0.2"
-    "@types/react-textarea-autosize" "^4.3.3"
-    core-js "^3.0.1"
-    global "^4.3.2"
-    lodash "^4.17.15"
-    markdown-to-jsx "^6.9.1"
-    memoizerific "^1.11.3"
-    polished "^3.3.1"
-    popper.js "^1.14.7"
-    prop-types "^15.7.2"
-    react "^16.8.3"
-    react-dom "^16.8.3"
-    react-focus-lock "^2.1.0"
-    react-helmet-async "^1.0.2"
-    react-popper-tooltip "^2.8.3"
-    react-syntax-highlighter "^11.0.2"
-    react-textarea-autosize "^7.1.0"
-    simplebar-react "^1.0.0-alpha.6"
-    ts-dedent "^1.1.0"
-
 "@storybook/components@5.3.12":
   version "5.3.12"
   resolved "https://registry.yarnpkg.com/@storybook/components/-/components-5.3.12.tgz#0d930343624d459f46cd55b140be979709ee5a29"
@@ -2132,10 +2105,10 @@
     pretty-hrtime "^1.0.3"
     regenerator-runtime "^0.13.3"
 
-"@storybook/postinstall@5.3.11":
-  version "5.3.11"
-  resolved "https://registry.yarnpkg.com/@storybook/postinstall/-/postinstall-5.3.11.tgz#d72be37359aa8c485c8e79a649aada34b6156c8f"
-  integrity sha512-JCahsaK7GBibtR4hcX1HsgG51B5h/HD3/IhGHvE/aENHbhfD6Z3CKrD/wPNRUKOIx3c2RyDG42ROMWVtMmu+vg==
+"@storybook/postinstall@5.3.13":
+  version "5.3.13"
+  resolved "https://registry.yarnpkg.com/@storybook/postinstall/-/postinstall-5.3.13.tgz#4841aec958741aeee820ccab32891c87b462d081"
+  integrity sha512-JKPEywK+x4vF8GW2/KoeAIMaNlTkuBBgWwO9DdT5d99TMxxSeJmdQkaAwOaCZeWxBs8z3eC4VIkRHksw0sBSkw==
   dependencies:
     core-js "^3.0.1"
 
@@ -2216,13 +2189,13 @@
     qs "^6.6.0"
     util-deprecate "^1.0.2"
 
-"@storybook/source-loader@5.3.11":
-  version "5.3.11"
-  resolved "https://registry.yarnpkg.com/@storybook/source-loader/-/source-loader-5.3.11.tgz#3f0c823ced1782120afe3a1b117734a28dc50908"
-  integrity sha512-Se3pZSj1FlfT8goi351kd6e5ojguaGAQ6Z47W6vfsVMEFOQWcgL5zk2+yjr4GRBpTDJvxJFSNAEQkFV78rELbA==
+"@storybook/source-loader@5.3.13":
+  version "5.3.13"
+  resolved "https://registry.yarnpkg.com/@storybook/source-loader/-/source-loader-5.3.13.tgz#9ab1bf674652f6d54c26acf873b69a3743e08248"
+  integrity sha512-veRpTmbG3Mej8EgqB2sludfOWPGv4mfzxTCHIt6Lo3K54b8Hv5ffPkYlaj0o8yJL6hvwfbSuKVjsN0M6n/+eyA==
   dependencies:
-    "@storybook/addons" "5.3.11"
-    "@storybook/client-logger" "5.3.11"
+    "@storybook/addons" "5.3.13"
+    "@storybook/client-logger" "5.3.13"
     "@storybook/csf" "0.0.1"
     core-js "^3.0.1"
     estraverse "^4.2.0"
