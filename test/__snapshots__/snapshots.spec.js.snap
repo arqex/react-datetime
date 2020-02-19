@@ -61,25 +61,6 @@ exports[`dateFormat set to false 1`] = `
                     ▼
                   </span>
                 </div>
-                <div
-                  className="rdtCounter">
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▲
-                  </span>
-                  <div
-                    className="rdtCount">
-                    AM
-                  </div>
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▼
-                  </span>
-                </div>
               </div>
             </td>
           </tr>
@@ -7658,25 +7639,6 @@ exports[`viewMode set to time 1`] = `
                   <div
                     className="rdtCount">
                     00
-                  </div>
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▼
-                  </span>
-                </div>
-                <div
-                  className="rdtCounter">
-                  <span
-                    className="rdtBtn"
-                    onContextMenu={[Function]}
-                    onMouseDown={[Function]}>
-                    ▲
-                  </span>
-                  <div
-                    className="rdtCount">
-                    AM
                   </div>
                   <span
                     className="rdtBtn"
