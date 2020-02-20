@@ -1,43 +1,38 @@
 // This file is the playground used for development purposes (npm run playground)
+// not part of the library
 import React from 'react';
-import moment from 'moment';
-import DateTime from './datetime/DateTime';
+import Datetime from './datetime/DateTime';
 
-class App extends React.Component {
-
-	constructor() {
-		super();
-		this.state = {
-			locale: 'nl',
-			value: moment('2025-01-01', 'YYYY-MM-DD')
-		};
-	}
-	
+class App extends React.Component {  
 	render() {
 		return (
-			<div className="App">
-				<DateTime initialViewMode="years" isValidDate={ this.isValidDate } />
+			<Datetime
+				ref="datetime"
+				renderView={(mode, renderDefault) =>
+					this.renderView(mode, renderDefault)
+				}
+			/>
+		);
+	}
+
+	renderView(mode, renderDefault) {
+		// Only for years, months and days view
+		if (mode === 'time') return renderDefault();
+
+		return (
+			<div className="wrapper">
+				{renderDefault()}
+				<div className="controls">
+					<button onClick={() => this.goToToday()}>Today</button>
+				</div>
 			</div>
 		);
 	}
 
-	componentDidMount() {
-		this.changeLocale();
-	}
-
-	changeLocale() {
-		setTimeout(() => {
-			this.setState({ locale: 'sv' });
-		}, 5000);
-	}
-
-	renderYear(fnProps, fnYear, selected) {
-		console.log( fnYear, selected );
-		return <td {...fnProps}>custom-content</td>;
-	}
-	
-	isValidDate( current ) {
-		return current.isBefore(moment('2026-01-01', 'YYYY-MM-DD'));
+	goToToday() {
+		// Reset
+		this.refs.datetime.setViewDate(new Date());
+		this.refs.datetime.navigate('days');
 	}
 }
 

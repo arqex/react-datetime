@@ -11,7 +11,7 @@ Changelog
 * Creates `updateOnView` prop to decide when to update the date.
 * `onViewModeChange` prop renamed to `onNavigate`.
 * Creates `onBeforeNavigate` prop.
-* Creates `setViewData` and `setViewMode` methods.
+* Creates `setViewData` and `navigate` methods.
 * Fixes error clicking on days from the previous or next month in the days view
 * Fixes month, year and time views for locales that doesn't use gregorian numbers
 * Adds a playground to make simpler to try out the library by `npm run playground`

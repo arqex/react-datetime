@@ -546,7 +546,7 @@ export default class Datetime extends React.Component {
 	 * @param TYPES.string mode 
 	 */
 	navigate( mode ) {
-		this.showView( mode )();
+		this._showView( mode );
 	}
 
 	log( message, method ) {

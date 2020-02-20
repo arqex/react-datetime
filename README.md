@@ -25,7 +25,7 @@ yarn add react-datetime
 
 
 ```js
-require('react-datetime');
+import Datetime from 'react-datetime';
 
 ...
 
@@ -33,7 +33,7 @@ render: function() {
     return <Datetime />;
 }
 ```
-[See this example working](http://codepen.io/simeg/pen/mEmQmP).
+[See this example working](https://codesandbox.io/s/boring-dew-uzln3).
 
 **Don't forget to add the [CSS stylesheet](https://github.com/YouCanBookMe/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
 
@@ -86,19 +86,21 @@ To do so, we need to create our component with a `ref` prop amd use the referenc
 
 // ... once rendered we can use the imperative API
 // let's show the years view
-this.refs.datetime.setViewMode('years')
+this.refs.datetime.navigate('years')
 ```
 
 Available methods are:
-* **setViewMode( viewMode )**: Set the view currently shown by the calendar. View modes shipped with react-datetime are `years`, `months`, `days` and `time`.
+* **navigate( viewMode )**: Set the view currently shown by the calendar. View modes shipped with react-datetime are `years`, `months`, `days` and `time`, but you can alse navigate to custom modes that can be defined by the `renderView` prop.
 * **setViewDate( date )**: Set the date that is currently shown in the calendar. This is independent from the selected date and it's the one used to navigate through months or days in the calendar. It accepts a string in the format of the current locale, a `Date` or a `Moment` object as parameter.
 
 ## i18n
 Different language and date formats are supported by react-datetime. React uses [Moment.js](http://momentjs.com/) to format the dates, and the easiest way of changing the language of the calendar is [changing the Moment.js locale](http://momentjs.com/docs/#/i18n/changing-locale/).
 
+Don't forget to import your locale file from the moment's `moment/locale` folder.
+
 ```js
-var moment = require('moment');
-require('moment/locale/fr');
+import moment from 'moment';
+import 'moment/locale/fr';
 // Now react-datetime will be in french
 ```
 
@@ -107,7 +109,7 @@ If there are multiple locales loaded, you can use the prop `locale` to define wh
 <Datetime locale="fr-ca" />
 <Datetime locale="de" />
 ```
-[Here you can see the i18n example working](http://codepen.io/simeg/pen/yVVjdJ).
+[Here you can see the i18n example working](https://codesandbox.io/s/interesting-kare-0707b).
 
 ## Customize the Input Appearance
 It is possible to customize the way that the input is displayed. The simplest is to supply `inputProps` which get assigned to the default `<input />` element within the component.
@@ -119,11 +121,11 @@ It is possible to customize the way that the input is displayed. The simplest is
 Alternatively, if you need to render different content than an `<input />` element, you may supply a `renderInput` function which is called instead.
 
 ```js
-var MyDTPicker = React.createClass({
-    render: function(){
+class MyDTPicker extends React.Component {
+    render(){
         return <Datetime renderInput={ this.renderInput } />;
-    },
-    renderInput: function( props, openCalendar, closeCalendar ){
+    }
+    renderInput( props, openCalendar, closeCalendar ){
         function clear(){
             props.onChange({target: {value: ''}});
         }
@@ -135,66 +137,77 @@ var MyDTPicker = React.createClass({
                 <button onClick={clear}>clear</button>
             </div>
         );
-    },
-});
+    }
+}
 ```
+
+[See this example working](https://codesandbox.io/s/peaceful-water-3gb5m)
 
 ## Customize the Datepicker Appearance
 It is possible to customize the way that the datepicker display the days, months and years in the calendar. To adapt the calendar for every need it is possible to use the props `renderDay(props, currentDate, selectedDate)`, `renderMonth(props, month, year, selectedDate)` and `renderYear(props, year, selectedDate)` to customize the output of each rendering method.
 
 ```js
-var MyDTPicker = React.createClass({
-    render: function(){
-        return <Datetime
-            renderDay={ this.renderDay }
-            renderMonth={ this.renderMonth }
-            renderYear={ this.renderYear }
-        />;
-    },
-    renderDay: function( props, currentDate, selectedDate ){
-        return <td {...props}>{ '0' + currentDate.date() }</td>;
-    },
-    renderMonth: function( props, month, year, selectedDate ){
-        return <td {...props}>{ month }</td>;
-    },
-    renderYear: function( props, year, selectedDate ){
-        return <td {...props}>{ year % 100 }</td>;
-    }
-});
+class MyDTPicker extends React.Component {
+  render() {
+    return (
+      <Datetime
+        renderDay={this.renderDay}
+        renderMonth={this.renderMonth}
+        renderYear={this.renderYear}
+      />
+    );
+  }
+  renderDay(props, currentDate, selectedDate) {
+    // Adds 0 to the days in the days view
+    return <td {...props}>{"0" + currentDate.date()}</td>;
+  }
+  renderMonth(props, month, year, selectedDate) {
+    // Display the month index in the months view
+    return <td {...props}>{month}</td>;
+  }
+  renderYear(props, year, selectedDate) {
+    // Just display the last 2 digits of the year in the years view
+    return <td {...props}>{year % 100}</td>;
+  }
+}
 ```
-[You can see a customized calendar here.](http://codepen.io/simeg/pen/YppLmO)
+[See the customized calendar here.](https://codesandbox.io/s/peaceful-kirch-69e06)
 
-It's also possible to override some view in the calendar completelly. Let's say that we want to add a today button in our calendars, when we click it we display the `days` view with the current month:
+It's also possible to override some view in the calendar completelly. Let's say that we want to add a today button in our calendars, when we click it we go to the today view:
 ```js
 class MyDTPicker extends React.Component {
-    render() {
-        return (
-            <Datetime ref="datetime"
-                renderView={ (mode, renderDefault) => this.renderView( mode, renderDefault) }
-            />
-        );
-    }
+  render() {
+    return (
+      <Datetime
+        ref="datetime"
+        renderView={(mode, renderDefault) =>
+          this.renderView(mode, renderDefault)
+        }
+      />
+    );
+  }
 
-    renderView( mode, renderDefault ) {
-        // Only for years, months and days view
-        if( mode === 'time' ) return renderDefault();
+  renderView(mode, renderDefault) {
+    // Only for years, months and days view
+    if (mode === "time") return renderDefault();
 
-        return (
-            <div className="wrapper">
-                { renderDefault() }
-                <div className="controls">
-                    <button onClick={ () => this.goToToday() }>Today</button>
-                </div>
-            </div>
-        )
-    }
+    return (
+      <div className="wrapper">
+        {renderDefault()}
+        <div className="controls">
+          <button onClick={() => this.goToToday()}>Today</button>
+        </div>
+      </div>
+    );
+  }
 
-    goToToday() {
-        // Reset
-        this.refs.datetime.setViewDate( new Date() );
-        this.refs.datetime.setViewMode( 'days' );
-    }
-});
+  goToToday() {
+    // Reset
+    this.refs.datetime.setViewDate(new Date());
+    this.refs.datetime.navigate("days");
+  }
+}
+[See it working](https://codesandbox.io/s/frosty-fog-nrwk2)
 ```
 
 #### Method Parameters
@@ -265,7 +278,7 @@ For information about how to contribute, see the [CONTRIBUTING](.github/CONTRIBU
 ```sh
 npm run playground
 ```
-This will start a local development server building `src/index.js` where most development can be done.
+This will start a local development server building `src/index.js`. We can update react-datetime's sources then and the changes will be hot loaded by the development server.
 
 ### [Changelog](CHANGELOG.md)
 
