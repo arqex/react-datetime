@@ -49,14 +49,16 @@ export function SimpleExamples() {
       <div>
         <strong>Props:</strong> {JSON.stringify(props)}
         <div>
-          <DateTime
-            {...props}
-            value={value}
-            onChange={newVal => {
-              console.log({ newVal });
-              setValue(newVal);
-            }}
-          />
+          <React.StrictMode>
+            <DateTime
+              {...props}
+              value={value}
+              onChange={newVal => {
+                console.log({ newVal });
+                setValue(newVal);
+              }}
+            />
+          </React.StrictMode>
         </div>
         <br />
       </div>
@@ -104,14 +106,16 @@ export function InlineExamples() {
         <div>
           <strong>{label}</strong> - {props.dateFormat} {props.timeFormat}
         </div>
-        <DateTime
-          {...props}
-          value={value}
-          onChange={newVal => {
-            console.log({ newVal });
-            setValue(newVal);
-          }}
-        />
+        <React.StrictMode>
+          <DateTime
+            {...props}
+            value={value}
+            onChange={newVal => {
+              console.log({ newVal });
+              setValue(newVal);
+            }}
+          />
+        </React.StrictMode>
       </div>
     );
   }
@@ -320,19 +324,21 @@ export function CustomizableExample() {
           e.preventDefault();
         }}
       >
-        <DateTime
-          shouldHideInput={shouldHideInput}
-          value={value}
-          onChange={newValue => {
-            console.log(newValue);
-            setValue(newValue);
-          }}
-          dateFormat={dateFormat}
-          timeFormat={timeFormat}
-          dateTypeMode={dateTypeMode}
-          locale={currentLocale}
-          isValidDate={isValidDate}
-        />
+        <React.StrictMode>
+          <DateTime
+            shouldHideInput={shouldHideInput}
+            value={value}
+            onChange={newValue => {
+              console.log(newValue);
+              setValue(newValue);
+            }}
+            dateFormat={dateFormat}
+            timeFormat={timeFormat}
+            dateTypeMode={dateTypeMode}
+            locale={currentLocale}
+            isValidDate={isValidDate}
+          />
+        </React.StrictMode>
       </form>
     </div>
   );
