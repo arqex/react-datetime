@@ -9,7 +9,7 @@ import { ViewMode } from "./.";
 
 interface CalendarContainerProps {
   viewMode: ViewMode | undefined;
-  isStatic?: boolean;
+  isStatic: boolean;
   id?: string;
   className?: string;
   style?: object;
@@ -23,7 +23,7 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
     YearsViewProps,
   ref: any
 ) {
-  const { viewMode, isStatic = true, id, className, style, ...rest } = props;
+  const { viewMode, isStatic, id, className, style, ...rest } = props;
 
   let el: JSX.Element | undefined;
   switch (viewMode) {
