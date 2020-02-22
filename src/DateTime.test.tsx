@@ -2002,7 +2002,25 @@ describe("DateTime", () => {
           });
         }
 
-        // Decrease from AM to PM
+        // Change from AM to PM
+        act(() => {
+          userEvent.click(upArrows[4]);
+        });
+
+        expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
+          /02\/01\/202010535321PM/i
+        );
+
+        // Change from PM to AM
+        act(() => {
+          userEvent.click(upArrows[4]);
+        });
+
+        expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
+          /02\/01\/202010535321AM/i
+        );
+
+        // Change from AM to PM
         act(() => {
           userEvent.click(upArrows[4]);
         });
