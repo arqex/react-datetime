@@ -106,7 +106,7 @@
     "@storybook/addon-info": "5.3.13",
     "@storybook/addon-knobs": "5.3.13",
     "@storybook/addon-links": "5.3.13",
-    "@storybook/addons": "5.3.13",
+    "@storybook/addons": "5.3.14",
     "@storybook/preset-typescript": "^1.1.0",
     "@storybook/react": "5.3.13",
     "@testing-library/jest-dom": "^5.0.2",
