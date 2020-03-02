@@ -5,7 +5,7 @@
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable** and it even allows to edit date's milliseconds.
 
-These are the docs for version 3 of the library. If you are still using the deprecated v2, [here it is its documentation](https://github.com/YouCanBookMe/react-datetime/blob/2a83208452ac5e41c43fea31ef47c65efba0bb56/README.md), but we strongly recommend to migrate to version 3 in order to keep receiving updates. Please check [migrating react-datetime to version 3](mirateToV3.md) to safely update your app.
+These are the docs for version 3 of the library. If you are still using the deprecated v2, [here it is its documentation](https://github.com/YouCanBookMe/react-datetime/blob/2a83208452ac5e41c43fea31ef47c65efba0bb56/README.md), but we strongly recommend to migrate to version 3 in order to keep receiving updates. Please check [migrating react-datetime to version 3](migrateToV3.md) to safely update your app.
 
 ## Installation
 
