@@ -24,3 +24,19 @@ Version 3 is a big refactor of react-datetime. We have tried to not to change th
 * Updated typescript definitions.
 * Not depending on gulp to create the build anymore.
 * Updated most of the dependencies.
+
+## Steps to migrate to version 3
+
+The easiest way of migrating to v3 is updating the dependency in your package.json:
+```
+react-datetime: "^3.0.0"
+```
+
+Then tell npm to start updating in your CLI:
+```
+npm update react-datetime
+```
+
+Once the update has finishes try your app. It might seem to be working ok, but some props have changes and if they don't break your app, your pickers might be behaving a little bit differently.
+
+We should better search for the following props in your code and replace them as recommended in the points below:
