@@ -19,6 +19,7 @@ Version 3 is a big refactor of react-datetime. We have tried to not to change th
 * Clicking on days from the previous or next month in the days view should work properly now.
 * Month, year and time views for locales that don't use gregorian numbers should work properly now.
 * A playground has been added to the repo, that makes simpler to work on react-datetime development and test out changes quickly. To run it: `npm run playground`.
+* Not using the deprecated method `componentWillReceiveProps` any more.
 * We are not using create-react-class anymore, bye bye 2016's react!
 * Updated typescript definitions.
 * Not depending on gulp to create the build anymore.

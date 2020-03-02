@@ -56,8 +56,8 @@ Below we have all the props that we can use with the `<DateTime>` component. The
 | **utc** | `boolean` | `false` | When true, input time values will be interpreted as UTC (Zulu time) by Moment.js. Otherwise they will default to the user's local timezone.
 | **displayTimeZone** | `string` | `null` | **Needs [moment's timezone](https://momentjs.com/timezone/) available in your project.** When specified, input time values will be displayed in the given time zone. Otherwise they will default to the user's local timezone (unless `utc` specified).
 | **onChange** | `function` | empty function | Callback trigger when the date changes. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback receives the value of the input (a string). |
-| **onOpen** | `function` | empty function | Callback trigger for when the user opens the datepicker. The callback receives an event of type SyntheticEvent. |
-| **onClose** | `function` | empty function | Callback trigger for when the user clicks outside of the input. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returned. |
+| **onOpen** | `function` | empty function | Callback trigger for when the user opens the datepicker. |
+| **onClose** | `function` | empty function | Callback trigger for when the calendar get closed. The callback receives the selected `moment` object as only parameter, if the date in the input is valid. If the date in the input is not valid, the callback returns the value in the input. |
 | **onNavigate** | `function` | empty function | Callback trigger when the view mode changes. The callback receives the selected view mode string (`years`, `months`, `days` or `time`) as only parameter.|
 | **onBeforeNavigate** | `function` | ( nextView, currentView, viewDate ) => nextView | Allows to intercept a change of the calendar view. The accepted function receives the view that it's supposed to navigate to, the view that is showing currently and the date currently shown in the view. Return a viewMode ( default ones are `years`, `months`, `days` or `time`) to navigate to it. If the function returns a "falsy" value, the navigation is stopped and we will remain in the current view. |
 | **onNavigateBack** | `function` | empty function | Callback trigger when the user navigates to the previous month, year or decade. The callback receives the amount and type ('month', 'year') as parameters. |
@@ -74,7 +74,7 @@ Below we have all the props that we can use with the `<DateTime>` component. The
 | **closeOnSelect** | `boolean` | `false` | When `true`, once the day has been selected, the datepicker will be automatically closed.
 | **closeOnTab** | `boolean` | `true` | When `true` and the input is focused, pressing the `tab` key will close the datepicker.
 | **timeConstraints** | `object` | `null` | Add some constraints to the timepicker. It accepts an `object` with the format `{ hours: { min: 9, max: 15, step: 2 }}`, this example means the hours can't be lower than `9` and higher than `15`, and it will change adding or subtracting `2` hours everytime the buttons are clicked. The constraints can be added to the `hours`, `minutes`, `seconds` and `milliseconds`.
-| **closeOnClickOutside** | `boolean` | `false` | When `true`, keep the datepicker open when click event is triggered outside of component. When `false`, close it.
+| **closeOnClickOutside** | `boolean` | `true` | When the calendar is open and `closeOnClickOutside` is `true` (its default value), clickin outside of the calendar or input closes the calendar. If `false` the calendar stays open.
 
 ## Imperative API
 Besides controlling the selected date, there is a navigation through months, years, decades that react-datetime handles for us. We can interfere in it, stopping view transtions by using the prop `onBeforeNavigate`, but we can also navigate to a specific view and date by using some imperative methods.
@@ -90,7 +90,7 @@ this.refs.datetime.navigate('years')
 ```
 
 Available methods are:
-* **navigate( viewMode )**: Set the view currently shown by the calendar. View modes shipped with react-datetime are `years`, `months`, `days` and `time`, but you can alse navigate to custom modes that can be defined by the `renderView` prop.
+* **navigate( viewMode )**: Set the view currently shown by the calendar. View modes shipped with react-datetime are `years`, `months`, `days` and `time`, but you can alse navigate to custom modes that can be defined by using the `renderView` prop.
 * **setViewDate( date )**: Set the date that is currently shown in the calendar. This is independent from the selected date and it's the one used to navigate through months or days in the calendar. It accepts a string in the format of the current locale, a `Date` or a `Moment` object as parameter.
 
 ## i18n
@@ -112,11 +112,19 @@ If there are multiple locales loaded, you can use the prop `locale` to define wh
 [Here you can see the i18n example working](https://codesandbox.io/s/interesting-kare-0707b).
 
 ## Customize the Input Appearance
-It is possible to customize the way that the input is displayed. The simplest is to supply `inputProps` which get assigned to the default `<input />` element within the component.
+It is possible to customize the way that the input is displayed. The simplest is to supply `inputProps` which will get directly assigned to the `<input />` element within the component. We can tweak the inputs this way:
 
 ```js
-<Datetime inputProps={{ placeholder: 'N/A', disabled: true }}>
+let inputProps = {
+    placeholder: 'N/A',
+    disabled: true,
+    onMouseLeave: () => alert('You went to the input but it was disabled')
+};
+
+<Datetime inputProps={ inputProps } />
 ```
+[See the customized input working](https://codesandbox.io/s/interesting-kare-0707b)
+
 
 Alternatively, if you need to render different content than an `<input />` element, you may supply a `renderInput` function which is called instead.
 
@@ -142,6 +150,14 @@ class MyDTPicker extends React.Component {
 ```
 
 [See this example working](https://codesandbox.io/s/peaceful-water-3gb5m)
+
+
+Or maybe you just want to shown the calendar and don't need an input at all. In that case `input={ false }` will make the trick:
+
+```js
+    <Datetime input={ false } />;
+```
+[See react-datetime calendar working without an input](https://codesandbox.io/s/busy-vaughan-wh773)
 
 ## Customize the Datepicker Appearance
 It is possible to customize the way that the datepicker display the days, months and years in the calendar. To adapt the calendar for every need it is possible to use the props `renderDay(props, currentDate, selectedDate)`, `renderMonth(props, month, year, selectedDate)` and `renderYear(props, year, selectedDate)` to customize the output of each rendering method.
@@ -222,13 +238,13 @@ In this example the component is being used as a *timepicker* and can *only be u
 ```js
 <Datetime dateFormat={false} />
 ```
-[Working example of a timepicker here.](http://codepen.io/simeg/pen/mRQBrp)
+[Working example of a timepicker here.](https://codesandbox.io/s/loving-nobel-sbok2)
 
 In this example you can *only select a year and month*.
 ```js
 <Datetime dateFormat="YYYY-MM" timeFormat={false} />
 ```
-[Working example of only selecting year and month here.](http://codepen.io/simeg/pen/apQLdd)
+[Working example of only selecting year and month here.](https://codesandbox.io/s/recursing-pascal-xl643)
 
 ## Selectable Dates
 It is possible to disable dates in the calendar if the user are not allowed to select them, e.g. dates in the past. This is done using the prop `isValidDate`, which admits a function in the form `function(currentDate, selectedDate)` where both arguments are [moment objects](http://momentjs.com). The function shall return `true` for selectable dates, and `false` for disabled ones.
@@ -236,14 +252,14 @@ It is possible to disable dates in the calendar if the user are not allowed to s
 In the example below are *all dates before today* disabled.
 
 ```js
-// Let's use the static moment reference in the Datetime component
-var yesterday = Datetime.moment().subtract( 1, 'day' );
+import moment from 'moment';
+var yesterday = moment().subtract( 1, 'day' );
 var valid = function( current ){
     return current.isAfter( yesterday );
 };
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled days here.](http://codepen.io/simeg/pen/XNNYJg)
+[Working example of disabled days here.](https://codesandbox.io/s/thirsty-shape-l4qg4)
 
 It's also possible to disable *the weekends*, as shown in the example below.
 ```js
@@ -252,7 +268,7 @@ var valid = function( current ){
 };
 <Datetime isValidDate={ valid } />
 ```
-[Working example of disabled weekends here.](http://codepen.io/simeg/pen/jVVKWq)
+[Working example of disabled weekends here.](https://codesandbox.io/s/laughing-keller-3wq1g)
 
 ## Usage with TypeScript
 
