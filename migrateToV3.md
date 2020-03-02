@@ -2,7 +2,26 @@
 
 A new decade has begun and a new mayor version of react-datetime is released. It's been some years since the first release of v2 and a lot has changed in the react ecosystem. 
 
-In v3 we have updated the whole base code of react-datetime, catching up with the latest tools and practices. We can proudly say that this is the best performant, most customizable and easiest to understand version of the library so far. It also make the mantainance of react-datetime much simpler, so we are ready to keep shipping new features and improvements.
+In v3 we have updated the whole base code of react-datetime, catching up with the latest tools and practices. We can proudly say that this is the best performant, most customizable and easiest to understand version of the library so far. This version also makes the mantainance of react-datetime much simpler, this way we are ready to keep shipping new features and improvements.
+
+
+## Steps to migrate to version 3
+
+The easiest way of migrating to v3 is updating the dependency in your package.json:
+```
+react-datetime: "^3.0.0"
+```
+
+Then tell npm to start updating in your CLI:
+```
+npm update react-datetime
+```
+
+Once the update has finished, try your app. 
+
+It might seem to be working ok but [some props have changed](#whats-new-in-react-datetime-v3) and, even if they don't break your app, your pickers might be behaving a little bit differently.
+
+We should better search for the following props in our code and replace them as recommended in the points below:
 
 ## What's new in react-datetime v3
 Version 3 is a big refactor of react-datetime. We have tried to not to change the API drastically, but some of the props has been renamed or removed, trying to make them clearer for the developer. A complete list of changes is:
@@ -24,19 +43,3 @@ Version 3 is a big refactor of react-datetime. We have tried to not to change th
 * Updated typescript definitions.
 * Not depending on gulp to create the build anymore.
 * Updated most of the dependencies.
-
-## Steps to migrate to version 3
-
-The easiest way of migrating to v3 is updating the dependency in your package.json:
-```
-react-datetime: "^3.0.0"
-```
-
-Then tell npm to start updating in your CLI:
-```
-npm update react-datetime
-```
-
-Once the update has finishes try your app. It might seem to be working ok, but some props have changes and if they don't break your app, your pickers might be behaving a little bit differently.
-
-We should better search for the following props in your code and replace them as recommended in the points below:
