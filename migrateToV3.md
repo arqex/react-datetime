@@ -22,6 +22,12 @@ Once the update has finished, try your app.
 It might seem to be working ok but [some props have changed](#whats-new-in-react-datetime-v3) and, even if they don't break your app, your pickers might be behaving a little bit differently.
 
 We should better search for the following props in our code and replace them as recommended in the points below:
+* Search for `disableCloseOnClickOutside`. If you are using it, replace it for `closeOnClickOutside={false}`.
+* Search for `<Datetime>` components using `onBlur` or `onFocus`. Replace those props by `onClose` or `onOpen`. `onOpen` doesn't receive any paramter anymore, so don't try to access to them.
+* Search for `onViewModeChange`. If you find it, rename it by `onNavigate`.
+* Search for `Datetime.setView`. If you were using this imperative method, replace it by `Datetime.navigate`.
+
+Those are the main changes that might break your app, if you weren't able to find any of those, react-datetime v3 should keep working as usual in your project.
 
 ## What's new in react-datetime v3
 Version 3 is a big refactor of react-datetime. We have tried to not to change the API drastically, but some of the props has been renamed or removed, trying to make them clearer for the developer. A complete list of changes is:
@@ -43,3 +49,18 @@ Version 3 is a big refactor of react-datetime. We have tried to not to change th
 * Updated typescript definitions.
 * Not depending on gulp to create the build anymore.
 * Updated most of the dependencies.
+
+## Collaborate
+
+react-datetime is a nice choice if you are looking to some open source project to lay your hands on. It's a project used by thousands of developers, and the changes in this version makes easier for everyone to understand it. It's not simple, but it's small enough to be get you initiated in a couple of hours.
+
+If you are interested and want to start playing with it's code, clone it and fire up the playground included in the repo:
+
+```
+git clone https://github.com/YouCanBookMe/react-datetime.git
+cd react-datetime
+npm install
+npm run playground
+```
+
+Have a look at [the list of known issues](https://github.com/YouCanBookMe/react-datetime/issues), and maybe you can kill a bug making somebody happy! :)
