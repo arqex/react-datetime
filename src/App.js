@@ -3,36 +3,27 @@
 import React from 'react';
 import Datetime from './datetime/DateTime';
 
-class App extends React.Component {  
-	render() {
-		return (
-			<Datetime
-				ref="datetime"
-				renderView={(mode, renderDefault) =>
-					this.renderView(mode, renderDefault)
-				}
-			/>
-		);
+class App extends React.Component { 
+	state = {
+		date: new Date()
 	}
 
-	renderView(mode, renderDefault) {
-		// Only for years, months and days view
-		if (mode === 'time') return renderDefault();
-
+	render() {
 		return (
-			<div className="wrapper">
-				{renderDefault()}
-				<div className="controls">
-					<button onClick={() => this.goToToday()}>Today</button>
-				</div>
+			<div>
+				<Datetime
+					ref="datetime"
+					value={ this.state.date }
+				/>
+				<button onClick={ this._update }>Update</button>
 			</div>
 		);
 	}
-
-	goToToday() {
-		// Reset
-		this.refs.datetime.setViewDate(new Date());
-		this.refs.datetime.navigate('days');
+	
+	_update = () => {
+		this.setState({
+			date: new Date( this.state.date.getTime() + 10000000000 )
+		});
 	}
 }
 

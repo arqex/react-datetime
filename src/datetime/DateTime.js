@@ -448,12 +448,17 @@ export default class Datetime extends React.Component {
 
 		let needsUpdate = false;
 		let thisProps = this.props;
+
 		['locale', 'utc', 'displayZone', 'dateFormat', 'timeFormat'].forEach( function(p) {
 			prevProps[p] !== thisProps[p] && (needsUpdate = true);
 		});
 
 		if ( needsUpdate ) {
 			this.regenerateDates( this.props );
+		}
+
+		if ( thisProps.value && thisProps.value !== prevProps.value ) {
+			this.setViewDate( thisProps.value );
 		}
 
 		this.checkTZ( this.props );

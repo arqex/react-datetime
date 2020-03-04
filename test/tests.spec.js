@@ -706,7 +706,7 @@ describe('Datetime', () => {
 					onChange: updated => {
 						expect(updated).toBe( invalidStrDate );
 						done();
-					}
+					}	
 				})
 			;
 
@@ -1378,6 +1378,19 @@ describe('Datetime', () => {
 			component.find('.form-control').simulate('change', { target: { value: strDate }});
 		});
 
+		it('should update the view date when updating the value prop', done => {
+			const value1 = moment('2020-03-04T13:00:10.121Z');
+			const value2 = moment('2021-06-04T13:00:10.121Z');
+
+			let component = utils.createDatetime({ value: value1 });
+			expect( component.instance().state.viewDate.toISOString() ).toBe(value1.toISOString());
+
+			component.setProps({ value: value2 });
+			setTimeout( () => {
+				expect( component.instance().state.viewDate.toISOString() ).toBe(value2.toISOString());
+				done();
+			});
+		});
 	});
 
 	describe('View navigation', () => {

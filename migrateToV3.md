@@ -32,7 +32,7 @@ Those are the main changes that might break your app, if you weren't able to fin
 ## What's new in react-datetime v3
 Version 3 is a big refactor of react-datetime. We have tried to not to change the API drastically, but some of the props has been renamed or removed, trying to make them clearer for the developer. A complete list of changes is:
 
-* The props are read directly when possible, don't deriving the state from them when possible.
+* The props are read directly when possible, not deriving the state from them anymore.
 * `disableCloseOnClickOutside` prop is now `closeOnClickOutside` (avoid double negations).
 * `onBlur` and `onFocus` props are renamed to `onClose` and `onOpen` since they had nothing to do with the blur event and it was misleading for some users. If we want to listen to the input's `onBlur` and `onFocus` use `inputProps`.
 * Time is not updated anymore on right clicks.
@@ -44,17 +44,17 @@ Version 3 is a big refactor of react-datetime. We have tried to not to change th
 * Clicking on days from the previous or next month in the days view should work properly now.
 * Month, year and time views for locales that don't use gregorian numbers should work properly now.
 * A playground has been added to the repo, that makes simpler to work on react-datetime development and test out changes quickly. To run it: `npm run playground`.
-* Not using the deprecated method `componentWillReceiveProps` any more.
+* Not using the deprecated method `componentWillReceiveProps` anymore.
 * We are not using create-react-class anymore, bye bye 2016's react!
 * Updated typescript definitions.
 * Not depending on gulp to create the build anymore.
 * Updated most of the dependencies.
 
-## Collaborate
+## Contribute
 
-react-datetime is a nice choice if you are looking to some open source project to lay your hands on. It's a project used by thousands of developers, and the changes in this version makes easier for everyone to understand it. It's not simple, but it's small enough to be get you initiated in a couple of hours.
+react-datetime is a nice choice if you are looking for some open-source project to lay your hands on. It's a library used by thousands of developers, and the changes in this version make easier for everyone to understand it. It's not simple, but it's small enough to be get you initiated in a couple of hours.
 
-If you are interested and want to start playing with it's code, clone it and fire up the playground included in the repo:
+If you are interested and want to start playing with its code, clone it and fire up the playground included in the repo:
 
 ```
 git clone https://github.com/YouCanBookMe/react-datetime.git
@@ -63,4 +63,8 @@ npm install
 npm run playground
 ```
 
-Have a look at [the list of known issues](https://github.com/YouCanBookMe/react-datetime/issues), and maybe you can kill a bug making somebody happy! :)
+This will start a local development server building `src/index.js`. We can update react-datetime's sources then and our changes will be hot loaded by the development server.
+
+Looking for something to work on? Have a look at [the list of known issues](https://github.com/YouCanBookMe/react-datetime/issues), and maybe you can kill a bug making somebody happy! :)
+
+Have some work done? That's great! But please, read the [react-datetime contributing guidelines](.github/CONTRIBUTING.md) before submitting it.
