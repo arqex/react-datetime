@@ -135,7 +135,7 @@
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "jest-junit": "^10.0.0",
     "lint-staged": "^10.0.8",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.0",
     "react": "^16.13.0",
     "react-docgen-typescript-loader": "^3.7.1",
     "react-dom": "^16.13.0",
