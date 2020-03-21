@@ -11,7 +11,7 @@ const {
   findByTestId,
   queryByTestId,
   findAllByText,
-  findByLabelText
+  findByLabelText,
 } = screen;
 
 import RawDateTime, { FORMATS } from "./index";
@@ -2347,8 +2347,8 @@ describe("DateTime", () => {
                 dateTypeMode="input-format"
                 timeConstraints={{
                   hours: {
-                    step: 3
-                  }
+                    step: 3,
+                  },
                 }}
               />
             </>
@@ -2410,8 +2410,8 @@ describe("DateTime", () => {
                 dateTypeMode="input-format"
                 timeConstraints={{
                   minutes: {
-                    step: 15
-                  }
+                    step: 15,
+                  },
                 }}
               />
             </>
@@ -2473,8 +2473,8 @@ describe("DateTime", () => {
                 dateTypeMode="input-format"
                 timeConstraints={{
                   seconds: {
-                    step: 30
-                  }
+                    step: 30,
+                  },
                 }}
               />
             </>
@@ -2536,8 +2536,8 @@ describe("DateTime", () => {
                 dateTypeMode="input-format"
                 timeConstraints={{
                   milliseconds: {
-                    step: 10
-                  }
+                    step: 10,
+                  },
                 }}
               />
             </>
@@ -3138,13 +3138,13 @@ describe("DateTime", () => {
           key: "Enter",
           code: 13,
           keyCode: 13,
-          charCode: 13
+          charCode: 13,
         });
         fireEvent.keyUp(element, {
           key: "Enter",
           code: 13,
           keyCode: 13,
-          charCode: 13
+          charCode: 13,
         });
 
         // Assert the picker is closed
@@ -3176,13 +3176,13 @@ describe("DateTime", () => {
           key: "ArrowDown",
           code: 40,
           keyCode: 40,
-          charCode: 40
+          charCode: 40,
         });
         fireEvent.keyUp(element, {
           key: "ArrowDown",
           code: 40,
           keyCode: 40,
-          charCode: 40
+          charCode: 40,
         });
 
         // Assert the picker is open
@@ -3222,13 +3222,13 @@ describe("DateTime", () => {
           key: "Escape",
           code: 27,
           keyCode: 27,
-          charCode: 27
+          charCode: 27,
         });
         fireEvent.keyUp(element, {
           key: "Escape",
           code: 27,
           keyCode: 27,
-          charCode: 27
+          charCode: 27,
         });
 
         // Assert the picker is closed
@@ -3268,13 +3268,13 @@ describe("DateTime", () => {
           key: "Tab",
           code: 9,
           keyCode: 9,
-          charCode: 9
+          charCode: 9,
         });
         fireEvent.keyUp(element, {
           key: "Tab",
           code: 9,
           keyCode: 9,
-          charCode: 9
+          charCode: 9,
         });
 
         // Assert the picker is closed

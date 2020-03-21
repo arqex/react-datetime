@@ -28,7 +28,7 @@ function YearsView(props: YearsViewProps) {
     setSelectedDate,
     formatOptions,
     setViewMode,
-    isValidDate
+    isValidDate,
   } = props;
 
   const startYear = Math.floor(getYear(viewDate) / 10) * 10;
@@ -63,13 +63,13 @@ function YearsView(props: YearsViewProps) {
       </table>
       <table>
         <tbody>
-          {[0, 1, 2].map(rowNum => {
+          {[0, 1, 2].map((rowNum) => {
             // Use 4 columns per row
             const rowStartYear = startYear - 1 + rowNum * 4;
 
             return (
               <tr key={rowStartYear}>
-                {[0, 1, 2, 3].map(y => {
+                {[0, 1, 2, 3].map((y) => {
                   const year = y + rowStartYear;
                   const currentYear = setYear(viewDate, year);
 
@@ -79,7 +79,7 @@ function YearsView(props: YearsViewProps) {
                   );
 
                   const isDisabled = daysInYear.every(
-                    d => typeof isValidDate === "function" && !isValidDate(d)
+                    (d) => typeof isValidDate === "function" && !isValidDate(d)
                   );
 
                   const isActive =
@@ -92,8 +92,8 @@ function YearsView(props: YearsViewProps) {
                         "rdtYear",
                         {
                           rdtDisabled: isDisabled,
-                          rdtActive: isActive
-                        }
+                          rdtActive: isActive,
+                        },
                       ])}
                       onClick={() => {
                         if (!isDisabled) {

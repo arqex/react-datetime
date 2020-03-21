@@ -27,7 +27,7 @@ function MonthsView(props: MonthsViewProps) {
     setSelectedDate,
     formatOptions,
     setViewMode,
-    isValidDate
+    isValidDate,
   } = props;
 
   return (
@@ -60,13 +60,13 @@ function MonthsView(props: MonthsViewProps) {
       </table>
       <table>
         <tbody>
-          {[0, 1, 2].map(rowNum => {
+          {[0, 1, 2].map((rowNum) => {
             // Use 4 columns per row
             const rowStartMonth = rowNum * 4;
 
             return (
               <tr key={rowStartMonth}>
-                {[0, 1, 2, 3].map(m => {
+                {[0, 1, 2, 3].map((m) => {
                   const month = m + rowStartMonth;
                   const currentMonth = setMonth(viewDate, month);
 
@@ -76,7 +76,7 @@ function MonthsView(props: MonthsViewProps) {
                   );
 
                   const isDisabled = daysInMonths.every(
-                    d => typeof isValidDate === "function" && !isValidDate(d)
+                    (d) => typeof isValidDate === "function" && !isValidDate(d)
                   );
                   const monthDate = setMonth(new Date(), month);
 
@@ -90,8 +90,8 @@ function MonthsView(props: MonthsViewProps) {
                         "rdtMonth",
                         {
                           rdtDisabled: isDisabled,
-                          rdtActive: isActive
-                        }
+                          rdtActive: isActive,
+                        },
                       ])}
                       onClick={() => {
                         if (!isDisabled) {

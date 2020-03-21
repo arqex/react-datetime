@@ -14,22 +14,22 @@ const allCounters: Array<"hours" | "minutes" | "seconds" | "milliseconds"> = [
   "hours",
   "minutes",
   "seconds",
-  "milliseconds"
+  "milliseconds",
 ];
 
 const defaultTimeConstraints = {
   hours: {
-    step: 1
+    step: 1,
   },
   minutes: {
-    step: 1
+    step: 1,
   },
   seconds: {
-    step: 1
+    step: 1,
   },
   milliseconds: {
-    step: 1
-  }
+    step: 1,
+  },
 };
 
 interface TimePartInterface {
@@ -159,7 +159,7 @@ function onStartClicking(
       viewTimestamp: origViewTimestamp,
       timeConstraints,
       setViewTimestamp,
-      setSelectedDate
+      setSelectedDate,
     } = props;
     if (!readonly) {
       let viewTimestamp = change(op, type, origViewTimestamp, timeConstraints);
@@ -205,7 +205,7 @@ function TimeView(props: TimeViewProps) {
     setViewMode,
     timeFormat,
     formatOptions,
-    setSelectedDate
+    setSelectedDate,
   } = props;
 
   let numCounters = 0;
@@ -231,7 +231,7 @@ function TimeView(props: TimeViewProps) {
           <tr>
             <td>
               <div className="rdtCounters">
-                {allCounters.map(type => {
+                {allCounters.map((type) => {
                   const val = getFormatted(
                     type,
                     viewTimestamp,
