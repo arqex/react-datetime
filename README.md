@@ -1,6 +1,9 @@
 # react-datetime
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![CircleCI](https://circleci.com/gh/NateRadebaugh/react-datetime.svg?style=svg)](https://circleci.com/gh/NateRadebaugh/react-datetime)
@@ -99,7 +102,7 @@ import subDays from "date-fns/subDays";
 import isAfter from "date-fns/isAfter";
 
 const yesterday = subDays(new Date(), 1);
-const isValidDate = function(current) {
+const isValidDate = function (current) {
   return isAfter(current, yesterday);
 };
 
@@ -111,7 +114,7 @@ It's also possible to disable _the weekends_, as shown in the example below.
 ```js
 import isWeekend from "date-fns/isWeekend";
 
-const isValidDate = function(current) {
+const isValidDate = function (current) {
   return !isWeekend(current);
 };
 
@@ -167,6 +170,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

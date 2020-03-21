@@ -33,7 +33,7 @@ function DaysView(props: DaysViewProps) {
     setSelectedDate,
     formatOptions,
     setViewMode,
-    isValidDate
+    isValidDate,
   } = props;
 
   const sunday = startOfWeek(viewDate);
@@ -79,7 +79,7 @@ function DaysView(props: DaysViewProps) {
             </th>
           </tr>
           <tr>
-            {[0, 1, 2, 3, 4, 5, 6].map(colNum => (
+            {[0, 1, 2, 3, 4, 5, 6].map((colNum) => (
               <th key={colNum} className="dow">
                 {format(
                   addDays(sunday, colNum),
@@ -91,7 +91,7 @@ function DaysView(props: DaysViewProps) {
           </tr>
         </thead>
         <tbody>
-          {[0, 1, 2, 3, 4, 5].map(rowNum => {
+          {[0, 1, 2, 3, 4, 5].map((rowNum) => {
             // Use 7 columns per row
             const rowStartDay = rowNum * 7;
 
@@ -102,7 +102,7 @@ function DaysView(props: DaysViewProps) {
                   FORMATS.FULL_TIMESTAMP
                 )}
               >
-                {[0, 1, 2, 3, 4, 5, 6].map(d => {
+                {[0, 1, 2, 3, 4, 5, 6].map((d) => {
                   const i = d + rowStartDay;
                   const workingDate = addDays(prevMonthLastWeekStart, i);
                   const isDisabled =
@@ -122,8 +122,8 @@ function DaysView(props: DaysViewProps) {
                           rdtNew: isBefore(endOfMonth(viewDate), workingDate),
                           rdtActive: isActive,
                           rdtToday: isSameDay(workingDate, new Date()),
-                          rdtDisabled: isDisabled
-                        }
+                          rdtDisabled: isDisabled,
+                        },
                       ])}
                       onClick={() => {
                         if (!isDisabled) {

@@ -1,7 +1,7 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: "./tsconfig.json"
+    project: "./tsconfig.json",
   },
   extends: [
     "eslint:recommended",
@@ -11,25 +11,25 @@ module.exports = {
     "prettier",
     "prettier/react",
     "prettier/@typescript-eslint",
-    "plugin:testing-library/react"
+    "plugin:testing-library/react",
   ],
   plugins: ["@typescript-eslint", "react", "react-hooks", "prettier"],
   parserOptions: {
     sourceType: "module",
     ecmaFeatures: {
-      jsx: true
-    }
+      jsx: true,
+    },
   },
   env: {
     browser: true,
     es6: true,
     node: true,
-    jest: true
+    jest: true,
   },
   settings: {
     react: {
-      version: "16.8.6"
-    }
+      version: "16.8.6",
+    },
   },
   rules: {
     // Enforce prettier formatting
@@ -73,6 +73,6 @@ module.exports = {
     // Simplify Typescript
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/ban-ts-ignore": "off"
-  }
+    "@typescript-eslint/ban-ts-ignore": "off",
+  },
 };

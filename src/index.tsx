@@ -31,7 +31,7 @@ export const FORMATS = {
   SHORT_MILLISECOND: "SSS",
   MILLISECOND: "SSS",
   AM_PM: "a",
-  FULL_TIMESTAMP: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
+  FULL_TIMESTAMP: "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
 };
 
 function useDefaultStateWithOverride<Type>(defaultValue: Type) {
@@ -108,7 +108,7 @@ interface NextViewModes {
 const nextViewModes: NextViewModes = {
   days: "days",
   months: "days",
-  years: "months"
+  years: "months",
 };
 
 function getDefaultViewMode(
@@ -214,7 +214,7 @@ function DateTime(
       : dateFormat || timeFormat || "";
 
   const formatOptions: FormatOptions = {
-    locale
+    locale,
   };
 
   const valueAsDate = parse(value, fullFormat, formatOptions);
@@ -437,7 +437,7 @@ function DateTime(
     },
     onChange: onInputChange,
     onKeyDown: onInputKeyDown,
-    value: valueStr
+    value: valueStr,
   };
 
   //
@@ -458,7 +458,7 @@ function DateTime(
     setViewMode,
     isValidDate,
     isStatic: shouldHideInput,
-    timeConstraints
+    timeConstraints,
   };
 
   return !shouldHideInput ? (

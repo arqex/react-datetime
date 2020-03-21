@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   withKnobs,
   optionsKnob as options,
-  boolean
+  boolean,
 } from "@storybook/addon-knobs";
 import DateTime, { FORMATS } from "./.";
 import "../scss/styles.scss";
@@ -22,7 +22,7 @@ const { useState } = React;
 
 export default {
   title: "DateTime",
-  decorators: [withKnobs]
+  decorators: [withKnobs],
 };
 
 function parseString(value) {
@@ -53,7 +53,7 @@ export function SimpleExamples() {
             <DateTime
               {...props}
               value={value}
-              onChange={newVal => {
+              onChange={(newVal) => {
                 console.log({ newVal });
                 setValue(newVal);
               }}
@@ -110,7 +110,7 @@ export function InlineExamples() {
           <DateTime
             {...props}
             value={value}
-            onChange={newVal => {
+            onChange={(newVal) => {
               console.log({ newVal });
               setValue(newVal);
             }}
@@ -193,7 +193,7 @@ export function CustomizableExample() {
     "EN - undefined": undefined,
     "NL - nl": nl,
     "ES - es": es,
-    "FR - fr": fr
+    "FR - fr": fr,
   };
 
   const currentLocaleName = options(
@@ -204,7 +204,7 @@ export function CustomizableExample() {
     ),
     "EN - undefined",
     {
-      display: "inline-radio"
+      display: "inline-radio",
     }
   );
   const currentLocale = currentLocaleName && localeOptions[currentLocaleName];
@@ -224,13 +224,13 @@ export function CustomizableExample() {
         `${FORMATS.MONTH}-${FORMATS.DAY}`,
         `${FORMATS.FULL_MONTH_NAME}`,
         `${FORMATS.YEAR}/${FORMATS.MONTH}`,
-        `${FORMATS.YEAR}`
+        `${FORMATS.YEAR}`,
       ].reduce((prev, curr) => {
         return { ...prev, [curr]: curr };
       }, {}),
       `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`,
       {
-        display: "inline-radio"
+        display: "inline-radio",
       }
     )
   );
@@ -249,13 +249,13 @@ export function CustomizableExample() {
         `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND}`,
         `${FORMATS.HOUR}:${FORMATS.MINUTE}:${FORMATS.SECOND}.${FORMATS.MILLISECOND} ${FORMATS.AM_PM}`,
         `${FORMATS.HOUR}${FORMATS.MINUTE}`,
-        `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}xxx`
+        `${FORMATS.MILITARY_HOUR}:${FORMATS.MINUTE}xxx`,
       ].reduce((prev, curr) => {
         return { ...prev, [curr]: curr };
       }, {}),
       `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`,
       {
-        display: "inline-radio"
+        display: "inline-radio",
       }
     )
   );
@@ -272,7 +272,7 @@ export function CustomizableExample() {
       ),
       "undefined",
       {
-        display: "inline-radio"
+        display: "inline-radio",
       }
     )
   );
@@ -290,7 +290,7 @@ export function CustomizableExample() {
     "Days Before The 18th": (date: Date) =>
       isBefore(date, startOfDay(new Date(2019, 7, 18, 11, 25))),
     "Just March": (date: Date) => isSameMonth(date, new Date(2019, 2, 16)),
-    "Just 2012": (date: Date) => isSameYear(date, new Date(2012, 2, 16))
+    "Just 2012": (date: Date) => isSameYear(date, new Date(2012, 2, 16)),
   };
 
   const isValidDateName = options(
@@ -301,7 +301,7 @@ export function CustomizableExample() {
     ),
     "default - undefined",
     {
-      display: "inline-radio"
+      display: "inline-radio",
     }
   );
   const isValidDate = isValidDateName && isValidDateOptions[isValidDateName];
@@ -319,7 +319,7 @@ export function CustomizableExample() {
       </div>
 
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           alert("submitted");
           e.preventDefault();
         }}
@@ -328,7 +328,7 @@ export function CustomizableExample() {
           <DateTime
             shouldHideInput={shouldHideInput}
             value={value}
-            onChange={newValue => {
+            onChange={(newValue) => {
               console.log(newValue);
               setValue(newValue);
             }}
