@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "lib": ["dom", "esnext"],
     "importHelpers": true,
-    "rootDir": "./",
+    "rootDir": "./src",
     "sourceMap": true,
     "declaration": true,
     "baseUrl": "./",
