@@ -1,10 +1,19 @@
 import * as React from "react";
-import { render, act, fireEvent, screen, wait } from "@testing-library/react";
+import {
+  render,
+  act,
+  fireEvent,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import isSameDay from "date-fns/isSameDay";
 import isSameMonth from "date-fns/isSameMonth";
 import isSameYear from "date-fns/isSameYear";
+
+import MutationObserver from "@sheerun/mutationobserver-shim";
+window.MutationObserver = MutationObserver;
 
 const {
   findByText,
@@ -52,7 +61,9 @@ function mockDate(isoDate: Date) {
 
 afterEach(async () => {
   global.Date = RealDate;
-  await wait();
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  await waitFor(() => {});
 });
 
 describe("DateTime", () => {
