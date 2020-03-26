@@ -517,7 +517,7 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
-    it('disableCloseOnClickOutside=false', () => {
+		it('disableCloseOnClickOutside=false', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				component = utils.createDatetime({ value: date, disableCloseOnClickOutside: false });
 
@@ -561,6 +561,43 @@ describe('Datetime', () => {
 			expect(utils.getSeconds(component)).toEqual('03');
 		});
 
+		it('should snap to next plausible step on increase with snap enabled', () => {
+			const component = utils.createDatetime({
+				snap: true,
+				timeFormat: 'HH:mm:ss:SSS', 
+				viewMode: 'time',
+				defaultValue: new Date(2000, 0, 15, 2, 2, 50, 2), 
+				timeConstraints: {
+					hours: {
+						step: 2
+					},
+					minutes: {
+						step: 5
+					},
+					seconds: {
+						step: 15
+					},
+					milliseconds: {
+						step: 100
+					}
+				},
+			});
+
+			expect(utils.getHours(component)).toEqual('2');
+			utils.increaseHour(component);
+			expect(utils.getHours(component)).toEqual('4');
+			
+			expect(utils.getMinutes(component)).toEqual('02');
+			utils.increaseMinute(component);
+			expect(utils.getMinutes(component)).toEqual('05');
+			
+			expect(utils.getSeconds(component)).toEqual('50');
+			utils.increaseSecond(component);
+			expect(utils.getSeconds(component)).toEqual('00');
+			utils.increaseSecond(component);
+			expect(utils.getSeconds(component)).toEqual('15');
+		});
+
 		it('decrease time', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
@@ -591,6 +628,43 @@ describe('Datetime', () => {
 			expect(utils.getSeconds(component)).toEqual('02');
 			utils.decreaseSecond(component);
 			expect(utils.getSeconds(component)).toEqual('01');
+		});
+
+		it('should snap to previews plausible step on decrease with snap enabled', () => {
+			const component = utils.createDatetime({
+				snap: true,
+				timeFormat: 'HH:mm:ss:SSS', 
+				viewMode: 'time',
+				defaultValue: new Date(2000, 0, 15, 5, 2, 2, 2), 
+				timeConstraints: {
+					hours: {
+						step: 2
+					},
+					minutes: {
+						step: 5
+					},
+					seconds: {
+						step: 15
+					},
+					milliseconds: {
+						step: 100
+					}
+				},
+			});
+
+			expect(utils.getHours(component)).toEqual('5');
+			utils.decreaseHour(component);
+			expect(utils.getHours(component)).toEqual('4');
+			
+			expect(utils.getMinutes(component)).toEqual('02');
+			utils.decreaseMinute(component);
+			expect(utils.getMinutes(component)).toEqual('00');
+			
+			expect(utils.getSeconds(component)).toEqual('02');
+			utils.decreaseSecond(component);
+			expect(utils.getSeconds(component)).toEqual('00');
+			utils.decreaseSecond(component);
+			expect(utils.getSeconds(component)).toEqual('45');
 		});
 
 		it('long increase time', (done) => {

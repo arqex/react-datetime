@@ -201,24 +201,42 @@ var DateTimePickerTime = createClass({
 	},
 
 	toggleDayPart: function( type ) { // type is always 'hours'
-		var value = parseInt( this.state[ type ], 10) + 12;
+		var value = parseInt( this.state[ type ], 10 ) + 12;
 		if ( value > this.timeConstraints[ type ].max )
 			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
 		return this.pad( type, value );
 	},
 
 	increase: function( type ) {
-		var value = parseInt( this.state[ type ], 10) + this.timeConstraints[ type ].step;
-		if ( value > this.timeConstraints[ type ].max )
-			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
-		return this.pad( type, value );
+		var step = this.timeConstraints[ type ].step;
+		var previousValue = parseInt( this.state[ type ], 10 );
+		var isSnapEnabled = Boolean( this.props.snap );
+
+		var nextValue = ( isSnapEnabled && previousValue % step !== 0 && step > 1 ) ?
+			previousValue + ( step - previousValue % step ) :
+			previousValue + step;
+		
+		if ( nextValue > this.timeConstraints[ type ].max ) {
+			nextValue = this.timeConstraints[ type ].min + ( nextValue - ( this.timeConstraints[ type ].max + 1 ) );
+		}
+		
+		return this.pad( type, nextValue );
 	},
 
 	decrease: function( type ) {
-		var value = parseInt( this.state[ type ], 10) - this.timeConstraints[ type ].step;
-		if ( value < this.timeConstraints[ type ].min )
-			value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
-		return this.pad( type, value );
+		var step = this.timeConstraints[ type ].step;
+		var previousValue = parseInt( this.state[ type ], 10 );
+		var isSnapEnabled = Boolean( this.props.snap );
+		
+		var nextValue = ( isSnapEnabled && previousValue % step !== 0 && step > 1 ) ?
+			previousValue - ( previousValue % step ) :
+			previousValue - step;
+		
+		if ( nextValue < this.timeConstraints[ type ].min ) {
+			nextValue = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - nextValue );
+		}
+		
+		return this.pad( type, nextValue );
 	},
 
 	pad: function( type, value ) {
