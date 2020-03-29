@@ -13554,10 +13554,10 @@ ts-pnp@^1.1.2:
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.1.6.tgz#389a24396d425a0d3162e96d2b4638900fdc289a"
   integrity sha512-CrG5GqAAzMT7144Cl+UIFP7mz/iIhiy+xQ6GGcnjTezhALT02uPMRw7tgDSESgB5MsfKt55+GPWw4ir1kVtMIQ==
 
-tsdx@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/tsdx/-/tsdx-0.13.0.tgz#f8348b22724a7e618d501d0e8d133ff95d43f3e3"
-  integrity sha512-upsdQfzLz6eR5tDn0qQ/UJzQQk/mZLHE+2XNHndI87U3gvnXOJjvXcEx2X/Rl5n36bk44Ynvt5V9N3waT8tZng==
+tsdx@0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/tsdx/-/tsdx-0.13.1.tgz#6fdfb7f70ecd22462d36c80f538d86f42d364b92"
+  integrity sha512-BAp96F6eLZVIk5FETP8kSbkC8sqvDQa0pPMz4euZ8am2aFNzeXNX7DbOxfMxYiwzfyemfUsmyb4p5usVbqM4IQ==
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/helper-module-imports" "^7.0.0"
