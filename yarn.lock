@@ -2305,9 +2305,9 @@
     "@types/testing-library__react" "^10.0.1"
 
 "@testing-library/user-event@^10.0.0":
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-10.1.1.tgz#c37783460eb3d2c7f4493418377b5f1e30d4cdce"
-  integrity sha512-bOfY0j2FXQcq3k9D5rhYyVqaR1zibl14vqZxXH9q9IQhDvx62hBIFC9n0hHhDgSDEEOVeHejAlC2nGK/79p8Dw==
+  version "10.1.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-10.1.2.tgz#cdf064856af9ead0ce121eff1ddf3e0e1cad9516"
+  integrity sha512-77pydoNNMfcCgE6RasuYB+Dm61mWtzO1l4JBWHbFyUXXf9FA+9XrpLWWB/vA/FfTsjj4vrV7kHNorj3UKLtcig==
 
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   version "7.0.7"
