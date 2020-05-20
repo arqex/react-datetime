@@ -2283,9 +2283,11 @@
     "@types/testing-library__react" "^10.0.1"
 
 "@testing-library/user-event@^10.0.0":
-  version "10.3.2"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-10.3.2.tgz#208954ae8b4a1cea65be4557db9affc1e80af38c"
-  integrity sha512-/oyuBE61/l2HOJavOEXv/Z0oatPu2n/A/EptQSH4MoJimyBGozSvmwiP/Wol9IbSo3u2Tl93BDd7b0M4aGLYug==
+  version "10.3.3"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-10.3.3.tgz#6ee51dc145f5ae61424e5bc00d6c436037adee13"
+  integrity sha512-dwBhi+MMe1d3xOsq3nriqmN6BeC4JkzaVfflvx/E9QoM0pkGufS7/tXztLvlQuMudjmE9bHzpGyJyL3CgwOpvg==
+  dependencies:
+    "@babel/runtime" "^7.9.6"
 
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   version "7.0.7"
