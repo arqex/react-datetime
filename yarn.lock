@@ -2283,9 +2283,9 @@
     "@types/testing-library__react" "^10.0.1"
 
 "@testing-library/user-event@^10.0.0":
-  version "10.3.4"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-10.3.4.tgz#701905a19bad92805820b816327ab086bdd0e832"
-  integrity sha512-ZuqR2cBAOArvBdPiIjmAKaZdFAtZSH6Oz2I5+uHonMXRyR0uTtz2fTWyPuiu4JATdK7gLIq1s02BMJGWgmh1lA==
+  version "10.3.5"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-10.3.5.tgz#4a47cdc0b2f41255a7140afbe4933b0e9483cf86"
+  integrity sha512-9Jg5pg12099EoOb4Z/+UNtCFpFIblD6INkgeWuV/AjUiYP+s/u6aYGPaLrUYioJ8duQ3V421B29GVE/3JELjCQ==
   dependencies:
     "@babel/runtime" "^7.9.6"
 
