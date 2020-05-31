@@ -1,0 +1,16 @@
+steps:
+  - name: Checkout
+    uses: actions/checkout@v2
+  - name: Semantic Release
+    uses: cycjimmy/semantic-release-action@v2
+    env:
+      GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  - name: Do something when a new release published
+    if: steps.semantic.outputs.new_release_published == 'true'
+    run: |
+      echo ${{ steps.semantic.outputs.new_release_version }}
+      echo ${{ steps.semantic.outputs.new_release_major_version }}
+      echo ${{ steps.semantic.outputs.new_release_minor_version }}
+      echo ${{ steps.semantic.outputs.new_release_patch_version }}

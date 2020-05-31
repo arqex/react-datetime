@@ -12,6 +12,12 @@
     "Javier Marquez",
     "Nate Radebaugh"
   ],
+  "release": {
+    "branches": [
+      "master",
+      "next"
+    ]
+  },
   "main": "dist/index.js",
   "umd:main": "dist/react-datetime.umd.production.min.js",
   "module": "dist/react-datetime.esm.js",
