@@ -12,7 +12,7 @@ interface CalendarContainerProps {
   isStatic: boolean;
   id?: string;
   className?: string;
-  style?: object;
+  style?: { [x: string]: any };
 }
 
 const CalendarContainer = React.forwardRef(function CalendarContainer(

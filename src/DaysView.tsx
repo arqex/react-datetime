@@ -24,7 +24,7 @@ export interface DaysViewProps {
   isValidDate?: (date: Date) => boolean;
 }
 
-function DaysView(props: DaysViewProps) {
+function DaysView(props: DaysViewProps): JSX.Element {
   const {
     timeFormat,
     viewDate,
