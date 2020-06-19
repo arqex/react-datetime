@@ -19,7 +19,7 @@ export interface MonthsViewProps {
   isValidDate?: (date: Date) => boolean;
 }
 
-function MonthsView(props: MonthsViewProps) {
+function MonthsView(props: MonthsViewProps): JSX.Element {
   const {
     viewDate,
     setViewDate,

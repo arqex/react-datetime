@@ -173,7 +173,7 @@ function DateTime(
       React.InputHTMLAttributes<HTMLInputElement>,
       HTMLInputElement
     >
-) {
+): JSX.Element {
   const {
     isValidDate,
     dateTypeMode: rawDateTypeMode,
@@ -429,12 +429,6 @@ function DateTime(
     type: "text",
     onClick: open,
     onFocus: open,
-    onBlur: () => {
-      if (typeof onBlur === "function") {
-        const changedValue = getChangedValue(valueAsDate);
-        onBlur(changedValue);
-      }
-    },
     onChange: onInputChange,
     onKeyDown: onInputKeyDown,
     value: valueStr,

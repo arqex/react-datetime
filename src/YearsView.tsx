@@ -20,7 +20,7 @@ export interface YearsViewProps {
   isValidDate?: (date: Date) => boolean;
 }
 
-function YearsView(props: YearsViewProps) {
+function YearsView(props: YearsViewProps): JSX.Element {
   const {
     viewDate,
     setViewDate,

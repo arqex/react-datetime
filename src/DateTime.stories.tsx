@@ -41,7 +41,7 @@ function parseString(value) {
   return value;
 }
 
-export function SimpleExamples() {
+export function SimpleExamples(): JSX.Element {
   function UncontrolledDateTime(props) {
     const [value, setValue] = useState<any>(props.value);
 
@@ -56,6 +56,9 @@ export function SimpleExamples() {
               onChange={(newVal) => {
                 console.log({ newVal });
                 setValue(newVal);
+              }}
+              onBlur={(newVal) => {
+                alert(newVal);
               }}
             />
           </React.StrictMode>
@@ -97,7 +100,7 @@ export function SimpleExamples() {
   );
 }
 
-export function InlineExamples() {
+export function InlineExamples(): JSX.Element {
   function UncontrolledDateTime({ label, ...props }) {
     const [value, setValue] = useState<any>(props.value);
 
@@ -178,7 +181,7 @@ export function InlineExamples() {
   );
 }
 
-export function CustomizableExample() {
+export function CustomizableExample(): JSX.Element {
   const [value, setValue] = useState<any>(new Date(2019, 7, 2, 11, 25));
 
   //

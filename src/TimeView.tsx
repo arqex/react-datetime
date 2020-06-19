@@ -198,7 +198,7 @@ export interface TimeViewProps {
   timeConstraints?: TimeConstraints;
 }
 
-function TimeView(props: TimeViewProps) {
+function TimeView(props: TimeViewProps): JSX.Element {
   const {
     viewTimestamp,
     dateFormat,

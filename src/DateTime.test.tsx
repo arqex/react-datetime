@@ -2806,10 +2806,10 @@ describe("DateTime", () => {
 
           // Tab out
           userEvent.tab();
-          expect(element).not.toHaveFocus();
 
           // Should have triggered "onBlur"
           expect(handleBlur).toHaveBeenCalledTimes(1);
+          expect(element).not.toHaveFocus();
           expect(handleBlur).toHaveBeenCalledWith(undefined);
         });
 
@@ -2846,10 +2846,10 @@ describe("DateTime", () => {
 
           // Tab out
           userEvent.tab();
-          expect(element).not.toHaveFocus();
 
           // Should have triggered "onBlur"
           expect(handleBlur).toHaveBeenCalledTimes(1);
+          expect(element).not.toHaveFocus();
           expect(handleBlur).toHaveBeenCalledWith(
             new Date(2019, 0, 16, 12, 1, 12, 34)
           );
@@ -3040,7 +3040,7 @@ describe("DateTime", () => {
           expect(textContent).toMatch(/1200AM/i);
         }
 
-        userEvent.type(element, "4:13 PM");
+        userEvent.paste(element, "4:13 PM");
 
         // Assert the typed value is now active
         expect(await findByTestId("time-picker")).toBeVisible();
