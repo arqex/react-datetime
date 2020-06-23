@@ -9246,11 +9246,10 @@ jest-jasmine2@^26.0.1:
     throat "^5.0.0"
 
 jest-junit@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-11.0.0.tgz#75105b69b193a743405686e6704bd9768846d6b8"
-  integrity sha512-kuBDK5PlxRSDM0qxxzkAS6AcwJOYVJTPCLUl64YywV+IDS6TwxkPCXWz2Mj5X+XaC06fxF7mSCB0lP04RBS71Q==
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-11.0.1.tgz#944b997b7318efd1f021b4f0fce4937f8d66f392"
+  integrity sha512-stgc0mBoiSg/F9qWd4KkmR3K7Nk2u+M/dc1oup7gxz9mrzGcEaU2YL9/0QscVqqg3IOaA1P5ZXtozG/XR6j6nw==
   dependencies:
-    jest-validate "^24.9.0"
     mkdirp "^1.0.4"
     strip-ansi "^5.2.0"
     uuid "^3.3.3"
