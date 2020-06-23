@@ -9,14 +9,7 @@
   dependencies:
     "@babel/highlight" "^7.0.0"
 
-"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.1", "@babel/code-frame@^7.5.5", "@babel/code-frame@^7.8.3":
-  version "7.10.1"
-  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.1.tgz#d5481c5095daa1c57e16e54c6f9198443afb49ff"
-  integrity sha512-IGhtTmpjGbYzcEDOw7DcQtbQSXcG9ftmAXtWTu9V936vDye4xjjekktFAtgZsWpzTj/X01jocB46mTywm/4SZw==
-  dependencies:
-    "@babel/highlight" "^7.10.1"
-
-"@babel/code-frame@^7.10.3":
+"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.1", "@babel/code-frame@^7.10.3", "@babel/code-frame@^7.5.5", "@babel/code-frame@^7.8.3":
   version "7.10.3"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.3.tgz#324bcfd8d35cd3d47dae18cde63d752086435e9a"
   integrity sha512-fDx9eNW0qz0WkUeqL6tXEXzVlPh6Y5aCDEZesl0xBGA8ndRukX91Uk44ZqnkECp01NAZUdCAl+aiQNGi0k88Eg==
@@ -350,7 +343,7 @@
     "@babel/traverse" "^7.10.1"
     "@babel/types" "^7.10.1"
 
-"@babel/highlight@^7.0.0", "@babel/highlight@^7.10.1":
+"@babel/highlight@^7.0.0":
   version "7.10.1"
   resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.10.1.tgz#841d098ba613ba1a427a2b383d79e35552c38ae0"
   integrity sha512-8rMof+gVP8mxYZApLF/JgNDAkdKa+aJt3ZYxF8z6+j/hpeXL7iMsKCPHa2jNMHu/qqBwzQF4OHNoYi8dMA/rYg==
@@ -6570,9 +6563,9 @@ eslint@^6.1.0:
     v8-compile-cache "^2.0.3"
 
 eslint@^7.2.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.3.0.tgz#f9f1fc3dc1227985d0db88769f2bbac7b4b875d7"
-  integrity sha512-dJMVXwfU5PT1cj2Nv2VPPrKahKTGdX+5Dh0Q3YuKt+Y2UhdL2YbzsVaBMyG9HC0tBismlv/r1+eZqs6SMIV38Q==
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.3.1.tgz#76392bd7e44468d046149ba128d1566c59acbe19"
+  integrity sha512-cQC/xj9bhWUcyi/RuMbRtC3I0eW8MH0jhRELSvpKYkWep3C6YZ2OkvcvJVUeO6gcunABmzptbXBuDoXsjHmfTA==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.10.0"
