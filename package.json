@@ -153,7 +153,7 @@
     "sass-loader": "^9.0.0",
     "style-loader": "^1.1.2",
     "ts-jest": "^26.1.0",
-    "ts-loader": "^7.0.0",
+    "ts-loader": "^8.0.0",
     "tsdx": "0.13.2",
     "typescript": "^3.8.3"
   },
