@@ -2578,9 +2578,9 @@
     "@testing-library/dom" "^7.17.1"
 
 "@testing-library/user-event@^12.0.2":
-  version "12.0.17"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-12.0.17.tgz#51f48905d62b3c6960fe5ea7a46152d8440f1586"
-  integrity sha512-Et22bfgnLdowY0VSP8MQuCP9wdrqWMrm9OCXSi3q3rx7ctSvEsC/jYNbgK/MJdDSpVhNVnB+fqm1VhVlDDRN6A==
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-12.1.0.tgz#a2597419466a93e338c91baa7bb22d4da0309d1d"
+  integrity sha512-aH/XuNFpPD6dA+fh754EGqKeAzpH66HpLJYkv9vOAih2yGmTM8JiZ8uisQDGWRPkc6sxE2zCqDwLR4ZskhRCxw==
   dependencies:
     "@babel/runtime" "^7.10.2"
 
@@ -15109,9 +15109,9 @@ ts-jest@^26.1.0:
     yargs-parser "18.x"
 
 ts-loader@^8.0.0:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-8.0.1.tgz#9670dcbce2a8c8506d01a37fee042350d02c8c21"
-  integrity sha512-I9Nmly0ufJoZRMuAT9d5ijsC2B7oSPvUnOJt/GhgoATlPGYfa17VicDKPcqwUCrHpOkCxr/ybLYwbnS4cOxmvQ==
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-8.0.2.tgz#ee73ca9350f745799396fff8578ba29b1e95616b"
+  integrity sha512-oYT7wOTUawYXQ8XIDsRhziyW0KUEV38jISYlE+9adP6tDtG+O5GkRe4QKQXrHVH4mJJ88DysvEtvGP65wMLlhg==
   dependencies:
     chalk "^2.3.0"
     enhanced-resolve "^4.0.0"
