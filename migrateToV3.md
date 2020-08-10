@@ -1,6 +1,6 @@
 # Migrate react-datetime to v3
 
-A new decade has begun and a new mayor version of react-datetime is released. It's been some years since the first release of v2 and a lot has changed in the react ecosystem. 
+A new decade has begun and a new major version of react-datetime is released. It's been some years since the first release of v2 and a lot has changed in the react ecosystem. 
 
 In v3 we have updated the whole base code of react-datetime, catching up with the latest tools and practices. We can proudly say that this is the best performant, most customizable and easiest to understand version of the library so far. This version also makes the mantainance of react-datetime much simpler, this way we are ready to keep shipping new features and improvements.
 
@@ -23,12 +23,12 @@ It might seem to be working ok but [some props have changed](#whats-new-in-react
 
 We should better search for the following props in our code and replace them as recommended in the points below:
 * Search for `defaultValue` prop in your datetime code. Remame it to `initialValue`.
-* Search for `defaultViewDate` props and replace them by `initialViewDate`.
-* Search form `viewMode` props and replace them by `initialViewMode`.
-* Search for `disableCloseOnClickOutside`. If you are using it, replace it for `closeOnClickOutside={false}`.
-* Search for `<Datetime>` components using `onBlur` or `onFocus`. Replace those props by `onClose` or `onOpen`. `onOpen` doesn't receive any paramter anymore, so don't try to access to them.
-* Search for `onViewModeChange`. If you find it, rename it by `onNavigate`.
-* Search for `Datetime.setView`. If you were using this imperative method, replace it by `Datetime.navigate`.
+* Search for `defaultViewDate` props and replace them with `initialViewDate`.
+* Search for `viewMode` props and replace them with `initialViewMode`.
+* Search for `disableCloseOnClickOutside`. If you are using it, replace it with `closeOnClickOutside={false}`.
+* Search for `<Datetime>` components using `onBlur` or `onFocus`. Replace those props with `onClose` or `onOpen`. `onOpen` doesn't receive any parameters anymore, so don't try to access to them.
+* Search for `onViewModeChange`. If you find it, rename it to `onNavigate`.
+* Search for `Datetime.setView`. If you were using this imperative method, replace it with `Datetime.navigate`.
 
 Those are the main changes that might break your app, if you weren't able to find any of those, react-datetime v3 should keep working as usual in your project.
 
@@ -36,7 +36,7 @@ Those are the main changes that might break your app, if you weren't able to fin
 Version 3 is a big refactor of react-datetime. We have tried to not to change the API drastically, but some of the props has been renamed or removed, trying to make them clearer for the developer. A complete list of changes is:
 
 * The props are read directly when possible, not deriving the state from them anymore.
-* The props that were used to set initial values, like `defaultValue`, `viewDate` or `viewMode` are renamed with the  `initial` prefix to express better their intention. `initialValue`, `initialViewDate`, `initialViewMode`.
+* The props that were used to set initial values, like `defaultValue`, `viewDate` or `viewMode` are renamed with the  `initial` prefix to better express their intention. `initialValue`, `initialViewDate`, `initialViewMode`.
 * `disableCloseOnClickOutside` prop is now `closeOnClickOutside` (avoid double negations).
 * `onBlur` and `onFocus` props are renamed to `onClose` and `onOpen` since they had nothing to do with the blur event and it was misleading for some users. If we want to listen to the input's `onBlur` and `onFocus` use `inputProps`.
 * Time is not updated anymore on right clicks.
