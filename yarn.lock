@@ -2042,18 +2042,18 @@
     ts-dedent "^1.1.1"
     util-deprecate "^1.0.2"
 
-"@storybook/addon-knobs@6.0.5":
-  version "6.0.5"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-6.0.5.tgz#8d9a8dde5eefb03cab9383b86922ce30c378d99e"
-  integrity sha512-P3pNBkIRyYTgT1R7dD+8hBBlMMpTawLYYyzpjGnsf8daYvEdZd4M73PPU4GZnucX/EhZlZLMDX8AW6jkwUb68w==
+"@storybook/addon-knobs@6.0.6":
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-6.0.6.tgz#3c1e180e3efdae80aebd77de816be44bfca40380"
+  integrity sha512-8jk/FRFWyeFrBsDw6URuInKS5TyHagEStjxlHeEG6QqN50Q60LPGoIigt/axhdSsw3HewnoNGM9ZCUkODm/vAA==
   dependencies:
-    "@storybook/addons" "6.0.5"
-    "@storybook/api" "6.0.5"
-    "@storybook/channels" "6.0.5"
-    "@storybook/client-api" "6.0.5"
-    "@storybook/components" "6.0.5"
-    "@storybook/core-events" "6.0.5"
-    "@storybook/theming" "6.0.5"
+    "@storybook/addons" "6.0.6"
+    "@storybook/api" "6.0.6"
+    "@storybook/channels" "6.0.6"
+    "@storybook/client-api" "6.0.6"
+    "@storybook/components" "6.0.6"
+    "@storybook/core-events" "6.0.6"
+    "@storybook/theming" "6.0.6"
     copy-to-clipboard "^3.0.8"
     core-js "^3.0.1"
     escape-html "^1.0.3"
