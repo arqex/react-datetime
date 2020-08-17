@@ -111,7 +111,7 @@
     "@babel/preset-env": "^7.10.2",
     "@sheerun/mutationobserver-shim": "^0.3.3",
     "@storybook/addon-actions": "6.0.5",
-    "@storybook/addon-docs": "6.0.5",
+    "@storybook/addon-docs": "6.0.10",
     "@storybook/addon-knobs": "6.0.10",
     "@storybook/addon-links": "6.0.10",
     "@storybook/addons": "6.0.10",
