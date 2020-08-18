@@ -114,7 +114,7 @@
     "@storybook/addon-docs": "6.0.10",
     "@storybook/addon-knobs": "6.0.12",
     "@storybook/addon-links": "6.0.10",
-    "@storybook/addons": "6.0.10",
+    "@storybook/addons": "6.0.12",
     "@storybook/preset-scss": "^1.0.2",
     "@storybook/react": "6.0.10",
     "@testing-library/jest-dom": "^5.0.2",
