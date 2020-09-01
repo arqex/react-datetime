@@ -2,6 +2,10 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "./tsconfig.json",
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
   extends: [
     "eslint:recommended",
@@ -14,12 +18,6 @@ module.exports = {
     "plugin:testing-library/react",
   ],
   plugins: ["@typescript-eslint", "react", "react-hooks", "prettier"],
-  parserOptions: {
-    sourceType: "module",
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
   env: {
     browser: true,
     es6: true,
@@ -32,9 +30,6 @@ module.exports = {
     },
   },
   rules: {
-    // Enforce prettier formatting
-    "prettier/prettier": "error",
-
     // Help enforce hooks
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
@@ -75,5 +70,6 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-empty-function": "off",
   },
 };
