@@ -144,8 +144,8 @@ function toggleDayPart(
   };
 }
 
-let timer;
-let increaseTimer;
+let timer: NodeJS.Timeout;
+let increaseTimer: NodeJS.Timeout;
 let mouseUpListener: () => void;
 
 function onStartClicking(

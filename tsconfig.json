@@ -2,18 +2,13 @@
   "compilerOptions": {
     "jsx": "react",
     "module": "esnext",
-    "target": "es5",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "lib": ["dom", "esnext"],
     "importHelpers": true,
     "rootDir": "./src",
     "sourceMap": true,
-    "declaration": true,
-    "baseUrl": "./",
-    "paths": {
-      "*": ["src/*", "node_modules/*"]
-    }
+    "declaration": true
   },
   "include": ["src"]
 }

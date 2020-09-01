@@ -1,4 +1,12 @@
-import * as React from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  FC,
+  HTMLAttributes,
+} from "react";
 import Popover from "@reach/popover";
 import useOnClickOutside from "use-onclickoutside";
 
@@ -10,8 +18,6 @@ import isDateValid from "date-fns/isValid";
 import startOfDay from "date-fns/startOfDay";
 
 import CalendarContainer from "./CalendarContainer";
-
-const { useRef, useState, useEffect, useCallback } = React;
 
 export const FORMATS = {
   MONTH: "LL",
@@ -149,7 +155,11 @@ function getDateTypeMode(
 
 export type DateTypeMode = "utc-ms-timestamp" | "input-format" | "Date";
 
-interface DateTimeProps {
+export interface Props
+  extends Omit<
+    HTMLAttributes<HTMLInputElement>,
+    "onFocus" | "onBlur" | "onChange"
+  > {
   isValidDate?: (date: Date) => boolean;
 
   dateTypeMode?: DateTypeMode;
@@ -167,13 +177,9 @@ interface DateTimeProps {
   timeConstraints?: TimeConstraints;
 }
 
-function DateTime(
-  props: DateTimeProps &
-    React.DetailedHTMLProps<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      HTMLInputElement
-    >
-): JSX.Element {
+// Please do not use types off of a default export module or else Storybook Docs will suffer.
+// see: https://github.com/storybookjs/storybook/issues/9556
+export const DateTime: FC<Props> = (props): JSX.Element => {
   const {
     isValidDate,
     dateTypeMode: rawDateTypeMode,
@@ -187,7 +193,7 @@ function DateTime(
     shouldHideInput = false,
     timeConstraints,
     ...rest
-  } = props as DateTimeProps;
+  } = props;
 
   //
   // Formats
@@ -213,9 +219,12 @@ function DateTime(
       ? `${dateFormat} ${timeFormat}`
       : dateFormat || timeFormat || "";
 
-  const formatOptions: FormatOptions = {
-    locale,
-  };
+  const formatOptions = useMemo<FormatOptions>(
+    () => ({
+      locale,
+    }),
+    [locale]
+  );
 
   const valueAsDate = parse(value, fullFormat, formatOptions);
   const dateTypeMode = getDateTypeMode(rawDateTypeMode);
@@ -467,6 +476,6 @@ function DateTime(
   ) : (
     <CalendarContainer {...finalInputProps} {...calendarProps} />
   );
-}
+};
 
 export default DateTime;

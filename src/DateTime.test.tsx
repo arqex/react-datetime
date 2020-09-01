@@ -23,7 +23,7 @@ const {
   findByLabelText,
 } = screen;
 
-import RawDateTime, { FORMATS } from "./index";
+import { DateTime as RawDateTime, FORMATS } from "./index";
 
 const FULL_DATE_FORMAT = `${FORMATS.MONTH}/${FORMATS.DAY}/${FORMATS.YEAR}`;
 const FULL_TIME_FORMAT = `${FORMATS.HOUR}:${FORMATS.MINUTE} ${FORMATS.AM_PM}`;
