@@ -4,7 +4,7 @@ import {
   optionsKnob as options,
   boolean,
 } from "@storybook/addon-knobs";
-import DateTime, { FORMATS } from "./.";
+import { DateTime, FORMATS } from "./.";
 import "../scss/styles.scss";
 
 import isBefore from "date-fns/isBefore";
@@ -22,6 +22,7 @@ const { useState } = React;
 
 export default {
   title: "DateTime",
+  component: DateTime,
   decorators: [withKnobs],
 };
 
