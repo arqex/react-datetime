@@ -159,7 +159,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.11.5",
-    "@reach/popover": "0.11.1",
+    "@reach/popover": "0.11.2",
     "classcat": "^4.0.2",
     "date-fns": "^2.16.1",
     "tslib": "^2.0.0",
