@@ -1,11 +1,13 @@
 # react-datetime
 
-[![Build Status](https://secure.travis-ci.org/YouCanBookMe/react-datetime.svg)](https://travis-ci.org/YouCanBookMe/react-datetime)
+[![Build Status](https://secure.travis-ci.org/arqex/react-datetime.svg)](https://travis-ci.org/arqex/react-datetime)
 [![npm version](https://badge.fury.io/js/react-datetime.svg)](http://badge.fury.io/js/react-datetime)
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable** and it even allows to edit date's milliseconds.
 
-These are the docs for version 3 of the library. If you are still using the deprecated v2, [here it is its documentation](https://github.com/YouCanBookMe/react-datetime/blob/2a83208452ac5e41c43fea31ef47c65efba0bb56/README.md), but we strongly recommend to migrate to version 3 in order to keep receiving updates. Please check [migrating react-datetime to version 3](migrateToV3.md) to safely update your app.
+> **Back to the roots!** Thanks to the people of [YouCanBook.me (best scheduling tool)](https://youcanbook.me) for sponsoring react-datetime for so long. Now the project returns to the community and we are **looking for collaborators** to continue improving react-datetime. [Would you like to give a hand?](contribute-home.md)
+
+These are the docs for version 3 of the library. If you are still using the deprecated v2, [here it is its documentation](https://github.com/arqex/react-datetime/blob/2a83208452ac5e41c43fea31ef47c65efba0bb56/README.md), but we strongly recommend to migrate to version 3 in order to keep receiving updates. Please check [migrating react-datetime to version 3](migrateToV3.md) to safely update your app.
 
 ## Installation
 
@@ -35,7 +37,7 @@ render: function() {
 ```
 [See this example working](https://codesandbox.io/s/boring-dew-uzln3).
 
-**Don't forget to add the [CSS stylesheet](https://github.com/YouCanBookMe/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
+**Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
 
 ## API
 
@@ -288,23 +290,9 @@ class MyDTPicker extends React.Component<MyDTPickerProps, MyDTPickerState> {
 ```
 
 ## Contributions
-react-datetime is a nice choice if you are looking for some open-source project to lay your hands on. It's a library used by thousands of developers, and the changes in this version make easier for everyone to understand it. It's not simple, but it's small enough to be get you initiated in a couple of hours.
+react-datetime is made by the community for the community. People like you, interested in contribute, are the key of the project! 🙌🙌🙌
 
-If you are interested and want to start playing with its code, clone it and fire up the playground included in the repo:
-
-```sh
-git clone https://github.com/YouCanBookMe/react-datetime.git
-cd react-datetime
-npm install
-npm run playground
-```
-
-This will start a local development server building `src/index.js`. We can update react-datetime's sources then and our changes will be hot loaded by the development server.
-
-Looking for something to work on? Have a look at [the list of known issues](https://github.com/YouCanBookMe/react-datetime/issues), and maybe you can kill a bug making somebody happy! :)
-
-Have some work done? That's great! But please, read the [react-datetime contributing guidelines](.github/CONTRIBUTING.md) before submitting it.
-
+Have a look at [our contribute page](contribute-home.md) to know how to get started.
 
 ### [Changelog](CHANGELOG.md)
 

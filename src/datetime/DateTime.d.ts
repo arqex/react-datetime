@@ -1,12 +1,12 @@
 // Type definitions for react-datetime
-// Project: https://github.com/YouCanBookMe/react-datetime
+// Project: https://github.com/arqex/react-datetime
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
 //     Updates by: Aaron Spaulding <aaron@sachimp.com>,
 //                 Karol Janyst <http://github.com/LKay>,
 //                 Javier Marquez <javi@arqex.com>
 
-import { Component, ChangeEvent, FocusEvent, FocusEventHandler } from "react";
-import { Moment } from "moment";
+import { Component, ChangeEvent, FocusEvent, FocusEventHandler } from 'react';
+import { Moment } from 'moment';
 
 export = ReactDatetimeClass;
 
@@ -14,7 +14,7 @@ declare namespace ReactDatetimeClass {
     /*
      The view mode can be any of the following strings.
      */
-    export type ViewMode = "years" | "months" | "days" | "time";
+    export type ViewMode = 'years' | 'months' | 'days' | 'time';
 
     export interface TimeConstraint {
         min: number;

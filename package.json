@@ -2,10 +2,10 @@
   "name": "react-datetime",
   "version": "3.0.0-beta.8",
   "description": "A lightweight but complete datetime picker React.js component",
-  "homepage": "https://github.com/YouCanBookMe/react-datetime",
+  "homepage": "https://github.com/arqex/react-datetime",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YouCanBookMe/react-datetime"
+    "url": "https://github.com/arqex/react-datetime"
   },
   "main": "./dist/react-datetime.cjs.js",
   "typings": "./src/datetime/DateTime.d.ts",
@@ -102,14 +102,14 @@
     "sass-loader": "8.0.0",
     "semver": "6.3.0",
     "style-loader": "1.0.0",
-    "terser-webpack-plugin": "2.2.1",
+    "terser-webpack-plugin": "4.2.1",
     "through2": "^2.0.3",
     "ts-pnp": "1.1.5",
     "typescript": "^3.7.4",
     "url-loader": "2.3.0",
     "webpack": "4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "3.9.0",
+    "webpack-dev-server": "3.11.0",
     "webpack-manifest-plugin": "2.2.0",
     "workbox-webpack-plugin": "4.3.1"
   },

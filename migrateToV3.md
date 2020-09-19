@@ -61,7 +61,7 @@ react-datetime is a nice choice if you are looking for some open-source project 
 If you are interested and want to start playing with its code, clone it and fire up the playground included in the repo:
 
 ```
-git clone https://github.com/YouCanBookMe/react-datetime.git
+git clone https://github.com/arqex/react-datetime.git
 cd react-datetime
 npm install
 npm run playground
@@ -69,6 +69,6 @@ npm run playground
 
 This will start a local development server building `src/index.js`. We can update react-datetime's sources then and our changes will be hot loaded by the development server.
 
-Looking for something to work on? Have a look at [the list of known issues](https://github.com/YouCanBookMe/react-datetime/issues), and maybe you can kill a bug making somebody happy! :)
+Looking for something to work on? Have a look at [the list of known issues](https://github.com/arqex/react-datetime/issues), and maybe you can kill a bug making somebody happy! :)
 
 Have some work done? That's great! But please, read the [react-datetime contributing guidelines](.github/CONTRIBUTING.md) before submitting it.
