@@ -1,11 +1,17 @@
 'use strict';
 
-var React = require('react'),
-	createClass = require('create-react-class')
-;
+var React = require('react');
 
-var DateTimePickerMonths = createClass({
-	render: function() {
+class DateTimePickerMonths extends React.Component {
+	constructor(props) {
+		super(props);
+		this.renderMonths = this.renderMonths.bind(this);
+		this.updateSelectedMonth = this.updateSelectedMonth.bind(this);
+		this.renderMonth = this.renderMonth.bind(this);
+		this.alwaysValidDate = this.alwaysValidDate.bind(this);
+	}
+
+	render() {
 		return React.createElement('div', { className: 'rdtMonths' }, [
 			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
 				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
@@ -14,9 +20,9 @@ var DateTimePickerMonths = createClass({
 			]))),
 			React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
 		]);
-	},
+	}
 
-	renderMonths: function() {
+	renderMonths() {
 		var date = this.props.selectedDate,
 			month = this.props.viewDate.month(),
 			year = this.props.viewDate.year(),
@@ -74,13 +80,13 @@ var DateTimePickerMonths = createClass({
 		}
 
 		return rows;
-	},
+	}
 
-	updateSelectedMonth: function( event ) {
+	updateSelectedMonth( event ) {
 		this.props.updateSelectedDate( event );
-	},
+	}
 
-	renderMonth: function( props, month ) {
+	renderMonth( props, month ) {
 		var localMoment = this.props.viewDate;
 		var monthStr = localMoment.localeData().monthsShort( localMoment.month( month ) );
 		var strLength = 3;
@@ -88,12 +94,12 @@ var DateTimePickerMonths = createClass({
 		// use a fixed string length for consistency
 		var monthStrFixedLength = monthStr.substring( 0, strLength );
 		return React.createElement('td', props, capitalize( monthStrFixedLength ) );
-	},
+	}
 
-	alwaysValidDate: function() {
+	alwaysValidDate() {
 		return 1;
-	},
-});
+	}
+}
 
 function capitalize( str ) {
 	return str.charAt( 0 ).toUpperCase() + str.slice( 1 );

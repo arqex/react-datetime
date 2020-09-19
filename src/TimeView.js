@@ -1,16 +1,34 @@
 'use strict';
 
 var React = require('react'),
-	createClass = require('create-react-class'),
 	assign = require('object-assign')
-	;
+;
 
-var DateTimePickerTime = createClass({
-	getInitialState: function() {
-		return this.calculateState( this.props );
-	},
+class DateTimePickerTime extends React.Component {
+	constructor(props) {
+		super(props);
+		this.calculateState = this.calculateState.bind(this);
+		this.renderCounter = this.renderCounter.bind(this);
+		this.renderDayPart = this.renderDayPart.bind(this);
+		this.updateMilli = this.updateMilli.bind(this);
+		this.renderHeader = this.renderHeader.bind(this);
+		this.onStartClicking = this.onStartClicking.bind(this);
+		this.disableContextMenu = this.disableContextMenu.bind(this);
+		this.padValues = {
+			hours: 1,
+			minutes: 2,
+			seconds: 2,
+			milliseconds: 3
+		};
+		this.toggleDayPart = this.toggleDayPart.bind(this);
+		this.increase = this.increase.bind(this);
+		this.decrease = this.decrease.bind(this);
+		this.pad = this.pad.bind(this);
 
-	calculateState: function( props ) {
+		this.state = this.calculateState( this.props );
+	}
+
+	calculateState( props ) {
 		var date = props.selectedDate || props.viewDate,
 			format = props.timeFormat,
 			counters = []
@@ -45,9 +63,9 @@ var DateTimePickerTime = createClass({
 			daypart: daypart,
 			counters: counters
 		};
-	},
+	}
 
-	renderCounter: function( type ) {
+	renderCounter( type ) {
 		if ( type !== 'daypart' ) {
 			var value = this.state[ type ];
 			if ( type === 'hours' && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
@@ -64,17 +82,17 @@ var DateTimePickerTime = createClass({
 			]);
 		}
 		return '';
-	},
+	}
 
-	renderDayPart: function() {
+	renderDayPart() {
 		return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
 			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
 			React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
 			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
 		]);
-	},
+	}
 
-	render: function() {
+	render() {
 		var me = this,
 			counters = []
 		;
@@ -106,9 +124,9 @@ var DateTimePickerTime = createClass({
 				)))
 			])
 		);
-	},
+	}
 
-	componentWillMount: function() {
+	componentWillMount() {
 		var me = this;
 		me.timeConstraints = {
 			hours: {
@@ -136,21 +154,21 @@ var DateTimePickerTime = createClass({
 			assign(me.timeConstraints[ type ], me.props.timeConstraints[ type ]);
 		});
 		this.setState( this.calculateState( this.props ) );
-	},
+	}
 
-	componentWillReceiveProps: function( nextProps ) {
+	componentWillReceiveProps( nextProps ) {
 		this.setState( this.calculateState( nextProps ) );
-	},
+	}
 
-	updateMilli: function( e ) {
+	updateMilli( e ) {
 		var milli = parseInt( e.target.value, 10 );
 		if ( milli === e.target.value && milli >= 0 && milli < 1000 ) {
 			this.props.setTime( 'milliseconds', milli );
 			this.setState( { milliseconds: milli } );
 		}
-	},
+	}
 
-	renderHeader: function() {
+	renderHeader() {
 		if ( !this.props.dateFormat )
 			return null;
 
@@ -158,9 +176,9 @@ var DateTimePickerTime = createClass({
 		return React.createElement('thead', { key: 'h' }, React.createElement('tr', {},
 			React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
 		));
-	},
+	}
 
-	onStartClicking: function( action, type ) {
+	onStartClicking( action, type ) {
 		var me = this;
 
 		return function() {
@@ -186,47 +204,40 @@ var DateTimePickerTime = createClass({
 			document.body.addEventListener( 'mouseup', me.mouseUpListener );
 			document.body.addEventListener( 'touchend', me.mouseUpListener );
 		};
-	},
+	}
 
-	disableContextMenu: function( event ) {
+	disableContextMenu( event ) {
 		event.preventDefault();
 		return false;
-	},
+	}
 
-	padValues: {
-		hours: 1,
-		minutes: 2,
-		seconds: 2,
-		milliseconds: 3
-	},
-
-	toggleDayPart: function( type ) { // type is always 'hours'
+	toggleDayPart( type ) { // type is always 'hours'
 		var value = parseInt( this.state[ type ], 10) + 12;
 		if ( value > this.timeConstraints[ type ].max )
 			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
 		return this.pad( type, value );
-	},
+	}
 
-	increase: function( type ) {
+	increase( type ) {
 		var value = parseInt( this.state[ type ], 10) + this.timeConstraints[ type ].step;
 		if ( value > this.timeConstraints[ type ].max )
 			value = this.timeConstraints[ type ].min + ( value - ( this.timeConstraints[ type ].max + 1 ) );
 		return this.pad( type, value );
-	},
+	}
 
-	decrease: function( type ) {
+	decrease( type ) {
 		var value = parseInt( this.state[ type ], 10) - this.timeConstraints[ type ].step;
 		if ( value < this.timeConstraints[ type ].min )
 			value = this.timeConstraints[ type ].max + 1 - ( this.timeConstraints[ type ].min - value );
 		return this.pad( type, value );
-	},
+	}
 
-	pad: function( type, value ) {
+	pad( type, value ) {
 		var str = value + '';
 		while ( str.length < this.padValues[ type ] )
 			str = '0' + str;
 		return str;
-	},
-});
+	}
+}
 
 module.exports = DateTimePickerTime;

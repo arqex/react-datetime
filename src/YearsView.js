@@ -1,11 +1,17 @@
 'use strict';
 
-var React = require('react'),
-	createClass = require('create-react-class')
-;
+var React = require('react');
 
-var DateTimePickerYears = createClass({
-	render: function() {
+class DateTimePickerYears extends React.Component {
+	constructor(props) {
+		super(props);
+		this.renderYears = this.renderYears.bind(this);
+		this.updateSelectedYear = this.updateSelectedYear.bind(this);
+		this.renderYear = this.renderYear.bind(this);
+		this.alwaysValidDate = this.alwaysValidDate.bind(this);
+	}
+
+	render() {
 		var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
 
 		return React.createElement('div', { className: 'rdtYears' }, [
@@ -16,9 +22,9 @@ var DateTimePickerYears = createClass({
 			]))),
 			React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
 		]);
-	},
+	}
 
-	renderYears: function( year ) {
+	renderYears( year ) {
 		var years = [],
 			i = -1,
 			rows = [],
@@ -82,19 +88,19 @@ var DateTimePickerYears = createClass({
 		}
 
 		return rows;
-	},
+	}
 
-	updateSelectedYear: function( event ) {
+	updateSelectedYear( event ) {
 		this.props.updateSelectedDate( event );
-	},
+	}
 
-	renderYear: function( props, year ) {
+	renderYear( props, year ) {
 		return React.createElement('td',  props, year );
-	},
+	}
 
-	alwaysValidDate: function() {
+	alwaysValidDate() {
 		return 1;
-	},
-});
+	}
+}
 
 module.exports = DateTimePickerYears;

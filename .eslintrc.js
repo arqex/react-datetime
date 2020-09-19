@@ -6,6 +6,9 @@ module.exports = {
         "require": true,
         "module": true
     },
+    "parserOptions": {
+        "ecmaVersion": 2015
+    },
     // Enables rules that report common problems,
     // see http://eslint.org/docs/rules/ for list
     "extends": "eslint:recommended",

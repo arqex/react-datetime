@@ -1,12 +1,21 @@
 'use strict';
 
 var React = require('react'),
-	createClass = require('create-react-class'),
 	moment = require('moment')
-	;
+;
 
-var DateTimePickerDays = createClass({
-	render: function() {
+class DateTimePickerDays extends React.Component {
+	constructor(props) {
+		super(props);
+		this.getDaysOfWeek = this.getDaysOfWeek.bind(this);
+		this.renderDays = this.renderDays.bind(this);
+		this.updateSelectedDate = this.updateSelectedDate.bind(this);
+		this.renderDay = this.renderDay.bind(this);
+		this.renderFooter = this.renderFooter.bind(this);
+		this.alwaysValidDate = this.alwaysValidDate.bind(this);
+	}
+
+	render() {
 		var footer = this.renderFooter(),
 			date = this.props.viewDate,
 			locale = date.localeData(),
@@ -31,14 +40,14 @@ var DateTimePickerDays = createClass({
 		return React.createElement('div', { className: 'rdtDays' },
 			React.createElement('table', {}, tableChildren )
 		);
-	},
+	}
 
 	/**
 	 * Get a list of the days of the week
 	 * depending on the current locale
 	 * @return {array} A list with the shortname of the days
 	 */
-	getDaysOfWeek: function( locale ) {
+	getDaysOfWeek( locale ) {
 		var days = locale._weekdaysMin,
 			first = locale.firstDayOfWeek(),
 			dow = [],
@@ -50,9 +59,9 @@ var DateTimePickerDays = createClass({
 		});
 
 		return dow;
-	},
+	}
 
-	renderDays: function() {
+	renderDays() {
 		var date = this.props.viewDate,
 			selected = this.props.selectedDate && this.props.selectedDate.clone(),
 			prevMonth = date.clone().subtract( 1, 'months' ),
@@ -108,17 +117,17 @@ var DateTimePickerDays = createClass({
 		}
 
 		return weeks;
-	},
+	}
 
-	updateSelectedDate: function( event ) {
+	updateSelectedDate( event ) {
 		this.props.updateSelectedDate( event, true );
-	},
+	}
 
-	renderDay: function( props, currentDate ) {
+	renderDay( props, currentDate ) {
 		return React.createElement('td',  props, currentDate.date() );
-	},
+	}
 
-	renderFooter: function() {
+	renderFooter() {
 		if ( !this.props.timeFormat )
 			return '';
 
@@ -129,11 +138,11 @@ var DateTimePickerDays = createClass({
 				React.createElement('td', { onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
 			)
 		);
-	},
+	}
 
-	alwaysValidDate: function() {
+	alwaysValidDate() {
 		return 1;
 	}
-});
+}
 
 module.exports = DateTimePickerDays;

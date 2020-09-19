@@ -2,7 +2,6 @@
 
 var assign = require('object-assign'),
 	PropTypes = require('prop-types'),
-	createClass = require('create-react-class'),
 	moment = require('moment'),
 	React = require('react'),
 	CalendarContainer = require('./src/CalendarContainer'),
@@ -17,49 +16,50 @@ var viewModes = Object.freeze({
 });
 
 var TYPES = PropTypes;
-var Datetime = createClass({
-	displayName: 'DateTime',
-	propTypes: {
-		// value: TYPES.object | TYPES.string,
-		// defaultValue: TYPES.object | TYPES.string,
-		// viewDate: TYPES.object | TYPES.string,
-		onFocus: TYPES.func,
-		onBlur: TYPES.func,
-		onChange: TYPES.func,
-		onViewModeChange: TYPES.func,
-		onNavigateBack: TYPES.func,
-		onNavigateForward: TYPES.func,
-		locale: TYPES.string,
-		utc: TYPES.bool,
-		displayTimeZone: TYPES.string,
-		input: TYPES.bool,
-		// dateFormat: TYPES.string | TYPES.bool,
-		// timeFormat: TYPES.string | TYPES.bool,
-		inputProps: TYPES.object,
-		timeConstraints: TYPES.object,
-		viewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
-		isValidDate: TYPES.func,
-		open: TYPES.bool,
-		strictParsing: TYPES.bool,
-		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
-	},
 
-	getInitialState: function() {
+class Datetime extends React.Component {
+	constructor(props) {
+		super(props);
+		this.displayName = 'DateTime';
+		this.parseDate = this.parseDate.bind(this);
+		this.getStateFromProps = this.getStateFromProps.bind(this);
+		this.getUpdateOn = this.getUpdateOn.bind(this);
+		this.getFormats = this.getFormats.bind(this);
+		this.onInputChange = this.onInputChange.bind(this);
+		this.onInputKey = this.onInputKey.bind(this);
+		this.showView = this.showView.bind(this);
+		this.setDate = this.setDate.bind(this);
+		this.subtractTime = this.subtractTime.bind(this);
+		this.addTime = this.addTime.bind(this);
+		this.updateTime = this.updateTime.bind(this);
+		this.allowedSetTime = ['hours', 'minutes', 'seconds', 'milliseconds'];
+		this.setTime = this.setTime.bind(this);
+		this.updateSelectedDate = this.updateSelectedDate.bind(this);
+		this.openCalendar = this.openCalendar.bind(this);
+		this.closeCalendar = this.closeCalendar.bind(this);
+		this.handleClickOutside = this.handleClickOutside.bind(this);
+		this.localMoment = this.localMoment.bind(this);
+		this.checkTZ = this.checkTZ.bind(this);
+		this.componentProps = {
+			fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
+			fromState: ['viewDate', 'selectedDate', 'updateOn'],
+			fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
+		};
+		this.getComponentProps = this.getComponentProps.bind(this);
+		this.overrideEvent = this.overrideEvent.bind(this);
+
 		this.checkTZ( this.props );
 		
-		var state = this.getStateFromProps( this.props );
+		this.state = this.getStateFromProps( this.props );
 
-		if ( state.open === undefined )
-			state.open = !this.props.input;
+		if ( this.state.open === undefined )
+			this.state.open = !this.props.input;
 
-		state.currentView = this.props.dateFormat ?
-			(this.props.viewMode || state.updateOn || viewModes.DAYS) : viewModes.TIME;
+		this.state.currentView = this.props.dateFormat ?
+			(this.props.viewMode || this.state.updateOn || viewModes.DAYS) : viewModes.TIME;
+	}
 
-		return state;
-	},
-
-	parseDate: function (date, formats) {
+	parseDate(date, formats) {
 		var parsedDate;
 
 		if (date && typeof date === 'string')
@@ -71,9 +71,9 @@ var Datetime = createClass({
 			parsedDate = null;
 
 		return parsedDate;
-	},
+	}
 
-	getStateFromProps: function( props ) {
+	getStateFromProps( props ) {
 		var formats = this.getFormats( props ),
 			date = props.value || props.defaultValue,
 			selectedDate, viewDate, updateOn, inputValue
@@ -104,9 +104,9 @@ var Datetime = createClass({
 			inputValue: inputValue,
 			open: props.open
 		};
-	},
+	}
 
-	getUpdateOn: function( formats ) {
+	getUpdateOn( formats ) {
 		if ( formats.date.match(/[lLD]/) ) {
 			return viewModes.DAYS;
 		} else if ( formats.date.indexOf('M') !== -1 ) {
@@ -116,9 +116,9 @@ var Datetime = createClass({
 		}
 
 		return viewModes.DAYS;
-	},
+	}
 
-	getFormats: function( props ) {
+	getFormats( props ) {
 		var formats = {
 				date: props.dateFormat || '',
 				time: props.timeFormat || ''
@@ -143,9 +143,9 @@ var Datetime = createClass({
 		;
 
 		return formats;
-	},
+	}
 
-	componentWillReceiveProps: function( nextProps ) {
+	componentWillReceiveProps( nextProps ) {
 		var formats = this.getFormats( nextProps ),
 			updatedState = {}
 		;
@@ -213,9 +213,9 @@ var Datetime = createClass({
 		this.checkTZ( nextProps );
 
 		this.setState( updatedState );
-	},
+	}
 
-	onInputChange: function( e ) {
+	onInputChange( e ) {
 		var value = e.target === null ? e : e.target.value,
 			localMoment = this.localMoment( value, this.state.inputFormat ),
 			update = { inputValue: value }
@@ -231,23 +231,23 @@ var Datetime = createClass({
 		return this.setState( update, function() {
 			return this.props.onChange( localMoment.isValid() ? localMoment : this.state.inputValue );
 		});
-	},
+	}
 
-	onInputKey: function( e ) {
+	onInputKey( e ) {
 		if ( e.which === 9 && this.props.closeOnTab ) {
 			this.closeCalendar();
 		}
-	},
+	}
 
-	showView: function( view ) {
+	showView( view ) {
 		var me = this;
 		return function() {
 			me.state.currentView !== view && me.props.onViewModeChange( view );
 			me.setState({ currentView: view });
 		};
-	},
+	}
 
-	setDate: function( type ) {
+	setDate( type ) {
 		var me = this,
 			nextViews = {
 				month: viewModes.DAYS,
@@ -261,35 +261,34 @@ var Datetime = createClass({
 			});
 			me.props.onViewModeChange( nextViews[ type ] );
 		};
-	},
+	}
 
-	subtractTime: function( amount, type, toSelected ) {
+	subtractTime( amount, type, toSelected ) {
 		var me = this;
 		return function() {
 			me.props.onNavigateBack( amount, type );
 			me.updateTime( 'subtract', amount, type, toSelected );
 		};
-	},
+	}
 
-	addTime: function( amount, type, toSelected ) {
+	addTime( amount, type, toSelected ) {
 		var me = this;
 		return function() {
 			me.props.onNavigateForward( amount, type );
 			me.updateTime( 'add', amount, type, toSelected );
 		};
-	},
+	}
 
-	updateTime: function( op, amount, type, toSelected ) {
+	updateTime( op, amount, type, toSelected ) {
 		var update = {},
 			date = toSelected ? 'selectedDate' : 'viewDate';
 
 		update[ date ] = this.state[ date ].clone()[ op ]( amount, type );
 
 		this.setState( update );
-	},
+	}
 
-	allowedSetTime: ['hours', 'minutes', 'seconds', 'milliseconds'],
-	setTime: function( type, value ) {
+	setTime( type, value ) {
 		var index = this.allowedSetTime.indexOf( type ) + 1,
 			state = this.state,
 			date = (state.selectedDate || state.viewDate).clone(),
@@ -311,9 +310,9 @@ var Datetime = createClass({
 			});
 		}
 		this.props.onChange( date );
-	},
+	}
 
-	updateSelectedDate: function( e, close ) {
+	updateSelectedDate( e, close ) {
 		var target = e.currentTarget,
 			modifier = 0,
 			viewDate = this.state.viewDate,
@@ -365,31 +364,31 @@ var Datetime = createClass({
 		}
 
 		this.props.onChange( date );
-	},
+	}
 
-	openCalendar: function( e ) {
+	openCalendar( e ) {
 		if ( !this.state.open ) {
 			this.setState({ open: true }, function() {
 				this.props.onFocus( e );
 			});
 		}
-	},
+	}
 
-	closeCalendar: function() {
+	closeCalendar() {
 		this.setState({ open: false }, function () {
 			this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 		});
-	},
+	}
 
-	handleClickOutside: function() {
+	handleClickOutside() {
 		if ( this.props.input && this.state.open && this.props.open === undefined && !this.props.disableCloseOnClickOutside ) {
 			this.setState({ open: false }, function() {
 				this.props.onBlur( this.state.selectedDate || this.state.inputValue );
 			});
 		}
-	},
+	}
 
-	localMoment: function( date, format, props ) {
+	localMoment( date, format, props ) {
 		props = props || this.props;
 		var m = null;
 
@@ -404,24 +403,18 @@ var Datetime = createClass({
 		if ( props.locale )
 			m.locale( props.locale );
 		return m;
-	},
+	}
 
-	checkTZ: function( props ) {
+	checkTZ( props ) {
 		var con = console;
 
 		if ( props.displayTimeZone && !this.tzWarning && !moment.tz ) {
 			this.tzWarning = true;
 			con && con.error('react-datetime: displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.');
 		}
-	},
+	}
 
-	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
-		fromState: ['viewDate', 'selectedDate', 'updateOn'],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
-	},
-
-	getComponentProps: function() {
+	getComponentProps() {
 		var me = this,
 			formats = this.getFormats( this.props ),
 			props = {dateFormat: formats.date, timeFormat: formats.time}
@@ -438,9 +431,9 @@ var Datetime = createClass({
 		});
 
 		return props;
-	},
+	}
 
-	overrideEvent: function( handler, action ) {
+	overrideEvent( handler, action ) {
 		if ( !this.overridenEvents ) {
 			this.overridenEvents = {};
 		}
@@ -459,9 +452,9 @@ var Datetime = createClass({
 		}
 
 		return this.overridenEvents[handler];
-	},
+	}
 
-	render: function() {
+	render() {
 		// TODO: Make a function or clean up this code,
 		// logic right now is really hard to follow
 		var className = 'rdt' + (this.props.className ?
@@ -500,16 +493,45 @@ var Datetime = createClass({
 			)
 		));
 	}
-});
+}
+Datetime.propTypes = {
+	// value: TYPES.object | TYPES.string,
+	// defaultValue: TYPES.object | TYPES.string,
+	// viewDate: TYPES.object | TYPES.string,
+	onFocus: TYPES.func,
+	onBlur: TYPES.func,
+	onChange: TYPES.func,
+	onViewModeChange: TYPES.func,
+	onNavigateBack: TYPES.func,
+	onNavigateForward: TYPES.func,
+	locale: TYPES.string,
+	utc: TYPES.bool,
+	displayTimeZone: TYPES.string,
+	input: TYPES.bool,
+	// dateFormat: TYPES.string | TYPES.bool,
+	// timeFormat: TYPES.string | TYPES.bool,
+	inputProps: TYPES.object,
+	timeConstraints: TYPES.object,
+	viewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
+	isValidDate: TYPES.func,
+	open: TYPES.bool,
+	strictParsing: TYPES.bool,
+	closeOnSelect: TYPES.bool,
+	closeOnTab: TYPES.bool
+};
 
-var ClickableWrapper = onClickOutside( createClass({
-	render: function() {
+var ClickableWrapper = onClickOutside(class extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleClickOutside = this.handleClickOutside.bind(this);
+	}
+	render() {
 		return React.createElement( 'div', { className: this.props.className }, this.props.children );
-	},
-	handleClickOutside: function( e ) {
+	}
+	handleClickOutside( e ) {
 		this.props.onClickOut( e );
 	}
-}));
+});
 
 Datetime.defaultProps = {
 	className: '',
