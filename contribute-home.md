@@ -2,7 +2,7 @@
 
 Hey!! So good you are interested in collaborate with react-datetime, I'm pretty sure you can make the difference here!
 
-react-datetime is a nice choice if you are looking for some open-source project to lay your hands on. It's a library used by thousands of developers, and the changes in the last version make easier for everyone to understand it. It's not simple, but it's small enough to be get you initiated in a couple of hours.
+react-datetime is a nice choice if you are looking for some open-source project to lay your hands on. It's a library **used by thousands of developers**, and the changes in the last version make easier for everyone to understand it. It's not simple, but it's small enough to be get you initiated in a couple of hours.
 
 ## Do you want to be part of the future of react-datetime?
 We've just released the version 3 of the library and we are already planning the version 4, why don't you join the conversation and help defining the roadmap:
@@ -10,7 +10,7 @@ We've just released the version 3 of the library and we are already planning the
 * [Defining version 4 of react-datetime](https://github.com/arqex/react-datetime/issues/723)
 
 ## Do you want to play with the source code?
-Best way of understand anything is by doing it! This repository includes a playground to let you make changes to the library in minutes. Clone the repo and fire up the playground:
+Best way of understand anything is by experiencing it! This repository includes a playground to let you make changes to the library in minutes. Clone the repo and fire up the playground:
 
 ```sh
 git clone https://github.com/arqex/react-datetime.git

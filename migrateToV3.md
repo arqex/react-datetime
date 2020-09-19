@@ -55,20 +55,6 @@ Version 3 is a big refactor of react-datetime. We have tried to not to change th
 * Updated most of the dependencies.
 
 ## Contribute
+react-datetime is made by the community for the community. People like you, interested in contribute, are the key of the project! 🙌🙌🙌
 
-react-datetime is a nice choice if you are looking for some open-source project to lay your hands on. It's a library used by thousands of developers, and the changes in this version make easier for everyone to understand it. It's not simple, but it's small enough to be get you initiated in a couple of hours.
-
-If you are interested and want to start playing with its code, clone it and fire up the playground included in the repo:
-
-```
-git clone https://github.com/arqex/react-datetime.git
-cd react-datetime
-npm install
-npm run playground
-```
-
-This will start a local development server building `src/index.js`. We can update react-datetime's sources then and our changes will be hot loaded by the development server.
-
-Looking for something to work on? Have a look at [the list of known issues](https://github.com/arqex/react-datetime/issues), and maybe you can kill a bug making somebody happy! :)
-
-Have some work done? That's great! But please, read the [react-datetime contributing guidelines](.github/CONTRIBUTING.md) before submitting it.
+Have a look at [our contribute page](contribute-home.md) to know how to get started.

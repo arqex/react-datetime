@@ -5,7 +5,7 @@
 
 A date and time picker in the same React.js component. It can be used as a datepicker, timepicker or both at the same time. It is **highly customizable** and it even allows to edit date's milliseconds.
 
-> **Back to the roots!** Thanks to the people of [YouCanBook.me (best scheduling tool)](https://youcanbook.me) for sponsoring react-datetime for so long. Now the project returns to the community and we are **looking for collaborators** to continue improving react-datetime. [Would you like to give a hand?](contribute-home.md)
+> **Back to the roots!** Thanks to the people of [YouCanBook.me (best scheduling tool)](https://youcanbook.me) for sponsoring react-datetime for so long. Now the project returns to the community and we are **looking for contributors** to continue improving react-datetime. [Would you like to give a hand?](contribute-home.md)
 
 These are the docs for version 3 of the library. If you are still using the deprecated v2, [here it is its documentation](https://github.com/arqex/react-datetime/blob/2a83208452ac5e41c43fea31ef47c65efba0bb56/README.md), but we strongly recommend to migrate to version 3 in order to keep receiving updates. Please check [migrating react-datetime to version 3](migrateToV3.md) to safely update your app.
 
@@ -25,19 +25,20 @@ yarn add react-datetime
 
 [React.js](http://facebook.github.io/react/) and [Moment.js](http://momentjs.com/) are peer dependencies for react-datetime (as well as [Moment.js timezones](https://momentjs.com/timezone/) if you want to use the `displayTimeZone` prop). These dependencies are not installed along with react-datetime automatically, but your project needs to have them installed in order to make the datepicker work. You can then use the datepicker like in the example below.
 
-
 ```js
+// Import the library
 import Datetime from 'react-datetime';
 
-...
-
-render: function() {
-    return <Datetime />;
-}
+// return it from your components
+return <Datetime />;
 ```
 [See this example working](https://codesandbox.io/s/boring-dew-uzln3).
 
+Do you want more examples? [Have a look at our resources gallery](resources.md).
+
 **Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
+
+
 
 ## API
 
@@ -225,15 +226,15 @@ class MyDTPicker extends React.Component {
     this.refs.datetime.navigate("days");
   }
 }
-[See it working](https://codesandbox.io/s/frosty-fog-nrwk2)
 ```
+[See it working](https://codesandbox.io/s/frosty-fog-nrwk2)
 
 #### Method Parameters
 * `props` is the object that the datepicker has calculated for this object. It is convenient to use this object as the `props` for your custom component, since it knows how to handle the click event and its `className` attribute is used by the default styles.
 * `selectedDate` and `currentDate` are [moment objects](http://momentjs.com) and can be used to change the output depending on the selected date, or the date for the current day.
 * `month` and `year` are the numeric representation of the current month and year to be displayed. Notice that the possible `month` values range from `0` to `11`.
 
-## Specify Available Units
+## Make it work as a year picker or a time picker
 You can filter out what you want the user to be able to pick by using `dateFormat` and `timeFormat`, e.g. to create a timepicker, yearpicker etc.
 
 In this example the component is being used as a *timepicker* and can *only be used for selecting a time*.
@@ -248,7 +249,7 @@ In this example you can *only select a year and month*.
 ```
 [Working example of only selecting year and month here.](https://codesandbox.io/s/recursing-pascal-xl643)
 
-## Selectable Dates
+## Blocking some dates to be selected
 It is possible to disable dates in the calendar if the user are not allowed to select them, e.g. dates in the past. This is done using the prop `isValidDate`, which admits a function in the form `function(currentDate, selectedDate)` where both arguments are [moment objects](http://momentjs.com). The function shall return `true` for selectable dates, and `false` for disabled ones.
 
 In the example below are *all dates before today* disabled.
