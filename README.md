@@ -40,6 +40,10 @@ Do you want more examples? [Have a look at our resources gallery](resources.md).
 
 
 
+```sh
+  import "react-datetime/css/react-datetime.css";
+```
+
 ## API
 
 Below we have all the props that we can use with the `<DateTime>` component. There are also some methods that can be used imperatively.
