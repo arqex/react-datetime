@@ -1,6 +1,6 @@
 Changelog
 =========
-## 3.0.0
+## 3.0.1
 * Big refactor, the state is not derived from the props after every update.
 * `disableCloseOnClickOutside` prop is now `closeOnClickOutside` (avoid double negations).
 * `onBlur` and `onFocus` are renamed to `onClose` and `onOpen` since they had nothing to do with the blur event and it was misleading some users. If we want to listen to the input's `onBlur` and `onFocus` use `inputProps`.
@@ -17,6 +17,9 @@ Changelog
 * Adds a playground to make simpler to try out the library by `npm run playground`.
 * Not depending on gulp to create the build anymore
 * Updated most of the dependencies.
+
+## 3.0.0
+- This version was published by error and can't be overriden. The first release for v3 branch is 3.0.1
 
 ## 2.16.2
 * Turns moment timezone peer dependency in a runtime error when missing using `displayTimezone`.
