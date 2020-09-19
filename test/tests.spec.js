@@ -1,11 +1,15 @@
-/* global it, xit, describe, expect, jasmine, done, jest */
+/* global it, xit, describe, expect, done, jest */
 
-import React from 'react'; // eslint-disable-line no-unused-vars
+import React from 'react'; 
 import moment from 'moment';
-import _momentTimezone from 'moment-timezone'; // eslint-disable-line no-unused-vars
+import 'moment/locale/nl';
+import 'moment/locale/sv';
+import _momentTimezone from 'moment-timezone'; // eslint-disable-line
 import utils from './testUtils';
 import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-15';
+import Adapter from 'enzyme-adapter-react-16';
+
+moment.locale('en');
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -18,9 +22,9 @@ describe('Datetime', () => {
 		expect(component.find('.rdt > .rdtPicker').length).toEqual(1);
 	});
 
-	it('viewMode=days: renders days, week days, month, year', () => {
+	it('initialViewMode=days: renders days, week days, month, year', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
+			component = utils.createDatetime({ initialViewMode: 'days', initialValue: date });
 		utils.openDatepicker(component);
 
 		// Month and year
@@ -28,9 +32,9 @@ describe('Datetime', () => {
 
 		// Week days
 		const expectedWeekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-		actualWeekdays = component.find('.rdtDays .dow').map((element) =>
-			element.text()
-		);
+			actualWeekdays = component.find('.rdtDays .dow').map((element) =>
+				element.text()
+			);
 		expect(actualWeekdays).toEqual(expectedWeekDays);
 
 		// Dates
@@ -69,10 +73,12 @@ describe('Datetime', () => {
 		Date.now = () => new Date('2018-06-01T00:00:00').getTime();
 		
 		const dateBefore = '2018-06-01';
-		const component = utils.createDatetime({ viewMode: 'months', isValidDate: (current) =>
-				current.isBefore(moment(dateBefore, 'YYYY-MM-DD'))
-			});
-		
+		const component = utils.createDatetime({
+			initialViewMode: 'months',
+			value: new Date(2018, 10, 10),
+			isValidDate: current => current.isBefore(moment(dateBefore, 'YYYY-MM-DD'))
+		});
+
 		expect(utils.isMonthView(component)).toBeTruthy();
 		expect(utils.getNthMonth(component, 4).hasClass('rdtDisabled')).toEqual(false);
 		expect(utils.getNthMonth(component, 5).hasClass('rdtDisabled')).toEqual(true);
@@ -92,7 +98,7 @@ describe('Datetime', () => {
 	});
 
 	it('step through views', () => {
-		const component = utils.createDatetime({ viewMode: 'time' });
+		const component = utils.createDatetime({ initialViewMode: 'time' });
 
 		expect(utils.isTimeView(component)).toBeTruthy();
 		utils.clickOnElement(component.find('.rdtSwitch'));
@@ -117,7 +123,7 @@ describe('Datetime', () => {
 
 	it('selectYear', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'years', defaultValue: date });
+			component = utils.createDatetime({ initialViewMode: 'years', initialValue: date });
 		expect(utils.isYearView(component)).toBeTruthy();
 		expect(component.find('.rdtSwitch').text()).toEqual('2000-2009');
 
@@ -129,7 +135,7 @@ describe('Datetime', () => {
 
 	it('increase decade', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'years', defaultValue: date });
+			component = utils.createDatetime({ initialViewMode: 'years', initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('2000-2009');
 		utils.clickOnElement(component.find('.rdtNext span').at(0));
@@ -140,7 +146,7 @@ describe('Datetime', () => {
 
 	it('decrease decade', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'years', defaultValue: date });
+			component = utils.createDatetime({ initialViewMode: 'years', initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('2000-2009');
 		utils.clickOnElement(component.find('.rdtPrev span').at(0));
@@ -151,7 +157,7 @@ describe('Datetime', () => {
 
 	it('select month', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'months', defaultValue: date });
+			component = utils.createDatetime({ initialViewMode: 'months', initialValue: date });
 
 		expect(utils.isMonthView(component)).toBeTruthy();
 		expect(component.find('.rdtSwitch').text()).toEqual('2000');
@@ -163,7 +169,7 @@ describe('Datetime', () => {
 
 	it('increase year', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'months', defaultValue: date });
+			component = utils.createDatetime({ initialViewMode: 'months', initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('2000');
 		utils.clickOnElement(component.find('.rdtNext span').at(0));
@@ -174,7 +180,7 @@ describe('Datetime', () => {
 
 	it('decrease year', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'months', defaultValue: date });
+			component = utils.createDatetime({ initialViewMode: 'months', initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('2000');
 		utils.clickOnElement(component.find('.rdtPrev span').at(0));
@@ -185,7 +191,7 @@ describe('Datetime', () => {
 
 	it('increase month', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ defaultValue: date });
+			component = utils.createDatetime({ initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('January 2000');
 		expect(component.find('.rdtSwitch').getDOMNode().getAttribute('data-value')).toEqual('0');
@@ -199,7 +205,7 @@ describe('Datetime', () => {
 
 	it('decrease month', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-			component = utils.createDatetime({ defaultValue: date });
+			component = utils.createDatetime({ initialValue: date });
 
 		expect(component.find('.rdtSwitch').text()).toEqual('January 2000');
 		expect(component.find('.rdtSwitch').getDOMNode().getAttribute('data-value')).toEqual('0');
@@ -218,29 +224,46 @@ describe('Datetime', () => {
 		expect(utils.isOpen(component)).toBeTruthy();
 	});
 
-	it('opens picker when clicking on input', () => {
-		const component = utils.createDatetime();
-		expect(utils.isOpen(component)).toBeFalsy();
-		component.find('.form-control').simulate('click');
-		expect(utils.isOpen(component)).toBeTruthy();
+	it('click on day of the next month', () => {
+		const component = utils.createDatetime({
+			initialViewMode: 'days',
+			initialValue: new Date(2019, 0, 1)
+		});
+
+		utils.openDatepicker(component);
+		utils.clickClassItem(component, '.rdtNew', 1);
+
+		expect(component.find('.rdtSwitch').text()).toEqual('February 2019');
+	});
+
+	it('click on day of the prev month', () => {
+		const component = utils.createDatetime({
+			initialViewMode: 'days',
+			initialValue: new Date(2019, 0, 1)
+		});
+
+		utils.openDatepicker(component);
+		utils.clickClassItem(component, '.rdtOld', 1);
+		
+		expect(component.find('.rdtSwitch').text()).toEqual('December 2018');
 	});
 
 	it('sets CSS class on selected item (day)', () => {
-		const component = utils.createDatetime({ viewMode: 'days' });
+		const component = utils.createDatetime({ initialViewMode: 'days' });
 		utils.openDatepicker(component);
 		utils.clickNthDay(component, 13);
 		expect(utils.getNthDay(component, 13).hasClass('rdtActive')).toBeTruthy();
 	});
 
 	it('sets CSS class on selected item (month)', () => {
-		const component = utils.createDatetime({ viewMode: 'months', dateFormat: 'YYYY-MM' });
+		const component = utils.createDatetime({ initialViewMode: 'months', dateFormat: 'YYYY-MM' });
 		utils.openDatepicker(component);
 		utils.clickNthMonth(component, 4);
 		expect(utils.getNthMonth(component, 4).hasClass('rdtActive')).toBeTruthy();
 	});
 
 	it('sets CSS class on selected item (year)', () => {
-		const component = utils.createDatetime({ viewMode: 'years', dateFormat: 'YYYY' });
+		const component = utils.createDatetime({ initialViewMode: 'years', dateFormat: 'YYYY' });
 		utils.openDatepicker(component);
 		utils.clickNthYear(component, 3);
 		expect(utils.getNthYear(component, 3).hasClass('rdtActive')).toBeTruthy();
@@ -250,7 +273,7 @@ describe('Datetime', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 			prevMonthDaysIndexes = [0, 1, 2, 3, 4, 5],
 			nextMonthDaysIndexes = [37, 38, 39, 40, 41],
-			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
+			component = utils.createDatetime({ initialViewMode: 'days', initialValue: date });
 
 		utils.openDatepicker(component);
 
@@ -264,7 +287,7 @@ describe('Datetime', () => {
 
 	it('selected day persists (in UI) when navigating to prev month', () => {
 		const date = new Date(2000, 0, 3, 2, 2, 2, 2),
-			component = utils.createDatetime({ viewMode: 'days', defaultValue: date });
+			component = utils.createDatetime({ initialViewMode: 'days', initialValue: date });
 
 		utils.openDatepicker(component);
 		expect(utils.getNthDay(component, 8).hasClass('rdtActive')).toBeTruthy();
@@ -274,14 +297,13 @@ describe('Datetime', () => {
 	});
 
 	it('sets CSS class on today date', () => {
-		const specificDate = moment('2015-04-19'),
-			component = utils.createDatetime({ defaultValue: specificDate });
-
-		// Mock the today date
-		jasmine.clock().mockDate(specificDate.toDate());
+		const specificDate = moment(),
+			day = specificDate.date(),
+			component = utils.createDatetime({ initialValue: specificDate })
+		;
 
 		utils.openDatepicker(component);
-		expect(component.find('.rdtDay.rdtToday').text()).toEqual('19');
+		expect(component.find('.rdtToday').text()).toEqual( day+'' );
 	});
 
 	describe('with custom props', () => {
@@ -342,18 +364,18 @@ describe('Datetime', () => {
 			expect(utils.getInputValue(component)).toEqual(expect.stringMatching('.*AM$'));
 		});
 
-		it('viewMode=years', () => {
-			const component = utils.createDatetime({ viewMode: 'years' });
+		it('initialViewMode=years', () => {
+			const component = utils.createDatetime({ initialViewMode: 'years' });
 			expect(utils.isYearView(component)).toBeTruthy();
 		});
 
-		it('viewMode=months', () => {
-			const component = utils.createDatetime({ viewMode: 'months' });
+		it('initialViewMode=months', () => {
+			const component = utils.createDatetime({ initialViewMode: 'months' });
 			expect(utils.isMonthView(component)).toBeTruthy();
 		});
 
-		it('viewMode=time', () => {
-			const component = utils.createDatetime({ viewMode: 'time' });
+		it('initialViewMode=time', () => {
+			const component = utils.createDatetime({ initialViewMode: 'time' });
 			expect(utils.isTimeView(component)).toBeTruthy();
 		});
 
@@ -389,7 +411,7 @@ describe('Datetime', () => {
 			const component = utils.createDatetime({ renderInput });
 
 			expect(component.find('button.custom-open').length).toEqual(1);
-            expect(utils.isOpen(component)).toBeFalsy();
+			expect(utils.isOpen(component)).toBeFalsy();
 			utils.clickOnElement(component.find('button.custom-open'));
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
@@ -440,7 +462,7 @@ describe('Datetime', () => {
 					return <td {...fnProps}>custom-content</td>;
 				};
 
-			const component = utils.createDatetime({ value: mDate, viewMode: 'months', renderMonth: renderMonthFn });
+			const component = utils.createDatetime({ value: mDate, initialViewMode: 'months', renderMonth: renderMonthFn });
 
 			expect(month).toEqual(11);
 			expect(year).toEqual(2000);
@@ -469,7 +491,7 @@ describe('Datetime', () => {
 					return <td {...fnProps}>custom-content</td>;
 				};
 
-			const component = utils.createDatetime({ value: mDate, viewMode: 'years', renderYear: renderYearFn });
+			const component = utils.createDatetime({ value: mDate, initialViewMode: 'years', renderYear: renderYearFn });
 
 			expect(year).toEqual(2010);
 
@@ -481,6 +503,24 @@ describe('Datetime', () => {
 
 			// The cell text should match
 			expect(component.find('.rdtYear').at(0).text()).toEqual('custom-content');
+		});
+
+		it('renderView', () => {
+			let renderView = ( viewType, renderDefault ) => {
+				return (
+					<div className="customView">
+						<span className="viewType">{ viewType }</span>
+						{ renderDefault() }
+					</div>
+				);
+			};
+
+			let component = utils.createDatetime({
+				renderView, initialViewMode: 'years', input: false
+			});
+			
+			expect( component.find('.viewType').text() ).toEqual('years');
+			expect( component.find('.rdtYear').length ).not.toBe(0);
 		});
 
 		it('closeOnTab=true', () => {
@@ -505,9 +545,9 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
-		it('disableCloseOnClickOutside=true', () => {
+		it('closeOnClickOutside=true', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ value: date, disableCloseOnClickOutside: true });
+				component = utils.createDatetime({ value: date, closeOnClickOutside: false });
 
 			expect(utils.isOpen(component)).toBeFalsy();
 			utils.openDatepicker(component);
@@ -517,9 +557,9 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
-    it('disableCloseOnClickOutside=false', () => {
+		it('closeOnClickOutside=false', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ value: date, disableCloseOnClickOutside: false });
+				component = utils.createDatetime({ value: date, closeOnClickOutside: true });
 
 			expect(utils.isOpen(component)).toBeFalsy();
 			utils.openDatepicker(component);
@@ -532,8 +572,8 @@ describe('Datetime', () => {
 		it('increase time', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time',
-					defaultValue: date, onChange: (selected) => {
+				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', initialViewMode: 'time',
+					initialValue: date, onChange: (selected) => {
 						// TODO: Trigger onChange when increasing time
 						i++;
 						if (i > 2) {
@@ -564,8 +604,8 @@ describe('Datetime', () => {
 		it('decrease time', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time',
-					defaultValue: date, onChange: (selected) => {
+				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', initialViewMode: 'time',
+					initialValue: date, onChange: (selected) => {
 						// TODO: Trigger onChange when increasing time
 						i++;
 						if (i > 2) {
@@ -595,7 +635,7 @@ describe('Datetime', () => {
 
 		it('long increase time', (done) => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date });
+				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', initialViewMode: 'time', initialValue: date });
 
 			utils.increaseHour(component);
 			setTimeout(() => {
@@ -607,7 +647,7 @@ describe('Datetime', () => {
 
 		it('long decrease time', (done) => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time', defaultValue: date });
+				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', initialViewMode: 'time', initialValue: date });
 
 			utils.decreaseHour(component);
 			setTimeout(() => {
@@ -620,8 +660,8 @@ describe('Datetime', () => {
 		it('timeConstraints -> increase time', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time',
-					defaultValue: date, timeConstraints: { hours: { max: 6, step: 8 }, minutes: { step: 15 }},
+				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', initialViewMode: 'time',
+					initialValue: date, timeConstraints: { hours: { max: 6, step: 8 }, minutes: { step: 15 }},
 					onChange: (selected) => {
 						// TODO
 						i++;
@@ -646,8 +686,8 @@ describe('Datetime', () => {
 		it('timeConstraints -> decrease time', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', viewMode: 'time',
-					defaultValue: date, timeConstraints: { minutes: { step: 15 }}, onChange: (selected) => {
+				component = utils.createDatetime({ timeFormat: 'HH:mm:ss:SSS', initialViewMode: 'time',
+					initialValue: date, timeConstraints: { minutes: { step: 15 }}, onChange: (selected) => {
 						// TODO
 						i++;
 						if (i > 2) {
@@ -667,11 +707,13 @@ describe('Datetime', () => {
 				mDate = moment(date),
 				strDate = mDate.format('L') + ' ' + mDate.format('LT'),
 				invalidStrDate = strDate + 'x',
-				component = utils.createDatetime({ defaultValue: '', strictParsing: true,
-					onChange: (updated) => {
-						expect(updated, invalidStrDate);
+				component = utils.createDatetime({ initialValue: '', strictParsing: true,
+					onChange: updated => {
+						expect(updated).toBe( invalidStrDate );
 						done();
-					}});
+					}	
+				})
+			;
 
 			component.find('.form-control').simulate('change', { target: { value: invalidStrDate }});
 		});
@@ -681,7 +723,7 @@ describe('Datetime', () => {
 				mDate = moment(date),
 				strDate = mDate.format('L') + ' ' + mDate.format('LT'),
 				invalidStrDate = strDate + 'x',
-				component = utils.createDatetime({ defaultValue: '', strictParsing: false,
+				component = utils.createDatetime({ initialValue: '', strictParsing: false,
 					onChange: (updated) => {
 						expect(mDate.format('L LT')).toEqual(updated.format('L LT'));
 						done();
@@ -692,7 +734,7 @@ describe('Datetime', () => {
 
 		it('isValidDate -> disable months', () => {
 			const dateBefore = new Date().getFullYear() + '-06-01',
-				component = utils.createDatetime({ viewMode: 'months', isValidDate: (current) =>
+				component = utils.createDatetime({ initialViewMode: 'months', isValidDate: (current) =>
 					current.isBefore(moment(dateBefore, 'YYYY-MM-DD'))
 				});
 
@@ -703,8 +745,10 @@ describe('Datetime', () => {
 		});
 
 		it('isValidDate -> disable years', () => {
-			const component = utils.createDatetime({ viewMode: 'years', isValidDate: (current) =>
-				current.isBefore(moment('2016-01-01', 'YYYY-MM-DD'))
+			const component = utils.createDatetime({
+				initialViewMode: 'years',
+				value: moment('2025-01-01', 'YYYY-MM-DD'),
+				isValidDate: current =>	current.isBefore(moment('2026-01-01', 'YYYY-MM-DD'))
 			});
 
 			expect(utils.getNthYear(component, 0).hasClass('rdtDisabled')).toEqual(false);
@@ -722,8 +766,8 @@ describe('Datetime', () => {
 			expect(actualWeekDays).toEqual(expectedWeekDays);
 		});
 
-		it('locale with viewMode=months', () => {
-			const component = utils.createDatetime({ locale: 'nl', viewMode: 'months' }),
+		it('locale with initialViewMode=months', () => {
+			const component = utils.createDatetime({ locale: 'nl', initialViewMode: 'months' }),
 				expectedMonths = ['Mrt', 'Mei'],
 				actualMonths = [utils.getNthMonth(component, 2).text(), utils.getNthMonth(component, 4).text()];
 
@@ -764,12 +808,12 @@ describe('Datetime', () => {
 			}, 0);
 		});
 
-		describe('defaultValue of type', () => {
+		describe('initialValue of type', () => {
 			it('date', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					momentDate = moment(date),
 					strDate = momentDate.format('L') + ' ' + momentDate.format('LT'),
-					component = utils.createDatetime({ defaultValue: date });
+					component = utils.createDatetime({ initialValue: date });
 				expect(utils.getInputValue(component)).toEqual(strDate);
 			});
 
@@ -777,7 +821,7 @@ describe('Datetime', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					momentDate = moment(date),
 					strDate = momentDate.format('L') + ' ' + momentDate.format('LT'),
-					component = utils.createDatetime({ defaultValue: momentDate });
+					component = utils.createDatetime({ initialValue: momentDate });
 				expect(utils.getInputValue(component)).toEqual(strDate);
 			});
 
@@ -785,30 +829,30 @@ describe('Datetime', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					momentDate = moment(date),
 					strDate = momentDate.format('L') + ' ' + momentDate.format('LT'),
-					component = utils.createDatetime({ defaultValue: strDate });
+					component = utils.createDatetime({ initialValue: strDate });
 				expect(utils.getInputValue(component)).toEqual(strDate);
 			});
 		});
 
 		describe('timeFormat with', () => {
 			it('milliseconds', () => {
-				const component = utils.createDatetime({ viewMode: 'time', timeFormat: 'HH:mm:ss:SSS' });
+				const component = utils.createDatetime({ initialViewMode: 'time', timeFormat: 'HH:mm:ss:SSS' });
 				expect(component.find('.rdtCounter').length).toEqual(4);
 				// TODO: Test that you can input a value in milli seconds input
 			});
 
 			it('seconds', () => {
-				const component = utils.createDatetime({ viewMode: 'time', timeFormat: 'HH:mm:ss' });
+				const component = utils.createDatetime({ initialViewMode: 'time', timeFormat: 'HH:mm:ss' });
 				expect(component.find('.rdtCounter').length).toEqual(3);
 			});
 
 			it('minutes', () => {
-				const component = utils.createDatetime({ viewMode: 'time', timeFormat: 'HH:mm' });
+				const component = utils.createDatetime({ initialViewMode: 'time', timeFormat: 'HH:mm' });
 				expect(component.find('.rdtCounter').length).toEqual(2);
 			});
 
 			it('hours', () => {
-				const component = utils.createDatetime({ viewMode: 'time', timeFormat: 'HH' });
+				const component = utils.createDatetime({ initialViewMode: 'time', timeFormat: 'HH' });
 				expect(component.find('.rdtCounter').length).toEqual(1);
 			});
 		});
@@ -817,7 +861,7 @@ describe('Datetime', () => {
 			it('dateFormat -> value should change format', (done) => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					component = utils.createDatetime({
-						dateFormat: 'YYYY-MM-DD', timeFormat: false, defaultValue: date
+						dateFormat: 'YYYY-MM-DD', timeFormat: false, initialValue: date
 					});
 
 				const valueBefore = utils.getInputValue(component);
@@ -888,13 +932,18 @@ describe('Datetime', () => {
 				});
 			});
 
-			it('locale -> picker should change language (viewMode=days)', () => {
-				const component = utils.createDatetime({ viewMode: 'days', locale: 'nl' }),
-					weekdaysBefore = component.find('.rdtDays .dow').map((element) =>
-						element.text()
-					);
+			it('locale -> picker should change language (initialViewMode=days)', () => {
+				const component = utils.createDatetime({ initialViewMode: 'days', locale: 'en' });
+				const	weekdaysBefore = component.find('.rdtDays .dow').map( element =>
+					element.text()
+				);
 
-				component.setProps({ locale: 'sv' });
+				component.setProps({ locale: 'nl' });
+				
+				// I don't know why the component doesn't get updated automatically in this case
+				// In the next test case it's working ok without using update()
+				component.update();
+
 				const weekdaysAfter = component.find('.rdtDays .dow').map((element) =>
 					element.text()
 				);
@@ -902,8 +951,8 @@ describe('Datetime', () => {
 				expect(weekdaysBefore).not.toEqual(weekdaysAfter);
 			});
 
-			it('locale -> picker should change language (viewMode=months)', () => {
-				const component = utils.createDatetime({ viewMode: 'months', locale: 'nl' }),
+			it('locale -> picker should change language (initialViewMode=months)', () => {
+				const component = utils.createDatetime({ initialViewMode: 'months', locale: 'nl' }),
 					monthsBefore = [utils.getNthMonth(component, 2).text(), utils.getNthMonth(component, 4).text()];
 
 				component.setProps({ locale: 'sv' });
@@ -915,52 +964,52 @@ describe('Datetime', () => {
 	});
 
 	describe('event listeners', () => {
-		describe('onBlur', () => {
+		describe('onClose', () => {
 			it('when selecting a date', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-					onBlurFn = jest.fn(),
-					component = utils.createDatetime({ value: date, onBlur: onBlurFn, closeOnSelect: true });
+					onCloseFn = jest.fn(),
+					component = utils.createDatetime({ value: date, onClose: onCloseFn, closeOnSelect: true });
 
 				utils.openDatepicker(component);
 				// Close component by selecting a date
 				utils.clickNthDay(component, 2);
-				expect(onBlurFn).toHaveBeenCalledTimes(1);
+				expect(onCloseFn).toHaveBeenCalledTimes(1);
 			});
 
 			it('when selecting date (value=null and closeOnSelect=true)', () => {
-				const onBlurFn = jest.fn(),
-					component = utils.createDatetime({ value: null, onBlur: onBlurFn, closeOnSelect: true });
+				const onCloseFn = jest.fn(),
+					component = utils.createDatetime({ value: null, onClose: onCloseFn, closeOnSelect: true });
 
 				utils.openDatepicker(component);
 				// Close component by selecting a date
 				utils.clickNthDay(component, 2);
-				expect(onBlurFn).toHaveBeenCalledTimes(1);
+				expect(onCloseFn).toHaveBeenCalledTimes(1);
 			});
 
 			it('when selecting date (value=null and closeOnSelect=false)', () => {
-				const onBlurFn = jest.fn(),
-					component = utils.createDatetime({ value: null, onBlur: onBlurFn, closeOnSelect: false });
+				const onCloseFn = jest.fn(),
+					component = utils.createDatetime({ value: null, onClose: onCloseFn, closeOnSelect: false });
 
 				utils.openDatepicker(component);
 				// Close component by selecting a date
 				utils.clickNthDay(component, 2);
-				expect(onBlurFn).not.toHaveBeenCalled();
+				expect(onCloseFn).not.toHaveBeenCalled();
 			});
 		});
 
-		it('onFocus when opening datepicker', () => {
+		it('onOpen when opening datepicker', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				onFocusFn = jest.fn(),
-				component = utils.createDatetime({ value: date, onFocus: onFocusFn });
+				onOpenFn = jest.fn(),
+				component = utils.createDatetime({ value: date, onOpen: onOpenFn });
 
 			utils.openDatepicker(component);
-			expect(onFocusFn).toHaveBeenCalledTimes(1);
+			expect(onOpenFn).toHaveBeenCalledTimes(1);
 		});
 
-		describe('onViewModeChange', () => {
+		describe('onNavigate', () => {
 			it('when switch from days to time view mode', () => {
-				const component = utils.createDatetime({ onViewModeChange: (viewMode) => {
-					expect(viewMode).toEqual('time');
+				const component = utils.createDatetime({ onNavigate: (initialViewMode) => {
+					expect(initialViewMode).toEqual('time');
 				}});
 				expect(utils.isDayView(component)).toBeTruthy();
 				utils.clickOnElement(component.find('.rdtTimeToggle'));
@@ -968,8 +1017,8 @@ describe('Datetime', () => {
 			});
 
 			it('when switch from time to days view mode', () => {
-				const component = utils.createDatetime({ viewMode: 'time', onViewModeChange: (viewMode) => {
-					expect(viewMode).toEqual('days');
+				const component = utils.createDatetime({ initialViewMode: 'time', onNavigate: (initialViewMode) => {
+					expect(initialViewMode).toEqual('days');
 				}});
 				expect(utils.isTimeView(component)).toBeTruthy();
 				utils.clickOnElement(component.find('.rdtSwitch'));
@@ -977,8 +1026,8 @@ describe('Datetime', () => {
 			});
 
 			it('when switch from days to months view mode', () => {
-				const component = utils.createDatetime({ onViewModeChange: (viewMode) => {
-					expect(viewMode).toEqual('months');
+				const component = utils.createDatetime({ onNavigate: (initialViewMode) => {
+					expect(initialViewMode).toEqual('months');
 				}});
 				expect(utils.isDayView(component)).toBeTruthy();
 				utils.clickOnElement(component.find('.rdtSwitch'));
@@ -986,8 +1035,8 @@ describe('Datetime', () => {
 			});
 
 			it('when switch from months to years view mode', () => {
-				const component = utils.createDatetime({ viewMode: 'months', onViewModeChange: (viewMode) => {
-					expect(viewMode).toEqual('years');
+				const component = utils.createDatetime({ initialViewMode: 'months', onNavigate: (initialViewMode) => {
+					expect(initialViewMode).toEqual('years');
 				}});
 				expect(utils.isMonthView(component)).toBeTruthy();
 				utils.clickOnElement(component.find('.rdtSwitch'));
@@ -995,8 +1044,8 @@ describe('Datetime', () => {
 			});
 
 			it('only when switch from years to months view mode', () => {
-				const component = utils.createDatetime({ viewMode: 'years', onViewModeChange: (viewMode) => {
-					expect(viewMode).toEqual('months');
+				const component = utils.createDatetime({ initialViewMode: 'years', onNavigate: (initialViewMode) => {
+					expect(initialViewMode).toEqual('months');
 				}});
 				expect(utils.isYearView(component)).toBeTruthy();
 				utils.clickOnElement(component.find('.rdtSwitch'));
@@ -1006,38 +1055,109 @@ describe('Datetime', () => {
 			});
 
 			it('when switch from months to days view mode', () => {
-				const component = utils.createDatetime({ viewMode: 'months', onViewModeChange: (viewMode) => {
-					expect(viewMode).toEqual('days');
+				const component = utils.createDatetime({ initialViewMode: 'months', onNavigate: (initialViewMode) => {
+					expect(initialViewMode).toEqual('days');
 				}});
 				expect(utils.isMonthView(component)).toBeTruthy();
 				utils.clickNthMonth(component, 2);
 				expect(utils.isDayView(component)).toBeTruthy();
 			});
+
+			it('when onBeforeNavigate is defined', done => {
+				const date = moment( new Date(2000, 0, 15, 2, 2, 2, 2) );
+				let on = viewMode => {
+					expect( viewMode ).toEqual('days');
+					done();
+				};
+				let obn = (next, current, viewDate) => {
+					expect( next ).toEqual('days');
+					expect( current ).toEqual('months');
+					expect( viewDate.month() ).toEqual( 2 );
+					expect( viewDate.year() ).toEqual( date.year() );
+					return next;
+				};
+				const component = utils.createDatetime(
+					{ value: date, initialViewMode: 'months', onNavigate: on, onBeforeNavigate: obn }
+				);
+
+				expect(utils.isMonthView(component)).toBeTruthy();
+				utils.clickNthMonth(component, 2);
+				expect(utils.isDayView(component)).toBeTruthy();
+			});
+			
+			it('prevent navigation using onBeforeNavigate', () => {
+				const date = moment( new Date(2000, 0, 15, 2, 2, 2, 2) );
+				let on = jest.fn();
+				let obn = (next, current, viewDate) => {
+					expect( next ).toEqual('years');
+					expect( current ).toEqual('months');
+					expect( viewDate.month() ).toEqual( date.month() );
+					expect( viewDate.year() ).toEqual( date.year() );
+					return false;
+				};
+
+				const component = utils.createDatetime(
+					{ value: date, initialViewMode: 'months', onNavigate: on, onBeforeNavigate: obn }
+				);
+
+				expect(utils.isMonthView(component)).toBeTruthy();
+				// Go to year view
+				utils.clickOnElement(component.find('.rdtSwitch'));
+				expect(utils.isMonthView(component)).toBeTruthy();
+				expect(utils.isYearView(component)).toBeFalsy();
+				expect(on).not.toHaveBeenCalled();
+			});
+
+			it('go to a different screen when navigating using onBeforeNavigate', done => {
+				// race condition fix
+				setTimeout( () => {
+					let on = viewMode => {
+						expect( viewMode ).toEqual('years');
+					};
+					let obn = (next, current) => {
+						expect( next ).toEqual('days');
+						expect( current ).toEqual('months');
+						return 'years';
+					};
+					const component = utils.createDatetime(
+						{ initialViewMode: 'months', onNavigate: on, onBeforeNavigate: obn }
+					);
+
+					expect(utils.isMonthView(component)).toBeTruthy();
+					utils.clickNthMonth(component, 2);
+					expect(utils.isYearView(component)).toBeTruthy();
+					done();
+				});
+			});
 		});
 
 		describe('onChange', () => {
-			it('trigger only when last selection type is selected', () => {
-				// By selection type I mean if you CAN select day, then selecting a month
-				// should not trigger onChange
-				const onChangeFn = jest.fn(),
-					component = utils.createDatetime({ viewMode: 'years', onChange: onChangeFn });
-
-				utils.openDatepicker(component);
-
-				utils.clickNthYear(component, 2);
-				expect(onChangeFn).not.toHaveBeenCalled();
-
-				utils.clickNthMonth(component, 2);
-				expect(onChangeFn).not.toHaveBeenCalled();
-
-				utils.clickNthDay(component, 2);
-				expect(onChangeFn).toHaveBeenCalled();
+			it('trigger only when last selection type is selected', done => {
+				// race condition fix
+				setTimeout( () => {
+					// By selection type I mean if you CAN select day, then selecting a month
+					// should not trigger onChange
+					const onChangeFn = jest.fn(),
+						component = utils.createDatetime({ initialViewMode: 'years', onChange: onChangeFn });
+	
+					utils.openDatepicker(component);
+	
+					utils.clickNthYear(component, 2);
+					expect(onChangeFn).not.toHaveBeenCalled();
+	
+					utils.clickNthMonth(component, 2);
+					expect(onChangeFn).not.toHaveBeenCalled();
+	
+					utils.clickNthDay(component, 2);
+					expect(onChangeFn).toHaveBeenCalled();
+					done();
+				});
 			});
 
 			it('when selecting date', (done) => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					mDate = moment(date),
-					component = utils.createDatetime({ defaultValue: date, onChange: (selected) => {
+					component = utils.createDatetime({ initialValue: date, onChange: (selected) => {
 						expect(selected.date()).toEqual(2);
 						expect(selected.month()).toEqual(mDate.month());
 						expect(selected.year()).toEqual(mDate.year());
@@ -1051,7 +1171,7 @@ describe('Datetime', () => {
 				let i = 0;
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					mDate = moment(date),
-					component = utils.createDatetime({ defaultValue: date, onChange: (selected) => {
+					component = utils.createDatetime({ initialValue: date, onChange: (selected) => {
 						i++;
 						if (i > 2) {
 							expect(selected.date()).toEqual(4);
@@ -1069,7 +1189,7 @@ describe('Datetime', () => {
 			it('when selecting month', () => {
 				const date = _momentTimezone.tz('2000-03-15T02:02:02.002Z', 'UTC'),
 					onChangeFn = jest.fn(),
-					component = utils.createDatetime({ defaultValue: date, dateFormat: 'YYYY-MM', onChange: onChangeFn });
+					component = utils.createDatetime({ initialValue: date, dateFormat: 'YYYY-MM', onChange: onChangeFn });
 
 				utils.clickNthMonth(component, 2);
 				expect(onChangeFn).toHaveBeenCalledTimes(1);
@@ -1080,7 +1200,7 @@ describe('Datetime', () => {
 			xit('when selecting year', () => {
 				const date = Date.UTC(2000, 0, 15, 2, 2, 2, 2),
 					onChangeFn = jest.fn(),
-					component = utils.createDatetime({ defaultValue: date, dateFormat: 'YYYY', onChange: onChangeFn });
+					component = utils.createDatetime({ initialValue: date, dateFormat: 'YYYY', onChange: onChangeFn });
 
 				utils.clickNthYear(component, 2);
 				expect(onChangeFn).toHaveBeenCalledTimes(1);
@@ -1109,7 +1229,7 @@ describe('Datetime', () => {
 		});
 
 		it('when moving to next year', () => {
-			const component = utils.createDatetime({ viewMode: 'months', onNavigateForward: (amount, type) => {
+			const component = utils.createDatetime({ initialViewMode: 'months', onNavigateForward: (amount, type) => {
 				expect(amount).toEqual(1);
 				expect(type).toEqual('years');
 			}});
@@ -1118,7 +1238,7 @@ describe('Datetime', () => {
 		});
 
 		it('when moving decade forward', () => {
-			const component = utils.createDatetime({ viewMode: 'years', onNavigateForward: (amount, type) => {
+			const component = utils.createDatetime({ initialViewMode: 'years', onNavigateForward: (amount, type) => {
 				expect(amount).toEqual(10);
 				expect(type).toEqual('years');
 			}});
@@ -1138,7 +1258,7 @@ describe('Datetime', () => {
 		});
 
 		it('when moving to previous year', () => {
-			const component = utils.createDatetime({ viewMode: 'months', onNavigateBack: (amount, type) => {
+			const component = utils.createDatetime({ initialViewMode: 'months', onNavigateBack: (amount, type) => {
 				expect(amount).toEqual(1);
 				expect(type).toEqual('years');
 			}});
@@ -1147,7 +1267,7 @@ describe('Datetime', () => {
 		});
 
 		it('when moving decade back', () => {
-			const component = utils.createDatetime({ viewMode: 'years', onNavigateBack: (amount, type) => {
+			const component = utils.createDatetime({ initialViewMode: 'years', onNavigateBack: (amount, type) => {
 				expect(amount).toEqual(10);
 				expect(type).toEqual('years');
 			}});
@@ -1208,7 +1328,7 @@ describe('Datetime', () => {
 
 		it('TZ value from local moment', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-        displayTimeZone = 'America/New_York',
+				displayTimeZone = 'America/New_York',
 				momentDate = moment(date),
 				momentDateTZ = moment.tz(date, displayTimeZone),
 				strDateTZ = momentDateTZ.format('L') + ' ' + momentDateTZ.format('LT'),
@@ -1230,7 +1350,7 @@ describe('Datetime', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 				mDate = moment(date),
 				strDate = mDate.format('L') + ' ' + mDate.format('LT'),
-				component = utils.createDatetime({ defaultValue: 'invalid-value', onChange: (updated) => {
+				component = utils.createDatetime({ initialValue: 'invalid-value', onChange: (updated) => {
 					expect(mDate.format('L LT')).toEqual(updated.format('L LT'));
 					done();
 				}});
@@ -1241,7 +1361,7 @@ describe('Datetime', () => {
 
 		it('delete invalid string value', (done) => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-				component = utils.createDatetime({ defaultValue: date, onChange: (date) => {
+				component = utils.createDatetime({ initialValue: date, onChange: (date) => {
 					expect(date).toEqual('');
 					done();
 				}});
@@ -1262,6 +1382,141 @@ describe('Datetime', () => {
 			expect(component.find('.form-control').getDOMNode().value).toEqual('');
 			component.find('.form-control').simulate('change', { target: { value: strDate }});
 		});
+
+		it('should update the view date when updating the value prop', done => {
+			const value1 = moment('2020-03-04T13:00:10.121Z');
+			const value2 = moment('2021-06-04T13:00:10.121Z');
+
+			let component = utils.createDatetime({ value: value1 });
+			expect( component.instance().state.viewDate.toISOString() ).toBe(value1.toISOString());
+
+			component.setProps({ value: value2 });
+			setTimeout( () => {
+				expect( component.instance().state.viewDate.toISOString() ).toBe(value2.toISOString());
+				done();
+			});
+		});
+	});
+
+	describe('View navigation', () => {
+		it('The calendar must be open in the updateOnView when not initialViewModel is defined', () => {
+			const component = utils.createDatetime({ updateOnView: 'months' });
+
+			expect( component.find('.rdtMonth').length ).not.toBe(0);
+			expect( component.find('.rdtDay').length ).toBe(0);
+		});
+
+		it('The calendar must be open in the initialViewModel if it is defined', () => {
+			const component = utils.createDatetime({ updateOnView: 'months', initialViewMode: 'days' });
+
+			expect( component.find('.rdtMonth').length ).toBe(0);
+			expect( component.find('.rdtDay').length ).not.toBe(0);
+		});
+		
+		it('The calendar must be closed on select in the updateView, if closeOnSelect defined', done => {	
+
+			const component = utils.createDatetime(
+				{ updateOnView: 'months', closeOnSelect: true, input: true }
+			);
+			
+			// Race condition fix
+			setTimeout( () => {
+				utils.openDatepicker( component );
+				expect( utils.isOpen(component) ).toBeTruthy();
+				utils.clickNthMonth( component, 1 );
+				expect( utils.isOpen(component) ).toBeFalsy();
+				done();
+			});
+		});
+
+		it('The selected date must change when selecting in the updateView', done => {
+			const initialDate = new Date(2000, 6, 15, 2, 2, 2, 2);
+			const onChange = updated => {
+				expect( updated.month() ).toBe( 1 );
+				expect( updated.year() ).toBe( 2000 );
+				
+				// We shouldn't navigate when selecting in an updateView
+				expect( component.find('.rdtMonth').length ).not.toBe(0);
+				expect( component.find('.rdtDay').length ).toBe(0);
+
+				done();
+			};
+
+			const component = utils.createDatetime({
+				updateOnView: 'months', input: false, initialValue: initialDate, onChange
+			});
+			
+			utils.clickNthMonth( component, 1 );
+		});
+
+		it('If the updateView is "time" clicking on a day shouldn`t update the selected date and navigate to the time', done => {
+			const initialDate = new Date(2000, 6, 15, 2, 2, 2, 2);
+			const onChangeFn = jest.fn();
+			const component = utils.createDatetime({
+				updateOnView: 'time', initialViewMode: 'days', input: false, initialValue: initialDate, onChangeFn
+			});
+			
+			// Race condition fix
+			setTimeout( () => {
+
+				utils.clickNthDay( component, 1 );
+
+				expect( component.find('.rdtDay').length ).toBe(0);
+				expect( component.find('.rdtTime').length ).not.toBe(0);
+
+				setTimeout(() => {
+					expect(onChangeFn).toHaveBeenCalledTimes(0);
+					done();
+				}, 10 );
+			});
+		});
+	});
+	
+});
+
+describe('Imperative methods', function() {
+	it('Calling setViewDate should navigate to the given date', function() {
+		const initialDate = new Date(2000, 6, 15, 2, 2, 2, 2);
+		const component = utils.createDatetime({ initialViewMode: 'months', initialViewDate: initialDate } );
+
+		expect( utils.isMonthView( component ) ).toBeTruthy();
+		expect( component.find('.rdtSwitch').text() ).toBe('2000');
+
+		const nextDate = new Date( 2012, 10, 10 );
+		component.instance().setViewDate( nextDate );
+		
+		expect( utils.isMonthView( component ) ).toBeTruthy();
+		expect( component.find('.rdtSwitch').text() ).toBe('2012');
+	});
+
+	// This test is just not working, but it's using the setView method internally,
+	// That is well tested by other specs in this file
+	xit('Calling navigate should update to the given view', function( done ) {
+		const initialDate = new Date(2000, 6, 15, 2, 2, 2, 2);
+		const component = utils.createDatetime(
+			{ initialViewMode: 'months', initialViewDate: initialDate }
+		);
+		
+		expect( utils.isMonthView( component ) ).toBeTruthy();
+		
+		component.instance().navigate( 'days' );
+
+		// Sync fix
+		setTimeout( () => {
+			expect( utils.isDayView( component ) ).toBeTruthy();
+			component.instance().navigate( 'time' );
+			expect( utils.isTimeView( component ) ).toBeTruthy();
+			
+			component.instance().navigate( 'years' );
+			expect( utils.isYearView( component ) ).toBeTruthy();
+			
+			component.instance().navigate( 'months' );
+			expect( utils.isMonthView( component ) ).toBeTruthy();
+
+			// The date should stay unmodified
+			expect( component.find('.rdtSwitch').text() ).toBe('2000');
+			done();
+		}, 100);
 
 	});
 });

@@ -6,12 +6,13 @@
         "noEmit": true,
         "jsx": "react",
         "baseUrl": "../",
+        "lib": ["es6"],
         "paths": {
             "react-datetime": ["./"]
         }
     },
     "files": [
-        "../DateTime.d.ts",
+        "../src/datetime/DateTime.d.ts",
         "react-datetime-tests.tsx"
     ]
 }

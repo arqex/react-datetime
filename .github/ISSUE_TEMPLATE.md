@@ -9,10 +9,10 @@
   
   2) Some of the most frequently asked questions have the answer for them in the documentation. 
   Be sure to read through the API carefully before publishing an issue: 
-    https://github.com/YouCanBookMe/react-datetime#api
+    https://github.com/arqex/react-datetime#api
   We also use the label *Documentation* for issues that have code examples in them which may be 
   useful for other developers, please have a look there as well: 
-    https://github.com/YouCanBookMe/react-datetime/issues?utf8=%E2%9C%93&q=label%3Adocumentation%20
+    https://github.com/arqex/react-datetime/issues?utf8=%E2%9C%93&q=label%3Adocumentation%20
   
   3) Discussions for version 3 of react-datetime has been initiated, and we have come up with some 
   feature and bug candidates. This means that if a feature or bug has been requested/reported many
@@ -20,7 +20,7 @@
   in this list before publishing it.
   
   You can find all the candidates here in the *Candidates* column:
-    https://github.com/YouCanBookMe/react-datetime/projects/1
+    https://github.com/arqex/react-datetime/projects/1
 -->
 
 

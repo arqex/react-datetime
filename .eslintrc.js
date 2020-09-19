@@ -1,5 +1,6 @@
 module.exports = {
     "env": {
+        "es6": true,
         "browser": true
     },
     "globals": {
@@ -38,5 +39,9 @@ module.exports = {
         "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
         // Enforce using tabs for indentation
         "indent": [2, "tab", { "SwitchCase": 1 }]
-    }
+    },
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "extends": "react-app"
 };

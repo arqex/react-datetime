@@ -1,5 +1,5 @@
 /*!
- * https://github.com/YouCanBookMe/react-datetime
+ * https://github.com/arqex/react-datetime
  */
 
 .rdt {
@@ -124,10 +124,10 @@
   color: #999999;
   cursor: not-allowed;
 }
-.rdtPicker thead tr:first-child th {
+.rdtPicker thead tr:first-of-type th {
   cursor: pointer;
 }
-.rdtPicker thead tr:first-child th:hover {
+.rdtPicker thead tr:first-of-type th:hover {
   background: #eeeeee;
 }
 

@@ -1,6 +1,7 @@
 // Type definitions for react-datetime
-// Project: https://github.com/YouCanBookMe/react-datetime
+// Project: https://github.com/arqex/react-datetime
 // Definitions by: Ivan Verevkin <vereva@x-root.org>
+//     Updates by: Javier Marquez <javi@arqex.com>
 
 // These are the typings for Typescript 1.8
 // for Typescript 2.0+ see DateTime.d.ts
@@ -21,12 +22,26 @@ declare module ReactDatetime {
      Represents the selected date for the component to use it as a uncontrolled component.
      This prop is parsed by moment.js, so it is possible to use a date string or a moment.js date.
      */
-    defaultValue?: Date;
+    initialValue?: Date;
     /*
-     Represents the month which is viewed on opening the calendar when there is no selected date.
+     Define the month/year/decade/time which is viewed on opening the calendar.
      This prop is parsed by Moment.js, so it is possible to use a date `string` or a `moment` object.
      */
-    viewDate?: Date;
+    initialViewDate?: Date;
+    /*
+     The default view to display when the picker is shown for the first time. ('years', 'months', 'days', 'time')
+     */
+    initialViewMode?: string;
+    /*
+      In the calendar we can navigate through years and months without actualling updating the selected view. Only 
+      when we get to one view called the "updating view", we make a selection there and the value gets updated, 
+      triggering an `onChange` event. 
+      By default the updating view will get guessed by using the `dateFormat` so if our dates only show months 
+      and never days, the update is done in the `months` view. If we set `updateOnView="time"` selecting a day 
+      will navigate to the time view. The time view always updates the selected date, never navigates. 
+      If `closeOnSelect={ true }`, making a selection in the view defined by `updateOnView` will close the calendar.
+    */
+    updateOnView?: string;
     /*
      Defines the format for the date. It accepts any moment.js date format.
      If true the date will be displayed using the defaults for the current locale.
@@ -71,19 +86,27 @@ declare module ReactDatetime {
     /*
      Callback trigger for when the user opens the datepicker.
      */
-    onFocus?: () => void;
+    onOpen?: () => void;
     /*
-     Callback trigger for when the user clicks outside of the input, simulating a regular onBlur.
+     Callback trigger for when the datepicker is closed.
      The callback receives the selected `moment` object as only parameter, if the date in the input
      is valid. If the date in the input is not valid, the callback receives the value of the
      input (a string).
      */
-    onBlur?: (momentOrInputString : string|any) => void;
+    onClose?: (momentOrInputString : string|any) => void;
     /*
      Callback trigger when the view mode changes. The callback receives the selected view mode
      string ('years', 'months', 'days', 'time') as only parameter.
     */
-    onViewModeChange?: (viewMode: string) => void;
+    onNavigate?: (viewMode: string) => void;
+    /*
+    Allows to intercept a change of the calendar view. The accepted function receives the view 
+    that it's supposed to navigate to, the view that is showing currently and the date currently 
+    shown in the view. Return a viewMode ( default ones are `years`, `months`, `days` or `time`) to 
+    navigate to it. If the function returns a "falsy" value, the navigation is stopped and we will 
+    remain in the current view.
+    */
+    onBeforeNavigate?: (nextView: string, currentView: string, viewDate: Moment) => string;
     /*
       Callback trigger when the user navigates to the previous month, year or decade.
       The callback receives the amount and type ('month', 'year') as parameters.
@@ -95,10 +118,6 @@ declare module ReactDatetime {
      */
     onNavigateForward?: (amount: number, type: string) => void;
     /*
-     The default view to display when the picker is shown. ('years', 'months', 'days', 'time')
-     */
-    viewMode?: string|number;
-    /*
      Extra class names for the component markup.
      */
     className?: string;
@@ -107,11 +126,18 @@ declare module ReactDatetime {
      */
     inputProps?: Object;
     /*
+      Customize the way the calendar is rendered. The accepted function receives view mode that
+      is going to be rendered ('years', 'months', 'days', 'time') and a function to render the default
+      view of react-datetime, this way it's possible to wrap the original view adding our own markup or
+      override it completely with our own code.
+    */
+    renderView?: (viewMode: string, renderCalendar: Function) => React.Component<any, any>;
+    /*
      Replace the rendering of the input element. The accepted function has openCalendar
      (a function which opens the calendar) and the default calculated props for the input.
      Must return a React component or null.
      */
-    renderInput?: (props: Object, openCalendar: Function) => React.Component<any, any>;
+    renderInput?: (props: Object, openCalendar: Function, closeCalendar: Function) => React.Component<any, any>;
     /*
      Define the dates that can be selected. The function receives (currentDate, selectedDate)
      and should return a true or false whether the currentDate is valid or not. See selectable dates.
@@ -153,17 +179,16 @@ declare module ReactDatetime {
     */
     timeConstraints?: Object;
     /*
-     When true, keep the picker open when click event is triggered outside of component. When false,
-     close it.
-    */
-    disableOnClickOutside?: boolean;
+     When true the picker get closed when clicking outside of the calendar or the input box. When false, it stays open.
+     */
+    closeOnClickOutside?: boolean;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {
   }
 }
 
-declare module "react-datetime" {
-  var ReactDatetime: ReactDatetime.DatetimeComponent;
-  export = ReactDatetime;
+declare module 'react-datetime' {
+  var DateTime: ReactDatetime.DatetimeComponent;
+  export = DateTime;
 }

@@ -1,6 +1,6 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import { mount, shallow } from 'enzyme';
-import Datetime from '../DateTime'; // eslint-disable-line no-unused-vars
+import Datetime from '../dist/react-datetime.cjs'; // eslint-disable-line no-unused-vars
 
 const _simulateClickOnElement = (element) => {
 	if (element.length === 0) {
@@ -40,14 +40,19 @@ module.exports = {
 	},
 
 	clickNthYear: (datetime, n) => {
-        return _simulateClickOnElement(datetime.find('.rdtYear').at(n));
+		return _simulateClickOnElement(datetime.find('.rdtYear').at(n));
+	},
+
+	clickClassItem: (datetime, cn, n) => {
+		return _simulateClickOnElement( datetime.find(cn).at(n) );
 	},
 
 	/*
 	 * Boolean Checks
 	 */
 	isOpen: (datetime) => {
-		return datetime.find('.rdt.rdtOpen').length > 0;
+		var open = datetime.find('.rdt.rdtOpen').length > 0;
+		return open;
 	},
 
 	isDayView: (datetime) => {

@@ -1,5 +1,23 @@
 Changelog
 =========
+## 3.0.0
+* Big refactor, the state is not derived from the props after every update.
+* `disableCloseOnClickOutside` prop is now `closeOnClickOutside` (avoid double negations).
+* `onBlur` and `onFocus` are renamed to `onClose` and `onOpen` since they had nothing to do with the blur event and it was misleading some users. If we want to listen to the input's `onBlur` and `onFocus` use `inputProps`.
+* `defaultValue` prop is now called `initialValue`.
+* Updated typescript definitions.
+* Time is not updated anymore on right clicks.
+* Creates `renderView` prop to customize the whole calendar.
+* Creates `updateOnView` prop to decide when to update the date.
+* `onViewModeChange` prop renamed to `onNavigate`.
+* Creates `onBeforeNavigate` prop.
+* Creates `setViewData` and `navigate` methods.
+* Fixes error clicking on days from the previous or next month in the days view.
+* Fixes month, year and time views for locales that doesn't use gregorian numbers.
+* Adds a playground to make simpler to try out the library by `npm run playground`.
+* Not depending on gulp to create the build anymore
+* Updated most of the dependencies.
+
 ## 2.16.2
 * Turns moment timezone peer dependency in a runtime error when missing using `displayTimezone`.
 
@@ -48,7 +66,7 @@ Changelog
 
 ## 2.10.2
 * Move @types/react back to devDependencies
-* Add [demo](https://youcanbookme.github.io/react-datetime) app.
+* Add [demo](https://codesandbox.io/s/boring-dew-uzln3) app.
 
 ## 2.10.1
 * Fix build files.

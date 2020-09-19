@@ -18,7 +18,7 @@ const TEST_DATE_PROPS_FOR_VALUE: JSX.Element = <ReactDatetime
 	/>;
 
 const TEST_DATE_PROPS_FOR_DEFAULT_VALUE: JSX.Element = <ReactDatetime
-		defaultValue={ new Date() }
+		initialValue={ new Date() }
 	/>;
 
 const TEST_DATE_PROPS_FOR_VALUE_AS_MOMENT: JSX.Element = <ReactDatetime
@@ -30,11 +30,11 @@ const TEST_DATE_PROPS_FOR_VALUE_AS_STRING: JSX.Element = <ReactDatetime
 	/>;
 
 const TEST_DATE_PROPS_FOR_DEFAULT_VALUE_AS_MOMENT: JSX.Element = <ReactDatetime
-		defaultValue={ moment() }
+		initialValue={ moment() }
 	/>;
 
 const TEST_DATE_PROPS_FOR_DEFAULT_VALUE_AS_STRING: JSX.Element = <ReactDatetime
-		defaultValue={ '1995-12-25' }
+		initialValue={ '1995-12-25' }
 	/>;
 
 /*
@@ -60,7 +60,7 @@ const TEST_BOOLEAN_PROPS: JSX.Element = <ReactDatetime
 		open={ false }
 		strictParsing={ false }
 		closeOnSelect={ false }
-		disableOnClickOutside={ false }
+		closeOnClickOutside={ false }
 		utc={ false }
 	/>;
 
@@ -92,22 +92,25 @@ const TEST_INPUT_PROPS: JSX.Element = <ReactDatetime
  		onChange={
  			(momentOrInputString:string) => {}
  		}
-		onFocus={
+		onOpen={
 			() => {}
 		}
-		onBlur={
+		onClose={
 			(momentOrInputString:string) => {}
 		}
-		onViewModeChange={
- 			(viewMode:string) => {}
- 		}
+		onNavigate={
+ 			(initialViewMode:string) => {}
+		}
+		onBeforeNavigate={
+			(nextView:string, currentView:string, viewDate: any ) => { return 'ok' }
+		}
  	/>;
 
 const TEST_EVENT_HANDLERS_WITH_MOMENT: JSX.Element = <ReactDatetime
 		onChange={
 			(momentOrInputString:Moment) => {}
 		}
-		onBlur={
+		onClose={
 			(momentOrInputString:Moment) => {}
 		}
 	/>;
@@ -117,7 +120,7 @@ const TEST_EVENT_HANDLERS_WITH_MOMENT: JSX.Element = <ReactDatetime
  */
 
 const TEST_VIEW_MODE_AND_CLASS_PROPS: JSX.Element = <ReactDatetime
-		viewMode='days'
+		initialViewMode='days'
 		className='rdt'
 	/>;
 
@@ -145,6 +148,12 @@ const TEST_CUSTOMIZABLE_COMPONENT_PROPS: JSX.Element = <ReactDatetime
 		renderYear={ (props: any, year: any, selectedDate: any) => {
 			return <td {...props}>{ year % 100 }</td>;
 		} }
+		renderInput={ (props: any, openCalendar: Function, closeCalendar: Function) => {
+			return <input {...props} />
+		}}
+		renderView={ (viewMode: string, renderCalendar: Function ) => {
+			return renderCalendar()
+		}}
 	/>;
 
 /*
