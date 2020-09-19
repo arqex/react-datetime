@@ -11,19 +11,9 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<Datetime
-					ref="datetime"
-					value={ this.state.date }
-				/>
-				<button onClick={ this._update }>Update</button>
+				<Datetime />
 			</div>
 		);
-	}
-	
-	_update = () => {
-		this.setState({
-			date: new Date( this.state.date.getTime() + 10000000000 )
-		});
 	}
 }
 

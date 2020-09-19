@@ -7,7 +7,7 @@ A date and time picker in the same React.js component. It can be used as a datep
 
 > **Back to the roots!** Thanks to the people of [YouCanBook.me (best scheduling tool)](https://youcanbook.me) for sponsoring react-datetime for so long. Now the project returns to the community and we are **looking for contributors** to continue improving react-datetime. [Would you like to give a hand?](contribute-home.md)
 
-These are the docs for version 3 of the library. If you are still using the deprecated v2, [here it is its documentation](https://github.com/arqex/react-datetime/blob/2a83208452ac5e41c43fea31ef47c65efba0bb56/README.md), but we strongly recommend to migrate to version 3 in order to keep receiving updates. Please check [migrating react-datetime to version 3](migrateToV3.md) to safely update your app.
+**Version 3 is out!** These are the docs for version 3 of the library. If you are still using the deprecated v2, [here it is its documentation](https://github.com/arqex/react-datetime/blob/2a83208452ac5e41c43fea31ef47c65efba0bb56/README.md), but we strongly recommend to migrate to version 3 in order to keep receiving updates. Please check [migrating react-datetime to version 3](migrateToV3.md) to safely update your app.
 
 ## Installation
 
