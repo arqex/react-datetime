@@ -3,6 +3,10 @@
 import React from 'react';
 import Datetime from './datetime/DateTime';
 
+// import moment from 'moment';
+// import 'moment/locale/tzm-latn';
+// moment.locale('tzm-latn');
+
 class App extends React.Component { 
 	state = {
 		date: new Date()

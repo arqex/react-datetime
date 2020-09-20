@@ -8,7 +8,7 @@
 .rdtPicker {
   display: none;
   position: absolute;
-  width: 250px;
+  min-width: 250px;
   padding: 4px;
   margin-top: 1px;
   z-index: 99999 !important;
