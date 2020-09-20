@@ -86,8 +86,13 @@ export default class TimeView extends React.Component {
 			}
 		}
 
-		if ( type === 'ampm' && this.props.timeFormat.indexOf(' A') !== -1 ) {
-			value = value.toUpperCase();
+		if ( type === 'ampm' ) {
+			if ( this.props.timeFormat.indexOf(' A') !== -1 ) {
+				value = this.props.viewDate.format('A');
+			}
+			else {
+				value = this.props.viewDate.format('a');
+			}
 		}
 
 		return (

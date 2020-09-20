@@ -1,5 +1,8 @@
 Changelog
 =========
+## 3.0.3
+* Localize AM and PM strings
+
 ## 3.0.2
 * Fixes typescript typings not being exposed publicly
 
