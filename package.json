@@ -1,6 +1,6 @@
 {
   "name": "react-datetime",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A lightweight but complete datetime picker React.js component",
   "homepage": "https://github.com/arqex/react-datetime",
   "repository": {
@@ -8,10 +8,11 @@
     "url": "https://github.com/arqex/react-datetime"
   },
   "main": "./dist/react-datetime.cjs.js",
-  "typings": "./src/datetime/DateTime.d.ts",
+  "typings": "./typings/DateTime.d.ts",
   "files": [
     "css",
-    "dist"
+    "dist",
+    "typings"
   ],
   "scripts": {
     "build": "webpack --config config/webpack.config.build.js",

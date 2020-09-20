@@ -1,5 +1,8 @@
 Changelog
 =========
+## 3.0.2
+* Fixes typescript typings not being exposed publicly
+
 ## 3.0.1
 * Big refactor, the state is not derived from the props after every update.
 * `disableCloseOnClickOutside` prop is now `closeOnClickOutside` (avoid double negations).

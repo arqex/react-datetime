@@ -36,12 +36,10 @@ return <Datetime />;
 
 Do you want more examples? [Have a look at our resources gallery](resources.md).
 
-**Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**
+**Don't forget to add the [CSS stylesheet](https://github.com/arqex/react-datetime/blob/master/css/react-datetime.css) to make it work out of the box.**. You only need to do this once in your app:
 
-
-
-```sh
-  import "react-datetime/css/react-datetime.css";
+```js
+import "react-datetime/css/react-datetime.css";
 ```
 
 ## API
