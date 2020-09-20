@@ -604,15 +604,21 @@ export default class Datetime extends React.Component {
 }
 
 class ClickOutBase extends React.Component {
+	container = React.createRef();
+
 	render() {
 		return (
-			<div className={ this.props.className }>
+			<div className={ this.props.className } ref={ this.container }>
 				{ this.props.children }
 			</div>
 		);
 	}
 	handleClickOutside(e) {
 		this.props.onClickOut( e );
+	}
+
+	setClickOutsideRef() {
+		return this.container.current;
 	}
 }
 
