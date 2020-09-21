@@ -3,6 +3,8 @@ Changelog
 ## 3.0.3
 * Localize AM and PM strings
 * Make calendar fluid width
+* Fixes findDOMNode deprecated warning in Strict Mode - Thanks @kkalve
+* Simplification of the base code - Thanks @onlined
 
 ## 3.0.2
 * Fixes typescript typings not being exposed publicly
