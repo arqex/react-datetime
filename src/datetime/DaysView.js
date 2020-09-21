@@ -1,4 +1,5 @@
 import React from 'react';
+import ViewNavigation from './ViewNavigation';
 
 export default class DaysView extends React.Component {
 	static defaultProps = {
@@ -30,17 +31,14 @@ export default class DaysView extends React.Component {
 
 	renderNavigation( date, locale ) {
 		return (
-			<tr>
-				<th className="rdtPrev" onClick={ () => this.props.navigate( -1, 'months' ) }>
-					<span>‹</span>
-				</th>
-				<th className="rdtSwitch" onClick={ () => this.props.showView( 'months' ) } colSpan={5} data-value={ this.props.viewDate.month() }>
-					{ locale.months( date ) + ' ' + date.year() }
-				</th>
-				<th className="rdtNext" onClick={ () => this.props.navigate( 1, 'months' ) }>
-					<span>›</span>
-				</th>
-			</tr>
+			<ViewNavigation
+				onClickPrev={ () => this.props.navigate( -1, 'months' ) }
+				onClickSwitch={ () => this.props.showView( 'months' ) }
+				onClickNext={ () => this.props.navigate( 1, 'months' ) }
+				switchContent={ locale.months( date ) + ' ' + date.year() }
+				switchColSpan={5}
+				switchProps={ { 'data-value': this.props.viewDate.month() } }
+			/>
 		);
 	}
 
