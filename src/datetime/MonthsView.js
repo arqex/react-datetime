@@ -33,16 +33,14 @@ export default class MonthsView extends React.Component {
 		);
 	}
 
-	renderMonths( viewYear ) {
+	renderMonths() {
 		// 12 months in 3 rows for every view
 		let rows = [ [], [], [] ];
 
 		for ( let month = 0; month < 12; month++ ) {
-			let row = this.getRow( rows, month );
+			let row = getRow( rows, month );
 
-			row.push(
-				this.renderMonth( month, this.props.selectedDate )
-			);
+			row.push( this.renderMonth( month ) );
 		}
 
 		return rows.map( (months, i) => (
@@ -50,7 +48,8 @@ export default class MonthsView extends React.Component {
 		));
 	}
 
-	renderMonth( month, selectedDate ) {
+	renderMonth( month ) {
+		const selectedDate = this.props.selectedDate;
 		let className = 'rdtMonth';
 		let onClick;
 
@@ -82,22 +81,7 @@ export default class MonthsView extends React.Component {
 			</td>
 		);
 	}
-
-	getRow( rows, year ) {
-		if ( year < 4 ) {
-			return rows[0];
-		}
-		if ( year < 8 ) {
-			return rows[1];
-		}
-
-		return rows[2];
-	}
-
-	capitalize( str ) {
-		return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
-	}
-
+	
 	isDisabledMonth( month ) {
 		let isValidDate = this.props.isValidDate;
 
@@ -124,10 +108,25 @@ export default class MonthsView extends React.Component {
 
 		// Because some months are up to 5 characters long, we want to
 		// use a fixed string length for consistency
-		return this.capitalize( monthStr.substring( 0, 3 ) );
+		return capitalize( monthStr.substring( 0, 3 ) );
 	}
 
 	_updateSelectedMonth = event => {
 		this.props.updateDate( event );
 	}
+}
+
+function getRow( rows, year ) {
+	if ( year < 4 ) {
+		return rows[0];
+	}
+	if ( year < 8 ) {
+		return rows[1];
+	}
+
+	return rows[2];
+}
+
+function capitalize( str ) {
+	return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
 }

@@ -81,7 +81,7 @@ export default class Datetime extends React.Component {
 
 	constructor( props ) {
 		super( props );
-		this.state = this.getInitialState( props );
+		this.state = this.getInitialState();
 	}
 
 	render() {
@@ -89,7 +89,7 @@ export default class Datetime extends React.Component {
 			<ClickableWrapper className={ this.getClassName() } onClickOut={ this._handleClickOutside }>
 				{ this.renderInput() }
 				<div className="rdtPicker">
-					{ this.renderView( this.state.currentView, this._renderCalendar ) }
+					{ this.renderView() }
 				</div>
 			</ClickableWrapper>
 		);
@@ -121,14 +121,14 @@ export default class Datetime extends React.Component {
 		);
 	}
 
-	renderView( currentView, renderer ) {
+	renderView() {
 		if ( this.props.renderView ) {
-			return this.props.renderView( currentView, () => renderer(currentView) );
+			return this.props.renderView( this.state.currentView, () => this._renderCalendar() );
 		}
-		return renderer( this.state.currentView );
+		return this._renderCalendar();
 	}
 
-	_renderCalendar = currentView => {
+	_renderCalendar = () => {
 		const props = this.props;
 		const state = this.state;
 
@@ -144,7 +144,7 @@ export default class Datetime extends React.Component {
 
 		// Probably updateOn, updateSelectedDate and setDate can be merged in the same method
 		// that would update viewDate or selectedDate depending on the view and the dateFormat
-		switch ( currentView ) {
+		switch ( state.currentView ) {
 			case viewModes.YEARS:
 				// Used viewProps
 				// { viewDate, selectedDate, renderYear, isValidDate, navigate, showView, updateDate }
@@ -172,31 +172,32 @@ export default class Datetime extends React.Component {
 		}
 	}
 
-	getInitialState( p ) {
-		let props = p || this.props;
+	getInitialState() {
+		let props = this.props;
 		let inputFormat = this.getFormat('datetime');
 		let selectedDate = this.parseDate( props.value || props.initialValue, inputFormat );
 
-		this.checkTZ( props );
+		this.checkTZ();
 
 		return {
 			open: !props.input,
-			currentView: props.initialViewMode || this.getInitialView( this.getFormat('date') ),
-			viewDate: this.getInitialViewDate( props.initialViewDate, selectedDate, inputFormat ),
+			currentView: props.initialViewMode || this.getInitialView(),
+			viewDate: this.getInitialViewDate( selectedDate ),
 			selectedDate: selectedDate && selectedDate.isValid() ? selectedDate : undefined,
-			inputValue: this.getInitialInputValue( props, selectedDate, inputFormat )
+			inputValue: this.getInitialInputValue( selectedDate )
 		};
 	}
 	
-	getInitialViewDate( propDate, selectedDate, format ) {
+	getInitialViewDate( selectedDate ) {
+		const propDate = this.props.initialViewDate;
 		let viewDate;
 		if ( propDate ) {
-			viewDate = this.parseDate( propDate, format );
+			viewDate = this.parseDate( propDate, this.getFormat('datetime') );
 			if ( viewDate && viewDate.isValid() ) {
 				return viewDate;
 			}
 			else {
-				this.log('The initialViewDated given "' + propDate + '" is not valid. Using current date instead.');
+				log('The initialViewDated given "' + propDate + '" is not valid. Using current date instead.');
 			}
 		}
 		else if ( selectedDate && selectedDate.isValid() ) {
@@ -211,9 +212,9 @@ export default class Datetime extends React.Component {
 		return m;
 	}
 
-	getInitialView( dateFormat ) {
-		if ( !dateFormat ) return viewModes.TIME;
-		return this.getUpdateOn( dateFormat );
+	getInitialView() {
+		const dateFormat = this.getFormat( 'date' );
+		return dateFormat ? this.getUpdateOn( dateFormat ) : viewModes.TIME;
 	}
 
 	parseDate(date, dateFormat) {
@@ -276,19 +277,21 @@ export default class Datetime extends React.Component {
 		return viewModes.DAYS;
 	}
 
-	getLocaleData( props ) {
-		let p = props || this.props;
+	getLocaleData() {
+		let p = this.props;
 		return this.localMoment( p.value || p.defaultValue || new Date() ).localeData();
 	}
 
-	getDateFormat( locale ) {
+	getDateFormat() {
+		const locale = this.getLocaleData();
 		let format = this.props.dateFormat;
 		if ( format === true ) return locale.longDateFormat('L');
 		if ( format ) return format;
 		return '';
 	}
 
-	getTimeFormat( locale ) {
+	getTimeFormat() {
+		const locale = this.getLocaleData();
 		let format = this.props.timeFormat;
 		if ( format === true ) {
 			return locale.longDateFormat('LT');
@@ -298,15 +301,14 @@ export default class Datetime extends React.Component {
 
 	getFormat( type ) {
 		if ( type === 'date' ) {
-			return this.getDateFormat( this.getLocaleData() );
+			return this.getDateFormat();
 		}
 		else if ( type === 'time' ) {
-			return this.getTimeFormat( this.getLocaleData() );
+			return this.getTimeFormat();
 		}
 		
-		let locale = this.getLocaleData();
-		let dateFormat = this.getDateFormat( locale );
-		let timeFormat = this.getTimeFormat( locale );
+		let dateFormat = this.getDateFormat();
+		let timeFormat = this.getTimeFormat();
 		return dateFormat && timeFormat ? dateFormat + ' ' + timeFormat : (dateFormat || timeFormat );
 	}
 
@@ -436,10 +438,11 @@ export default class Datetime extends React.Component {
 		return m;
 	}
 
-	checkTZ( props ) {
-		if ( props.displayTimeZone && !this.tzWarning && !moment.tz ) {
+	checkTZ() {
+		const { displayTimeZone } = this.props;
+		if ( displayTimeZone && !this.tzWarning && !moment.tz ) {
 			this.tzWarning = true;
-			this.log('displayTimeZone prop with value "' + props.displayTimeZone +  '" is used but moment.js timezone is not loaded.', 'error');
+			log('displayTimeZone prop with value "' + displayTimeZone +  '" is used but moment.js timezone is not loaded.', 'error');
 		}
 	}
 
@@ -454,17 +457,18 @@ export default class Datetime extends React.Component {
 		});
 
 		if ( needsUpdate ) {
-			this.regenerateDates( this.props );
+			this.regenerateDates();
 		}
 
 		if ( thisProps.value && thisProps.value !== prevProps.value ) {
 			this.setViewDate( thisProps.value );
 		}
 
-		this.checkTZ( this.props );
+		this.checkTZ();
 	}
 
-	regenerateDates(props) {
+	regenerateDates() {
+		const props = this.props;
 		let viewDate = this.state.viewDate.clone();
 		let selectedDate = this.state.selectedDate && this.state.selectedDate.clone();
 
@@ -499,12 +503,13 @@ export default class Datetime extends React.Component {
 		return selectedDate && selectedDate.isValid() ? selectedDate : false;
 	}
 
-	getInitialInputValue( props, selectedDate, inputFormat ) {
+	getInitialInputValue( selectedDate ) {
+		const props = this.props;
 		if ( props.inputProps.value )
 			return props.inputProps.value;
 		
 		if ( selectedDate && selectedDate.isValid() )
-			return selectedDate.format( inputFormat );
+			return selectedDate.format( this.getFormat('datetime') );
 		
 		if ( props.value && typeof props.value === 'string' )
 			return props.value;
@@ -554,16 +559,6 @@ export default class Datetime extends React.Component {
 		this._showView( mode );
 	}
 
-	log( message, method ) {
-		let con = typeof window !== 'undefined' && window.console;
-		if ( !con ) return;
-
-		if ( !method ) {
-			method = 'warn';
-		}
-		con[ method ]( '***react-datetime:' + message );
-	}
-
 	_onInputFocus = e => {
 		if ( !this.callHandler( this.props.inputProps.onFocus, e ) ) return;
 		this._openCalendar();
@@ -601,6 +596,16 @@ export default class Datetime extends React.Component {
 		if ( !method ) return true;
 		return method(e) !== false;
 	}
+}
+
+function log( message, method ) {
+	let con = typeof window !== 'undefined' && window.console;
+	if ( !con ) return;
+
+	if ( !method ) {
+		method = 'warn';
+	}
+	con[ method ]( '***react-datetime:' + message );
 }
 
 class ClickOutBase extends React.Component {

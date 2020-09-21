@@ -3,25 +3,24 @@ import ViewNavigation from './ViewNavigation';
 
 export default class YearsView extends React.Component {
 	render() {
-		const viewYear = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
-
 		return (
 			<div className="rdtYears">
 				<table>
 					<thead>
-						{ this.renderNavigation( viewYear ) }
+						{ this.renderNavigation() }
 					</thead>
 				</table>
 				<table>
 					<tbody>
-						{ this.renderYears( viewYear ) }
+						{ this.renderYears() }
 					</tbody>
 				</table>
 			</div>
 		);
 	}
 
-	renderNavigation( viewYear ) {
+	renderNavigation() {
+		const viewYear = this.getViewYear();
 		return (
 			<ViewNavigation
 				onClickPrev={ () => this.props.navigate( -10, 'years' ) }
@@ -32,16 +31,15 @@ export default class YearsView extends React.Component {
 		);
 	}
 
-	renderYears( viewYear ) {
+	renderYears() {
+		const viewYear = this.getViewYear();
 		// 12 years in 3 rows for every view
 		let rows = [ [], [], [] ];
-		let selectedYear = this.props.selectedDate && this.props.selectedDate.year();
-
 		for ( let year = viewYear - 1; year < viewYear + 11; year++ ) {
 			let row = this.getRow( rows, year - viewYear );
 
 			row.push(
-				this.renderYear( year, selectedYear )
+				this.renderYear( year )
 			);
 		}
 
@@ -50,7 +48,8 @@ export default class YearsView extends React.Component {
 		));
 	}
 
-	renderYear( year, selectedYear ) {
+	renderYear( year ) {
+		const selectedYear = this.getSelectedYear();
 		let className = 'rdtYear';
 		let onClick;
 
@@ -82,15 +81,12 @@ export default class YearsView extends React.Component {
 		);
 	}
 
-	getRow( rows, year ) {
-		if ( year < 3 ) {
-			return rows[0];
-		}
-		if ( year < 7 ) {
-			return rows[1];
-		}
+	getViewYear() {
+		return parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
+	}
 
-		return rows[2];
+	getSelectedYear() {
+		return this.props.selectedDate && this.props.selectedDate.year();
 	}
 
 	disabledYearsCache = {};
@@ -125,4 +121,15 @@ export default class YearsView extends React.Component {
 	_updateSelectedYear = event => {
 		this.props.updateDate( event );
 	}
+}
+
+function getRow( rows, year ) {
+	if ( year < 3 ) {
+		return rows[0];
+	}
+	if ( year < 7 ) {
+		return rows[1];
+	}
+
+	return rows[2];
 }
