@@ -1,4 +1,5 @@
 import React from 'react';
+import ViewNavigation from './ViewNavigation';
 
 export default class YearsView extends React.Component {
 	render() {
@@ -8,7 +9,7 @@ export default class YearsView extends React.Component {
 			<div className="rdtYears">
 				<table>
 					<thead>
-						{ this.renderHeader( viewYear ) }
+						{ this.renderNavigation( viewYear ) }
 					</thead>
 				</table>
 				<table>
@@ -20,19 +21,14 @@ export default class YearsView extends React.Component {
 		);
 	}
 
-	renderHeader( viewYear ) {
+	renderNavigation( viewYear ) {
 		return (
-			<tr>
-				<th className="rdtPrev" onClick={ () => this.props.navigate( -10, 'years' ) }>
-					<span>‹</span>
-				</th>
-				<th className="rdtSwitch" onClick={ () => this.props.showView( 'years' ) }>
-					{ `${viewYear}-${viewYear + 9}` }
-				</th>
-				<th className="rdtNext" onClick={ () => this.props.navigate( 10, 'years' ) }>
-					<span>›</span>
-				</th>
-			</tr>
+			<ViewNavigation
+				onClickPrev={ () => this.props.navigate( -10, 'years' ) }
+				onClickSwitch={ () => this.props.showView( 'years' ) }
+				onClickNext={ () => this.props.navigate( 10, 'years' ) }
+				switchContent={ `${viewYear}-${viewYear + 9}` }
+			/>
 		);
 	}
 

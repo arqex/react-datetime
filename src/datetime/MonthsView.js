@@ -1,4 +1,5 @@
 import React from 'react';
+import ViewNavigation from './ViewNavigation';
 
 export default class MonthsView extends React.Component {
 	render() {
@@ -6,7 +7,7 @@ export default class MonthsView extends React.Component {
 			<div className="rdtMonths">
 				<table>
 					<thead>
-						{ this.renderHeader() }
+						{ this.renderNavigation() }
 					</thead>
 				</table>
 				<table>
@@ -18,21 +19,17 @@ export default class MonthsView extends React.Component {
 		);
 	}
 
-	renderHeader() {
+	renderNavigation() {
 		let year = this.props.viewDate.year();
 
 		return (
-			<tr>
-				<th className="rdtPrev" onClick={ () => this.props.navigate( -1, 'years' ) }>
-					<span>‹</span>
-				</th>
-				<th className="rdtSwitch" onClick={ () => this.props.showView( 'years' ) } colSpan="2" data-value={ year } >
-					{ year }
-				</th>
-				<th className="rdtNext" onClick={ () => this.props.navigate( 1, 'years' ) }>
-					<span>›</span>
-				</th>
-			</tr>
+			<ViewNavigation
+				onClickPrev={ () => this.props.navigate( -1, 'years' ) }
+				onClickSwitch={ () => this.props.showView( 'years' ) }
+				onClickNext={ () => this.props.navigate( 1, 'years' ) }
+				switchContent={ year }
+				switchColSpan="2"
+			/>
 		);
 	}
 
