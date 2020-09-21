@@ -14,7 +14,7 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div style={{height: 2000}}>
 				<Datetime />
 			</div>
 		);

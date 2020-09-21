@@ -569,6 +569,18 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeFalsy();
 		});
 
+		it('open by click', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2);
+			const component = utils.createDatetime({ value: date, closeOnClickOutside: true });
+
+			utils.openDatepicker(component);
+			expect( component.instance().state.open ).toBeTruthy();
+			component.instance().setState({open: false});
+			expect( component.instance().state.open ).toBeFalsy();
+			utils.openDatepickerByClick(component);
+			expect( component.instance().state.open ).toBeTruthy();
+		});
+
 		it('increase time', () => {
 			let i = 0;
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
