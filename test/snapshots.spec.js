@@ -1,7 +1,7 @@
 /* global it, describe, expect, jest */
 
 import React from 'react'; // eslint-disable-line no-unused-vars
-import Datetime from '../src/datetime/DateTime'; 
+import Datetime from '../src/datetime/DateTime';
 import renderer from 'react-test-renderer';
 
 // findDOMNode is not supported by the react-test-renderer,
@@ -19,21 +19,21 @@ Date.now = jest.fn(() => 1482363367071);
 
 it('everything default: renders correctly', () => {
 	const tree = renderer.create(
-		<Datetime />
+		<Datetime open />
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });
 
 it('value: set to arbitrary value', () => {
 	const tree = renderer.create(
-		<Datetime defaultValue={Date.now()} />
+		<Datetime defaultValue={Date.now()} open />
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });
 
 it('defaultValue: set to arbitrary value', () => {
 	const tree = renderer.create(
-		<Datetime defaultValue={Date.now()} />
+		<Datetime defaultValue={Date.now()} open />
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });
@@ -41,14 +41,14 @@ it('defaultValue: set to arbitrary value', () => {
 describe('dateFormat', () => {
 	it('set to true', () => {
 		const tree = renderer.create(
-			<Datetime dateFormat={true} />
+			<Datetime dateFormat={true} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('set to false', () => {
 		const tree = renderer.create(
-			<Datetime dateFormat={false} />
+			<Datetime dateFormat={false} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
@@ -57,14 +57,14 @@ describe('dateFormat', () => {
 describe('timeFormat', () => {
 	it('set to true', () => {
 		const tree = renderer.create(
-			<Datetime timeFormat={true} />
+			<Datetime timeFormat={true} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('set to false', () => {
 		const tree = renderer.create(
-			<Datetime timeFormat={false} />
+			<Datetime timeFormat={false} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
@@ -73,14 +73,14 @@ describe('timeFormat', () => {
 describe('input', () => {
 	it('input: set to true', () => {
 		const tree = renderer.create(
-			<Datetime input={true} />
+			<Datetime input={true} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('input: set to false', () => {
 		const tree = renderer.create(
-			<Datetime input={false} />
+			<Datetime input={false} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
@@ -89,14 +89,14 @@ describe('input', () => {
 describe('open', () => {
 	it('set to true', () => {
 		const tree = renderer.create(
-			<Datetime open={true} />
+			<Datetime open={true} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('set to false', () => {
 		const tree = renderer.create(
-			<Datetime open={false} />
+			<Datetime open={false} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
@@ -105,28 +105,28 @@ describe('open', () => {
 describe('viewMode', () => {
 	it('set to days', () => {
 		const tree = renderer.create(
-			<Datetime viewMode={'days'} />
+			<Datetime viewMode={'days'} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('set to months', () => {
 		const tree = renderer.create(
-			<Datetime viewMode={'months'} />
+			<Datetime viewMode={'months'} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('set to years', () => {
 		const tree = renderer.create(
-			<Datetime viewMode={'years'} />
+			<Datetime viewMode={'years'} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('set to time', () => {
 		const tree = renderer.create(
-			<Datetime viewMode={'time'} />
+			<Datetime viewMode={'time'} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
@@ -134,7 +134,7 @@ describe('viewMode', () => {
 
 it('className: set to arbitraty value', () => {
 	const tree = renderer.create(
-		<Datetime className={'arbitrary-value'} />
+		<Datetime className={'arbitrary-value'} open />
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });
@@ -142,35 +142,35 @@ it('className: set to arbitraty value', () => {
 describe('inputProps', () => {
 	it('with placeholder specified', () => {
 		const tree = renderer.create(
-			<Datetime inputProps={{ placeholder: 'arbitrary-placeholder' }} />
+			<Datetime inputProps={{ placeholder: 'arbitrary-placeholder' }} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('with disabled specified', () => {
 		const tree = renderer.create(
-			<Datetime inputProps={{ disabled: true }} />
+			<Datetime inputProps={{ disabled: true }} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('with required specified', () => {
 		const tree = renderer.create(
-			<Datetime inputProps={{ required: true }} />
+			<Datetime inputProps={{ required: true }} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('with name specified', () => {
 		const tree = renderer.create(
-			<Datetime inputProps={{ name: 'arbitrary-name' }} />
+			<Datetime inputProps={{ name: 'arbitrary-name' }} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 
 	it('with className specified', () => {
 		const tree = renderer.create(
-			<Datetime inputProps={{ className: 'arbitrary-className' }} />
+			<Datetime inputProps={{ className: 'arbitrary-className' }} open />
 		).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
@@ -180,7 +180,7 @@ it('isValidDate: only valid if after yesterday', () => {
 	const yesterday = Datetime.moment().subtract(1, 'day');
 	const valid = (current) => current.isAfter(yesterday);
 	const tree = renderer.create(
-		<Datetime isValidDate={ valid } />
+		<Datetime isValidDate={ valid } open />
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });
@@ -188,7 +188,7 @@ it('isValidDate: only valid if after yesterday', () => {
 it('renderDay: specified', () => {
 	const renderDay = (props, currentDate) => <td {...props}>{ '0' + currentDate.date() }</td>;
 	const tree = renderer.create(
-		<Datetime renderDay={renderDay} />
+		<Datetime renderDay={renderDay} open />
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });
@@ -196,7 +196,7 @@ it('renderDay: specified', () => {
 it('renderMonth: specified', () => {
 	const renderMonth = (props, currentDate) => <td {...props}>{ '0' + currentDate.date() }</td>;
 	const tree = renderer.create(
-		<Datetime renderMonth={renderMonth} />
+		<Datetime renderMonth={renderMonth} open />
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });
@@ -204,7 +204,7 @@ it('renderMonth: specified', () => {
 it('renderYear: specified', () => {
 	const renderYear = (props, currentDate) => <td {...props}>{ '0' + currentDate.date() }</td>;
 	const tree = renderer.create(
-		<Datetime renderYear={renderYear} />
+		<Datetime renderYear={renderYear} open />
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });
