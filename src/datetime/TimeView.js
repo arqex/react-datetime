@@ -239,7 +239,7 @@ function pad( type, value ) {
 		minutes: 2,
 		seconds: 2,
 		milliseconds: 3
-	}
+	};
 
 	let str = value + '';
 	while ( str.length < padValues[ type ] )
