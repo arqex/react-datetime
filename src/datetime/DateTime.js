@@ -384,8 +384,7 @@ export default class Datetime extends React.Component {
 	}
 	
 	_setTime = ( type, value ) => {
-		const state = this.state;
-		let date = (state.selectedDate || state.viewDate).clone();
+		let date = (this.getSelectedDate() || this.state.viewDate).clone();
 		
 		date[ type ]( value );
 
@@ -397,7 +396,7 @@ export default class Datetime extends React.Component {
 			});
 		}
 
-		this.props.onChange( date.clone() );
+		this.props.onChange( date );
 	}
 
 	_openCalendar = () => {
