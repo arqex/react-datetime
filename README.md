@@ -128,7 +128,7 @@ let inputProps = {
 
 <Datetime inputProps={ inputProps } />
 ```
-[See the customized input working](https://codesandbox.io/s/interesting-kare-0707b)
+[See the customized input working](https://codesandbox.io/s/clever-wildflower-81r26?file=/src/App.js)
 
 
 Alternatively, if you need to render different content than an `<input />` element, you may supply a `renderInput` function which is called instead.

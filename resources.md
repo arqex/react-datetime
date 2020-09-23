@@ -10,7 +10,7 @@ We don't have any articles yet. Yours can be the first! Create a PR to update th
 ### Examples
 * [An basic code sandbox example to check how it works](https://codesandbox.io/s/boring-dew-uzln3).
 * [i18n - datepicker in other languages](https://codesandbox.io/s/interesting-kare-0707b)
-* [Passing props to the input](https://codesandbox.io/s/interesting-kare-0707b)
+* [Passing props to the input](https://codesandbox.io/s/clever-wildflower-81r26?file=/src/App.js)
 * [Using a custom input element](https://codesandbox.io/s/peaceful-water-3gb5m)
 * [Datepicker without an input](https://codesandbox.io/s/busy-vaughan-wh773)
 * [Using custom elements for the year/month/day views](https://codesandbox.io/s/busy-vaughan-wh773)
