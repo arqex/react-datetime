@@ -27,6 +27,10 @@ module.exports = {
 		datetime.find('.form-control').simulate('focus');
 	},
 
+	openDatepickerByClick: datetime => {
+		datetime.find('.form-control').simulate('click');
+	},
+
 	clickOnElement: (element) => {
 		return _simulateClickOnElement(element);
 	},
