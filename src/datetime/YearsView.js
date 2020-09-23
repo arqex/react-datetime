@@ -36,7 +36,7 @@ export default class YearsView extends React.Component {
 		// 12 years in 3 rows for every view
 		let rows = [ [], [], [] ];
 		for ( let year = viewYear - 1; year < viewYear + 11; year++ ) {
-			let row = this.getRow( rows, year - viewYear );
+			let row = getRow( rows, year - viewYear );
 
 			row.push(
 				this.renderYear( year )
