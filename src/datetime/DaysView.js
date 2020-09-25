@@ -53,6 +53,8 @@ export default class DaysView extends React.Component {
 
 	renderDays() {
 		const date = this.props.viewDate;
+		const startOfMonth = date.clone().startOf('month');
+		const endOfMonth = date.clone().endOf('month');
 
 		// We need 42 days in 6 rows
 		// starting in the last week of the previous month
@@ -66,7 +68,7 @@ export default class DaysView extends React.Component {
 
 		while ( startDate.isBefore( endDate ) ) {
 			let row = getRow( rows, i++ );
-			row.push( this.renderDay( startDate ) );
+			row.push( this.renderDay( startDate, startOfMonth, endOfMonth ) );
 			startDate.add( 1, 'd' );
 		}
 
@@ -75,9 +77,7 @@ export default class DaysView extends React.Component {
 		));
 	}
 
-	renderDay( date ) {
-		const startOfMonth = this.props.viewDate.clone().startOf('month');
-		const endOfMonth = this.props.viewDate.clone().endOf('month');
+	renderDay( date, startOfMonth, endOfMonth ) {
 		let selectedDate = this.props.selectedDate;
 
 		let dayProps = {
