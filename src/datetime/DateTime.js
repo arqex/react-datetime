@@ -123,7 +123,7 @@ export default class Datetime extends React.Component {
 
 	renderView() {
 		if ( this.props.renderView ) {
-			return this.props.renderView( this.state.currentView, () => this._renderCalendar() );
+			return this.props.renderView( this.state.currentView, this._renderCalendar );
 		}
 		return this._renderCalendar();
 	}
