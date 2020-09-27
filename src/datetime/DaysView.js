@@ -7,29 +7,25 @@ export default class DaysView extends React.Component {
 	}
 
 	render() {
-		const date = this.props.viewDate;
-		const locale = date.localeData();
-
-		let startOfMonth = date.clone().startOf('month');
-		let endOfMonth = date.clone().endOf('month');
-
 		return (
 			<div className="rdtDays">
 				<table>
 					<thead>
-						{ this.renderNavigation( date, locale ) }
-						{ this.renderDayHeaders( locale ) }
+						{ this.renderNavigation() }
+						{ this.renderDayHeaders() }
 					</thead>
 					<tbody>
-						{ this.renderDays( date, startOfMonth, endOfMonth ) }
+						{ this.renderDays() }
 					</tbody>
-					{ this.renderFooter( date ) }
+					{ this.renderFooter() }
 				</table>
 			</div>
 		);
 	}
 
-	renderNavigation( date, locale ) {
+	renderNavigation() {
+		const date = this.props.viewDate;
+		const locale = date.localeData();
 		return (
 			<ViewNavigation
 				onClickPrev={ () => this.props.navigate( -1, 'months' ) }
@@ -42,8 +38,9 @@ export default class DaysView extends React.Component {
 		);
 	}
 
-	renderDayHeaders( locale ) {
-		let dayItems = this.getDaysOfWeek( locale ).map( (day, index) => (
+	renderDayHeaders() {
+		const locale = this.props.viewDate.localeData();
+		let dayItems = getDaysOfWeek( locale ).map( (day, index) => (
 			<th key={ day + index } className="dow">{ day }</th>
 		));
 
@@ -54,7 +51,11 @@ export default class DaysView extends React.Component {
 		);
 	}
 
-	renderDays( date, startOfMonth, endOfMonth ) {
+	renderDays() {
+		const date = this.props.viewDate;
+		const startOfMonth = date.clone().startOf('month');
+		const endOfMonth = date.clone().endOf('month');
+
 		// We need 42 days in 6 rows
 		// starting in the last week of the previous month
 		let rows = [[], [], [], [], [], []];
@@ -66,7 +67,7 @@ export default class DaysView extends React.Component {
 		let i = 0;
 
 		while ( startDate.isBefore( endDate ) ) {
-			let row = this.getRow( rows, i++ );
+			let row = getRow( rows, i++ );
 			row.push( this.renderDay( startDate, startOfMonth, endOfMonth ) );
 			startDate.add( 1, 'd' );
 		}
@@ -120,9 +121,10 @@ export default class DaysView extends React.Component {
 		);
 	}
 
-	renderFooter( date ) {
+	renderFooter() {
 		if ( !this.props.timeFormat ) return;
 
+		const date = this.props.viewDate;
 		return (
 			<tfoot>
 				<tr>
@@ -139,25 +141,25 @@ export default class DaysView extends React.Component {
 	_setDate = e => {
 		this.props.updateDate( e );
 	}
+}
 
-	/**
-	 * Get a list of the days of the week
-	 * depending on the current locale
-	 * @return {array} A list with the shortname of the days
-	 */
-	getDaysOfWeek(locale) {
-		const first = locale.firstDayOfWeek();
-		let dow = [];
-		let i = 0;
+function getRow( rows, day ) {
+	return rows[ Math.floor( day / 7 ) ];
+}
 
-		locale._weekdaysMin.forEach(function (day) {
-			dow[(7 + (i++) - first) % 7] = day;
-		});
+/**
+ * Get a list of the days of the week
+ * depending on the current locale
+ * @return {array} A list with the shortname of the days
+ */
+function getDaysOfWeek( locale ) {
+	const first = locale.firstDayOfWeek();
+	let dow = [];
+	let i = 0;
 
-		return dow;
-	}
+	locale._weekdaysMin.forEach(function (day) {
+		dow[(7 + (i++) - first) % 7] = day;
+	});
 
-	getRow( rows, day ) {
-		return rows[ Math.floor( day / 7 ) ];
-	}
+	return dow;
 }
