@@ -1,5 +1,5 @@
 import React from 'react';
-import ViewNavigation from './ViewNavigation';
+import ViewNavigation from '../parts/ViewNavigation';
 
 export default class YearsView extends React.Component {
 	render() {

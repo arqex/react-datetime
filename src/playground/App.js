@@ -1,7 +1,7 @@
 // This file is the playground used for development purposes (npm run playground)
 // not part of the library
 import React from 'react';
-import Datetime from './datetime/DateTime';
+import Datetime from '../DateTime';
 
 // import moment from 'moment';
 // import 'moment/locale/tzm-latn';
