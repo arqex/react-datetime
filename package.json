@@ -127,8 +127,9 @@
       "<rootDir>/test"
     ],
     "collectCoverageFrom": [
-      "src/datetime/**/*.{js,jsx,ts,tsx}",
-      "!src/datetime/**/*.d.ts"
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/playground/**",
+      "!src/**/*.d.ts"
     ],
     "setupFiles": [
       "react-app-polyfill/jsdom"

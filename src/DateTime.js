@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import React from 'react';
-import DaysView from './DaysView';
-import MonthsView from './MonthsView';
-import YearsView from './YearsView';
-import TimeView from './TimeView';
+import DaysView from './views/DaysView';
+import MonthsView from './views/MonthsView';
+import YearsView from './views/YearsView';
+import TimeView from './views/TimeView';
 import onClickOutside from 'react-onclickoutside';
 
 const viewModes = {
@@ -73,7 +73,8 @@ export default class Datetime extends React.Component {
 		strictParsing: true,
 		closeOnSelect: false,
 		closeOnTab: true,
-		closeOnClickOutside: true
+		closeOnClickOutside: true,
+		renderView: ( _, renderFunc ) => renderFunc(),
 	}
 
 	// Make moment accessible through the Datetime class
@@ -123,10 +124,7 @@ export default class Datetime extends React.Component {
 	}
 
 	renderView() {
-		if ( this.props.renderView ) {
-			return this.props.renderView( this.state.currentView, this._renderCalendar );
-		}
-		return this._renderCalendar();
+		return this.props.renderView( this.state.currentView, this._renderCalendar );
 	}
 
 	_renderCalendar = () => {
@@ -597,7 +595,6 @@ export default class Datetime extends React.Component {
 		// Focus event should open the calendar, but there is some case where
 		// the input is already focused and the picker is closed, so clicking the input
 		// should open it again see https://github.com/arqex/react-datetime/issues/717
-		console.log('CLICKING 2!');
 		if ( !this.callHandler( this.props.inputProps.onClick, e ) ) return;
 		this._openCalendar();
 	}
