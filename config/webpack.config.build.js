@@ -4,7 +4,7 @@ const path = require('path');
 const outputPath = path.join(__dirname, '../dist/');
 
 const baseConfig = {
-	entry: ['./src/datetime/DateTime.js'],
+	entry: ['./src/DateTime.js'],
 	mode: 'production',
 
 	resolve: {

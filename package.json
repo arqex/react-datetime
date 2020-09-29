@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "build": "webpack --config config/webpack.config.build.js",
-    "lint": "eslint src/datetime/DateTime.js test/ && echo 'Linting OK! 💪'",
+    "lint": "eslint src/DateTime.js test/ && echo 'Linting OK! 💪'",
     "notify-pre-commit-hook": "echo '### Starting pre-commit hook 🦄'",
     "playground": "node scripts/start.js",
     "test": "jest",
@@ -127,8 +127,9 @@
       "<rootDir>/test"
     ],
     "collectCoverageFrom": [
-      "src/datetime/**/*.{js,jsx,ts,tsx}",
-      "!src/datetime/**/*.d.ts"
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/playground/**",
+      "!src/**/*.d.ts"
     ],
     "setupFiles": [
       "react-app-polyfill/jsdom"

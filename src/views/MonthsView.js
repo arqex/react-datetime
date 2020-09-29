@@ -1,5 +1,5 @@
 import React from 'react';
-import ViewNavigation from './ViewNavigation';
+import ViewNavigation from '../parts/ViewNavigation';
 
 export default class MonthsView extends React.Component {
 	render() {

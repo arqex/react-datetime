@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import React from 'react';
-import DaysView from './DaysView';
-import MonthsView from './MonthsView';
-import YearsView from './YearsView';
-import TimeView from './TimeView';
+import DaysView from './views/DaysView';
+import MonthsView from './views/MonthsView';
+import YearsView from './views/YearsView';
+import TimeView from './views/TimeView';
 import onClickOutside from 'react-onclickoutside';
 
 const viewModes = {
