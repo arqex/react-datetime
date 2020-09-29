@@ -3,7 +3,8 @@ import ViewNavigation from '../parts/ViewNavigation';
 
 export default class DaysView extends React.Component {
 	static defaultProps = {
-		isValidDate: () => true
+		isValidDate: () => true,
+		renderDay: ( props, date ) => <td { ...props }>{ date.date() }</td>,
 	}
 
 	render() {
@@ -110,14 +111,8 @@ export default class DaysView extends React.Component {
 
 		dayProps.className = className;
 
-		if ( this.props.renderDay ) {
-			return this.props.renderDay(
-				dayProps, date.clone(), selectedDate && selectedDate.clone()
-			);
-		}
-
-		return (
-			<td { ...dayProps }>{ date.date() }</td>
+		return this.props.renderDay(
+			dayProps, date.clone(), selectedDate && selectedDate.clone()
 		);
 	}
 

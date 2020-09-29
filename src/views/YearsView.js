@@ -2,6 +2,10 @@ import React from 'react';
 import ViewNavigation from '../parts/ViewNavigation';
 
 export default class YearsView extends React.Component {
+	static defaultProps = {
+		renderYear: ( props, year ) => <td { ...props }>{ year }</td>,
+	};
+
 	render() {
 		return (
 			<div className="rdtYears">
@@ -66,18 +70,10 @@ export default class YearsView extends React.Component {
 
 		let props = {key: year, className, 'data-value': year, onClick };
 
-		if ( this.props.renderYear ) {
-			return this.props.renderYear(
-				props,
-				year,
-				this.props.selectedDate && this.props.selectedDate.clone()
-			);
-		}
-
-		return (
-			<td { ...props }>
-				{ year }
-			</td>
+		return this.props.renderYear(
+			props,
+			year,
+			this.props.selectedDate && this.props.selectedDate.clone()
 		);
 	}
 
