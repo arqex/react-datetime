@@ -110,10 +110,10 @@
   "devDependencies": {
     "@babel/preset-env": "^7.11.5",
     "@sheerun/mutationobserver-shim": "^0.3.3",
-    "@storybook/addon-actions": "6.0.22",
+    "@storybook/addon-actions": "6.0.26",
     "@storybook/addon-docs": "6.0.26",
     "@storybook/addon-knobs": "6.0.26",
-    "@storybook/addon-links": "6.0.22",
+    "@storybook/addon-links": "6.0.26",
     "@storybook/addons": "6.0.26",
     "@storybook/preset-scss": "^1.0.2",
     "@storybook/react": "6.0.26",
