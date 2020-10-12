@@ -151,7 +151,7 @@
     "react-is": "^16.13.0",
     "sass": "^1.26.3",
     "sass-loader": "^10.0.0",
-    "style-loader": "^1.1.2",
+    "style-loader": "^2.0.0",
     "ts-jest": "^26.1.0",
     "ts-loader": "^8.0.0",
     "tsdx": "0.13.3",
