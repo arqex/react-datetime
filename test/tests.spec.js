@@ -248,6 +248,18 @@ describe('Datetime', () => {
 		expect(component.find('.rdtSwitch').text()).toEqual('December 2018');
 	});
 
+	it('click on 31st of the prev month (#744)', () => {
+		const component = utils.createDatetime({
+			initialViewMode: 'days',
+			initialValue: new Date(2020, 8, 1)
+		});
+		
+		utils.openDatepicker(component);
+		utils.clickClassItem(component, '.rdtOld', 1);
+		
+		expect(utils.getInputValue(component)).toEqual('08/31/2020 12:00 AM');
+	});
+
 	it('sets CSS class on selected item (day)', () => {
 		const component = utils.createDatetime({ initialViewMode: 'days' });
 		utils.openDatepicker(component);
