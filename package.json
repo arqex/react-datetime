@@ -131,7 +131,7 @@
     "bundlesize": "^0.18.0",
     "chromatic": "^5.0.0",
     "cross-env": "^7.0.2",
-    "css-loader": "^4.0.0",
+    "css-loader": "^5.0.0",
     "cssnano": "^4.1.10",
     "eslint": "^7.8.0",
     "eslint-config-prettier": "^6.9.0",
