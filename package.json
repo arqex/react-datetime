@@ -76,7 +76,8 @@
     "prettier": "prettier --write {src,scss}/*.{json,js,jsx,ts,tsx,scss} *.{json,js,md,mdx}",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -c .storybook -o .out",
-    "chromatic": "chromatic"
+    "chromatic": "chromatic",
+    "prepack": "yarn build"
   },
   "lint-staged": {
     "{src}/**/*.{js,jsx,ts,tsx}": [
