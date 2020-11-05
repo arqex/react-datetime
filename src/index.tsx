@@ -157,8 +157,8 @@ export type DateTypeMode = "utc-ms-timestamp" | "input-format" | "Date";
 
 export interface Props
   extends Omit<
-    HTMLAttributes<HTMLInputElement>,
-    "onFocus" | "onBlur" | "onChange"
+    React.HTMLProps<HTMLInputElement>,
+    "onFocus" | "onBlur" | "onChange" | "value"
   > {
   isValidDate?: (date: Date) => boolean;
 
@@ -194,6 +194,8 @@ export const DateTime: FC<Props> = (props): JSX.Element => {
     timeConstraints,
     ...rest
   } = props;
+
+  const isDisabled = props.disabled || props.readOnly;
 
   //
   // Formats
@@ -317,6 +319,11 @@ export const DateTime: FC<Props> = (props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
 
   function open() {
+    // Don't allow opening if disabled
+    if (isDisabled) {
+      return;
+    }
+
     if (!isOpen && viewMode) {
       setIsOpen(true);
 
