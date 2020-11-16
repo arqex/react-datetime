@@ -29,6 +29,7 @@ module.exports = {
       version: "16.8.6",
     },
   },
+  globals: { JSX: "readonly", NodeJS: "readonly" },
   rules: {
     // Help enforce hooks
     "react-hooks/rules-of-hooks": "error",

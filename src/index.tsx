@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useMemo,
   FC,
-  HTMLAttributes,
 } from "react";
 import Popover from "@reach/popover";
 import useOnClickOutside from "use-onclickoutside";
