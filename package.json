@@ -1,6 +1,6 @@
 {
   "name": "@nateradebaugh/react-datetime",
-  "version": "4.4.3",
+  "version": "4.4.6",
   "description": "A lightweight but complete datetime picker React.js component",
   "license": "MIT",
   "homepage": "https://github.com/NateRadebaugh/react-datetime",
@@ -62,7 +62,7 @@
   ],
   "scripts": {
     "now-build": "build-storybook -c .storybook -o public",
-    "build": "tsdx build --format=umd,esm,cjs",
+    "build": "tsdx build --format=umd,esm,cjs&&yarn sass scss/styles.scss dist/css/styles.css",
     "dev": "tsdx watch --format=esm",
     "start": "yarn dev",
     "test": "yarn lint:fix&&cross-env CI=1 TZ=Europe/Stockholm tsdx test",
@@ -76,7 +76,8 @@
     "prettier": "prettier --write {src,scss}/*.{json,js,jsx,ts,tsx,scss} *.{json,js,md,mdx}",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -c .storybook -o .out",
-    "chromatic": "chromatic"
+    "chromatic": "chromatic",
+    "prepack": "yarn build"
   },
   "lint-staged": {
     "{src}/**/*.{js,jsx,ts,tsx}": [
@@ -110,13 +111,13 @@
   "devDependencies": {
     "@babel/preset-env": "^7.11.5",
     "@sheerun/mutationobserver-shim": "^0.3.3",
-    "@storybook/addon-actions": "6.0.27",
-    "@storybook/addon-docs": "6.0.26",
-    "@storybook/addon-knobs": "6.0.27",
-    "@storybook/addon-links": "6.0.27",
-    "@storybook/addons": "6.0.27",
+    "@storybook/addon-actions": "6.0.28",
+    "@storybook/addon-docs": "6.0.28",
+    "@storybook/addon-knobs": "6.0.28",
+    "@storybook/addon-links": "6.0.28",
+    "@storybook/addons": "6.0.28",
     "@storybook/preset-scss": "^1.0.2",
-    "@storybook/react": "6.0.27",
+    "@storybook/react": "6.0.28",
     "@testing-library/jest-dom": "^5.0.2",
     "@testing-library/react": "^11.0.0",
     "@testing-library/user-event": "^12.0.2",
