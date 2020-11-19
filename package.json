@@ -70,7 +70,6 @@
     "test:coverage": "yarn test --coverage",
     "test:all": "echo 'Running tests...' && yarn bundlesize && yarn test:coverage && echo 'All tests passed! 🤘'",
     "test:watch": "cross-env TZ=Europe/Stockholm tsdx test --watch",
-    "circleci-test": "cross-env CI=1 TZ=Europe/Stockholm JEST_JUNIT_OUTPUT_DIR=reports/junit tsdx test --ci --reporters=default --reporters=jest-junit --runInBand",
     "lint": "yarn eslint src --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn lint --fix",
     "prettier": "prettier --write {src,scss}/*.{json,js,jsx,ts,tsx,scss} *.{json,js,md,mdx}",
