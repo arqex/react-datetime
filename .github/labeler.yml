@@ -25,19 +25,19 @@ styles:
 # Add 'daypicker' label
 daypicker:
   - src/DaysView.tsx
-  
+
 # Add 'monthpicker' label
 monthpicker:
   - src/MonthsView.tsx
-  
+
 # Add 'yearpicker' label
 yearpicker:
   - src/YearsView.tsx
-  
+
 # Add 'timepicker' label
 timepicker:
   - src/TimeView.tsx
-  
+
 # Add 'core' label
 core:
   - src/CalendarContainer.tsx

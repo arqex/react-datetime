@@ -23,9 +23,10 @@
     https://github.com/NateRadebaugh/react-datetime/projects/1
 -->
 
-
 ### I'm Submitting a ...
+
 <!-- Put an "x" in the box for the type of report that apply -->
+
 ```
 [ ] Bug report
 [ ] Feature request
@@ -33,15 +34,19 @@
 ```
 
 ### Steps to Reproduce
+
 <!-- Define the minimal steps to reproduce the bug, preferably in the format of a numbered list -->
 
 ### Expected Results
+
 <!-- Describe what the expected results are -->
 
 ### Actual Results
+
 <!-- Describe what the actual results are -->
 
 ### Minimal Reproduction of the Problem
+
 <!--
   If the current behavior is a bug or you can illustrate your feature request better with an
   example, please provide a *minimal demo* (if possible) of the problem via
@@ -51,8 +56,8 @@
 -->
 
 ### Other Information (e.g. stacktraces, related issues, suggestions how to fix)
-<!-- Any other information you think is valuable can be put here -->
 
+<!-- Any other information you think is valuable can be put here -->
 
 <!--
   Is there anything in this template you think is confusing, unclear, redundant or just simply bad?
