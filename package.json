@@ -72,7 +72,7 @@
     "test:watch": "cross-env TZ=Europe/Stockholm tsdx test --watch",
     "lint": "yarn eslint src --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn lint --fix",
-    "prettier": "prettier --write {src,scss}/*.{json,js,jsx,ts,tsx,scss} *.{json,js,md,mdx}",
+    "prettier": "prettier --write .",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -c .storybook -o .out",
     "chromatic": "chromatic",
