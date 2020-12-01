@@ -8,6 +8,7 @@ import _momentTimezone from 'moment-timezone'; // eslint-disable-line
 import utils from './testUtils';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { callHandler, getKeyboardProps } from '../src/utils';
 
 moment.locale('en');
 
@@ -1512,7 +1513,7 @@ describe('Imperative methods', function() {
 		expect( utils.isMonthView( component ) ).toBeTruthy();
 		
 		component.instance().navigate( 'days' );
-
+ 
 		// Sync fix
 		setTimeout( () => {
 			expect( utils.isDayView( component ) ).toBeTruthy();
@@ -1530,5 +1531,25 @@ describe('Imperative methods', function() {
 			done();
 		}, 100);
 
+	});
+});
+
+describe('Utils', () => {
+	it('callHandler() - method not provided', () => {
+		expect(callHandler()).toBe(true);
+	});
+
+	it('callHandler() - method provided', () => {
+		const method = jest.fn((arg) => arg);
+		expect(callHandler(method, true)).toBe(true);
+		expect(callHandler(method, false)).toBe(false);
+	});
+
+	it('getKeyboardProps()', () => {
+		const onClickHandler = jest.fn(() => false);
+		const keyboardProps = getKeyboardProps(onClickHandler);
+		expect(keyboardProps.tabIndex).toBe(0);
+		expect(keyboardProps.onKeyDown({})).toBe(true);
+		expect(keyboardProps.onKeyDown({ key: 'Enter'})).toBe(false);
 	});
 });

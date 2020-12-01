@@ -1,4 +1,5 @@
 import React from 'react';
+import { getKeyboardProps } from '../utils';
 
 const timeConstraints = {
 	hours: {
@@ -95,11 +96,19 @@ export default class TimeView extends React.Component {
 			}
 		}
 
+		const increaseCounter = (e) => {
+			this.onStartClicking(e, 'increase', type);
+		};
+
+		const decreaseCounter = (e) => {
+			this.onStartClicking(e, 'decrease', type);
+		};
+
 		return (
 			<div key={ type } className="rdtCounter">
-				<span className="rdtBtn" onMouseDown={ e => this.onStartClicking( e, 'increase', type)}>▲</span>
+				<span className="rdtBtn" onMouseDown={increaseCounter} {...getKeyboardProps(increaseCounter)}>▲</span>
 				<div className="rdtCount">{ value }</div>
-				<span className="rdtBtn" onMouseDown={ e => this.onStartClicking( e, 'decrease', type)}>▼</span>
+				<span className="rdtBtn" onMouseDown={decreaseCounter} {...getKeyboardProps(decreaseCounter)}>▼</span>
 			</div>
 		);
 	}
@@ -112,12 +121,21 @@ export default class TimeView extends React.Component {
 		return (
 			<thead>
 				<tr>
-					<td className="rdtSwitch" colSpan="4" onClick={ () => this.props.showView('days') }>
+					<td
+						{...getKeyboardProps(this._onHeaderClick)}
+						className="rdtSwitch"
+						colSpan="4"
+						onClick={this._onHeaderClick}
+					>
 						{ date.format( this.props.dateFormat ) }
 					</td>
 				</tr>
 			</thead>
 		);
+	}
+
+	_onHeaderClick = () => {
+		this.props.showView('days');
 	}
 
 	onStartClicking( e, action, type ) {
@@ -127,11 +145,14 @@ export default class TimeView extends React.Component {
 		}
 		
 		if ( type === 'ampm' ) return this.toggleDayPart();
-
+		
 		let update = {};
 		let body = document.body;
 		update[ type ] = this[ action ]( type );
 		this.setState( update );
+
+		// keydown event auto repeats
+		if (e.type === 'keydown') return;
 
 		this.timer = setTimeout( () => {
 			this.increaseTimer = setInterval( () => {
