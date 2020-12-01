@@ -570,6 +570,17 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeFalsy();
 		});
 
+		it('close by ESC key', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				component = utils.createDatetime({ value: date });
+
+			expect(utils.isOpen(component)).toBeFalsy();
+			utils.openDatepicker(component);
+			expect(utils.isOpen(component)).toBeTruthy();
+			component.find('.form-control').simulate('keyDown', { key: 'Escape', keyCode: 27, which: 27 });
+			expect(utils.isOpen(component)).toBeFalsy();
+		});
+
 		it('open by click', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2);
 			const component = utils.createDatetime({ value: date, closeOnClickOutside: true });
@@ -580,6 +591,15 @@ describe('Datetime', () => {
 			expect( component.instance().state.open ).toBeFalsy();
 			utils.openDatepickerByClick(component);
 			expect( component.instance().state.open ).toBeTruthy();
+		});
+
+		it('open by ArrowDown key', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				component = utils.createDatetime({ value: date });
+
+			expect(utils.isOpen(component)).toBeFalsy();
+			component.find('.form-control').simulate('keyDown', { key: 'ArrowDown', keyCode: 40, which: 40 });
+			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
 		it('increase time', () => {
