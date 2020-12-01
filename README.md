@@ -51,7 +51,7 @@ function ExampleWrapper() {
 }
 ```
 
-**Don't forget to import the [SCSS stylesheet](https://github.com/NateRadebaugh/react-datetime/blob/master/scss/styles.scss) to make it work out of the box.**
+**Don't forget to import the [SCSS stylesheet](https://github.com/NateRadebaugh/react-datetime/blob/main/scss/styles.scss) to make it work out of the box.**
 
 ## API
 
