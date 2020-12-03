@@ -2502,9 +2502,9 @@
     "@testing-library/dom" "^7.28.1"
 
 "@testing-library/user-event@^12.0.2":
-  version "12.3.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-12.3.0.tgz#bd4edf544b70721e1996f3be36830e942c777b2b"
-  integrity sha512-A4TZofjkOH42ydTtHZcGNhwYjonkVIGBi4pmNweUgjDEGmWHuZf4k7hLd6QTL+rkSOgrd3TOCFDNyK9KO0reeA==
+  version "12.4.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-12.4.0.tgz#30a795e626744c17c6b1f957a228d55e1c6965a8"
+  integrity sha512-qYXcZ1uQVd6JT6TLdB1hS8WxMYVpLTkJaTZdrjI5If0J3Piv07MVlpXKgrKEubuGmlTHTK7zQ+NuSPe0g4q3ww==
   dependencies:
     "@babel/runtime" "^7.10.2"
 
