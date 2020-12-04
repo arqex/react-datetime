@@ -110,7 +110,7 @@
     "@storybook/addon-links": "6.1.9",
     "@storybook/addons": "6.1.9",
     "@storybook/preset-scss": "^1.0.2",
-    "@storybook/react": "6.1.9",
+    "@storybook/react": "6.1.10",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.0.0",
     "@testing-library/user-event": "^12.0.2",
