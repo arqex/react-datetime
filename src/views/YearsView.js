@@ -1,5 +1,6 @@
 import React from 'react';
 import ViewNavigation from '../parts/ViewNavigation';
+import { getKeyboardProps } from '../utils';
 
 export default class YearsView extends React.Component {
 	static defaultProps = {
@@ -56,19 +57,27 @@ export default class YearsView extends React.Component {
 		const selectedYear = this.getSelectedYear();
 		let className = 'rdtYear';
 		let onClick;
+		let keyboardProps = {};
 
 		if ( this.isDisabledYear( year ) ) {
 			className += ' rdtDisabled';
 		}
 		else {
 			onClick = this._updateSelectedYear;
+			keyboardProps = getKeyboardProps(onClick);
 		}
 
 		if ( selectedYear === year ) {
 			className += ' rdtActive';
 		}
 
-		let props = {key: year, className, 'data-value': year, onClick };
+		let props = {
+			...keyboardProps,
+			key: year,
+			className,
+			'data-value': year,
+			onClick
+		};
 
 		return this.props.renderYear(
 			props,

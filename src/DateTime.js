@@ -6,6 +6,7 @@ import MonthsView from './views/MonthsView';
 import YearsView from './views/YearsView';
 import TimeView from './views/TimeView';
 import onClickOutside from 'react-onclickoutside';
+import { callHandler } from './utils';
 
 const viewModes = {
 	YEARS: 'years',
@@ -89,7 +90,7 @@ export default class Datetime extends React.Component {
 		return (
 			<ClickableWrapper className={ this.getClassName() } onClickOut={ this._handleClickOutside }>
 				{ this.renderInput() }
-				<div className="rdtPicker">
+				<div className="rdtPicker" onKeyDown={this._onPickerKeyDown}>
 					{ this.renderView() }
 				</div>
 			</ClickableWrapper>
@@ -586,8 +587,12 @@ export default class Datetime extends React.Component {
 	_onInputKeyDown = e => {
 		if ( !this.callHandler( this.props.inputProps.onKeyDown, e ) ) return;
 
-		if ( e.which === 9 && this.props.closeOnTab ) {
+		if ( (e.which === 9 && this.props.closeOnTab) || e.key === 'Escape' ) {
 			this._closeCalendar();
+		}
+
+		if ( !this.isOpen() && e.key === 'ArrowDown' ) {
+			this._openCalendar();
 		}
 	}
 
@@ -599,10 +604,13 @@ export default class Datetime extends React.Component {
 		this._openCalendar();
 	}
 
-	callHandler( method, e ) {
-		if ( !method ) return true;
-		return method(e) !== false;
+	_onPickerKeyDown = (e) => {
+		if (this.props.input && e.key === 'Escape') {
+			this._closeCalendar();
+		}
 	}
+
+	callHandler = callHandler
 }
 
 function log( message, method ) {

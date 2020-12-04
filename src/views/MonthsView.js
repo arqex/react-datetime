@@ -1,5 +1,6 @@
 import React from 'react';
 import ViewNavigation from '../parts/ViewNavigation';
+import { getKeyboardProps } from '../utils';
 
 export default class MonthsView extends React.Component {
 	render() {
@@ -52,19 +53,27 @@ export default class MonthsView extends React.Component {
 		const selectedDate = this.props.selectedDate;
 		let className = 'rdtMonth';
 		let onClick;
+		let keyboardProps = {};
 
 		if ( this.isDisabledMonth( month ) ) {
 			className += ' rdtDisabled';
 		}
 		else {
 			onClick = this._updateSelectedMonth;
+			keyboardProps = getKeyboardProps(onClick);
 		}
 
 		if ( selectedDate && selectedDate.year() === this.props.viewDate.year() && selectedDate.month() === month ) {
 			className += ' rdtActive';
 		}
 
-		let props = {key: month, className, 'data-value': month, onClick };
+		let props = {
+			...keyboardProps,
+			key: month,
+			className,
+			'data-value': month,
+			onClick
+		};
 
 		if ( this.props.renderMonth ) {
 			return this.props.renderMonth(

@@ -1,5 +1,6 @@
 import React from 'react';
 import ViewNavigation from '../parts/ViewNavigation';
+import { getKeyboardProps } from '../utils';
 
 export default class DaysView extends React.Component {
 	static defaultProps = {
@@ -104,6 +105,7 @@ export default class DaysView extends React.Component {
 
 		if ( this.props.isValidDate(date) ) {
 			dayProps.onClick = this._setDate;
+			dayProps = { ...getKeyboardProps(dayProps.onClick), ...dayProps };
 		}
 		else {
 			className += ' rdtDisabled';
@@ -123,7 +125,9 @@ export default class DaysView extends React.Component {
 		return (
 			<tfoot>
 				<tr>
-					<td onClick={ () => this.props.showView('time') }
+					<td
+						{...getKeyboardProps(this._onFooterClick)}
+						onClick={this._onFooterClick}
 						colSpan={7}
 						className="rdtTimeToggle">
 						{ date.format( this.props.timeFormat ) }
@@ -131,6 +135,10 @@ export default class DaysView extends React.Component {
 				</tr>
 			</tfoot>
 		);
+	}
+
+	_onFooterClick = () => {
+		this.props.showView('time');
 	}
 
 	_setDate = e => {
