@@ -998,6 +998,17 @@ describe('Datetime', () => {
 				expect(onCloseFn).toHaveBeenCalledTimes(1);
 			});
 
+			it('when selecting date (open=true and closeOnSelect=true)', () => {
+				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+					onCloseFn = jest.fn(),
+					component = utils.createDatetime({ value: date, onClose: onCloseFn, closeOnSelect: true, open: true });
+
+				utils.openDatepicker(component);
+				// Close component by selecting a date
+				utils.clickNthDay(component, 2);
+				expect(onCloseFn).toHaveBeenCalledTimes(1);
+			});
+
 			it('when selecting date (value=null and closeOnSelect=false)', () => {
 				const onCloseFn = jest.fn(),
 					component = utils.createDatetime({ value: null, onClose: onCloseFn, closeOnSelect: false });

@@ -354,7 +354,7 @@ export default class Datetime extends React.Component {
 			update.selectedDate = viewDate.clone();
 			update.inputValue = viewDate.format( this.getFormat('datetime') );
 
-			if ( this.props.open === undefined && this.props.input && this.props.closeOnSelect ) {
+			if ( this.props.input && this.props.closeOnSelect ) {
 				this._closeCalendar();
 			}
 
