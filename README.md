@@ -283,7 +283,7 @@ required.
 Typings for 1.8 are found in `react-datetime.d.ts` and typings for 2.0 are found in `typings/index.d.ts`.
 
 ```js
-import * as Datetime from 'react-datetime';
+import Datetime from 'react-datetime';
 
 class MyDTPicker extends React.Component<MyDTPickerProps, MyDTPickerState> {
     render() JSX.Element {
