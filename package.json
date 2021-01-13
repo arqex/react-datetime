@@ -104,11 +104,11 @@
   "devDependencies": {
     "@babel/preset-env": "^7.11.5",
     "@sheerun/mutationobserver-shim": "^0.3.3",
-    "@storybook/addon-actions": "6.1.10",
+    "@storybook/addon-actions": "6.1.14",
     "@storybook/addon-docs": "6.1.12",
     "@storybook/addon-knobs": "6.1.10",
     "@storybook/addon-links": "6.1.11",
-    "@storybook/addons": "6.1.12",
+    "@storybook/addons": "6.1.14",
     "@storybook/preset-scss": "^1.0.2",
     "@storybook/react": "6.1.10",
     "@testing-library/jest-dom": "^5.11.6",
