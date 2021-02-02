@@ -106,7 +106,7 @@
     "@sheerun/mutationobserver-shim": "^0.3.3",
     "@storybook/addon-actions": "6.1.15",
     "@storybook/addon-docs": "6.1.12",
-    "@storybook/addon-knobs": "6.1.14",
+    "@storybook/addon-knobs": "6.1.16",
     "@storybook/addon-links": "6.1.15",
     "@storybook/addons": "6.1.16",
     "@storybook/preset-scss": "^1.0.2",

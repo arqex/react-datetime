@@ -2011,18 +2011,18 @@
     ts-dedent "^2.0.0"
     util-deprecate "^1.0.2"
 
-"@storybook/addon-knobs@6.1.14":
-  version "6.1.14"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-6.1.14.tgz#748a66eff822189c016e7024129637932020bf81"
-  integrity sha512-Zyd4hWbV8OpsC3Cllmz4kxrGgoSGR6fDjaN1rYTZplUDf0h3dVWPEd/RhI3iU7umE5FqrFuQyadunHwuGXh3OA==
+"@storybook/addon-knobs@6.1.16":
+  version "6.1.16"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-6.1.16.tgz#6dbf0290606b3284b221ca3619c748725649e827"
+  integrity sha512-e2clvHSMFLZYibvYvFgPm9Oar9Rwt9glCQnC3GHxpOdQbcekkt2pF2/XLDLZxDaeSrmEWEiKC8NHvqq1qz9arQ==
   dependencies:
-    "@storybook/addons" "6.1.14"
-    "@storybook/api" "6.1.14"
-    "@storybook/channels" "6.1.14"
-    "@storybook/client-api" "6.1.14"
-    "@storybook/components" "6.1.14"
-    "@storybook/core-events" "6.1.14"
-    "@storybook/theming" "6.1.14"
+    "@storybook/addons" "6.1.16"
+    "@storybook/api" "6.1.16"
+    "@storybook/channels" "6.1.16"
+    "@storybook/client-api" "6.1.16"
+    "@storybook/components" "6.1.16"
+    "@storybook/core-events" "6.1.16"
+    "@storybook/theming" "6.1.16"
     copy-to-clipboard "^3.0.8"
     core-js "^3.0.1"
     escape-html "^1.0.3"
@@ -2280,19 +2280,6 @@
     qs "^6.6.0"
     telejson "^5.0.2"
 
-"@storybook/channel-postmessage@6.1.14":
-  version "6.1.14"
-  resolved "https://registry.yarnpkg.com/@storybook/channel-postmessage/-/channel-postmessage-6.1.14.tgz#41f3115895010dad9fb30f4ac381e4f904b1e50c"
-  integrity sha512-If83dXXW9mKIRuvuWhWa/zkEw/F0FDgikp33x8436J3rWCh3recp27kffFRrKG0YDMpFSk/Ci5G47E9zn9SCjw==
-  dependencies:
-    "@storybook/channels" "6.1.14"
-    "@storybook/client-logger" "6.1.14"
-    "@storybook/core-events" "6.1.14"
-    core-js "^3.0.1"
-    global "^4.3.2"
-    qs "^6.6.0"
-    telejson "^5.0.2"
-
 "@storybook/channel-postmessage@6.1.15":
   version "6.1.15"
   resolved "https://registry.yarnpkg.com/@storybook/channel-postmessage/-/channel-postmessage-6.1.15.tgz#80ea2346d18496f9710dd7f87fd2a9eca46ef36f"
@@ -2301,6 +2288,19 @@
     "@storybook/channels" "6.1.15"
     "@storybook/client-logger" "6.1.15"
     "@storybook/core-events" "6.1.15"
+    core-js "^3.0.1"
+    global "^4.3.2"
+    qs "^6.6.0"
+    telejson "^5.0.2"
+
+"@storybook/channel-postmessage@6.1.16":
+  version "6.1.16"
+  resolved "https://registry.yarnpkg.com/@storybook/channel-postmessage/-/channel-postmessage-6.1.16.tgz#938daf4537ecbae4d3131562179bae706d22c1b6"
+  integrity sha512-Fxz938NVWeNh5mHjghF4PkoMkzO2sk5f/cBpKBveNdIPDImUHrbdfYsfwhDVaY4/JFKyxXQUJBFyt0iYR+Z4jA==
+  dependencies:
+    "@storybook/channels" "6.1.16"
+    "@storybook/client-logger" "6.1.16"
+    "@storybook/core-events" "6.1.16"
     core-js "^3.0.1"
     global "^4.3.2"
     qs "^6.6.0"
@@ -2399,16 +2399,16 @@
     ts-dedent "^2.0.0"
     util-deprecate "^1.0.2"
 
-"@storybook/client-api@6.1.14":
-  version "6.1.14"
-  resolved "https://registry.yarnpkg.com/@storybook/client-api/-/client-api-6.1.14.tgz#6daf56743cc72e13f05fff3d2ac554897cc9f9fd"
-  integrity sha512-pIDSlS48bhJdtgNg7sXV1NmLJtB0ebRHJI9htIiqtL7EGQenb4+Bbwflhj1j51OEkuM+bQsAAZxq5deiUQEGVw==
+"@storybook/client-api@6.1.15":
+  version "6.1.15"
+  resolved "https://registry.yarnpkg.com/@storybook/client-api/-/client-api-6.1.15.tgz#8f8ead111459b94621571bdb2276f8a0aace17b1"
+  integrity sha512-iwuDlgNdB6Y4OidlhWPob3tEIax9taymdKEe9by4rLJ3nfXu7viHcvCAjN24oI4NFW3NZsmtqJotgftRYk0r1Q==
   dependencies:
-    "@storybook/addons" "6.1.14"
-    "@storybook/channel-postmessage" "6.1.14"
-    "@storybook/channels" "6.1.14"
-    "@storybook/client-logger" "6.1.14"
-    "@storybook/core-events" "6.1.14"
+    "@storybook/addons" "6.1.15"
+    "@storybook/channel-postmessage" "6.1.15"
+    "@storybook/channels" "6.1.15"
+    "@storybook/client-logger" "6.1.15"
+    "@storybook/core-events" "6.1.15"
     "@storybook/csf" "0.0.1"
     "@types/qs" "^6.9.0"
     "@types/webpack-env" "^1.15.3"
@@ -2423,16 +2423,16 @@
     ts-dedent "^2.0.0"
     util-deprecate "^1.0.2"
 
-"@storybook/client-api@6.1.15":
-  version "6.1.15"
-  resolved "https://registry.yarnpkg.com/@storybook/client-api/-/client-api-6.1.15.tgz#8f8ead111459b94621571bdb2276f8a0aace17b1"
-  integrity sha512-iwuDlgNdB6Y4OidlhWPob3tEIax9taymdKEe9by4rLJ3nfXu7viHcvCAjN24oI4NFW3NZsmtqJotgftRYk0r1Q==
+"@storybook/client-api@6.1.16":
+  version "6.1.16"
+  resolved "https://registry.yarnpkg.com/@storybook/client-api/-/client-api-6.1.16.tgz#d6362d9c6d95a30e47906b8ff9c1daa3a0facd4d"
+  integrity sha512-cMMn3AdwXJm0KtT8RaIVAD5M2eNvxwOc/8AKMK83e79Mux7PujrG/k2TXuXo7aFXXWEzENnkxGZ/EJGPzcZelg==
   dependencies:
-    "@storybook/addons" "6.1.15"
-    "@storybook/channel-postmessage" "6.1.15"
-    "@storybook/channels" "6.1.15"
-    "@storybook/client-logger" "6.1.15"
-    "@storybook/core-events" "6.1.15"
+    "@storybook/addons" "6.1.16"
+    "@storybook/channel-postmessage" "6.1.16"
+    "@storybook/channels" "6.1.16"
+    "@storybook/client-logger" "6.1.16"
+    "@storybook/core-events" "6.1.16"
     "@storybook/csf" "0.0.1"
     "@types/qs" "^6.9.0"
     "@types/webpack-env" "^1.15.3"
@@ -2539,15 +2539,15 @@
     react-textarea-autosize "^8.1.1"
     ts-dedent "^2.0.0"
 
-"@storybook/components@6.1.14":
-  version "6.1.14"
-  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-6.1.14.tgz#4ea47edfa0a3e4a26882aa5a1eb90c1ec86e6f71"
-  integrity sha512-Nxsp/9o1tqfY8s6RBWNHyM03A5D9k56Kr/4VNa++CbDrz1+TIxpYlDgS4sllUlXyvICLfk3sUtg3KS5CPl2iZA==
+"@storybook/components@6.1.15":
+  version "6.1.15"
+  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-6.1.15.tgz#b4a2af23ee6b9cba4c255191eae3d3463e29bfb7"
+  integrity sha512-lPbA/zyBfctdlpDhRTcRFLWlZPJ3PB4+wI0FUvYs69iG3/bNbQPYu8vRmNhCZOsaGt+b+dik4Tfcth8Bu+eQug==
   dependencies:
     "@popperjs/core" "^2.5.4"
-    "@storybook/client-logger" "6.1.14"
+    "@storybook/client-logger" "6.1.15"
     "@storybook/csf" "0.0.1"
-    "@storybook/theming" "6.1.14"
+    "@storybook/theming" "6.1.15"
     "@types/overlayscrollbars" "^1.9.0"
     "@types/react-color" "^3.0.1"
     "@types/react-syntax-highlighter" "11.0.4"
@@ -2565,15 +2565,15 @@
     react-textarea-autosize "^8.1.1"
     ts-dedent "^2.0.0"
 
-"@storybook/components@6.1.15":
-  version "6.1.15"
-  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-6.1.15.tgz#b4a2af23ee6b9cba4c255191eae3d3463e29bfb7"
-  integrity sha512-lPbA/zyBfctdlpDhRTcRFLWlZPJ3PB4+wI0FUvYs69iG3/bNbQPYu8vRmNhCZOsaGt+b+dik4Tfcth8Bu+eQug==
+"@storybook/components@6.1.16":
+  version "6.1.16"
+  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-6.1.16.tgz#5f58a50b6a4953f5f035713e66da618fdaf39c65"
+  integrity sha512-OhtsNKrfSXdVREqO9f89Yr4esP99kVNfzXOIL8WYdYoqW8AsGeznWcdUCkmDOJax0GuinJfRthZNoyTXDEm2Nw==
   dependencies:
     "@popperjs/core" "^2.5.4"
-    "@storybook/client-logger" "6.1.15"
+    "@storybook/client-logger" "6.1.16"
     "@storybook/csf" "0.0.1"
-    "@storybook/theming" "6.1.15"
+    "@storybook/theming" "6.1.16"
     "@types/overlayscrollbars" "^1.9.0"
     "@types/react-color" "^3.0.1"
     "@types/react-syntax-highlighter" "11.0.4"
