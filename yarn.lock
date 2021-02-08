@@ -3059,24 +3059,6 @@
     resolve-from "^5.0.0"
     ts-dedent "^2.0.0"
 
-"@storybook/theming@6.1.17":
-  version "6.1.17"
-  resolved "https://registry.yarnpkg.com/@storybook/theming/-/theming-6.1.17.tgz#99cc120a230c30458d833b40c806b9b4dff7b34a"
-  integrity sha512-LpRuY2aIh2td+qZi7E8cp2oM88LudNMmTsBT6N2/Id69u/a9qQd2cYCA9k9fAsg7rjor+wR/N695jk3SGtoFTw==
-  dependencies:
-    "@emotion/core" "^10.1.1"
-    "@emotion/is-prop-valid" "^0.8.6"
-    "@emotion/styled" "^10.0.23"
-    "@storybook/client-logger" "6.1.17"
-    core-js "^3.0.1"
-    deep-object-diff "^1.1.0"
-    emotion-theming "^10.0.19"
-    global "^4.3.2"
-    memoizerific "^1.11.3"
-    polished "^3.4.4"
-    resolve-from "^5.0.0"
-    ts-dedent "^2.0.0"
-
 "@storybook/ui@6.1.10":
   version "6.1.10"
   resolved "https://registry.yarnpkg.com/@storybook/ui/-/ui-6.1.10.tgz#7967765decb2d5816c61633712eb3f55d57249df"
@@ -6375,9 +6357,9 @@ date-fns@^1.27.2:
   integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
 
 date-fns@^2.16.1:
-  version "2.16.1"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
-  integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.17.0.tgz#afa55daea539239db0a64e236ce716ef3d681ba1"
+  integrity sha512-ZEhqxUtEZeGgg9eHNSOAJ8O9xqSgiJdrL0lzSSfMF54x6KXWJiOH/xntSJ9YomJPrYH/p08t6gWjGWq1SDJlSA==
 
 date-format@0.0.2:
   version "0.0.2"
