@@ -154,7 +154,7 @@
   "dependencies": {
     "@babel/core": "^7.12.9",
     "@reach/popover": "0.13.0",
-    "classcat": "^4.0.2",
+    "classcat": "^5.0.1",
     "date-fns": "^2.16.1",
     "tslib": "^2.0.0",
     "use-onclickoutside": "^0.3.1"
