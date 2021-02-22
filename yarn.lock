@@ -5662,9 +5662,9 @@ class-utils@^0.3.5:
     static-extend "^0.1.1"
 
 classcat@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/classcat/-/classcat-5.0.1.tgz#5f852683384dc84623bf5902b97e07bab730d662"
-  integrity sha512-Rh9pIj/SN8Dvtcnz47RBotB5Dx+fj6L7S8h4lv+/H86gNcIGBH812D9GZKXUQoWSU/BxZkq/f8H4ujIb/WT45w==
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/classcat/-/classcat-5.0.3.tgz#38eaa0ec6eb1b10faf101bbcef2afb319c23c17b"
+  integrity sha512-6dK2ke4VEJZOFx2ZfdDAl5OhEL8lvkl6EHF92IfRePfHxQTqir5NlcNVUv+2idjDqCX2NDc8m8YSAI5NI975ZQ==
 
 classnames@^2.2.5:
   version "2.2.6"
