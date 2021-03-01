@@ -137,5 +137,12 @@ module.exports = {
 
 	getViewDateValue: (datetime) => {
 		return datetime.find('.rdtSwitch').getDOMNode().innerHTML;
-	}
+	},
+
+	/*
+	* Get CSS
+	*/
+	getPickerStyleProp: (datetime) => {
+		return datetime.find('.rdtPicker').props().style;
+	},
 };
