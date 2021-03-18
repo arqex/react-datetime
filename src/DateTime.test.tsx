@@ -2736,6 +2736,7 @@ describe("DateTime", () => {
 
           // Open picker
           userEvent.tab();
+          fireEvent.focus(element);
           expect(element).toHaveFocus();
 
           // Should have triggered "onFocus"
@@ -2802,6 +2803,7 @@ describe("DateTime", () => {
 
           // Tab in
           userEvent.tab();
+          fireEvent.focus(element);
           expect(element).toHaveFocus();
 
           // Tab out
@@ -2842,10 +2844,12 @@ describe("DateTime", () => {
 
           // Tab in
           userEvent.tab();
+          fireEvent.focus(element);
           expect(element).toHaveFocus();
 
           // Tab out
           userEvent.tab();
+          fireEvent.focusOut(element);
 
           // Should have triggered "onBlur"
           expect(handleBlur).toHaveBeenCalledTimes(1);
@@ -3110,6 +3114,7 @@ describe("DateTime", () => {
 
         // Open picker
         userEvent.tab();
+        fireEvent.focus(element);
         expect(element).toHaveFocus();
 
         // Should become visible
