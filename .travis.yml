@@ -3,7 +3,7 @@ sudo: false
 os:
   - linux
 node_js:
-  - '10'
+  - '12'
   - 'stable'
 script:
   - npm run lint
