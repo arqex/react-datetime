@@ -125,7 +125,7 @@ describe('Datetime', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 			component = utils.createDatetime({ initialViewMode: 'years', initialValue: date });
 		expect(utils.isYearView(component)).toBeTruthy();
-		expect(component.find('.rdtSwitch').text()).toEqual('2000-2009');
+		expect(component.find('.rdtSwitch').text()).toEqual('1999-2010');
 
 		// Click first year (1999)
 		utils.clickOnElement(component.find('.rdtYear').at(0));
@@ -137,22 +137,22 @@ describe('Datetime', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 			component = utils.createDatetime({ initialViewMode: 'years', initialValue: date });
 
-		expect(component.find('.rdtSwitch').text()).toEqual('2000-2009');
+		expect(component.find('.rdtSwitch').text()).toEqual('1999-2010');
 		utils.clickOnElement(component.find('.rdtNext span').at(0));
-		expect(component.find('.rdtSwitch').text()).toEqual('2010-2019');
+		expect(component.find('.rdtSwitch').text()).toEqual('2009-2020');
 		utils.clickOnElement(component.find('.rdtNext span').at(0));
-		expect(component.find('.rdtSwitch').text()).toEqual('2020-2029');
+		expect(component.find('.rdtSwitch').text()).toEqual('2019-2030');
 	});
 
 	it('decrease decade', () => {
 		const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 			component = utils.createDatetime({ initialViewMode: 'years', initialValue: date });
 
-		expect(component.find('.rdtSwitch').text()).toEqual('2000-2009');
+		expect(component.find('.rdtSwitch').text()).toEqual('1999-2010');
 		utils.clickOnElement(component.find('.rdtPrev span').at(0));
-		expect(component.find('.rdtSwitch').text()).toEqual('1990-1999');
+		expect(component.find('.rdtSwitch').text()).toEqual('1989-2000');
 		utils.clickOnElement(component.find('.rdtPrev span').at(0));
-		expect(component.find('.rdtSwitch').text()).toEqual('1980-1989');
+		expect(component.find('.rdtSwitch').text()).toEqual('1979-1990');
 	});
 
 	it('select month', () => {
