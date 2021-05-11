@@ -89,11 +89,21 @@ export default class Datetime extends React.Component {
 		return (
 			<ClickableWrapper className={ this.getClassName() } onClickOut={ this._handleClickOutside }>
 				{ this.renderInput() }
-				<div className="rdtPicker">
+				<div className={this.getClassNames()}>
 					{ this.renderView() }
 				</div>
 			</ClickableWrapper>
 		);
+	}
+
+	getClassNames() {
+		let defaultClassName='rdtPicker';
+		if (this.props.position) {
+			const mPosition=this.props.position.toLowerCase();
+			if (mPosition==='up') return defaultClassName+' rdtUp';
+			return defaultClassName;
+		}
+		return defaultClassName;
 	}
 
 	renderInput() {

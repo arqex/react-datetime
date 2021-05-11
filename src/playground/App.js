@@ -14,8 +14,8 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<Datetime />
+			<div style={{marginTop:'48vh'}}>
+				<Datetime position='up' />
 			</div>
 		);
 	}
