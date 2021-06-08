@@ -31,6 +31,7 @@ export default class Datetime extends React.Component {
 		onBeforeNavigate: TYPES.func,
 		onNavigateBack: TYPES.func,
 		onNavigateForward: TYPES.func,
+		onViewDateChange: TYPES.func,
 		updateOnView: TYPES.string,
 		locale: TYPES.string,
 		utc: TYPES.bool,
@@ -62,6 +63,7 @@ export default class Datetime extends React.Component {
 		onBeforeNavigate: function(next) { return next; }, 
 		onNavigateBack: nofn,
 		onNavigateForward: nofn,
+		onViewDateChange: nofn,
 		dateFormat: true,
 		timeFormat: true,
 		utc: false,
@@ -445,25 +447,29 @@ export default class Datetime extends React.Component {
 		}
 	}
 
-	componentDidUpdate( prevProps ) {
-		if ( prevProps === this.props ) return;
-
-		let needsUpdate = false;
-		let thisProps = this.props;
-
-		['locale', 'utc', 'displayZone', 'dateFormat', 'timeFormat'].forEach( function(p) {
-			prevProps[p] !== thisProps[p] && (needsUpdate = true);
-		});
-
-		if ( needsUpdate ) {
-			this.regenerateDates();
+	componentDidUpdate( prevProps, prevState ) {
+		if ( !prevState.viewDate.isSame( this.state.viewDate ) ) {
+			this.props.onViewDateChange( this.state.viewDate );
 		}
 
-		if ( thisProps.value && thisProps.value !== prevProps.value ) {
-			this.setViewDate( thisProps.value );
-		}
+		if ( prevProps !== this.props ) {
+			let needsUpdate = false;
+			let thisProps = this.props;
 
-		this.checkTZ();
+			['locale', 'utc', 'displayZone', 'dateFormat', 'timeFormat'].forEach( function(p) {
+				prevProps[p] !== thisProps[p] && (needsUpdate = true);
+			});
+
+			if ( needsUpdate ) {
+				this.regenerateDates();
+			}
+
+			if ( thisProps.value && thisProps.value !== prevProps.value ) {
+				this.setViewDate( thisProps.value );
+			}
+
+			this.checkTZ();
+		}
 	}
 
 	regenerateDates() {
