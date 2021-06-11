@@ -2,7 +2,7 @@
 
 A new decade has begun and a new major version of react-datetime is released. It's been some years since the first release of v2 and a lot has changed in the react ecosystem. 
 
-In v3 we have updated the whole base code of react-datetime, catching up with the latest tools and practices. We can proudly say that this is the best performant, most customizable and easiest to understand version of the library so far. This version also makes the mantainance of react-datetime much simpler, this way we are ready to keep shipping new features and improvements.
+In v3 we have updated the whole base code of react-datetime, catching up with the latest tools and practices. We can proudly say that this is the best performant, most customizable and easiest to understand version of the library so far. This version also makes the maintenance of react-datetime much simpler, this way we are ready to keep shipping new features and improvements.
 
 
 ## Steps to migrate to version 3
