@@ -1,5 +1,8 @@
 Changelog
 =========
+## 3.1.0
+* Adds support for React 17
+
 ## 3.0.3
 * Localize AM and PM strings
 * Make calendar fluid width
