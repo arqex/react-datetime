@@ -531,9 +531,8 @@ export default class Datetime extends React.Component {
 	 * @public
 	 */
 	setViewDate( date ) {
-		let me = this;
 		let logError = function() {
-			return me.log( 'Invalid date passed to the `setViewDate` method: ' + date );
+			return log( 'Invalid date passed to the `setViewDate` method: ' + date );
 		};
 
 		if ( !date ) return logError();
