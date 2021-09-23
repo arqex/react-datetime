@@ -187,6 +187,10 @@ declare namespace ReactDatetimeClass {
          */
         strictParsing?: boolean;
         /*
+        When true and the input is focused, pressing the tab key will close the datepicker.
+        */
+        closeOnTab?: boolean;
+        /*
          When true, once the day has been selected, the react-datetime will be automatically closed.
          */
         closeOnSelect?: boolean;
