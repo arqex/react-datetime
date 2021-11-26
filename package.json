@@ -8,6 +8,7 @@
     "url": "https://github.com/arqex/react-datetime"
   },
   "main": "./dist/react-datetime.cjs.js",
+  "browser": "./dist/react-datetime.umd.js",
   "typings": "./typings/DateTime.d.ts",
   "files": [
     "css",
