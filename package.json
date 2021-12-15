@@ -75,14 +75,14 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "{src}/**/*.{js,jsx,ts,tsx}": [
+    "src/**/*.{js,jsx,ts,tsx}": [
       "prettier --write",
       "eslint src --ext .js,.ts,.jsx,.tsx --fix"
     ],
-    "{src}/**/*.{json,css,scss}": [
+    "src/**/*.{json,css,scss}": [
       "prettier --write"
     ],
-    "{src}/**/*": [
+    "src/**/*": [
       "bundlesize"
     ]
   },
@@ -135,7 +135,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.0.1",
     "jest-junit": "^12.0.0",
-    "lint-staged": "^10.5.2",
+    "lint-staged": "^12.1.2",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
     "react-docgen-typescript-loader": "^3.7.1",
