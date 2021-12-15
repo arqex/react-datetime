@@ -69,5 +69,12 @@ module.exports = {
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-empty-function": "off",
+
+    // Disable new testing-library rules,
+    "testing-library/no-wait-for-empty-callback": "off",
+    "testing-library/no-unnecessary-act": "off",
+    "testing-library/no-container": "off",
+    "testing-library/prefer-screen-queries": "off",
+    "testing-library/no-node-access": "off"
   },
 };
