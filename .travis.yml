@@ -3,7 +3,6 @@ sudo: false
 os:
   - linux
 node_js:
-  - "12"
   - "14"
   - "16"
   - stable
