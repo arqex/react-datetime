@@ -42,7 +42,7 @@ function parseString(value) {
   return value;
 }
 
-export function SimpleExamples(): JSX.Element {
+export const SimpleExamples: () => JSX.Element = () => {
   function UncontrolledDateTime(props) {
     const [value, setValue] = useState<any>(props.value);
 
@@ -99,7 +99,7 @@ export function SimpleExamples(): JSX.Element {
       />
     </div>
   );
-}
+};
 
 export function InlineExamples(): JSX.Element {
   function UncontrolledDateTime({ label, ...props }) {

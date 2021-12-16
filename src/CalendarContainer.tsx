@@ -6,6 +6,7 @@ import DaysView, { DaysViewProps } from "./DaysView";
 import MonthsView, { MonthsViewProps } from "./MonthsView";
 import YearsView, { YearsViewProps } from "./YearsView";
 import { ViewMode } from "./.";
+import { ForwardedRef } from "react";
 
 interface CalendarContainerProps {
   viewMode: ViewMode | undefined;
@@ -21,7 +22,7 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
     DaysViewProps &
     MonthsViewProps &
     YearsViewProps,
-  ref: any
+  ref: ForwardedRef<any>
 ) {
   const { viewMode, isStatic, id, className, style, ...rest } = props;
 

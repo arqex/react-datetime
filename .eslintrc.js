@@ -13,7 +13,9 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "prettier",
+    "plugin:jest-dom/recommended",
     "plugin:testing-library/react",
+    "plugin:storybook/recommended",
   ],
   plugins: ["@typescript-eslint", "react", "react-hooks", "prettier"],
   env: {
@@ -27,7 +29,10 @@ module.exports = {
       version: "16.8.6",
     },
   },
-  globals: { JSX: "readonly", NodeJS: "readonly" },
+  globals: {
+    JSX: "readonly",
+    NodeJS: "readonly",
+  },
   rules: {
     // Help enforce hooks
     "react-hooks/rules-of-hooks": "error",
@@ -50,7 +55,13 @@ module.exports = {
     "no-var": "warn",
 
     // Warn if there is an unused variable
-    "no-unused-vars": ["warn", { ignoreRestSiblings: true, args: "none" }],
+    "no-unused-vars": [
+      "warn",
+      {
+        ignoreRestSiblings: true,
+        args: "none",
+      },
+    ],
 
     // Warn if there is a console output
     "no-console": "warn",
@@ -70,5 +81,13 @@ module.exports = {
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-empty-function": "off",
+
+    // Disable new testing-library rules,
+    "jest-dom/prefer-in-document": "warn",
+    "testing-library/no-wait-for-empty-callback": "warn",
+    "testing-library/no-unnecessary-act": "warn",
+    "testing-library/no-container": "warn",
+    "testing-library/prefer-screen-queries": "warn",
+    "testing-library/no-node-access": "warn",
   },
 };

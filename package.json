@@ -59,37 +59,36 @@
     "build": "tsdx build --format=umd,esm,cjs&&yarn sass scss/styles.scss dist/css/styles.css",
     "dev": "tsdx watch --format=esm",
     "start": "yarn dev",
-    "test": "yarn lint:fix&&cross-env CI=1 TZ=Europe/Stockholm tsdx test",
-    "test:ci": "yarn lint:fix&&cross-env CI=1 TZ=Europe/Stockholm tsdx test",
+    "test": "yarn lint&&cross-env CI=1 TZ=Europe/Stockholm tsdx test",
+    "test:ci": "yarn lint&&cross-env CI=1 TZ=Europe/Stockholm tsdx test",
     "test:coverage": "yarn test --coverage",
     "test:all": "echo 'Running tests...' && yarn bundlesize && yarn test:coverage && echo 'All tests passed! 🤘'",
     "test:watch": "cross-env TZ=Europe/Stockholm tsdx test --watch",
+    "deduplicate": "npx yarn-deduplicate -s fewer yarn.lock",
     "lint": "yarn eslint src --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn lint --fix",
     "prettier": "prettier --write .",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -c .storybook -o .out",
     "chromatic": "chromatic",
-    "prepack": "yarn build"
+    "prepack": "yarn build",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "{src}/**/*.{js,jsx,ts,tsx}": [
+    "src/**/*.{js,jsx,ts,tsx}": [
       "prettier --write",
-      "eslint src --ext .js,.ts,.jsx,.tsx --fix"
+      "eslint src --ext .js,.ts,.jsx,.tsx"
     ],
-    "{src}/**/*.{json,css,scss}": [
+    "src/**/*.{json,css,scss}": [
       "prettier --write"
     ],
-    "{src}/**/*": [
+    "src/**/*": [
       "bundlesize"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "jest": {
+    "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
       ".stories.tsx"
     ],
@@ -102,61 +101,70 @@
     "react-dom": "^16.8.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.13.10",
+    "@babel/preset-env": "^7.16.5",
     "@sheerun/mutationobserver-shim": "^0.3.3",
-    "@storybook/addon-actions": "6.1.21",
-    "@storybook/addon-docs": "6.1.21",
-    "@storybook/addon-knobs": "6.1.21",
-    "@storybook/addon-links": "6.1.21",
-    "@storybook/addons": "6.1.21",
-    "@storybook/preset-scss": "^1.0.2",
-    "@storybook/react": "6.1.21",
-    "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "^11.0.0",
-    "@testing-library/user-event": "^13.0.1",
-    "@types/jest": "^26.0.21",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.18.0",
-    "@typescript-eslint/parser": "^4.18.0",
+    "@storybook/addon-actions": "6.4.9",
+    "@storybook/addon-docs": "6.4.9",
+    "@storybook/addon-knobs": "6.4.0",
+    "@storybook/addon-links": "6.4.9",
+    "@storybook/addons": "6.4.9",
+    "@storybook/preset-scss": "^1.0.3",
+    "@storybook/react": "6.4.9",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.0.3",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
     "awesome-typescript-loader": "^5.2.1",
-    "babel-jest": "^26.3.0",
-    "babel-loader": "^8.0.6",
+    "babel-jest": "^27.4.5",
+    "babel-loader": "^8.2.3",
     "bundlesize": "^0.18.0",
     "chromatic": "^5.7.0",
     "cross-env": "^7.0.2",
     "css-loader": "^5.1.3",
-    "cssnano": "^4.1.10",
-    "eslint": "^7.22.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^4.0.0",
-    "eslint-plugin-testing-library": "^3.8.0",
-    "husky": "^5.0.9",
+    "cssnano": "^5.0.13",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest-dom": "^3.9.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-storybook": "^0.5.3",
+    "eslint-plugin-testing-library": "^5.0.1",
+    "husky": "^7.0.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^26.0.1",
-    "jest-junit": "^12.0.0",
-    "lint-staged": "^10.5.2",
-    "prettier": "^2.0.0",
-    "react": "^17.0.1",
+    "jest": "^27.4.5",
+    "jest-junit": "^13.0.0",
+    "lint-staged": "^12.1.2",
+    "prettier": "^2.5.1",
+    "react": "^17.0.2",
     "react-docgen-typescript-loader": "^3.7.1",
-    "react-dom": "^17.0.1",
-    "react-is": "^17.0.1",
-    "sass": "^1.26.3",
+    "react-dom": "^17.0.2",
+    "react-is": "^17.0.2",
+    "sass": "^1.45.0",
     "sass-loader": "^10.0.0",
     "style-loader": "^2.0.0",
-    "ts-jest": "^26.5.4",
-    "ts-loader": "^8.0.18",
+    "ts-jest": "^27.1.1",
+    "ts-loader": "^9.2.6",
     "tsdx": "0.14.1",
-    "typescript": "^4.0.2"
+    "typescript": "^4.5.4",
+    "webpack": "5"
   },
   "dependencies": {
-    "@babel/core": "^7.13.10",
-    "@reach/popover": "0.13.2",
+    "@babel/core": "^7.16.5",
+    "@reach/popover": "0.16.2",
+    "@storybook/builder-webpack5": "^6.4.9",
+    "@storybook/manager-webpack5": "^6.4.9",
     "classcat": "^5.0.1",
-    "date-fns": "^2.16.1",
-    "tslib": "^2.0.0",
-    "use-onclickoutside": "^0.3.1"
+    "date-fns": "^2.27.0",
+    "tslib": "^2.3.1",
+    "use-onclickoutside": "^0.4.0"
+  },
+  "resolutions": {
+    "**/tsdx/jest": "27.4.5",
+    "**/tsdx/ts-jest": "27.1.1"
   }
 }
