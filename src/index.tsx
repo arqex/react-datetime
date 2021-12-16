@@ -17,6 +17,7 @@ import isDateValid from "date-fns/isValid";
 import startOfDay from "date-fns/startOfDay";
 
 import CalendarContainer from "./CalendarContainer";
+import { Locale } from "date-fns";
 
 export const FORMATS = {
   MONTH: "LL",
@@ -88,7 +89,7 @@ function parse(
 }
 
 export interface FormatOptions {
-  locale: any;
+  locale: Locale;
 }
 
 export interface TimeConstraint {
@@ -170,7 +171,7 @@ export interface Props
   dateFormat?: string | boolean;
   timeFormat?: string | boolean;
 
-  locale?: any;
+  locale?: Locale;
 
   shouldHideInput?: boolean;
   timeConstraints?: TimeConstraints;

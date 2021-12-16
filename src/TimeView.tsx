@@ -95,7 +95,7 @@ function getFormatted(
   type: "hours" | "minutes" | "seconds" | "milliseconds" | "daypart",
   timestamp: Date,
   timeFormat: string,
-  formatOptions?: any
+  formatOptions?: FormatOptions
 ) {
   const fmt = timeFormat;
 
@@ -144,8 +144,8 @@ function toggleDayPart(
   };
 }
 
-let timer: any;
-let increaseTimer: any;
+let timer: NodeJS.Timer;
+let increaseTimer: NodeJS.Timer;
 let mouseUpListener: () => void;
 
 function onStartClicking(
