@@ -3,9 +3,9 @@ sudo: false
 os:
   - linux
 node_js:
-  - "10"
   - "12"
   - "14"
+  - "16"
   - stable
 script:
   - yarn lint
