@@ -7,4 +7,8 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-docs",
   ],
+  framework: "@storybook/react",
+  core: {
+    builder: "webpack5",
+  },
 };
