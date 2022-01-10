@@ -349,6 +349,11 @@ export default class Datetime extends React.Component {
 			viewDate.year( parseInt( e.target.getAttribute('data-year'), 10 ) );
 		}
 
+		// Set the value into day/month/year
+		viewDate[ this.viewToMethod[currentView] ](
+			parseInt( e.target.getAttribute('data-value'), 10 )
+		);
+
 		let update = {viewDate: viewDate};
 		if ( currentView === updateOnView ) {
 			update.selectedDate = viewDate.clone();
