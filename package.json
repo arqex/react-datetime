@@ -1,5 +1,5 @@
 {
-  "name": "react-datetime-gbst",
+  "name": "@gbst/react-datetime",
   "version": "1.0.0",
   "description": "A forked version of react-datetime to address GBST issues.",
   "homepage": "https://github.com/simonlau892/react-datetime",
