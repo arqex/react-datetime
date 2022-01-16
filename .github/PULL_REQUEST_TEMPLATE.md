@@ -21,14 +21,12 @@
   then don't hesitate to ask. We're here to help!
 -->
 
-```
-[ ] I have not included any built dist files (us maintainers do that prior to a new release)
-[ ] I have added tests covering my changes
-[ ] All new and existing tests pass
-[ ] My changes required the documentation to be updated
-  [ ] I have updated the documentation accordingly
-  [ ] I have updated the TypeScript type definitions accordingly
-```
+- [ ] I have not included any built dist files (us maintainers do that prior to a new release)
+- [ ] I have added tests covering my changes
+- [ ] All new and existing tests pass
+- [ ] My changes required the documentation to be updated
+  - [ ] I have updated the documentation accordingly
+  - [ ] I have updated the TypeScript type definitions accordingly
 
 <!--
   Is there anything in this template you think is confusing, unclear, redundant or just simply bad?

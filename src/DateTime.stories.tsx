@@ -55,7 +55,6 @@ export const SimpleExamples: () => JSX.Element = () => {
               {...props}
               value={value}
               onChange={(newVal) => {
-                console.log({ newVal });
                 setValue(newVal);
               }}
               onBlur={(newVal) => {
@@ -115,7 +114,6 @@ export function InlineExamples(): JSX.Element {
             {...props}
             value={value}
             onChange={(newVal) => {
-              console.log({ newVal });
               setValue(newVal);
             }}
           />
@@ -333,7 +331,6 @@ export function CustomizableExample(): JSX.Element {
             shouldHideInput={shouldHideInput}
             value={value}
             onChange={(newValue) => {
-              console.log(newValue);
               setValue(newValue);
             }}
             dateFormat={dateFormat}

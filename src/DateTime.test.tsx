@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  render,
-  act,
-  fireEvent,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { render, act, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import isSameDay from "date-fns/isSameDay";
@@ -14,14 +8,6 @@ import isSameYear from "date-fns/isSameYear";
 
 import MutationObserver from "@sheerun/mutationobserver-shim";
 window.MutationObserver = MutationObserver;
-
-const {
-  findByText,
-  findByTestId,
-  queryByTestId,
-  findAllByText,
-  findByLabelText,
-} = screen;
 
 import { DateTime as RawDateTime, FORMATS } from "./index";
 
@@ -61,63 +47,67 @@ function mockDate(isoDate: Date) {
 
 afterEach(async () => {
   global.Date = RealDate;
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  await waitFor(() => {});
 });
 
 describe("DateTime", () => {
   it("should render an input", async () => {
-    const { container } = render(<DateTime />);
+    render(<DateTime />);
 
-    expect(container.firstChild).toHaveValue("");
+    const input = await screen.findByRole("textbox");
+    expect(input).toHaveValue("");
   });
 
   it("should render an input with className", async () => {
-    const { container } = render(<DateTime className="form-control" />);
+    render(<DateTime className="form-control" />);
 
-    expect(container.firstChild).toHaveClass("form-control");
+    const input = await screen.findByRole("textbox");
+    expect(input).toHaveClass("form-control");
   });
 
   it("should render an input with id", async () => {
-    const { container } = render(<DateTime id="some-id" />);
+    render(<DateTime id="some-id" />);
 
-    expect(container.firstChild).toHaveAttribute("id", "some-id");
+    const input = await screen.findByRole("textbox");
+    expect(input).toHaveAttribute("id", "some-id");
   });
 
   it("should render with a invalid string value", async () => {
-    const { container } = render(<DateTime value="test" />);
+    render(<DateTime value="test" />);
 
-    expect(container.firstChild).toHaveValue("test");
+    const input = await screen.findByRole("textbox");
+    expect(input).toHaveValue("test");
   });
 
   it("should render with a date string value", async () => {
-    const { container } = render(<DateTime value="06/16/2015 12:00 AM" />);
+    render(<DateTime value="06/16/2015 12:00 AM" />);
 
-    expect(container.firstChild).toHaveValue("06/16/2015 12:00 AM");
+    const input = await screen.findByRole("textbox");
+    expect(input).toHaveValue("06/16/2015 12:00 AM");
   });
 
   describe("shouldHideInput", () => {
     it("should not render any input", async () => {
-      const { container } = render(<DateTime shouldHideInput />);
+      render(<DateTime shouldHideInput />);
 
-      expect(container.querySelector("input")).toBeNull();
+      expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
     });
 
     it("should render a picker with className", async () => {
-      const { container } = render(
-        <DateTime className="some-class" shouldHideInput />
-      );
+      render(<DateTime className="some-class" shouldHideInput />);
 
-      expect(container.querySelector("input")).toBeNull();
-      expect(container.firstChild).toHaveClass("some-class");
+      expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+
+      const picker = await screen.findByTestId("picker-wrapper");
+      expect(picker).toHaveClass("some-class");
     });
 
     it("should render a picker with id", async () => {
-      const { container } = render(<DateTime id="some-id" shouldHideInput />);
+      render(<DateTime id="some-id" shouldHideInput />);
 
-      expect(container.querySelector("input")).toBeNull();
-      expect(container.firstChild).toHaveAttribute("id", "some-id");
+      expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+
+      const picker = await screen.findByTestId("picker-wrapper");
+      expect(picker).toHaveAttribute("id", "some-id");
     });
   });
 
@@ -134,15 +124,15 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.click(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
 
       // Assert
-      expect(queryByTestId("picker-wrapper")).toBeNull();
-      expect(queryByTestId("day-picker")).toBeNull();
-      expect(queryByTestId("month-picker")).toBeNull();
-      expect(queryByTestId("year-picker")).toBeNull();
-      expect(queryByTestId("time-picker")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("day-picker")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("month-picker")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("year-picker")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("time-picker")).not.toBeInTheDocument();
     });
 
     it("should show nothing with shouldHideInput if there's no date/time formats", async () => {
@@ -162,11 +152,11 @@ describe("DateTime", () => {
       );
 
       // Assert
-      expect(queryByTestId("picker-wrapper")).toBeNull();
-      expect(queryByTestId("day-picker")).toBeNull();
-      expect(queryByTestId("month-picker")).toBeNull();
-      expect(queryByTestId("year-picker")).toBeNull();
-      expect(queryByTestId("time-picker")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("day-picker")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("month-picker")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("year-picker")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("time-picker")).not.toBeInTheDocument();
     });
   });
 
@@ -187,8 +177,8 @@ describe("DateTime", () => {
       );
 
       // Assert
-      expect(await findByTestId("picker-wrapper")).toBeVisible();
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
     });
 
     it("should open day picker when clicking", async () => {
@@ -203,11 +193,11 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.click(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
 
       // Assert
-      const picker = await findByTestId("day-picker");
+      const picker = await screen.findByTestId("day-picker");
       expect(picker).toBeVisible();
     });
 
@@ -223,11 +213,12 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.focus(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
       // Assert
-      const picker = await findByTestId("day-picker");
+      const picker = await screen.findByTestId("day-picker");
       expect(picker).toBeVisible();
     });
 
@@ -244,17 +235,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/january/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("January");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open february day picker when clicking", async () => {
@@ -269,17 +260,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/february/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("February");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open march day picker when clicking", async () => {
@@ -294,17 +285,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/march/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("March");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open april day picker when clicking", async () => {
@@ -319,17 +310,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/april/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("April");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open may day picker when clicking", async () => {
@@ -344,17 +335,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/may/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("May");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open june day picker when clicking", async () => {
@@ -369,17 +360,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/june/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("June");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open july day picker when clicking", async () => {
@@ -394,17 +385,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/july/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("July");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open august day picker when clicking", async () => {
@@ -419,17 +410,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/august/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("August");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open september day picker when clicking", async () => {
@@ -444,17 +435,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/september/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("September");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open october day picker when clicking", async () => {
@@ -469,17 +460,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/october/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("October");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open november day picker when clicking", async () => {
@@ -494,17 +485,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/november/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("November");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
 
       it("should open december day picker when clicking", async () => {
@@ -519,17 +510,17 @@ describe("DateTime", () => {
         );
 
         // Act
-        const element = await findByLabelText("Some Field");
-        fireEvent.click(element);
+        const element = await screen.findByLabelText("Some Field");
+        userEvent.click(element);
 
         // Assert
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-        const monthName = await findByText(/december/i);
-        expect(monthName).toBeVisible();
+        const rows = await screen.findAllByRole("row");
+        const [headerRow, dowRow] = rows;
 
-        const dayOfWeekRow = await findByText("Su");
-        expect(dayOfWeekRow.parentNode).toHaveTextContent("SuMoTuWeThFrSa");
+        expect(headerRow).toHaveTextContent("December");
+        expect(dowRow).toHaveTextContent("SuMoTuWeThFrSa");
       });
     });
 
@@ -548,22 +539,22 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-      const someDay = await findByText("16");
+      const someDay = await screen.findByText("16");
       expect(someDay).toBeVisible();
 
       // Pick date
-      fireEvent.click(someDay);
+      userEvent.click(someDay);
 
       expect(element).toHaveValue("01/16/2019");
     });
@@ -583,22 +574,22 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-      const someDay = await findByText("16");
+      const someDay = await screen.findByText("16");
       expect(someDay).toBeVisible();
 
       // Pick date
-      fireEvent.click(someDay);
+      userEvent.click(someDay);
 
       expect(element).toHaveValue("");
     });
@@ -629,25 +620,25 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
       // Click a date (disabled)
-      fireEvent.click(await findByText("16"));
+      userEvent.click(await screen.findByText("16"));
 
       expect(element).toHaveValue("");
       expect(handleChange).toHaveBeenCalledTimes(0);
 
       // Click another date (not disabled)
-      fireEvent.click(await findByText("17"));
+      userEvent.click(await screen.findByText("17"));
 
       expect(element).toHaveValue("01/17/2019");
       expect(handleChange).toHaveBeenCalledTimes(1);
@@ -668,25 +659,25 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
       // Go to previous month (twice)
-      const prevButton = await findByText("‹");
+      const prevButton = await screen.findByText("‹");
       expect(prevButton).toBeVisible();
-      fireEvent.click(prevButton);
-      fireEvent.click(prevButton);
+      userEvent.click(prevButton);
+      userEvent.click(prevButton);
 
       // Pick date
-      fireEvent.click(await findByText("16"));
+      userEvent.click(await screen.findByText("16"));
 
       expect(element).toHaveValue("11/16/2018");
     });
@@ -706,25 +697,25 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
       // Go to next month (twice)
-      const nextButton = await findByText("›");
+      const nextButton = await screen.findByText("›");
       expect(nextButton).toBeVisible();
-      fireEvent.click(nextButton);
-      fireEvent.click(nextButton);
+      userEvent.click(nextButton);
+      userEvent.click(nextButton);
 
       // Pick date
-      fireEvent.click(await findByText("16"));
+      userEvent.click(await screen.findByText("16"));
 
       expect(element).toHaveValue("03/16/2019");
     });
@@ -745,17 +736,19 @@ describe("DateTime", () => {
         </>
       );
 
-      expect(await findByLabelText("Some Field")).toHaveValue("06/16/2015");
+      expect(await screen.findByLabelText("Some Field")).toHaveValue(
+        "06/16/2015"
+      );
 
       // Act
       // Open picker
-      fireEvent.click(await findByLabelText("Some Field"));
+      userEvent.click(await screen.findByLabelText("Some Field"));
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-      expect(await findByText("16")).toBeVisible();
-      expect(await findByText("16")).toHaveClass("rdtActive");
+      expect(await screen.findByText("16")).toBeVisible();
+      expect(await screen.findByText("16")).toHaveClass("rdtActive");
     });
 
     it("should mark date value as active with date and time string", async () => {
@@ -774,17 +767,17 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("06/16/2015 11:13 PM");
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-      const someDay = await findByText("16");
+      const someDay = await screen.findByText("16");
       expect(someDay).toBeVisible();
       expect(someDay).toHaveClass("rdtActive");
     });
@@ -806,17 +799,17 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("06/16/2015 11:13 PM");
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-      const someDay = await findByText("16");
+      const someDay = await screen.findByText("16");
       expect(someDay).toBeVisible();
       expect(someDay).toHaveClass("rdtActive");
     });
@@ -838,17 +831,17 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("06/16/2015 11:13 PM");
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-      const someDay = await findByText("16");
+      const someDay = await screen.findByText("16");
       expect(someDay).toBeVisible();
       expect(someDay).toHaveClass("rdtActive");
     });
@@ -870,17 +863,17 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("06/16/2015 11:13 PM");
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("day-picker")).toBeVisible();
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-      const someDay = await findByText("16");
+      const someDay = await screen.findByText("16");
       expect(someDay).toBeVisible();
       expect(someDay).toHaveClass("rdtActive");
     });
@@ -903,8 +896,8 @@ describe("DateTime", () => {
       );
 
       // Assert
-      expect(await findByTestId("picker-wrapper")).toBeVisible();
-      expect(await findByTestId("month-picker")).toBeVisible();
+      expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+      expect(await screen.findByTestId("month-picker")).toBeVisible();
     });
 
     it("should open month picker when clicking", async () => {
@@ -922,27 +915,19 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.click(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
 
       // Assert
-      const picker = await findByTestId("month-picker");
+      const picker = await screen.findByTestId("month-picker");
       expect(picker).toBeVisible();
 
-      {
-        const row = await findByText(/jan/i);
-        expect(row.parentNode).toHaveTextContent("JanFebMarApr");
-      }
-
-      {
-        const row = await findByText(/may/i);
-        expect(row.parentNode).toHaveTextContent("MayJunJulAug");
-      }
-
-      {
-        const row = await findByText(/sep/i);
-        expect(row.parentNode).toHaveTextContent("SepOctNovDec");
-      }
+      const rows = await screen.findAllByRole("row");
+      const [headerRow, row1, row2, row3] = rows;
+      expect(headerRow).toHaveTextContent("2019");
+      expect(row1).toHaveTextContent("JanFebMarApr");
+      expect(row2).toHaveTextContent("MayJunJulAug");
+      expect(row3).toHaveTextContent("SepOctNovDec");
     });
 
     it("should open month picker on focus", async () => {
@@ -960,27 +945,20 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.focus(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
       // Assert
-      const picker = await findByTestId("month-picker");
+      const picker = await screen.findByTestId("month-picker");
       expect(picker).toBeVisible();
 
-      {
-        const row = await findByText(/jan/i);
-        expect(row.parentNode).toHaveTextContent("JanFebMarApr");
-      }
-
-      {
-        const row = await findByText(/may/i);
-        expect(row.parentNode).toHaveTextContent("MayJunJulAug");
-      }
-
-      {
-        const row = await findByText(/sep/i);
-        expect(row.parentNode).toHaveTextContent("SepOctNovDec");
-      }
+      const rows = await screen.findAllByRole("row");
+      const [headerRow, row1, row2, row3] = rows;
+      expect(headerRow).toHaveTextContent("2019");
+      expect(row1).toHaveTextContent("JanFebMarApr");
+      expect(row2).toHaveTextContent("MayJunJulAug");
+      expect(row3).toHaveTextContent("SepOctNovDec");
     });
 
     it("should choose month from picker", async () => {
@@ -998,16 +976,16 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      const someMonth = await findByText(/jun/i);
-      fireEvent.click(someMonth);
+      const someMonth = await screen.findByText(/jun/i);
+      userEvent.click(someMonth);
 
       expect(element).toHaveValue("06/2019");
     });
@@ -1033,39 +1011,39 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("month-picker")).toBeVisible();
+      expect(await screen.findByTestId("month-picker")).toBeVisible();
 
       // Click a month (disabled)
-      fireEvent.click(await findByText(/jan/i));
+      userEvent.click(await screen.findByText(/jan/i));
       expect(element).toHaveValue("");
       expect(handleChange).toHaveBeenCalledTimes(0);
 
       // Click a month (disabled)
-      fireEvent.click(await findByText(/feb/i));
+      userEvent.click(await screen.findByText(/feb/i));
       expect(element).toHaveValue("");
       expect(handleChange).toHaveBeenCalledTimes(0);
 
       // Click a month (disabled)
-      fireEvent.click(await findByText(/nov/i));
+      userEvent.click(await screen.findByText(/nov/i));
       expect(element).toHaveValue("");
       expect(handleChange).toHaveBeenCalledTimes(0);
 
       // Click a month (disabled)
-      fireEvent.click(await findByText(/feb/i));
+      userEvent.click(await screen.findByText(/feb/i));
       expect(element).toHaveValue("");
       expect(handleChange).toHaveBeenCalledTimes(0);
 
       // Click another date (not disabled)
-      fireEvent.click(await findByText(/mar/i));
+      userEvent.click(await screen.findByText(/mar/i));
 
       expect(element).toHaveValue("03/2019");
       expect(handleChange).toHaveBeenCalledTimes(1);
@@ -1086,21 +1064,21 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Go to previous year (twice)
-      const prevButton = await findByText("‹");
+      const prevButton = await screen.findByText("‹");
       expect(prevButton).toBeVisible();
-      fireEvent.click(prevButton);
-      fireEvent.click(prevButton);
+      userEvent.click(prevButton);
+      userEvent.click(prevButton);
 
-      const someMonth = await findByText(/jun/i);
-      fireEvent.click(someMonth);
+      const someMonth = await screen.findByText(/jun/i);
+      userEvent.click(someMonth);
 
       // Assert
       expect(element).toHaveValue("06/2017");
@@ -1121,21 +1099,21 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Go to previous year (twice)
-      const nextButton = await findByText("›");
+      const nextButton = await screen.findByText("›");
       expect(nextButton).toBeVisible();
-      fireEvent.click(nextButton);
-      fireEvent.click(nextButton);
+      userEvent.click(nextButton);
+      userEvent.click(nextButton);
 
-      const someMonth = await findByText(/jun/i);
-      fireEvent.click(someMonth);
+      const someMonth = await screen.findByText(/jun/i);
+      userEvent.click(someMonth);
 
       // Assert
       expect(element).toHaveValue("06/2021");
@@ -1157,15 +1135,15 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("06/2015");
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      const someMonth = await findByText(/jun/i);
+      const someMonth = await screen.findByText(/jun/i);
       expect(someMonth).toBeVisible();
       expect(someMonth).toHaveClass("rdtActive");
     });
@@ -1186,15 +1164,15 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("06/2015 12:00 AM");
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      const someMonth = await findByText(/jun/i);
+      const someMonth = await screen.findByText(/jun/i);
       expect(someMonth).toBeVisible();
       expect(someMonth).toHaveClass("rdtActive");
     });
@@ -1213,8 +1191,8 @@ describe("DateTime", () => {
       );
 
       // Assert
-      expect(await findByTestId("picker-wrapper")).toBeVisible();
-      expect(await findByTestId("year-picker")).toBeVisible();
+      expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+      expect(await screen.findByTestId("year-picker")).toBeVisible();
     });
 
     it("should open year picker when clicking", async () => {
@@ -1228,31 +1206,23 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      const picker = await findByText(/2010-2019/i);
+      const picker = await screen.findByText(/2010-2019/i);
       expect(picker).toBeVisible();
 
-      {
-        const row = await findByText(/2009/i);
-        expect(row.parentNode).toHaveTextContent("2009201020112012");
-      }
-
-      {
-        const row = await findByText(/2013/i);
-        expect(row.parentNode).toHaveTextContent("2013201420152016");
-      }
-
-      {
-        const row = await findByText(/2017/i);
-        expect(row.parentNode).toHaveTextContent("2017201820192020");
-      }
+      const rows = await screen.findAllByRole("row");
+      const [headerRow, row1, row2, row3] = rows;
+      expect(headerRow).toHaveTextContent("2010-2019");
+      expect(row1).toHaveTextContent("2009201020112012");
+      expect(row2).toHaveTextContent("2013201420152016");
+      expect(row3).toHaveTextContent("2017201820192020");
     });
 
     it("should open year picker on focus", async () => {
@@ -1266,31 +1236,24 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
-      fireEvent.focus(element);
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
       // Assert
-      const picker = await findByText(/2010-2019/i);
+      const picker = await screen.findByText(/2010-2019/i);
       expect(picker).toBeVisible();
 
-      {
-        const row = await findByText(/2009/i);
-        expect(row.parentNode).toHaveTextContent("2009201020112012");
-      }
-
-      {
-        const row = await findByText(/2013/i);
-        expect(row.parentNode).toHaveTextContent("2013201420152016");
-      }
-
-      {
-        const row = await findByText(/2017/i);
-        expect(row.parentNode).toHaveTextContent("2017201820192020");
-      }
+      const rows = await screen.findAllByRole("row");
+      const [headerRow, row1, row2, row3] = rows;
+      expect(headerRow).toHaveTextContent("2010-2019");
+      expect(row1).toHaveTextContent("2009201020112012");
+      expect(row2).toHaveTextContent("2013201420152016");
+      expect(row3).toHaveTextContent("2017201820192020");
     });
 
     it("should choose year from picker", async () => {
@@ -1304,19 +1267,19 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
-      fireEvent.click(element);
+      userEvent.click(element);
 
-      expect(await findByTestId("year-picker")).toBeVisible();
+      expect(await screen.findByTestId("year-picker")).toBeVisible();
 
-      const someYear = await findByText("2015");
+      const someYear = await screen.findByText("2015");
       expect(someYear).toBeVisible();
 
-      fireEvent.click(someYear);
+      userEvent.click(someYear);
 
       // Assert
       expect(element).toHaveValue("2015");
@@ -1343,34 +1306,34 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("year-picker")).toBeVisible();
+      expect(await screen.findByTestId("year-picker")).toBeVisible();
 
       // Click a month (disabled)
-      fireEvent.click(await findByText("2010"));
+      userEvent.click(await screen.findByText("2010"));
       expect(element).toHaveValue("");
       expect(handleChange).toHaveBeenCalledTimes(0);
 
       // Click a month (disabled)
-      fireEvent.click(await findByText("2011"));
+      userEvent.click(await screen.findByText("2011"));
       expect(element).toHaveValue("");
       expect(handleChange).toHaveBeenCalledTimes(0);
 
       // Click a month (disabled)
-      fireEvent.click(await findByText("2014"));
+      userEvent.click(await screen.findByText("2014"));
       expect(element).toHaveValue("");
       expect(handleChange).toHaveBeenCalledTimes(0);
 
       // Click another date (not disabled)
-      fireEvent.click(await findByText("2019"));
+      userEvent.click(await screen.findByText("2019"));
 
       expect(element).toHaveValue("2019");
       expect(handleChange).toHaveBeenCalledTimes(1);
@@ -1387,22 +1350,22 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
-      fireEvent.click(element);
-      expect(await findByTestId("year-picker")).toBeVisible();
+      userEvent.click(element);
+      expect(await screen.findByTestId("year-picker")).toBeVisible();
 
       // Go to previous decade (twice)
-      const prevButton = await findByText("‹");
+      const prevButton = await screen.findByText("‹");
       expect(prevButton).toBeVisible();
-      fireEvent.click(prevButton);
-      fireEvent.click(prevButton);
+      userEvent.click(prevButton);
+      userEvent.click(prevButton);
 
-      const someYear = await findByText("1990");
-      fireEvent.click(someYear);
+      const someYear = await screen.findByText("1990");
+      userEvent.click(someYear);
 
       // Assert
       expect(element).toHaveValue("1990");
@@ -1419,22 +1382,22 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
-      fireEvent.click(element);
-      expect(await findByTestId("year-picker")).toBeVisible();
+      userEvent.click(element);
+      expect(await screen.findByTestId("year-picker")).toBeVisible();
 
       // Go to next decade (twice)
-      const nextButton = await findByText("›");
+      const nextButton = await screen.findByText("›");
       expect(nextButton).toBeVisible();
-      fireEvent.click(nextButton);
-      fireEvent.click(nextButton);
+      userEvent.click(nextButton);
+      userEvent.click(nextButton);
 
-      const someYear = await findByText("2035");
-      fireEvent.click(someYear);
+      const someYear = await screen.findByText("2035");
+      userEvent.click(someYear);
 
       // Assert
       expect(element).toHaveValue("2035");
@@ -1456,15 +1419,15 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("2015");
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      const someYear = await findByText("2015");
+      const someYear = await screen.findByText("2015");
       expect(someYear).toBeVisible();
       expect(someYear).toHaveClass("rdtActive");
     });
@@ -1485,15 +1448,15 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("2015 12:00 AM");
 
       // Act
       // Open picker
-      fireEvent.click(element);
+      userEvent.click(element);
 
       // Assert
-      const someYear = await findByText("2015");
+      const someYear = await screen.findByText("2015");
       expect(someYear).toBeVisible();
       expect(someYear).toHaveClass("rdtActive");
     });
@@ -1517,8 +1480,8 @@ describe("DateTime", () => {
       );
 
       // Assert
-      expect(await findByTestId("picker-wrapper")).toBeVisible();
-      expect(await findByTestId("time-picker")).toBeVisible();
+      expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+      expect(await screen.findByTestId("time-picker")).toBeVisible();
     });
 
     it("should open time picker when clicking", async () => {
@@ -1537,12 +1500,12 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.click(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
 
       // Assert
-      expect(await findByTestId("picker-wrapper")).toBeVisible();
-      expect(await findByTestId("time-picker")).toBeVisible();
+      expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+      expect(await screen.findByTestId("time-picker")).toBeVisible();
     });
 
     it("should open time picker on focus", async () => {
@@ -1561,20 +1524,19 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.focus(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
       // Assert
-      expect(await findByTestId("picker-wrapper")).toBeVisible();
-      expect(await findByTestId("time-picker")).toBeVisible();
+      expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+      expect(await screen.findByTestId("time-picker")).toBeVisible();
 
-      const picker = await findByText(/am/i);
+      const picker = await screen.findByText(/am/i);
       expect(picker).toBeVisible();
 
-      const textContent = picker.parentNode?.parentNode?.textContent?.replace(
-        /\W+/g,
-        ""
-      );
+      const row = await screen.findByRole("row");
+      const textContent = row.textContent?.replace(/\W+/g, "");
       expect(textContent).toMatch(/1200AM/i);
     });
 
@@ -1594,10 +1556,10 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.click(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
 
-      const picker = await findByTestId("time-picker");
+      const picker = await screen.findByTestId("time-picker");
       expect(picker).toBeVisible();
 
       const textContent = picker.textContent?.replace(/\W+/g, "");
@@ -1621,16 +1583,15 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.focus(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
-      const picker = await findByText(/pm/i);
+      const picker = await screen.findByText(/pm/i);
       expect(picker).toBeVisible();
 
-      const textContent = picker.parentNode?.parentNode?.textContent?.replace(
-        /\W+/g,
-        ""
-      );
+      const row = await screen.findByRole("row");
+      const textContent = row.textContent?.replace(/\W+/g, "");
       expect(textContent).toMatch(/213pm/i);
     });
 
@@ -1651,10 +1612,11 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.focus(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
-      const picker = await findByTestId("time-picker");
+      const picker = await screen.findByTestId("time-picker");
       expect(picker).toBeVisible();
 
       const textContent = picker.textContent?.replace(/\W+/g, "");
@@ -1678,16 +1640,15 @@ describe("DateTime", () => {
       );
 
       // Act
-      const element = await findByLabelText("Some Field");
-      fireEvent.focus(element);
+      const element = await screen.findByLabelText("Some Field");
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
-      const picker = await findByText(/pm/i);
+      const picker = await screen.findByText(/pm/i);
       expect(picker).toBeVisible();
 
-      const textContent = picker.parentNode?.parentNode?.textContent?.replace(
-        /\W+/g,
-        ""
-      );
+      const row = await screen.findByRole("row");
+      const textContent = row.textContent?.replace(/\W+/g, "");
       expect(textContent).toMatch(/120112034pm/i);
     });
   });
@@ -1708,21 +1669,22 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
 
       // Act
-      fireEvent.focus(element);
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
-      const dayPicker = await findByTestId("day-picker");
+      const dayPicker = await screen.findByTestId("day-picker");
       expect(dayPicker).toBeVisible();
 
-      const switcher = await findByTestId("day-mode-switcher");
+      const switcher = await screen.findByTestId("day-mode-switcher");
       expect(switcher).toBeVisible();
 
-      fireEvent.click(switcher);
+      userEvent.click(switcher);
 
       // Assert
-      const monthPicker = await findByTestId("month-picker");
+      const monthPicker = await screen.findByTestId("month-picker");
       expect(monthPicker).toBeVisible();
     });
 
@@ -1741,21 +1703,22 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
 
       // Act
-      fireEvent.focus(element);
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
-      const dayPicker = await findByTestId("day-picker");
+      const dayPicker = await screen.findByTestId("day-picker");
       expect(dayPicker).toBeVisible();
 
-      const switcher = await findByTestId("day-to-time-mode-switcher");
+      const switcher = await screen.findByTestId("day-to-time-mode-switcher");
       expect(switcher).toBeVisible();
 
-      fireEvent.click(switcher);
+      userEvent.click(switcher);
 
       // Assert
-      const timePicker = await findByTestId("time-picker");
+      const timePicker = await screen.findByTestId("time-picker");
       expect(timePicker).toBeVisible();
     });
 
@@ -1774,17 +1737,18 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
 
       // Act
-      fireEvent.focus(element);
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
-      const dayPicker = await findByTestId("day-picker");
+      const dayPicker = await screen.findByTestId("day-picker");
       expect(dayPicker).toBeVisible();
 
       // Assert
-      const switcher = queryByTestId("day-to-time-mode-switcher");
-      expect(switcher).toBeNull();
+      const switcher = screen.queryByTestId("day-to-time-mode-switcher");
+      expect(switcher).not.toBeInTheDocument();
     });
 
     it("should stay on year picker when already on year picker", async () => {
@@ -1802,26 +1766,26 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
       expect(element).toHaveValue("");
-      expect(queryByTestId("picker-wrapper")).toBeNull();
+      expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
       // Act
-      fireEvent.click(element);
-      expect(await findByTestId("day-picker")).toBeVisible();
+      userEvent.click(element);
+      expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-      fireEvent.click(await findByTestId("day-mode-switcher"));
+      userEvent.click(await screen.findByTestId("day-mode-switcher"));
 
-      expect(await findByTestId("month-picker")).toBeVisible();
+      expect(await screen.findByTestId("month-picker")).toBeVisible();
 
-      fireEvent.click(await findByTestId("month-mode-switcher"));
+      userEvent.click(await screen.findByTestId("month-mode-switcher"));
 
-      expect(await findByTestId("year-picker")).toBeVisible();
+      expect(await screen.findByTestId("year-picker")).toBeVisible();
 
-      fireEvent.click(await findByTestId("year-mode-switcher"));
+      userEvent.click(await screen.findByTestId("year-mode-switcher"));
 
       // Assert
-      expect(await findByTestId("year-picker")).toBeVisible();
+      expect(await screen.findByTestId("year-picker")).toBeVisible();
     });
   });
 
@@ -1841,61 +1805,64 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
 
       // Act
-      fireEvent.focus(element);
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
       {
-        const picker = await findByTestId("day-picker");
+        const picker = await screen.findByTestId("day-picker");
         expect(picker).toBeVisible();
       }
 
       // day -> month picker
       {
-        const switcher = await findByTestId("day-mode-switcher");
+        const switcher = await screen.findByTestId("day-mode-switcher");
         expect(switcher).toBeVisible();
 
-        fireEvent.click(switcher);
+        userEvent.click(switcher);
 
         // Assert
-        const picker = await findByTestId("month-picker");
+        const picker = await screen.findByTestId("month-picker");
         expect(picker).toBeVisible();
       }
 
       // month -> year picker
       {
-        const switcher = await findByTestId("month-mode-switcher");
+        const switcher = await screen.findByTestId("month-mode-switcher");
         expect(switcher).toBeVisible();
 
-        fireEvent.click(switcher);
+        userEvent.click(switcher);
 
         // Assert
-        const picker = await findByTestId("year-picker");
+        const picker = await screen.findByTestId("year-picker");
         expect(picker).toBeVisible();
       }
 
       {
         // click a year (switch to month picker)
-        fireEvent.click(await findByText("2020"));
+        userEvent.click(await screen.findByText("2020"));
 
-        const picker = await findByTestId("month-picker");
+        const picker = await screen.findByTestId("month-picker");
         expect(picker).toBeVisible();
       }
 
       {
         // click a month (switch to day picker)
-        fireEvent.click(await findByText("Feb"));
+        userEvent.click(await screen.findByText("Feb"));
 
-        const picker = await findByTestId("day-picker");
+        const picker = await screen.findByTestId("day-picker");
         expect(picker).toBeVisible();
       }
 
       // click a day
-      fireEvent.click(await findByText("11"));
+      userEvent.click(await screen.findByText("11"));
 
       // Assert
-      expect(await findByLabelText("Some Field")).toHaveValue("02/11/2020");
+      expect(await screen.findByLabelText("Some Field")).toHaveValue(
+        "02/11/2020"
+      );
     });
 
     it("should switch through to year mode, and pick a specific date/time through various pickers", async () => {
@@ -1913,67 +1880,68 @@ describe("DateTime", () => {
         </>
       );
 
-      const element = await findByLabelText("Some Field");
+      const element = await screen.findByLabelText("Some Field");
 
       // Act
-      fireEvent.focus(element);
+      userEvent.click(element);
+      expect(element).toHaveFocus();
 
       {
-        const picker = await findByTestId("day-picker");
+        const picker = await screen.findByTestId("day-picker");
         expect(picker).toBeVisible();
       }
 
       // day -> month picker
       {
-        const switcher = await findByTestId("day-mode-switcher");
+        const switcher = await screen.findByTestId("day-mode-switcher");
         expect(switcher).toBeVisible();
 
-        fireEvent.click(switcher);
+        userEvent.click(switcher);
 
         // Assert
-        const picker = await findByTestId("month-picker");
+        const picker = await screen.findByTestId("month-picker");
         expect(picker).toBeVisible();
       }
 
       // month -> year picker
       {
-        const switcher = await findByTestId("month-mode-switcher");
+        const switcher = await screen.findByTestId("month-mode-switcher");
         expect(switcher).toBeVisible();
 
-        fireEvent.click(switcher);
+        userEvent.click(switcher);
 
         // Assert
-        const picker = await findByTestId("year-picker");
+        const picker = await screen.findByTestId("year-picker");
         expect(picker).toBeVisible();
       }
 
       {
         // click a year (switch to month picker)
-        fireEvent.click(await findByText("2020"));
+        userEvent.click(await screen.findByText("2020"));
 
-        const picker = await findByTestId("month-picker");
+        const picker = await screen.findByTestId("month-picker");
         expect(picker).toBeVisible();
       }
 
       {
         // click a month (switch to day picker)
-        fireEvent.click(await findByText("Feb"));
+        userEvent.click(await screen.findByText("Feb"));
 
-        const picker = await findByTestId("day-picker");
+        const picker = await screen.findByTestId("day-picker");
         expect(picker).toBeVisible();
       }
 
       // Switch to time mode
       {
-        const switcher = await findByTestId("day-to-time-mode-switcher");
+        const switcher = await screen.findByTestId("day-to-time-mode-switcher");
         expect(switcher).toBeVisible();
 
-        fireEvent.click(switcher);
+        userEvent.click(switcher);
       }
 
       {
         // Assert
-        const picker = await findByTestId("time-picker");
+        const picker = await screen.findByTestId("time-picker");
         expect(picker).toBeVisible();
 
         expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
@@ -1981,60 +1949,46 @@ describe("DateTime", () => {
         );
 
         // Click to change the time
-        const upArrows = await findAllByText("▲");
+        const upArrows = await screen.findAllByText("▲");
         expect(upArrows?.length).toBe(5);
 
-        const downArrows = await findAllByText("▼");
+        const downArrows = await screen.findAllByText("▼");
         expect(downArrows?.length).toBe(5);
 
         // Increase hours from 12 to 1
-        act(() => {
-          userEvent.click(upArrows[0]);
-        });
+        userEvent.click(upArrows[0]);
 
         // Increase minutes from 00 to 05
         for (let i = 0; i < 5; i++) {
-          act(() => {
-            userEvent.click(upArrows[1]);
-          });
+          userEvent.click(upArrows[1]);
         }
 
         // Increase seconds from 00 to 35
         for (let i = 0; i < 35; i++) {
-          act(() => {
-            userEvent.click(upArrows[2]);
-          });
+          userEvent.click(upArrows[2]);
         }
 
         // Increase milliseconds from 000 to 321
         for (let i = 0; i < 321; i++) {
-          act(() => {
-            userEvent.click(upArrows[3]);
-          });
+          userEvent.click(upArrows[3]);
         }
 
         // Change from AM to PM
-        act(() => {
-          userEvent.click(upArrows[4]);
-        });
+        userEvent.click(upArrows[4]);
 
         expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
           /02\/01\/202010535321PM/i
         );
 
         // Change from PM to AM
-        act(() => {
-          userEvent.click(upArrows[4]);
-        });
+        userEvent.click(upArrows[4]);
 
         expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
           /02\/01\/202010535321AM/i
         );
 
         // Change from AM to PM
-        act(() => {
-          userEvent.click(upArrows[4]);
-        });
+        userEvent.click(upArrows[4]);
 
         expect(picker.textContent?.replace(/[^\w/]+/g, "")).toMatch(
           /02\/01\/202010535321PM/i
@@ -2043,17 +1997,17 @@ describe("DateTime", () => {
 
       // Switch back to day mode
       {
-        const switcher = await findByTestId("time-mode-switcher");
+        const switcher = await screen.findByTestId("time-mode-switcher");
         expect(switcher).toBeVisible();
 
-        fireEvent.click(switcher);
+        userEvent.click(switcher);
       }
 
       // click a day
-      fireEvent.click(await findByText("11"));
+      userEvent.click(await screen.findByText("11"));
 
       // Assert
-      expect(await findByLabelText("Some Field")).toHaveValue(
+      expect(await screen.findByLabelText("Some Field")).toHaveValue(
         "02/11/2020 1:05:35.321 PM"
       );
     });
@@ -2079,12 +2033,12 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("01/16/2019");
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           expect(handleChange).toHaveBeenCalledTimes(0);
         });
@@ -2108,21 +2062,21 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("01/16/2019");
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("day-picker")).toBeVisible();
+          expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-          const someDay = await findByText("16");
+          const someDay = await screen.findByText("16");
           expect(someDay).toBeVisible();
 
           // Pick date
-          fireEvent.click(someDay);
+          userEvent.click(someDay);
 
           expect(element).toHaveValue("01/16/2019");
 
@@ -2147,22 +2101,24 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("day-picker")).toBeVisible();
+          expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-          const someDay = await findByText("16");
+          const someDay = await screen.findByText("16");
           expect(someDay).toBeVisible();
 
           // Pick date
-          fireEvent.click(someDay);
+          userEvent.click(someDay);
 
           expect(element).toHaveValue("01/16/2019");
 
@@ -2191,21 +2147,21 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("01/16/2019");
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("day-picker")).toBeVisible();
+          expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-          const someDay = await findByText("17");
+          const someDay = await screen.findByText("17");
           expect(someDay).toBeVisible();
 
           // Pick date
-          fireEvent.click(someDay);
+          userEvent.click(someDay);
 
           expect(element).toHaveValue("01/17/2019");
 
@@ -2234,22 +2190,24 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("day-picker")).toBeVisible();
+          expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-          const someDay = await findByText("16");
+          const someDay = await screen.findByText("16");
           expect(someDay).toBeVisible();
 
           // Pick date
-          fireEvent.click(someDay);
+          userEvent.click(someDay);
 
           expect(element).toHaveValue("01/16/2019");
 
@@ -2276,21 +2234,23 @@ describe("DateTime", () => {
             </>
           );
 
-          expect(await findByLabelText("Some Field")).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(await screen.findByLabelText("Some Field")).toHaveValue("");
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(await findByLabelText("Some Field"));
+          userEvent.click(await screen.findByLabelText("Some Field"));
 
           // Assert
-          expect(await findByTestId("day-picker")).toBeVisible();
-          expect(await findByText("16")).toBeVisible();
+          expect(await screen.findByTestId("day-picker")).toBeVisible();
+          expect(await screen.findByText("16")).toBeVisible();
 
           // Pick date
-          fireEvent.click(await findByText("16"));
+          userEvent.click(await screen.findByText("16"));
 
-          expect(await findByLabelText("Some Field")).toHaveValue(
+          expect(await screen.findByLabelText("Some Field")).toHaveValue(
             "01/16/2019 12:00 AM"
           );
 
@@ -2300,7 +2260,9 @@ describe("DateTime", () => {
 
         it("should trigger onChange input string when increasing time by one step", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
+
           const handleChange = jest.fn();
+
           // Arrange
           render(
             <>
@@ -2315,28 +2277,30 @@ describe("DateTime", () => {
             </>
           );
 
-          expect(await findByLabelText("Some Field")).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(await screen.findByLabelText("Some Field")).toHaveValue("");
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(await findByLabelText("Some Field"));
+          userEvent.click(await screen.findByLabelText("Some Field"));
 
           // Assert
-          expect(await findByTestId("time-picker")).toBeVisible();
+          expect(await screen.findByTestId("time-picker")).toBeVisible();
 
           // Click to change the time
-          const upArrows = await findAllByText("▲");
+          const upArrows = await screen.findAllByText("▲");
           expect(upArrows?.length).toBe(3);
-          const downArrows = await findAllByText("▼");
+          const downArrows = await screen.findAllByText("▼");
           expect(downArrows?.length).toBe(3);
 
           // Increase hours from 12 to 1
-          act(() => {
-            userEvent.click(upArrows[0]);
-          });
+          userEvent.click(upArrows[0]);
 
-          expect(await findByLabelText("Some Field")).toHaveValue("1:00 AM");
+          expect(await screen.findByLabelText("Some Field")).toHaveValue(
+            "1:00 AM"
+          );
           expect(handleChange).toHaveBeenCalledTimes(1);
           expect(handleChange).toHaveBeenCalledWith("1:00 AM");
         });
@@ -2365,28 +2329,28 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("time-picker")).toBeVisible();
+          expect(await screen.findByTestId("time-picker")).toBeVisible();
 
           // Click to change the time
-          const upArrows = await findAllByText("▲");
+          const upArrows = await screen.findAllByText("▲");
           expect(upArrows?.length).toBe(3);
 
-          const downArrows = await findAllByText("▼");
+          const downArrows = await screen.findAllByText("▼");
           expect(downArrows?.length).toBe(3);
 
           // Increase hours from 12 to 3
-          act(() => {
-            userEvent.click(upArrows[0]);
-          });
+          userEvent.click(upArrows[0]);
 
           expect(element).toHaveValue("3:00 AM");
 
@@ -2394,9 +2358,7 @@ describe("DateTime", () => {
           expect(handleChange).toHaveBeenCalledWith("3:00 AM");
 
           // Decrease hours from 3 to 12
-          act(() => {
-            userEvent.click(downArrows[0]);
-          });
+          userEvent.click(downArrows[0]);
 
           expect(element).toHaveValue("12:00 AM");
 
@@ -2428,28 +2390,28 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("time-picker")).toBeVisible();
+          expect(await screen.findByTestId("time-picker")).toBeVisible();
 
           // Click to change the time
-          const upArrows = await findAllByText("▲");
+          const upArrows = await screen.findAllByText("▲");
           expect(upArrows?.length).toBe(3);
 
-          const downArrows = await findAllByText("▼");
+          const downArrows = await screen.findAllByText("▼");
           expect(downArrows?.length).toBe(3);
 
           // Increase minutes from 0 to 15
-          act(() => {
-            userEvent.click(upArrows[1]);
-          });
+          userEvent.click(upArrows[1]);
 
           expect(element).toHaveValue("12:15 AM");
 
@@ -2457,9 +2419,7 @@ describe("DateTime", () => {
           expect(handleChange).toHaveBeenCalledWith("12:15 AM");
 
           // Decrease minutes from 15 to 0
-          act(() => {
-            userEvent.click(downArrows[1]);
-          });
+          userEvent.click(downArrows[1]);
 
           expect(element).toHaveValue("12:00 AM");
 
@@ -2491,28 +2451,28 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("time-picker")).toBeVisible();
+          expect(await screen.findByTestId("time-picker")).toBeVisible();
 
           // Click to change the time
-          const upArrows = await findAllByText("▲");
+          const upArrows = await screen.findAllByText("▲");
           expect(upArrows?.length).toBe(4);
 
-          const downArrows = await findAllByText("▼");
+          const downArrows = await screen.findAllByText("▼");
           expect(downArrows?.length).toBe(4);
 
           // Increase seconds from 0 to 30
-          act(() => {
-            userEvent.click(upArrows[2]);
-          });
+          userEvent.click(upArrows[2]);
 
           expect(element).toHaveValue("12:00:30 AM");
 
@@ -2520,9 +2480,7 @@ describe("DateTime", () => {
           expect(handleChange).toHaveBeenCalledWith("12:00:30 AM");
 
           // Decrease seconds from 30 to 0
-          act(() => {
-            userEvent.click(downArrows[2]);
-          });
+          userEvent.click(downArrows[2]);
 
           expect(element).toHaveValue("12:00:00 AM");
 
@@ -2554,28 +2512,28 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("time-picker")).toBeVisible();
+          expect(await screen.findByTestId("time-picker")).toBeVisible();
 
           // Click to change the time
-          const upArrows = await findAllByText("▲");
+          const upArrows = await screen.findAllByText("▲");
           expect(upArrows?.length).toBe(5);
 
-          const downArrows = await findAllByText("▼");
+          const downArrows = await screen.findAllByText("▼");
           expect(downArrows?.length).toBe(5);
 
           // Increase milliseconds from 0 to 10
-          act(() => {
-            userEvent.click(upArrows[3]);
-          });
+          userEvent.click(upArrows[3]);
 
           expect(element).toHaveValue("12:00:00.010 AM");
 
@@ -2583,9 +2541,7 @@ describe("DateTime", () => {
           expect(handleChange).toHaveBeenCalledWith("12:00:00.010 AM");
 
           // Decrease milliseconds from 10 to 0
-          act(() => {
-            userEvent.click(downArrows[3]);
-          });
+          userEvent.click(downArrows[3]);
 
           expect(element).toHaveValue("12:00:00.000 AM");
 
@@ -2612,30 +2568,33 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("time-picker")).toBeVisible();
+          expect(await screen.findByTestId("time-picker")).toBeVisible();
 
           // Click to change the time
-          const upArrows = await findAllByText("▲");
+          const upArrows = await screen.findAllByText("▲");
           expect(upArrows?.length).toBe(4);
 
-          const downArrows = await findAllByText("▼");
+          const downArrows = await screen.findAllByText("▼");
           expect(downArrows?.length).toBe(4);
+
+          // Use fake timers to run for x seconds
+          jest.useFakeTimers();
+
+          fireEvent.mouseDown(upArrows[2]);
 
           // Increase seconds
           act(() => {
-            jest.useFakeTimers();
-
-            fireEvent.mouseDown(upArrows[2]);
-
             // Fast forward and exhaust only currently pending timers
             // (but not any new timers that get created during that process)
             jest.runOnlyPendingTimers();
@@ -2651,11 +2610,12 @@ describe("DateTime", () => {
             // Fast forward and exhaust only currently pending timers
             // (but not any new timers that get created during that process)
             jest.runOnlyPendingTimers();
-
-            fireEvent.mouseUp(upArrows[2]);
-
-            jest.useRealTimers();
           });
+
+          fireEvent.mouseUp(upArrows[2]);
+
+          // Re-enable real timers
+          jest.useRealTimers();
 
           expect(element).toHaveValue("12:00:04 AM");
 
@@ -2682,22 +2642,24 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("day-picker")).toBeVisible();
+          expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-          const someDay = await findByText("16");
+          const someDay = await screen.findByText("16");
           expect(someDay).toBeVisible();
 
           // Pick date
-          fireEvent.click(someDay);
+          userEvent.click(someDay);
 
           expect(element).toHaveValue("01/16/2019");
 
@@ -2727,16 +2689,17 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           expect(document.body).toHaveFocus();
 
           // Open picker
           userEvent.tab();
-          fireEvent.focus(element);
           expect(element).toHaveFocus();
 
           // Should have triggered "onFocus"
@@ -2761,9 +2724,11 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           userEvent.click(element);
@@ -2794,16 +2759,17 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           expect(document.body).toHaveFocus();
 
           // Tab in
           userEvent.tab();
-          fireEvent.focus(element);
           expect(element).toHaveFocus();
 
           // Tab out
@@ -2836,20 +2802,20 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          const element = await screen.findByLabelText("Some Field");
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           expect(document.body).toHaveFocus();
 
           // Tab in
           userEvent.tab();
-          fireEvent.focus(element);
           expect(element).toHaveFocus();
 
           // Tab out
           userEvent.tab();
-          fireEvent.focusOut(element);
 
           // Should have triggered "onBlur"
           expect(handleBlur).toHaveBeenCalledTimes(1);
@@ -2877,22 +2843,24 @@ describe("DateTime", () => {
             </>
           );
 
-          const element = await findByLabelText("Some Field");
+          const element = await screen.findByLabelText("Some Field");
           expect(element).toHaveValue("");
-          expect(queryByTestId("picker-wrapper")).toBeNull();
+          expect(
+            screen.queryByTestId("picker-wrapper")
+          ).not.toBeInTheDocument();
 
           // Act
           // Open picker
-          fireEvent.click(element);
+          userEvent.click(element);
 
           // Assert
-          expect(await findByTestId("day-picker")).toBeVisible();
+          expect(await screen.findByTestId("day-picker")).toBeVisible();
 
-          const someDay = await findByText("16");
+          const someDay = await screen.findByText("16");
           expect(someDay).toBeVisible();
 
           // Pick date
-          fireEvent.click(someDay);
+          userEvent.click(someDay);
 
           expect(element).toHaveValue("01/16/2019");
 
@@ -2920,25 +2888,26 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Act
         // Open picker
-        fireEvent.focus(element);
+        userEvent.click(element);
+        expect(element).toHaveFocus();
 
         // Should start visible with nothing active
-        expect(await findByTestId("day-picker")).toBeVisible();
-        expect(await findByText("16")).toBeVisible();
-        expect(await findByText("16")).not.toHaveClass("rdtActive");
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByText("16")).toBeVisible();
+        expect(await screen.findByText("16")).not.toHaveClass("rdtActive");
 
         userEvent.type(element, "06/16/2015");
 
         // Assert the typed value is now active
-        expect(await findByTestId("day-picker")).toBeVisible();
-        expect(await findByText("16")).toBeVisible();
-        expect(await findByText("16")).toHaveClass("rdtActive");
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByText("16")).toBeVisible();
+        expect(await screen.findByText("16")).toHaveClass("rdtActive");
       });
 
       it("should let you type to mark a month/year active", async () => {
@@ -2956,25 +2925,26 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Act
         // Open picker
-        fireEvent.focus(element);
+        userEvent.click(element);
+        expect(element).toHaveFocus();
 
         // Should start visible with nothing active
-        expect(await findByTestId("month-picker")).toBeVisible();
-        expect(await findByText(/jun/i)).toBeVisible();
-        expect(await findByText(/jun/i)).not.toHaveClass("rdtActive");
+        expect(await screen.findByTestId("month-picker")).toBeVisible();
+        expect(await screen.findByText(/jun/i)).toBeVisible();
+        expect(await screen.findByText(/jun/i)).not.toHaveClass("rdtActive");
 
         userEvent.type(element, "06/2015");
 
         // Assert the typed value is now active
-        expect(await findByTestId("month-picker")).toBeVisible();
-        expect(await findByText(/jun/i)).toBeVisible();
-        expect(await findByText(/jun/i)).toHaveClass("rdtActive");
+        expect(await screen.findByTestId("month-picker")).toBeVisible();
+        expect(await screen.findByText(/jun/i)).toBeVisible();
+        expect(await screen.findByText(/jun/i)).toHaveClass("rdtActive");
       });
 
       it("should let you type to mark a year active", async () => {
@@ -2992,25 +2962,26 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Act
         // Open picker
-        fireEvent.focus(element);
+        userEvent.click(element);
+        expect(element).toHaveFocus();
 
         // Should start visible with nothing active
-        expect(await findByTestId("year-picker")).toBeVisible();
-        expect(await findByText(/2015/i)).toBeVisible();
-        expect(await findByText(/2015/i)).not.toHaveClass("rdtActive");
+        expect(await screen.findByTestId("year-picker")).toBeVisible();
+        expect(await screen.findByText(/2015/i)).toBeVisible();
+        expect(await screen.findByText(/2015/i)).not.toHaveClass("rdtActive");
 
         userEvent.type(element, "2015");
 
         // Assert the typed value is now active
-        expect(await findByTestId("year-picker")).toBeVisible();
-        expect(await findByText(/2015/i)).toBeVisible();
-        expect(await findByText(/2015/i)).toHaveClass("rdtActive");
+        expect(await screen.findByTestId("year-picker")).toBeVisible();
+        expect(await screen.findByText(/2015/i)).toBeVisible();
+        expect(await screen.findByText(/2015/i)).toHaveClass("rdtActive");
       });
 
       it("should let you type to mark a time active", async () => {
@@ -3028,16 +2999,17 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Act
         // Open picker
-        fireEvent.focus(element);
+        userEvent.click(element);
+        expect(element).toHaveFocus();
 
         // Should start visible with nothing active
-        const picker = await findByTestId("time-picker");
+        const picker = await screen.findByTestId("time-picker");
         expect(picker).toBeVisible();
         {
           const textContent = picker.textContent?.replace(/\W+/g, "");
@@ -3047,7 +3019,7 @@ describe("DateTime", () => {
         userEvent.paste(element, "4:13 PM");
 
         // Assert the typed value is now active
-        expect(await findByTestId("time-picker")).toBeVisible();
+        expect(await screen.findByTestId("time-picker")).toBeVisible();
         {
           const textContent = picker.textContent?.replace(/\W+/g, "");
           expect(textContent).toMatch(/413PM/i);
@@ -3069,25 +3041,26 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Act
         // Open picker
-        fireEvent.focus(element);
+        userEvent.click(element);
+        expect(element).toHaveFocus();
 
         // Should start visible with nothing active
-        expect(await findByTestId("day-picker")).toBeVisible();
-        expect(await findByText("16")).toBeVisible();
-        expect(await findByText("16")).not.toHaveClass("rdtActive");
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByText("16")).toBeVisible();
+        expect(await screen.findByText("16")).not.toHaveClass("rdtActive");
 
         userEvent.type(element, "06/16/2015 12:00 AM");
 
         // Assert the typed value is now active
-        expect(await findByTestId("day-picker")).toBeVisible();
-        expect(await findByText("16")).toBeVisible();
-        expect(await findByText("16")).toHaveClass("rdtActive");
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByText("16")).toBeVisible();
+        expect(await screen.findByText("16")).toHaveClass("rdtActive");
       });
 
       it("should show when tabbed in", async () => {
@@ -3105,21 +3078,22 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Act
         expect(document.body).toHaveFocus();
 
         // Open picker
         userEvent.tab();
-        fireEvent.focus(element);
+        userEvent.click(element);
+        expect(element).toHaveFocus();
         expect(element).toHaveFocus();
 
         // Should become visible
-        expect(await findByTestId("picker-wrapper")).toBeVisible();
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
       });
 
       it("should hide when open and hitting enter", async () => {
@@ -3137,35 +3111,25 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Act
         // Open picker
-        fireEvent.focus(element);
+        userEvent.click(element);
+        expect(element).toHaveFocus();
 
         // Should become visible
-        expect(await findByTestId("picker-wrapper")).toBeVisible();
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
         // Hit enter
-        fireEvent.keyDown(element, {
-          key: "Enter",
-          code: 13,
-          keyCode: 13,
-          charCode: 13,
-        });
-        fireEvent.keyUp(element, {
-          key: "Enter",
-          code: 13,
-          keyCode: 13,
-          charCode: 13,
-        });
+        userEvent.type(element, "{enter}");
 
         // Assert the picker is closed
-        expect(queryByTestId("picker-wrapper")).toBeNull();
-        expect(queryByTestId("day-picker")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("day-picker")).not.toBeInTheDocument();
       });
 
       it("should open when closed and hitting down arrow", async () => {
@@ -3183,27 +3147,16 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Hit down arrow
-        fireEvent.keyDown(element, {
-          key: "ArrowDown",
-          code: 40,
-          keyCode: 40,
-          charCode: 40,
-        });
-        fireEvent.keyUp(element, {
-          key: "ArrowDown",
-          code: 40,
-          keyCode: 40,
-          charCode: 40,
-        });
+        userEvent.type(element, "{arrowdown}");
 
         // Assert the picker is open
-        expect(await findByTestId("picker-wrapper")).toBeVisible();
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
       });
 
       it("should hide when open and hitting escape", async () => {
@@ -3221,35 +3174,25 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Act
         // Open picker
-        fireEvent.focus(element);
+        userEvent.click(element);
+        expect(element).toHaveFocus();
 
         // Should become visible
-        expect(await findByTestId("picker-wrapper")).toBeVisible();
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
         // Hit escape
-        fireEvent.keyDown(element, {
-          key: "Escape",
-          code: 27,
-          keyCode: 27,
-          charCode: 27,
-        });
-        fireEvent.keyUp(element, {
-          key: "Escape",
-          code: 27,
-          keyCode: 27,
-          charCode: 27,
-        });
+        userEvent.type(element, "{esc}");
 
         // Assert the picker is closed
-        expect(queryByTestId("picker-wrapper")).toBeNull();
-        expect(queryByTestId("day-picker")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("day-picker")).not.toBeInTheDocument();
       });
 
       it("should hide when open and hitting tab", async () => {
@@ -3267,17 +3210,18 @@ describe("DateTime", () => {
           </>
         );
 
-        const element = await findByLabelText("Some Field");
+        const element = await screen.findByLabelText("Some Field");
         expect(element).toHaveValue("");
-        expect(queryByTestId("picker-wrapper")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
 
         // Act
         // Open picker
-        fireEvent.focus(element);
+        userEvent.click(element);
+        expect(element).toHaveFocus();
 
         // Should become visible
-        expect(await findByTestId("picker-wrapper")).toBeVisible();
-        expect(await findByTestId("day-picker")).toBeVisible();
+        expect(await screen.findByTestId("picker-wrapper")).toBeVisible();
+        expect(await screen.findByTestId("day-picker")).toBeVisible();
 
         // Hit tab
         fireEvent.keyDown(element, {
@@ -3294,8 +3238,8 @@ describe("DateTime", () => {
         });
 
         // Assert the picker is closed
-        expect(queryByTestId("picker-wrapper")).toBeNull();
-        expect(queryByTestId("day-picker")).toBeNull();
+        expect(screen.queryByTestId("picker-wrapper")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("day-picker")).not.toBeInTheDocument();
       });
     });
   });
