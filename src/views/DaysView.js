@@ -102,7 +102,7 @@ export default class DaysView extends React.Component {
 			className += ' rdtToday';
 		}
 
-		if ( this.props.isValidDate(date) ) {
+		if ( this.props.isValidDate(date) || this.props.isValidDate(date.clone().endOf('day')) ) {
 			dayProps.onClick = this._setDate;
 		}
 		else {
