@@ -1,4 +1,5 @@
 import * as React from "react";
+import { vi } from "vitest";
 import { render, act, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
@@ -597,7 +598,7 @@ describe("DateTime", () => {
     it("should block/unblock day picking based on isValidDate", async () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-      const handleChange = jest.fn();
+      const handleChange = vi.fn();
       function isValidDate(date: Date) {
         if (isSameDay(date, new Date(2019, 0, 16))) {
           return false;
@@ -993,7 +994,7 @@ describe("DateTime", () => {
     it("should block/unblock month picking based on isValidDate", async () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-      const handleChange = jest.fn();
+      const handleChange = vi.fn();
 
       // Arrange
       render(
@@ -1288,7 +1289,7 @@ describe("DateTime", () => {
     it("should block/unblock year picking based on isValidDate", async () => {
       mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-      const handleChange = jest.fn();
+      const handleChange = vi.fn();
 
       // Arrange
       render(
@@ -2017,7 +2018,7 @@ describe("DateTime", () => {
         it("should not trigger onChange Date when opening w/ Date", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2046,7 +2047,7 @@ describe("DateTime", () => {
         it("should not trigger onChange Date when clicking same date", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2086,7 +2087,7 @@ describe("DateTime", () => {
         it("should trigger onChange Date when picking a first date", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2131,7 +2132,7 @@ describe("DateTime", () => {
         it("should trigger onChange Date when picking a new date", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2174,7 +2175,7 @@ describe("DateTime", () => {
         it("should trigger onChange input string when picking a date", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2218,7 +2219,7 @@ describe("DateTime", () => {
         it("should trigger onChange input string when picking a date/time", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2261,7 +2262,7 @@ describe("DateTime", () => {
         it("should trigger onChange input string when increasing time by one step", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2308,7 +2309,7 @@ describe("DateTime", () => {
         it("should trigger onChange input string when increasing time by 3 hour increment", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2369,7 +2370,7 @@ describe("DateTime", () => {
         it("should trigger onChange input string when increasing time by 15 min increment", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2430,7 +2431,7 @@ describe("DateTime", () => {
         it("should trigger onChange input string when increasing time by 30 second increment", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2491,7 +2492,7 @@ describe("DateTime", () => {
         it("should trigger onChange input string when increasing time by 10 milliseconds increment", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2552,7 +2553,7 @@ describe("DateTime", () => {
         it('should trigger onChange input string once holding down the "up" seconds for a bit of time', async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2589,7 +2590,7 @@ describe("DateTime", () => {
           expect(downArrows?.length).toBe(4);
 
           // Use fake timers to run for x seconds
-          jest.useFakeTimers();
+          vi.useFakeTimers();
 
           fireEvent.mouseDown(upArrows[2]);
 
@@ -2597,25 +2598,25 @@ describe("DateTime", () => {
           act(() => {
             // Fast forward and exhaust only currently pending timers
             // (but not any new timers that get created during that process)
-            jest.runOnlyPendingTimers();
+            vi.runOnlyPendingTimers();
 
             // Fast forward and exhaust only currently pending timers
             // (but not any new timers that get created during that process)
-            jest.runOnlyPendingTimers();
+            vi.runOnlyPendingTimers();
 
             // Fast forward and exhaust only currently pending timers
             // (but not any new timers that get created during that process)
-            jest.runOnlyPendingTimers();
+            vi.runOnlyPendingTimers();
 
             // Fast forward and exhaust only currently pending timers
             // (but not any new timers that get created during that process)
-            jest.runOnlyPendingTimers();
+            vi.runOnlyPendingTimers();
           });
 
           fireEvent.mouseUp(upArrows[2]);
 
           // Re-enable real timers
-          jest.useRealTimers();
+          vi.useRealTimers();
 
           expect(element).toHaveValue("12:00:04 AM");
 
@@ -2626,7 +2627,7 @@ describe("DateTime", () => {
         it("should trigger onChange utc-ms-timestamp when picking a date", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleChange = jest.fn();
+          const handleChange = vi.fn();
 
           // Arrange
           render(
@@ -2674,7 +2675,7 @@ describe("DateTime", () => {
         it("should trigger onFocus when tabbed in", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleFocus = jest.fn();
+          const handleFocus = vi.fn();
 
           // Arrange
           render(
@@ -2709,7 +2710,7 @@ describe("DateTime", () => {
         it("should trigger onFocus when clicked in", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleFocus = jest.fn();
+          const handleFocus = vi.fn();
 
           // Arrange
           render(
@@ -2742,7 +2743,7 @@ describe("DateTime", () => {
         it("should trigger onBlur with no value when tabbed out with no value", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleBlur = jest.fn();
+          const handleBlur = vi.fn();
 
           // Arrange
           render(
@@ -2784,7 +2785,7 @@ describe("DateTime", () => {
         it("should trigger onBlur with value when tabbed out with value", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleBlur = jest.fn();
+          const handleBlur = vi.fn();
 
           // Arrange
           render(
@@ -2828,7 +2829,7 @@ describe("DateTime", () => {
         it("should trigger onBlur when picking a first date", async () => {
           mockDate(new Date(2019, 0, 1, 12, 1, 12, 34));
 
-          const handleBlur = jest.fn();
+          const handleBlur = vi.fn();
 
           // Arrange
           render(
