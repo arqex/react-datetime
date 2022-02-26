@@ -87,15 +87,6 @@
       "bundlesize"
     ]
   },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "coveragePathIgnorePatterns": [
-      ".stories.tsx"
-    ],
-    "moduleNameMapper": {
-      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-    }
-  },
   "peerDependencies": {
     "react": ">=16.8",
     "react-dom": "^16.8.0"
@@ -135,9 +126,6 @@
     "eslint-plugin-storybook": "^0.5.7",
     "eslint-plugin-testing-library": "^5.0.5",
     "husky": "^7.0.0",
-    "identity-obj-proxy": "^3.0.0",
-    "jest": "^27.5.1",
-    "jest-junit": "^13.0.0",
     "lint-staged": "^12.3.4",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
