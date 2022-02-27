@@ -66,7 +66,7 @@
     "test:all": "echo 'Running tests...' && npm run bundlesize && npm run test:coverage && echo 'All tests passed! 🤘'",
     "test:watch": "cross-env TZ=Europe/Stockholm vitest --watch",
     "deduplicate": "npx npm run-deduplicate -s fewer npm run.lock",
-    "lint": "npm run eslint src --ext .js,.ts,.jsx,.tsx",
+    "lint": "eslint src --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "npm run lint --fix",
     "prettier": "prettier --write .",
     "storybook": "start-storybook -p 6006",
