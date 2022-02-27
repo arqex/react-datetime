@@ -43,14 +43,7 @@ function mockDate(isoDate: Date) {
 }
 
 function type(element: Element, value: string) {
-  // There's a strange bug w/ jsdom/vite/testing-library
-  // where typing is coming in backwards so reverse it for now
-  if (value[0] !== "{") {
-    const backwards = value.split("").reverse().join("");
-    userEvent.type(element, backwards);
-  } else {
-    userEvent.type(element, value);
-  }
+  userEvent.type(element, value);
 }
 
 afterEach(async () => {

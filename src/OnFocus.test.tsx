@@ -76,9 +76,7 @@ it("should trigger onFocus when tabbed in", async () => {
   expect(element).toHaveFocus();
 
   // Should have triggered "onFocus"
-  //TODO: jsdom isn't triggering the "onFocus" event for some reason
-  // so comment out for now
-  //expect(handleFocus).toHaveBeenCalledTimes(1);
+  expect(handleFocus).toHaveBeenCalledTimes(1);
 });
 
 it("should trigger onFocus when clicked in", async () => {

@@ -97,6 +97,8 @@
     "@storybook/addon-essentials": "^6.4.19",
     "@storybook/addon-knobs": "^6.4.0",
     "@storybook/addons": "6.4.19",
+    "@storybook/builder-webpack5": "^6.4.19",
+    "@storybook/manager-webpack5": "^6.4.19",
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "6.4.19",
     "@testing-library/jest-dom": "^5.16.2",
@@ -120,6 +122,7 @@
     "eslint-plugin-storybook": "^0.5.7",
     "eslint-plugin-testing-library": "^5.0.5",
     "husky": "^7.0.0",
+    "jsdom": "^19.0.0",
     "lint-staged": "^12.3.4",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
@@ -135,8 +138,6 @@
   },
   "dependencies": {
     "@reach/popover": "0.16.2",
-    "@storybook/builder-webpack5": "^6.4.19",
-    "@storybook/manager-webpack5": "^6.4.19",
     "classcat": "^5.0.1",
     "date-fns": "^2.28.0",
     "use-onclickoutside": "^0.4.0"

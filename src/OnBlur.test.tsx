@@ -81,10 +81,9 @@ it("should trigger onBlur with no value when tabbed out with no value", async ()
   userEvent.tab();
 
   // Should have triggered "onBlur"
-  //TODO: jsdom isn't triggering the "onBlur" event for some reason
-  //expect(handleBlur).toHaveBeenCalledTimes(1);
+  expect(handleBlur).toHaveBeenCalledTimes(1);
   expect(element).not.toHaveFocus();
-  //expect(handleBlur).toHaveBeenCalledWith(undefined);
+  expect(handleBlur).toHaveBeenCalledWith(undefined);
 });
 
 it("should trigger onBlur with value when tabbed out with value", async () => {
@@ -123,12 +122,9 @@ it("should trigger onBlur with value when tabbed out with value", async () => {
   userEvent.tab();
 
   // Should have triggered "onBlur"
-  //TODO: jsdom isn't triggering the "onBlur" event for some reason
-  //expect(handleBlur).toHaveBeenCalledTimes(1);
+  expect(handleBlur).toHaveBeenCalledTimes(1);
   expect(element).not.toHaveFocus();
-  // expect(handleBlur).toHaveBeenCalledWith(
-  //   testValue
-  // );
+  expect(handleBlur).toHaveBeenCalledWith(testValue);
 });
 
 it("should trigger onBlur when picking a first date", async () => {
