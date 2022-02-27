@@ -21,6 +21,5 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - run: npm i -g yarn
-      - run: yarn --frozen-lockfile
-      - run: yarn lint
+      - run: npm ci
+      - run: npm run lint
