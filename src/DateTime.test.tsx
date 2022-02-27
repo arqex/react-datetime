@@ -1,6 +1,6 @@
 import * as React from "react";
 import { vi } from "vitest";
-import { render, act, fireEvent, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import isSameDay from "date-fns/isSameDay";
