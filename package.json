@@ -90,7 +90,7 @@
   },
   "peerDependencies": {
     "react": ">=16.8",
-    "react-dom": "^16.8.0"
+    "react-dom": ">=16.8"
   },
   "devDependencies": {
     "@sheerun/mutationobserver-shim": "^0.3.3",
