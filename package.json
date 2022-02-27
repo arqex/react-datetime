@@ -56,7 +56,8 @@
   ],
   "scripts": {
     "now-build": "build-storybook -c .storybook -o public",
-    "build": "tsdx build --format=umd,esm,cjs&&npm run sass scss/styles.scss dist/css/styles.css",
+    "build": "tsdx build --format=umd,esm,cjs&&npm run sass",
+    "sass": "sass scss/styles.scss dist/css/styles.css",
     "dev": "tsdx watch --format=esm",
     "start": "npm run dev",
     "test": "cross-env CI=1 TZ=Europe/Stockholm vitest",
