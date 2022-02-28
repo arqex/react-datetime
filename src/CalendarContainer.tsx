@@ -8,12 +8,19 @@ import YearsView, { YearsViewProps } from "./YearsView";
 import { ViewMode } from "./.";
 import { ForwardedRef } from "react";
 
+const viewLookup = {
+  time: TimeView,
+  months: MonthsView,
+  years: YearsView,
+  days: DaysView,
+};
+
 interface CalendarContainerProps {
   viewMode: ViewMode | undefined;
   isStatic: boolean;
   id?: string;
   className?: string;
-  style?: { [x: string]: any };
+  style?: React.CSSProperties;
 }
 
 const CalendarContainer = React.forwardRef(function CalendarContainer(
@@ -22,31 +29,14 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
     DaysViewProps &
     MonthsViewProps &
     YearsViewProps,
-  ref: ForwardedRef<any>
+  ref: ForwardedRef<HTMLDivElement>
 ) {
   const { viewMode, isStatic, id, className, style, ...rest } = props;
-
-  let el: JSX.Element | undefined;
-  switch (viewMode) {
-    case "time":
-      el = <TimeView {...rest} />;
-      break;
-
-    case "months":
-      el = <MonthsView {...rest} />;
-      break;
-
-    case "years":
-      el = <YearsView {...rest} />;
-      break;
-
-    case "days":
-      el = <DaysView {...rest} />;
-      break;
-
-    default:
-      return null;
+  if (!viewMode) {
+    return null;
   }
+
+  const CalendarElement = viewLookup[viewMode];
 
   return (
     <div
@@ -56,7 +46,7 @@ const CalendarContainer = React.forwardRef(function CalendarContainer(
       className={cc(["rdtPicker", className, { rdtStatic: isStatic }])}
       style={style}
     >
-      {el}
+      {CalendarElement && <CalendarElement {...rest} />}
     </div>
   );
 });

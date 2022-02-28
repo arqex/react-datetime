@@ -43,7 +43,7 @@ const TimePart = (props: TimePartInterface) => {
   const { showPrefix, onUp, onDown, value } = props;
 
   return value !== null && value !== undefined ? (
-    <React.Fragment>
+    <>
       {showPrefix && <div className="rdtCounterSeparator">:</div>}
       <div className="rdtCounter">
         <span className="rdtBtn" onMouseDown={onUp}>
@@ -54,7 +54,7 @@ const TimePart = (props: TimePartInterface) => {
           ▼
         </span>
       </div>
-    </React.Fragment>
+    </>
   ) : null;
 };
 
@@ -71,6 +71,13 @@ function getStepSize(
   return step;
 }
 
+const changeLookup = {
+  hours: addHours,
+  minutes: addMinutes,
+  seconds: addSeconds,
+  milliseconds: addMilliseconds,
+};
+
 function change(
   op: "add" | "sub",
   type: "hours" | "minutes" | "seconds" | "milliseconds",
@@ -78,17 +85,8 @@ function change(
   timeConstraints: TimeConstraints | undefined
 ) {
   const mult = op === "sub" ? -1 : 1;
-
   const step = getStepSize(type, timeConstraints) * mult;
-  if (type === "hours") {
-    return addHours(timestamp, step);
-  } else if (type === "minutes") {
-    return addMinutes(timestamp, step);
-  } else if (type === "seconds") {
-    return addSeconds(timestamp, step);
-  } else {
-    return addMilliseconds(timestamp, step);
-  }
+  return changeLookup[type](timestamp, step);
 }
 
 function getFormatted(
@@ -144,8 +142,8 @@ function toggleDayPart(
   };
 }
 
-let timer: any;
-let increaseTimer: any;
+let timer: NodeJS.Timer;
+let increaseTimer: NodeJS.Timer;
 let mouseUpListener: () => void;
 
 function onStartClicking(

@@ -89,7 +89,7 @@ function parse(
 }
 
 export interface FormatOptions {
-  locale: Locale;
+  locale: Locale | undefined;
 }
 
 export interface TimeConstraint {

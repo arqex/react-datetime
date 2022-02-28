@@ -4,7 +4,7 @@ import {
   optionsKnob as options,
   boolean,
 } from "@storybook/addon-knobs";
-import { DateTime, FORMATS } from "./.";
+import { DateTime, DateTypeMode, FORMATS } from "./.";
 import "../scss/styles.scss";
 
 import isBefore from "date-fns/isBefore";
@@ -26,7 +26,7 @@ export default {
   decorators: [withKnobs],
 };
 
-function parseString(value) {
+function parseString(value: string) {
   if (value === "undefined") {
     return undefined;
   }
@@ -43,8 +43,14 @@ function parseString(value) {
 }
 
 export const SimpleExamples: () => JSX.Element = () => {
-  function UncontrolledDateTime(props) {
-    const [value, setValue] = useState<any>(props.value);
+  function UncontrolledDateTime(props: {
+    value?: string | number | Date | undefined;
+    dateFormat?: string | boolean;
+    timeFormat?: string | boolean;
+  }) {
+    const [value, setValue] = useState<string | number | Date | undefined>(
+      props.value
+    );
 
     return (
       <div>
@@ -101,8 +107,19 @@ export const SimpleExamples: () => JSX.Element = () => {
 };
 
 export function InlineExamples(): JSX.Element {
-  function UncontrolledDateTime({ label, ...props }) {
-    const [value, setValue] = useState<any>(props.value);
+  function UncontrolledDateTime({
+    label,
+    ...props
+  }: {
+    label: string;
+    value: string | number | Date | undefined;
+    dateFormat?: string | boolean;
+    timeFormat?: string | boolean;
+    shouldHideInput?: boolean;
+  }) {
+    const [value, setValue] = useState<string | number | Date | undefined>(
+      props.value
+    );
 
     return (
       <div className="col-sm-auto mb-3">
@@ -181,7 +198,9 @@ export function InlineExamples(): JSX.Element {
 }
 
 export function CustomizableExample(): JSX.Element {
-  const [value, setValue] = useState<any>(new Date(2019, 7, 2, 11, 25));
+  const [value, setValue] = useState<string | number | Date | undefined>(
+    new Date(2019, 7, 2, 11, 25)
+  );
 
   //
   // shouldHideInput
@@ -277,7 +296,7 @@ export function CustomizableExample(): JSX.Element {
         display: "inline-radio",
       }
     )
-  );
+  ) as unknown as DateTypeMode | undefined;
 
   //
   // isValidDate

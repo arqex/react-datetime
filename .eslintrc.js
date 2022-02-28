@@ -76,18 +76,18 @@ module.exports = {
     "no-fallthrough": "off",
 
     // Simplify Typescript
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-empty-function": "off",
 
     // Disable new testing-library rules,
-    "jest-dom/prefer-in-document": "warn",
-    "testing-library/no-wait-for-empty-callback": "warn",
-    "testing-library/no-unnecessary-act": "warn",
-    "testing-library/no-container": "warn",
-    "testing-library/prefer-screen-queries": "warn",
-    "testing-library/no-node-access": "warn",
+    "jest-dom/prefer-in-document": "error",
+    "testing-library/no-wait-for-empty-callback": "error",
+    "testing-library/no-unnecessary-act": "error",
+    "testing-library/no-container": "error",
+    "testing-library/prefer-screen-queries": "error",
+    "testing-library/no-node-access": "error",
   },
 };
