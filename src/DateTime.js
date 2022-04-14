@@ -465,7 +465,11 @@ export default class Datetime extends React.Component {
 		}
 
 		if ( (thisProps.value || thisProps.value === '') && thisProps.value !== prevProps.value ) {
-			this.setViewDate( thisProps.value );
+			if (thisProps.value) {
+				this.setViewDate( thisProps.value );
+			} else {
+				this.setViewDate( new Date());
+			}
 			// edit internal value in state when value prop changes.
 			this.setState({
 				inputValue: thisProps.value,
