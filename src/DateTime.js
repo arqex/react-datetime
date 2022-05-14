@@ -577,9 +577,8 @@ export default class Datetime extends React.Component {
 			update.selectedDate = null;
 		}
 
-		this.setState( update, () => {
-			this.props.onChange( localMoment.isValid() ? localMoment : this.state.inputValue );
-		});
+		this.setState( update );
+		this.props.onChange(localMoment.isValid() ? localMoment : value);
 	}
 
 	_onInputKeyDown = e => {
