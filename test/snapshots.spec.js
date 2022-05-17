@@ -177,7 +177,7 @@ describe('inputProps', () => {
 });
 
 it('isValidDate: only valid if after yesterday', () => {
-	const yesterday = Datetime.moment().subtract(1, 'day');
+	const yesterday = Datetime.moment(Date.now()).subtract(1, 'day');
 	const valid = (current) => current.isAfter(yesterday);
 	const tree = renderer.create(
 		<Datetime isValidDate={ valid } />

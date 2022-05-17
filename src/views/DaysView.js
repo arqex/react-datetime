@@ -62,7 +62,7 @@ export default class DaysView extends React.Component {
 		let rows = [[], [], [], [], [], []];
 
 		let startDate = date.clone().subtract( 1, 'months');
-		startDate.date( startDate.daysInMonth() ).startOf('week');
+		startDate = startDate.date( startDate.daysInMonth() ).startOf('week');
 
 		let endDate = startDate.clone().add( 42, 'd' );
 		let i = 0;
@@ -70,7 +70,7 @@ export default class DaysView extends React.Component {
 		while ( startDate.isBefore( endDate ) ) {
 			let row = getRow( rows, i++ );
 			row.push( this.renderDay( startDate, startOfMonth, endOfMonth ) );
-			startDate.add( 1, 'd' );
+			startDate = startDate.add( 1, 'd' );
 		}
 
 		return rows.map( (r, i) => (
@@ -98,7 +98,7 @@ export default class DaysView extends React.Component {
 		if ( selectedDate && date.isSame( selectedDate, 'day' ) ) {
 			className += ' rdtActive';
 		}
-		if ( date.isSame( this.props.moment(), 'day' ) ) {
+		if ( date.isSame( this.props.moment(Date.now()), 'day' ) ) {
 			className += ' rdtToday';
 		}
 
@@ -152,7 +152,7 @@ function getDaysOfWeek( locale ) {
 	let dow = [];
 	let i = 0;
 
-	locale._weekdaysMin.forEach(function (day) {
+	locale.weekdaysMin().forEach(function (day) {
 		dow[(7 + (i++) - first) % 7] = day;
 	});
 

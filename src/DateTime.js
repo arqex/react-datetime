@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import moment from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 import React from 'react';
 import DaysView from './views/DaysView';
 import MonthsView from './views/MonthsView';
 import YearsView from './views/YearsView';
 import TimeView from './views/TimeView';
 import onClickOutside from 'react-onclickoutside';
+
+moment.extend(localeData);
+moment.extend(localizedFormat);
 
 const viewModes = {
 	YEARS: 'years',
@@ -206,8 +211,8 @@ export default class Datetime extends React.Component {
 	}
 
 	getInitialDate() {
-		let m = this.localMoment();
-		m.hour(0).minute(0).second(0).millisecond(0);
+		let m = this.localMoment(Date.now());
+		m = m.hour(0).minute(0).second(0).millisecond(0);
 		return m;
 	}
 
@@ -371,7 +376,7 @@ export default class Datetime extends React.Component {
 		let viewDate = this.state.viewDate.clone();
 		
 		// Subtracting is just adding negative time
-		viewDate.add( modifier, unit );
+		viewDate = viewDate.add( modifier, unit );
 
 		if ( modifier > 0 ) {
 			this.props.onNavigateForward( modifier, unit );

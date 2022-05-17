@@ -37,7 +37,7 @@
   "author": "Javier Marquez",
   "license": "MIT",
   "peerDependencies": {
-    "moment": "^2.16.0",
+    "dayjs": "^1.11.2",
     "react": "^16.5.0 || ^17.0.0"
   },
   "devDependencies": {
@@ -59,6 +59,7 @@
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "css-loader": "3.2.0",
+    "dayjs": "^1.11.2",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "enzyme": "^3.0.0",
@@ -81,7 +82,6 @@
     "jest-watch-typeahead": "0.4.2",
     "jsdom": "^7.0.2",
     "mini-css-extract-plugin": "0.8.0",
-    "moment": "^2.16.0",
     "moment-timezone": "^0.5.13",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "pnp-webpack-plugin": "1.5.0",

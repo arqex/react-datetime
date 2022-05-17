@@ -210,13 +210,13 @@ export default class TimeView extends React.Component {
 	}
 
 	getTimeParts( date ) {
-		const hours = date.hours();
+		const hours = date.hour();
 
 		return {
 			hours: pad( 'hours', hours ),
-			minutes: pad( 'minutes', date.minutes() ),
-			seconds: pad( 'seconds', date.seconds() ),
-			milliseconds: pad('milliseconds', date.milliseconds() ),
+			minutes: pad( 'minutes', date.minute() ),
+			seconds: pad( 'seconds', date.second() ),
+			milliseconds: pad('milliseconds', date.millisecond() ),
 			ampm: hours < 12 ? 'am' : 'pm'
 		};
 	}
