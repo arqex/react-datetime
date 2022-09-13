@@ -180,6 +180,17 @@ td.rdtYear:hover {
   line-height: 100px;
 }
 
+.rdtCounter .rdtInput {
+  width: 30px;
+  font-size: 18px;
+  position: relative;
+  top: -4px;
+}
+
+.rdtCounter .rdtInput.invalid {
+  background: #ffdf62;
+}
+
 .rdtCounter .rdtBtn {
   height: 40%;
   line-height: 40px;
