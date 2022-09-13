@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 const timeConstraints = {
 	hours: {
@@ -32,6 +32,34 @@ function createConstraints( overrideTimeConstraints ) {
 
 	return constraints;
 }
+
+export const IntegerInput = ({value, onChange, min, max}) => {
+	const [stateValue, setStateValue] = useState(value);
+	const invalid = parseInt(stateValue, 10) !== parseInt(value, 10);
+
+	const parsedValue = parseInt(value, 10);
+	useEffect(() => {
+		setStateValue(`${parsedValue}`);
+	}, [parsedValue]);
+
+	const onChangeCallback = useCallback((e) => {
+		setStateValue(e.target.value);
+		const parsedValue = parseInt(e.target.value, 10);
+		if (parsedValue || parsedValue === 0) {
+			if (parsedValue >= min && parsedValue <= max) {
+				onChange(parsedValue);
+			}
+		}
+	}, [onChange, max, min, setStateValue]);
+
+	return (
+		<input
+			value={stateValue}
+			onChange={onChangeCallback}
+			className={`rdtInput ${invalid && 'invalid'}`}
+		/>
+	);
+};
 
 export default class TimeView extends React.Component {
 	constructor( props ) {
@@ -77,6 +105,10 @@ export default class TimeView extends React.Component {
 		);
 	}
 
+	setNumber(value, type) {
+		this.props.setTime( type, parseInt( value, 10 ) );
+	}
+
 	renderCounter( type, value ) {
 		if ( type === 'hours' && this.isAMPM() ) {
 			value = ( value - 1 ) % 12 + 1;
@@ -98,7 +130,16 @@ export default class TimeView extends React.Component {
 		return (
 			<div key={ type } className="rdtCounter">
 				<span className="rdtBtn" onMouseDown={ e => this.onStartClicking( e, 'increase', type)}>▲</span>
-				<div className="rdtCount">{ value }</div>
+				<div className="rdtCount">
+					{ (type !== 'ampm') ? (
+						<IntegerInput
+							value={value}
+							onChange={value => this.setNumber(value, type)}
+							min={timeConstraints[type].min}
+							max={timeConstraints[type].max}
+						/>
+					) : value }
+				</div>
 				<span className="rdtBtn" onMouseDown={ e => this.onStartClicking( e, 'decrease', type)}>▼</span>
 			</div>
 		);
