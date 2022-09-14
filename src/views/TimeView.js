@@ -56,7 +56,7 @@ export const IntegerInput = ({value, onChange, min, max}) => {
 		<input
 			value={stateValue}
 			onChange={onChangeCallback}
-			className={`rdtInput ${invalid && 'invalid'}`}
+			className={`rdtInput ${invalid && 'invalid '}`}
 		/>
 	);
 };
