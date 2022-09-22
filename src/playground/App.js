@@ -1,24 +1,42 @@
 // This file is the playground used for development purposes (npm run playground)
 // not part of the library
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Datetime from '../DateTime';
+import moment from 'moment';
 
 // import moment from 'moment';
 // import 'moment/locale/tzm-latn';
 // moment.locale('tzm-latn');
 
-class App extends React.Component { 
-	state = {
-		date: new Date()
-	}
+const App = () => {
+	const [value, setValue] = useState();
+	const onChange = useCallback((newValue) => {
+		setValue(newValue);
+	}, [setValue]);
+	const externalSetDate = useCallback(() => {
+		setValue(moment());
+	}, [setValue]);
 
-	render() {
-		return (
+	return (
+		<div>
+			<button onClick={externalSetDate}>
+				external set date
+			</button>
+
 			<div>
-				<Datetime />
+				Controlled
+				<Datetime
+					value={value}
+					onChange={onChange}
+				/>
 			</div>
-		);
-	}
-}
+			<div>
+				Uncontrolled Input
+				<Datetime
+				/>
+			</div>
+		</div>
+	);
+};
 
 export default App;

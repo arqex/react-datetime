@@ -492,7 +492,6 @@ export default class Datetime extends React.Component {
 		if ( selectedDate && selectedDate.isValid() ) {
 			update.inputValue = selectedDate.format( this.getFormat('datetime') );
 		}
-		
 		this.setState( update );
 	}
 
@@ -520,8 +519,7 @@ export default class Datetime extends React.Component {
 	}
 
 	getInputValue() {
-		let selectedDate = this.getSelectedDate();
-		return selectedDate ? selectedDate.format( this.getFormat('datetime') ) : this.state.inputValue;
+		return this.state.inputValue;
 	}
 
 	/**
@@ -546,7 +544,11 @@ export default class Datetime extends React.Component {
 		}
 
 		if ( !viewDate || !viewDate.isValid() ) return logError();
-		this.setState({ viewDate: viewDate });
+		let selectedDate = this.getSelectedDate();
+		this.setState({
+			viewDate: viewDate,
+			inputValue: selectedDate ? selectedDate.format( this.getFormat('datetime') ) : this.state.inputValue,
+		});
 	}
 
 	/**
