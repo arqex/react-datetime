@@ -201,6 +201,15 @@ declare namespace ReactDatetimeClass {
          When true the picker get closed when clicking outside of the calendar or the input box. When false, it stays open.
          */
         closeOnClickOutside?: boolean;
+
+        /* Display time zone (determined by displayTimeZone prop) in the time picker, or the user's
+        current time zone if not provided */
+        showTimeZone?: boolean,
+
+        /* By default, time is displayed in input as <date> <time>. If this prop is true, then
+        display as <time> <date>
+         */
+        showTimeFirst?: boolean,
     }
 
     export interface DatetimepickerState {
