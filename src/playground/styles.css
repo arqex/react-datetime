@@ -1,0 +1,25 @@
+
+html {
+    font-family: helvetica, arial;
+    font-size: 14px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.playground-palette {
+    display: flex;
+    max-width: 1000px;
+}
+
+.playground-palette > div > div > input {
+    margin-top: 12px;
+}
+
+.playground-palette > div {
+    padding: 15px;
+    margin: 5px;
+    border: 1px solid #555;
+    border-radius: 4px;
+}

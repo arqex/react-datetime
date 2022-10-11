@@ -36,6 +36,8 @@ export default class Datetime extends React.Component {
 		utc: TYPES.bool,
 		displayTimeZone: TYPES.string,
 		input: TYPES.bool,
+		displayTimeFirst: TYPES.bool,
+		showTimeZone: TYPES.bool,
 		dateFormat: TYPES.oneOfType([TYPES.string, TYPES.bool]),
 		timeFormat: TYPES.oneOfType([TYPES.string, TYPES.bool]),
 		inputProps: TYPES.object,
@@ -138,7 +140,9 @@ export default class Datetime extends React.Component {
 			updateDate: this._updateDate,
 			navigate: this._viewNavigate,
 			moment: moment,
-			showView: this._showView
+			showView: this._showView,
+			displayTimeZone: props.displayTimeZone,
+			showTimeZone: props.showTimeZone,
 		};
 
 		// Probably updateOn, updateSelectedDate and setDate can be merged in the same method
@@ -308,7 +312,8 @@ export default class Datetime extends React.Component {
 		
 		let dateFormat = this.getDateFormat();
 		let timeFormat = this.getTimeFormat();
-		return dateFormat && timeFormat ? dateFormat + ' ' + timeFormat : (dateFormat || timeFormat );
+		const combinedDateTimeFormat = this.props.showTimeFirst ? `${timeFormat} ${dateFormat}` : `${dateFormat} ${timeFormat}`;
+		return dateFormat && timeFormat ? combinedDateTimeFormat : (dateFormat || timeFormat );
 	}
 
 	_showView = ( view, date ) => {

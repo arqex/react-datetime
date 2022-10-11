@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import moment from 'moment-timezone';
 
 const timeConstraints = {
 	hours: {
@@ -76,14 +77,12 @@ export default class TimeView extends React.Component {
 	render() {
 		let items = [];
 		const timeParts = this.state;
-		
 		this.getCounters().forEach( (c, i) => {
 			if ( i && c !== 'ampm' ) {
 				items.push(
 					<div key={ `sep${i}` } className="rdtCounterSeparator">:</div>
 				);
 			}
-
 			items.push( this.renderCounter(c, timeParts[c]) );
 		});
 
@@ -100,6 +99,17 @@ export default class TimeView extends React.Component {
 							</td>
 						</tr>
 					</tbody>
+					{ this.props.showTimeZone && (
+						<div className="timezone-display">
+						  <span>
+								(GMT{ moment.tz(this.props.displayTimeZone || moment.tz.guess() ).format('Z') })
+							</span>
+							<span> </span>
+							<span>
+								{ this.props.displayTimeZone || moment.tz.guess() }
+							</span>
+						</div>
+					)}
 				</table>
 			</div>
 		);
