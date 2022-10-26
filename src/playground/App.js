@@ -43,6 +43,8 @@ const App = () => {
 					onChange={setTime2}
 					initialViewMode='time'
 					showTimeZone
+					timeFormat={'hh:mma'}
+					timeCountersFormat={'hms'}
 				/>
 			</div>
 

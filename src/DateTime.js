@@ -143,6 +143,7 @@ export default class Datetime extends React.Component {
 			showView: this._showView,
 			displayTimeZone: props.displayTimeZone,
 			showTimeZone: props.showTimeZone,
+			timeCountersFormat: props.timeCountersFormat,
 		};
 
 		// Probably updateOn, updateSelectedDate and setDate can be merged in the same method
