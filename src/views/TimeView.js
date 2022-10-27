@@ -234,7 +234,7 @@ export default class TimeView extends React.Component {
 
 	getCounters() {
 		let counters = [];
-		let format = this.props.timeFormat;
+		let format = this.props.timeCountersFormat || this.props.timeFormat;
 		
 		if ( format.toLowerCase().indexOf('h') !== -1 ) {
 			counters.push('hours');

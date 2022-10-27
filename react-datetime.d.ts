@@ -195,6 +195,12 @@ declare module ReactDatetime {
     display as <time> <date>
      */
     showTimeFirst?: boolean,
+
+    /*
+      In same format as the time format. If provided, will override the time format in determining
+      which counters are shown in the time display
+    */
+    timeCountersFormat?: string,
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {
