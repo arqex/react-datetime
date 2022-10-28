@@ -9,13 +9,14 @@ import Datetime from '../DateTime';
 
 class App extends React.Component { 
 	state = {
-		date: new Date()
+		value: '',
 	}
 
 	render() {
 		return (
 			<div>
-				<Datetime />
+				<button onClick={() => this.setState({value: ''})}>Reset</button>
+				<Datetime value={this.state.value} onChange={(value) => this.setState({value})} />
 			</div>
 		);
 	}

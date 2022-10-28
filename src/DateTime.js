@@ -520,6 +520,7 @@ export default class Datetime extends React.Component {
 	}
 
 	getInputValue() {
+		if ( this.props.value === '' ) return '';
 		let selectedDate = this.getSelectedDate();
 		return selectedDate ? selectedDate.format( this.getFormat('datetime') ) : this.state.inputValue;
 	}

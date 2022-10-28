@@ -1408,6 +1408,20 @@ describe('Datetime', () => {
 				done();
 			});
 		});
+
+		it('should allow the value to be reset to blank', done => {
+			const value1 = moment('2022-08-10T13:49:22.121Z');
+
+			let component = utils.createDatetime({ value: value1 });
+			expect( component.instance().state.viewDate.toISOString() ).toBe(value1.toISOString());
+
+			component.setProps({ value: '' });
+			setTimeout( () => {
+				console.log(component.find('.form-control').getDOMNode().outerHTML);
+				expect(utils.getInputValue(component)).toEqual('');
+				done();
+			});
+		});
 	});
 
 	describe('View navigation', () => {
