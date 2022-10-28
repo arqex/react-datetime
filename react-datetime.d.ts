@@ -186,6 +186,12 @@ declare module ReactDatetime {
      When true the picker get closed when clicking outside of the calendar or the input box. When false, it stays open.
      */
     closeOnClickOutside?: boolean;
+    /*
+    Forces the picker element to render in a fixed window position, calculating it's coordinates based
+    on it's wrapper. Useful for cases when the datepicker is rendered inside a div with hidden overflow
+    that otherwise would be cropping the component.
+    */
+    useFixedPosition?: boolean;
   }
 
   interface DatetimeComponent extends React.ComponentClass<DatetimepickerProps> {

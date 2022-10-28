@@ -50,6 +50,7 @@ export default class Datetime extends React.Component {
 		renderDay: TYPES.func,
 		renderMonth: TYPES.func,
 		renderYear: TYPES.func,
+		useFixedPosition: TYPES.bool,
 	}
 
 	static defaultProps = {
@@ -83,13 +84,17 @@ export default class Datetime extends React.Component {
 	constructor( props ) {
 		super( props );
 		this.state = this.getInitialState();
+		this.wrapper = React.createRef();
+		this.picker = React.createRef();
 	}
 
 	render() {
+		this.props.useFixedPosition && this._updatePickerFixedPosition();
+
 		return (
 			<ClickableWrapper className={ this.getClassName() } onClickOut={ this._handleClickOutside }>
 				{ this.renderInput() }
-				<div className="rdtPicker">
+				<div ref={this.picker} className="rdtPicker" style={this.props.useFixedPosition && { position: 'fixed' }}>
 					{ this.renderView() }
 				</div>
 			</ClickableWrapper>
@@ -112,7 +117,7 @@ export default class Datetime extends React.Component {
 
 		if ( this.props.renderInput ) {   
 			return (
-				<div>
+				<div ref={this.wrapper}>
 					{ this.props.renderInput( finalInputProps, this._openCalendar, this._closeCalendar ) }
 				</div>
 			);
@@ -125,6 +130,14 @@ export default class Datetime extends React.Component {
 
 	renderView() {
 		return this.props.renderView( this.state.currentView, this._renderCalendar );
+	}
+
+	_updatePickerFixedPosition() {
+		if (this.picker.current && this.wrapper.current) {
+			const wrapperBounds = this.wrapper.current.getBoundingClientRect();
+			this.picker.current.style.left = `${wrapperBounds.left}px`;
+			this.picker.current.style.top = `${wrapperBounds.top + wrapperBounds.height}px`;
+		}
 	}
 
 	_renderCalendar = () => {

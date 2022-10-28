@@ -80,6 +80,7 @@ Below we have all the props that we can use with the `<DateTime>` component. The
 | **closeOnTab** | `boolean` | `true` | When `true` and the input is focused, pressing the `tab` key will close the datepicker.
 | **timeConstraints** | `object` | `null` | Add some constraints to the timepicker. It accepts an `object` with the format `{ hours: { min: 9, max: 15, step: 2 }}`, this example means the hours can't be lower than `9` and higher than `15`, and it will change adding or subtracting `2` hours everytime the buttons are clicked. The constraints can be added to the `hours`, `minutes`, `seconds` and `milliseconds`.
 | **closeOnClickOutside** | `boolean` | `true` | When the calendar is open and `closeOnClickOutside` is `true` (its default value), clickin outside of the calendar or input closes the calendar. If `false` the calendar stays open.
+| **useFixedPosition** | `boolean` | `false` | Forces the picker element to render in a fixed window position, calculating it's coordinates based on it's wrapper. Useful for cases when the datepicker is rendered inside a div with hidden overflow that otherwise would be cropping the component.
 
 ## Imperative API
 Besides controlling the selected date, there is a navigation through months, years, decades that react-datetime handles for us. We can interfere in it, stopping view transtions by using the prop `onBeforeNavigate`, but we can also navigate to a specific view and date by using some imperative methods.

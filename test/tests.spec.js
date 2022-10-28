@@ -820,6 +820,12 @@ describe('Datetime', () => {
 			}, 0);
 		});
 
+		it('useFixedPosition=true changes rdtPicker position to fixed', () => {
+			const component = utils.createDatetime({ useFixedPosition: true });
+			utils.openDatepicker(component);
+			expect(utils.getPickerStyleProp(component).position).toEqual('fixed');
+		});
+
 		describe('initialValue of type', () => {
 			it('date', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
