@@ -236,6 +236,18 @@ describe('Datetime', () => {
 		expect(component.find('.rdtSwitch').text()).toEqual('February 2019');
 	});
 
+	it('click on first day of the next month', () => {
+		const component = utils.createDatetime({
+			initialViewMode: 'days',
+			initialValue: new Date(2019, 0, 1)
+		});
+
+		utils.openDatepicker(component);
+		utils.clickClassItem(component, '.rdtNew', 0);
+
+		expect(component.find('.form-control').getDOMNode().value).toEqual('02/01/2019 12:00 AM');
+	});
+
 	it('click on day of the prev month', () => {
 		const component = utils.createDatetime({
 			initialViewMode: 'days',
@@ -246,6 +258,18 @@ describe('Datetime', () => {
 		utils.clickClassItem(component, '.rdtOld', 1);
 		
 		expect(component.find('.rdtSwitch').text()).toEqual('December 2018');
+	});
+
+	it('click on last day of the prev month', () => {
+		const component = utils.createDatetime({
+			initialViewMode: 'days',
+			initialValue: new Date(2019, 0, 1)
+		});
+
+		utils.openDatepicker(component);
+		utils.clickClassItem(component, '.rdtOld', 1);
+
+		expect(component.find('.form-control').getDOMNode().value).toEqual('12/31/2018 12:00 AM');
 	});
 
 	it('sets CSS class on selected item (day)', () => {
