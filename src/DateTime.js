@@ -349,9 +349,11 @@ export default class Datetime extends React.Component {
 			parseInt( e.target.getAttribute('data-value'), 10 )
 		);
 
+		let selectedDate = moment([parseInt(e.target.getAttribute('data-year'), 10), 
+			parseInt(e.target.getAttribute('data-month'), 10), parseInt(e.target.getAttribute('data-value'), 10)]);
 		let update = {viewDate: viewDate};
 		if ( currentView === updateOnView ) {
-			update.selectedDate = viewDate.clone();
+			update.selectedDate = selectedDate;
 			update.inputValue = viewDate.format( this.getFormat('datetime') );
 
 			if ( this.props.open === undefined && this.props.input && this.props.closeOnSelect ) {
