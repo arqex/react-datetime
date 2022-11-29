@@ -22,7 +22,7 @@ Once the update has finished, try your app.
 It might seem to be working ok but [some props have changed](#whats-new-in-react-datetime-v3) and, even if they don't break your app, your pickers might be behaving a little bit differently.
 
 We should better search for the following props in our code and replace them as recommended in the points below:
-* Search for `defaultValue` prop in your datetime code. Remame it to `initialValue`.
+* Search for `defaultValue` prop in your datetime code. Rename it to `initialValue`.
 * Search for `defaultViewDate` props and replace them with `initialViewDate`.
 * Search for `viewMode` props and replace them with `initialViewMode`.
 * Search for `disableCloseOnClickOutside`. If you are using it, replace it with `closeOnClickOutside={false}`.
