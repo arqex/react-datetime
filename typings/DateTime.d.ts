@@ -17,8 +17,8 @@ declare namespace ReactDatetimeClass {
     export type ViewMode = 'years' | 'months' | 'days' | 'time';
 
     export interface TimeConstraint {
-        min: number;
-        max: number;
+        min?: number;
+        max?: number;
         step: number;
     }
 
