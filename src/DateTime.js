@@ -451,7 +451,7 @@ export default class Datetime extends React.Component {
 		let needsUpdate = false;
 		let thisProps = this.props;
 
-		['locale', 'utc', 'displayZone', 'dateFormat', 'timeFormat'].forEach( function(p) {
+		['locale', 'utc', 'displayTimeZone', 'dateFormat', 'timeFormat'].forEach( function(p) {
 			prevProps[p] !== thisProps[p] && (needsUpdate = true);
 		});
 

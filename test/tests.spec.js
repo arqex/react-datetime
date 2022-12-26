@@ -919,29 +919,35 @@ describe('Datetime', () => {
 			it('displayTimeZone -> value should change format (undefined->America/New_York)', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					momentDate = moment(date),
-					component = utils.createDatetime({ value: momentDate }),
+					component = utils.createDatetime({ initialViewMode: 'time', timeFormat: 'HH', value: momentDate }),
 					displayTimeZone = (moment.tz.guess() === 'America/New_York' ? 'America/Los_Angeles' : 'America/New_York');
 
 				const valueBefore = utils.getInputValue(component);
+				const timeCountBefore = component.find('.rdtCount').text();
 				component.setProps({ displayTimeZone: displayTimeZone }, () => {
 					const valueAfter = utils.getInputValue(component);
 
 					expect(valueBefore).not.toEqual(valueAfter);
 				});
+				const timeCountAfter = component.find('.rdtCount').text();
+				expect(timeCountBefore).not.toEqual(timeCountAfter);
 			});
 
 			it('displayTimeZone -> value should change format (America/New_York->undefined)', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
 					momentDate = moment(date),
 					displayTimeZone = (moment.tz.guess() === 'America/New_York' ? 'America/Los_Angeles' : 'America/New_York'),
-					component = utils.createDatetime({ value: momentDate, displayTimeZone: displayTimeZone });
+					component = utils.createDatetime({ initialViewMode: 'time', timeFormat: 'HH', value: momentDate, displayTimeZone: displayTimeZone });
 
 				const valueBefore = utils.getInputValue(component);
+				const timeCountBefore = component.find('.rdtCount').text();
 				component.setProps({ displayTimeZone: undefined }, () => {
 					const valueAfter = utils.getInputValue(component);
 
 					expect(valueBefore).not.toEqual(valueAfter);
 				});
+				const timeCountAfter = component.find('.rdtCount').text();
+				expect(timeCountBefore).not.toEqual(timeCountAfter);
 			});
 
 			it('locale -> picker should change language (initialViewMode=days)', () => {
