@@ -8,6 +8,7 @@ import _momentTimezone from 'moment-timezone'; // eslint-disable-line
 import utils from './testUtils';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { callHandler, getKeyboardProps } from '../src/utils';
 
 moment.locale('en');
 
@@ -569,6 +570,17 @@ describe('Datetime', () => {
 			expect(utils.isOpen(component)).toBeFalsy();
 		});
 
+		it('close by ESC key', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				component = utils.createDatetime({ value: date });
+
+			expect(utils.isOpen(component)).toBeFalsy();
+			utils.openDatepicker(component);
+			expect(utils.isOpen(component)).toBeTruthy();
+			component.find('.form-control').simulate('keyDown', { key: 'Escape', keyCode: 27, which: 27 });
+			expect(utils.isOpen(component)).toBeFalsy();
+		});
+
 		it('open by click', () => {
 			const date = new Date(2000, 0, 15, 2, 2, 2, 2);
 			const component = utils.createDatetime({ value: date, closeOnClickOutside: true });
@@ -579,6 +591,15 @@ describe('Datetime', () => {
 			expect( component.instance().state.open ).toBeFalsy();
 			utils.openDatepickerByClick(component);
 			expect( component.instance().state.open ).toBeTruthy();
+		});
+
+		it('open by ArrowDown key', () => {
+			const date = new Date(2000, 0, 15, 2, 2, 2, 2),
+				component = utils.createDatetime({ value: date });
+
+			expect(utils.isOpen(component)).toBeFalsy();
+			component.find('.form-control').simulate('keyDown', { key: 'ArrowDown', keyCode: 40, which: 40 });
+			expect(utils.isOpen(component)).toBeTruthy();
 		});
 
 		it('increase time', () => {
@@ -1512,7 +1533,7 @@ describe('Imperative methods', function() {
 		expect( utils.isMonthView( component ) ).toBeTruthy();
 		
 		component.instance().navigate( 'days' );
-
+ 
 		// Sync fix
 		setTimeout( () => {
 			expect( utils.isDayView( component ) ).toBeTruthy();
@@ -1530,5 +1551,25 @@ describe('Imperative methods', function() {
 			done();
 		}, 100);
 
+	});
+});
+
+describe('Utils', () => {
+	it('callHandler() - method not provided', () => {
+		expect(callHandler()).toBe(true);
+	});
+
+	it('callHandler() - method provided', () => {
+		const method = jest.fn((arg) => arg);
+		expect(callHandler(method, true)).toBe(true);
+		expect(callHandler(method, false)).toBe(false);
+	});
+
+	it('getKeyboardProps()', () => {
+		const onClickHandler = jest.fn(() => false);
+		const keyboardProps = getKeyboardProps(onClickHandler);
+		expect(keyboardProps.tabIndex).toBe(0);
+		expect(keyboardProps.onKeyDown({})).toBe(true);
+		expect(keyboardProps.onKeyDown({ key: 'Enter'})).toBe(false);
 	});
 });
