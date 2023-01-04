@@ -342,23 +342,25 @@ export default class Datetime extends React.Component {
 		viewDate[ this.viewToMethod[currentView] ](
 			parseInt( e.target.getAttribute('data-value'), 10 )
 		);
-
+		
 		// Need to set month and year will for days view (prev/next month)
 		if ( currentView === 'days' ) {
 			viewDate.month( parseInt( e.target.getAttribute('data-month'), 10 ) );
 			viewDate.year( parseInt( e.target.getAttribute('data-year'), 10 ) );
 		}
 
+		let selectedDate = moment([parseInt(e.target.getAttribute('data-year'), 10), 
+			parseInt(e.target.getAttribute('data-month'), 10), parseInt(e.target.getAttribute('data-value'), 10)]);
 		let update = {viewDate: viewDate};
 		if ( currentView === updateOnView ) {
-			update.selectedDate = viewDate.clone();
+			update.selectedDate = selectedDate;
 			update.inputValue = viewDate.format( this.getFormat('datetime') );
 
 			if ( this.props.open === undefined && this.props.input && this.props.closeOnSelect ) {
 				this._closeCalendar();
 			}
 
-			this.props.onChange( viewDate.clone() );
+			this.props.onChange( selectedDate );
 		}
 		else {
 			this._showView( this.nextView[ currentView ], viewDate );
