@@ -45,6 +45,8 @@ const App = () => {
 					showTimeZone
 					timeFormat={'hh:mma'}
 					timeCountersFormat={'hms'}
+					dateFormat={'MMM D, YYYY'}
+					showTimeFirst
 				/>
 			</div>
 

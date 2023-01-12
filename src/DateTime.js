@@ -188,7 +188,12 @@ export default class Datetime extends React.Component {
 			currentView: props.initialViewMode || this.getInitialView(),
 			viewDate: this.getInitialViewDate( selectedDate ),
 			selectedDate: selectedDate && selectedDate.isValid() ? selectedDate : undefined,
-			inputValue: this.getInitialInputValue( selectedDate )
+			inputValue: this.getInitialInputValue( selectedDate ),
+
+			// inputValueText is the string that is what the user types into the box. It should never
+			// be modified externally, to prevent issues like the user cursor jumping around, and
+			// automatically converting a user typed 'A' into 'AM'
+			inputValueText: this.getInitialInputValue( selectedDate ),
 		};
 	}
 	
@@ -466,7 +471,15 @@ export default class Datetime extends React.Component {
 		}
 
 		if ( thisProps.value && thisProps.value !== prevProps.value ) {
+			const normalizedPropValue = moment(thisProps.value).toISOString();
+			const normalizedInputValue = moment(this.state.inputValueText).toISOString();
 			this.setViewDate( thisProps.value );
+
+			if (normalizedPropValue !== normalizedInputValue) {
+				this.setState({
+					inputValueText: this.state.inputValue,
+				});
+			}
 		}
 
 		this.checkTZ();
@@ -525,7 +538,7 @@ export default class Datetime extends React.Component {
 	}
 
 	getInputValue() {
-		return this.state.inputValue;
+		return this.state.inputValueText || this.state.inputValue;
 	}
 
 	/**
@@ -584,6 +597,7 @@ export default class Datetime extends React.Component {
 		else {
 			update.selectedDate = null;
 		}
+		update.inputValueText = value;
 
 		this.setState( update, () => {
 			this.props.onChange( localMoment.isValid() ? localMoment : this.state.inputValue );
