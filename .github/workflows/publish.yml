@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 'master'
-      - 'fix-incorrect-date-selected'
+    workflow_dispatch:
 
 jobs:
   publish:
