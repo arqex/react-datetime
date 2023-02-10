@@ -1,11 +1,14 @@
 {
-  "name": "react-datetime",
-  "version": "3.1.0",
+  "name": "@umg/react-datetime",
+  "version": "3.2.2",
   "description": "A lightweight but complete datetime picker React.js component",
   "homepage": "https://github.com/arqex/react-datetime",
   "repository": {
     "type": "git",
-    "url": "https://github.com/arqex/react-datetime"
+    "url": "https://github.com/umg/react-datetime"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "main": "./dist/react-datetime.cjs.js",
   "typings": "./typings/DateTime.d.ts",

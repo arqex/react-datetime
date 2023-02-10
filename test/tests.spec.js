@@ -892,7 +892,7 @@ describe('Datetime', () => {
 
 			it('UTC -> value should change format (true->false)', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-					momentDate = moment(date),
+					momentDate = moment.tz(date, 'America/New_York'),
 					component = utils.createDatetime({ value: momentDate, utc: true });
 
 				const valueBefore = utils.getInputValue(component);
@@ -905,7 +905,7 @@ describe('Datetime', () => {
 
 			it('UTC -> value should change format (false->true)', () => {
 				const date = new Date(2000, 0, 15, 2, 2, 2, 2),
-					momentDate = moment(date),
+					momentDate = moment.tz(date, 'America/New_York'),
 					component = utils.createDatetime({ value: momentDate, utc: false });
 
 				const valueBefore = utils.getInputValue(component);

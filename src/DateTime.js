@@ -338,16 +338,20 @@ export default class Datetime extends React.Component {
 		let updateOnView = this.getUpdateOn( this.getFormat('date') );
 		let viewDate = this.state.viewDate.clone();
 
-		// Set the value into day/month/year
-		viewDate[ this.viewToMethod[currentView] ](
-			parseInt( e.target.getAttribute('data-value'), 10 )
-		);
+		// Set the day to the first day of the month before changing the month because
+		// the day might not exist on the new month, 31 Feb etc
+		viewDate[ this.viewToMethod[currentView] ](1);
 
 		// Need to set month and year will for days view (prev/next month)
 		if ( currentView === 'days' ) {
 			viewDate.month( parseInt( e.target.getAttribute('data-month'), 10 ) );
 			viewDate.year( parseInt( e.target.getAttribute('data-year'), 10 ) );
 		}
+
+		// Set the value into day/month/year
+		viewDate[ this.viewToMethod[currentView] ](
+			parseInt( e.target.getAttribute('data-value'), 10 )
+		);
 
 		let update = {viewDate: viewDate};
 		if ( currentView === updateOnView ) {

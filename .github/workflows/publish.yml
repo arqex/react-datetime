@@ -1,0 +1,36 @@
+﻿name: Publish
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build package
+        run: npm run build
+
+      - name: Test package
+        run: npm run test:all
+
+      - name: npm config update
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=$AUTH_TOKEN" > ~/.npmrc && npm config set @umg:registry https://npm.pkg.github.com
+        env:
+          AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
