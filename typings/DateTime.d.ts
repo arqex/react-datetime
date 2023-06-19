@@ -207,6 +207,7 @@ declare namespace ReactDatetimeClass {
         updateOn: string;
         inputFormat: string;
         viewDate: Moment;
+        currentView: ViewMode;
         selectedDate: Moment;
         inputValue: string;
         open: boolean;
