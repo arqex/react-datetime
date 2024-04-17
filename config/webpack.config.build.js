@@ -34,11 +34,13 @@ const umdConfig = {
 	...baseConfig,
 	output: {
 		path: outputPath,
-		library: 'Datetime',
-		libraryTarget: 'umd',
+		library: {
+			name: 'Datetime',
+			type: 'umd',
+			auxiliaryComment: 'React datetime',
+			export: 'default'
+		},
 		filename: 'react-datetime.umd.js',
-		auxiliaryComment: 'React datetime',
-		libraryExport: 'default'
 	}
 };
 
@@ -46,10 +48,11 @@ const cjsConfig = {
 	...baseConfig,
 	output: {
 		path: outputPath,
-		library: 'Datetime',
-		libraryTarget: 'commonjs2',
+		library: {
+			type: 'commonjs2',
+			auxiliaryComment: 'React datetime'
+		},
 		filename: 'react-datetime.cjs.js',
-		auxiliaryComment: 'React datetime'
 	}
 };
 
