@@ -301,7 +301,7 @@ exports[`className: set to arbitraty value 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -319,7 +319,7 @@ exports[`className: set to arbitraty value 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -899,7 +899,7 @@ exports[`dateFormat set to true 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -917,7 +917,7 @@ exports[`dateFormat set to true 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -1393,7 +1393,7 @@ exports[`defaultValue: set to arbitrary value 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -1411,7 +1411,7 @@ exports[`defaultValue: set to arbitrary value 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -1887,7 +1887,7 @@ exports[`everything default: renders correctly 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -1905,7 +1905,7 @@ exports[`everything default: renders correctly 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -2372,7 +2372,7 @@ exports[`input input: set to false 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -2390,7 +2390,7 @@ exports[`input input: set to false 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -2866,7 +2866,7 @@ exports[`input input: set to true 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -2884,7 +2884,7 @@ exports[`input input: set to true 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -3360,7 +3360,7 @@ exports[`inputProps with className specified 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -3378,7 +3378,7 @@ exports[`inputProps with className specified 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -3855,7 +3855,7 @@ exports[`inputProps with disabled specified 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -3873,7 +3873,7 @@ exports[`inputProps with disabled specified 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -4350,7 +4350,7 @@ exports[`inputProps with name specified 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -4368,7 +4368,7 @@ exports[`inputProps with name specified 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -4845,7 +4845,7 @@ exports[`inputProps with placeholder specified 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -4863,7 +4863,7 @@ exports[`inputProps with placeholder specified 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -5340,7 +5340,7 @@ exports[`inputProps with required specified 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -5358,7 +5358,7 @@ exports[`inputProps with required specified 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -5811,23 +5811,25 @@ exports[`isValidDate: only valid if after yesterday 1`] = `
               19
             </td>
             <td
-              className="rdtDay rdtDisabled"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
+              onClick={[Function]}
             >
               20
             </td>
             <td
-              className="rdtDay rdtDisabled"
+              className="rdtDay"
               data-month={11}
               data-value={21}
               data-year={2016}
+              onClick={[Function]}
             >
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -6303,7 +6305,7 @@ exports[`open set to false 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -6321,7 +6323,7 @@ exports[`open set to false 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -6797,7 +6799,7 @@ exports[`open set to true 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -6815,7 +6817,7 @@ exports[`open set to true 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -7291,7 +7293,7 @@ exports[`renderDay: specified 1`] = `
               019
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -7309,7 +7311,7 @@ exports[`renderDay: specified 1`] = `
               021
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -7785,7 +7787,7 @@ exports[`renderMonth: specified 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -7803,7 +7805,7 @@ exports[`renderMonth: specified 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -8279,7 +8281,7 @@ exports[`renderYear: specified 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -8297,7 +8299,7 @@ exports[`renderYear: specified 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -8773,7 +8775,7 @@ exports[`timeFormat set to false 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -8791,7 +8793,7 @@ exports[`timeFormat set to false 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -9256,7 +9258,7 @@ exports[`timeFormat set to true 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -9274,7 +9276,7 @@ exports[`timeFormat set to true 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -9750,7 +9752,7 @@ exports[`value: set to arbitrary value 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -9768,7 +9770,7 @@ exports[`value: set to arbitrary value 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -10244,7 +10246,7 @@ exports[`viewMode set to days 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -10262,7 +10264,7 @@ exports[`viewMode set to days 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -10738,7 +10740,7 @@ exports[`viewMode set to months 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -10756,7 +10758,7 @@ exports[`viewMode set to months 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -11232,7 +11234,7 @@ exports[`viewMode set to time 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -11250,7 +11252,7 @@ exports[`viewMode set to time 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
@@ -11726,7 +11728,7 @@ exports[`viewMode set to years 1`] = `
               19
             </td>
             <td
-              className="rdtDay"
+              className="rdtDay rdtToday"
               data-month={11}
               data-value={20}
               data-year={2016}
@@ -11744,7 +11746,7 @@ exports[`viewMode set to years 1`] = `
               21
             </td>
             <td
-              className="rdtDay rdtToday"
+              className="rdtDay"
               data-month={11}
               data-value={22}
               data-year={2016}
