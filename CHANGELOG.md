@@ -1,7 +1,11 @@
 Changelog
 =========
+# 3.3.0
+* Adds support for React 19
+
 ## 3.2.0
 * Adds support for React 18
+
 ## 3.1.0
 * Adds support for React 17
 
