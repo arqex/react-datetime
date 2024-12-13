@@ -1,6 +1,9 @@
 Changelog
 =========
-# 3.3.0
+## 3.3.1
+* Restores compatibility with React ^16.5.0
+
+## 3.3.0
 * Adds support for React 19
 
 ## 3.2.0
